@@ -58,7 +58,7 @@ class Api
                 'returnGroups'
             ],
             'permission_callback' => function () {
-                return current_user_can( 'read_posts' );
+                return current_user_can( 'edit_posts' );
             }
         ] );
 
@@ -69,7 +69,7 @@ class Api
                 'returnGroup'
             ],
             'permission_callback' => function () {
-                return current_user_can( 'read_posts' );
+                return current_user_can( 'edit_posts' );
             },
             'args'                => array (
                 'id' => array (
@@ -99,8 +99,12 @@ class Api
     {
         $post = get_post( $request[ 'id' ] );
 
-        if ( empty( $post ) || $post->post_status !== 'publish' || $post->post_type !== 'mcylub-groups' ) {
-            return new WP_Error( 'empty_post', 'there is no post with this id', array ( 'status' => 404 ) );
+        if ( empty( $post ) || $post->post_status !== 'publish' || $post->post_type !== 'myclub-groups' ) {
+            return new WP_REST_Response(
+                [
+                    'message' => __( 'There is no MyClub Group post with that ID', 'myclub-groups' )
+                ], 404
+            );
         }
 
         $postId = $post->ID;
@@ -109,7 +113,7 @@ class Api
             'activities'  => get_post_meta( $postId, 'activities', true ),
             'contactName' => get_post_meta( $postId, 'contactName', true ),
             'email'       => get_post_meta( $postId, 'email', true ),
-            'infoText'    => get_post( $postId, 'infoText', true ),
+            'infoText'    => get_post_meta( $postId, 'infoText', true ),
             'members'     => get_post_meta( $postId, 'members', true ),
             'phone'       => get_post_meta( $postId, 'phone', true ),
             'title'       => get_the_title( $postId ),
@@ -133,6 +137,8 @@ class Api
             'post_status'    => 'publish',
             'posts_per_page' => -1,
             'fields'         => 'ids',
+            'orderby'        => 'title',
+            'order'          => 'ASC'
         );
 
         $myclub_groups_query = new WP_Query( $args );
@@ -140,10 +146,10 @@ class Api
         $myclub_groups = array ();
 
         if ( $myclub_groups_query->have_posts() ) {
-            foreach ( $myclub_groups_query->posts as $post_id ) {
+            foreach ( $myclub_groups_query->posts as $postId ) {
                 $myclub_groups[] = array (
-                    'post_id'    => $post_id,
-                    'post_title' => get_the_title( $post_id ),
+                    'id'    => $postId,
+                    'title' => get_the_title( $postId ),
                 );
             }
         }
@@ -166,9 +172,10 @@ class Api
     public function returnOptions(): WP_REST_Response
     {
         return new WP_REST_Response( [
-            'myclub_groups_members_title'      => get_option( 'myclub_groups_members_title' ),
-            'myclub_groups_leaders_title'      => get_option( 'myclub_groups_leaders_title' ),
             'myclub_groups_coming_games_title' => get_option( 'myclub_groups_coming_games_title' ),
+            'myclub_groups_leaders_title'      => get_option( 'myclub_groups_leaders_title' ),
+            'myclub_groups_members_title'      => get_option( 'myclub_groups_members_title' ),
+            'myclub_groups_page_picture'       => get_option( 'myclub_groups_page_picture' )
         ], 200 );
     }
 }

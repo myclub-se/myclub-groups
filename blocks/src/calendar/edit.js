@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from '@wordpress/element';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, PanelRow, SelectControl } from '@wordpress/components';
-import { addQueryArgs } from '@wordpress/url';
 import './editor.scss';
 import {__} from "@wordpress/i18n";
 
@@ -9,6 +8,7 @@ import { Calendar } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
+import {getMyClubGroups} from "../shared/edit-functions";
 
 
 /**
@@ -35,21 +35,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	}
 
 	useEffect(() => {
-		apiFetch( { path: '/myclub/v1/groups' } ).then(
-			fetchedItems => {
-				const postOptions = fetchedItems.map( post => ({
-					label: post.title,
-					value: post.id
-				}));
-
-				postOptions.unshift({
-					label: __( 'Select a group', 'myclub-groups' ),
-					value: ''
-				});
-
-				setPosts( postOptions );
-			}
-		);
+		getMyClubGroups( setPosts );
 	}, []);
 
 	useEffect(() => {

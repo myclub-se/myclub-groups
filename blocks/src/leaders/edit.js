@@ -1,9 +1,8 @@
 import { useRef, useState, useEffect } from '@wordpress/element';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, PanelRow, SelectControl, Spinner } from '@wordpress/components';
-import { addQueryArgs } from '@wordpress/url';
 import { __ } from '@wordpress/i18n';
-import {changeHostName, setHeight} from "../shared/edit-functions";
+import {changeHostName, getMyClubGroups, setHeight} from "../shared/edit-functions";
 
 /**
  * The edit function required to handle the leaders component. Adds a settings field to choose the post to render
@@ -57,27 +56,12 @@ export default function Edit( { attributes, setAttributes } ) {
 	}, [postLeaders]);
 
 	useEffect(() => {
-		apiFetch( { path: '/myclub/v1/options' } ).then( settings => {
-			setLeaderTitle ( settings.myclub_groups_leaders_title );
+		apiFetch( { path: '/myclub/v1/options' } ).then(options => {
+			setLeaderTitle ( options.myclub_groups_leaders_title );
 		} );
 
-		apiFetch( { path: '/myclub/v1/groups' } ).then(
-			fetchedItems => {
-				const postOptions = fetchedItems.map( post => ({
-					label: post.title,
-					value: post.id
-				}));
-
-				postOptions.unshift({
-					label: __( 'Select a group', 'myclub-groups' ),
-					value: ''
-				});
-
-				setPosts( postOptions );
-			}
-		);
+		getMyClubGroups( setPosts );
 	}, []);
-
 
 	if (postLeaders && postLeaders.members && postLeaders.members.length) {
 		memberOutput =

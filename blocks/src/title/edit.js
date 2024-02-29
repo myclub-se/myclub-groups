@@ -2,6 +2,7 @@ import { useState, useEffect } from '@wordpress/element';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, PanelRow, SelectControl, Spinner } from '@wordpress/components';
 import {__} from "@wordpress/i18n";
+import {getMyClubGroups} from "../shared/edit-functions";
 
 /**
  * The edit function required to handle the title component.
@@ -17,6 +18,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		phone: '',
 		title: ''
 	});
+	const [ showImage, setShowImage ] = useState(true);
 	const {apiFetch} = wp;
 	const {useSelect} = wp.data;
 	const featuredImageId = useSelect((select) => {
@@ -30,37 +32,26 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	useEffect(() => {
 		if (attributes.postId) {
-			apiFetch({ path: `/myclub/v1/groups/${attributes.postId}`})
-				.then((post) => {
-					setPostData({
+			apiFetch( { path: `/myclub/v1/groups/${attributes.postId}` } )
+				.then( ( post ) => {
+					setPostData( {
 						contactName: post.contactName,
 						email: post.email,
 						infoText: post.infoText,
 						phone: post.phone,
 						title: post.title
-					});
-				});
+					} );
+				} );
 		}
 	}, [ attributes.postId ])
 
 	useEffect(() => {
-		apiFetch( { path: '/myclub/v1/groups' } ).then(
-			fetchedItems => {
-				const postOptions = fetchedItems.map( post => ({
-					label: post.title,
-					value: post.id
-				}));
-
-				postOptions.unshift({
-					label: __( 'Select a group', 'myclub-groups' ),
-					value: ''
-				});
-
-				setPosts( postOptions );
-			}
-		);
+		getMyClubGroups( setPosts );
+		apiFetch( { path: '/myclub/v1/options' } )
+			.then( options => {
+				setShowImage( options.myclub_groups_page_picture === '1' );
+			} );
 	}, []);
-
 
 	return (
 		<>
@@ -83,11 +74,10 @@ export default function Edit( { attributes, setAttributes } ) {
 				{postData?.title ?
 					<div className="myclub-groups-title">
 						<div className="myclub-groups-title-box">
+							{ showImage && featuredImage !== 0 && featuredImage?.source_url &&
 							<div className="myclub-groups-title-image">
-								{featuredImage !== 0 && <img src={mediumImage ? mediumImage : featuredImage?.source_url}
-															 alt={postData?.title}/>}
-								{!featuredImage && <div className="myclub-groups-title-no-image">&nbsp;</div>}
-							</div>
+								<img src={mediumImage ? mediumImage : featuredImage?.source_url} alt={postData?.title}/>
+							</div>}
 							<div className="myclub-groups-title-information">
 								<div className={`myclub-groups-title-name ${postData?.infoText ? 'with-info-text' : ''}`}>{postData?.title}</div>
 								{postData?.infoText && <div className="myclub-groups-info-text">

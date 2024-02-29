@@ -1,3 +1,5 @@
+import {__} from "@wordpress/i18n";
+
 export function changeHostName ( oldUrl ) {
     // Create a new URL object with the old URL
     let url = new URL(oldUrl);
@@ -21,4 +23,24 @@ export function setHeight ( ref, className ) {
             element.style.height = `${maxHeight}px`;
         });
     });
+}
+
+export function getMyClubGroups( setPosts ) {
+    const { apiFetch } = wp;
+
+    apiFetch( { path: '/myclub/v1/groups' } ).then(
+        fetchedItems => {
+            const postOptions = fetchedItems.map( post => ({
+                label: post.title,
+                value: post.id
+            }));
+
+            postOptions.unshift({
+                label: __( 'Select a group', 'myclub-groups' ),
+                value: ''
+            });
+
+            setPosts( postOptions );
+        }
+    );
 }

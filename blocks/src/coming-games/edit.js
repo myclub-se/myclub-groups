@@ -1,9 +1,9 @@
 import { useState, useEffect } from '@wordpress/element';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, PanelRow, SelectControl, Spinner } from '@wordpress/components';
-import { addQueryArgs } from '@wordpress/url';
 import {__} from "@wordpress/i18n";
 import ServerSideRender from "@wordpress/server-side-render";
+import {getMyClubGroups} from "../shared/edit-functions";
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -15,24 +15,9 @@ import ServerSideRender from "@wordpress/server-side-render";
  */
 export default function Edit( { attributes, setAttributes } ) {
 	const [posts, setPosts] = useState([]);
-	const {apiFetch} = wp;
 
 	useEffect(() => {
-		apiFetch( { path: '/myclub/v1/groups' } ).then(
-			fetchedItems => {
-				const postOptions = fetchedItems.map( post => ({
-					label: post.title,
-					value: post.id
-				}));
-
-				postOptions.unshift({
-					label: __( 'Select a group', 'myclub-groups' ),
-					value: ''
-				});
-
-				setPosts( postOptions );
-			}
-		);
+		getMyClubGroups( setPosts );
 	}, []);
 
 	return (
