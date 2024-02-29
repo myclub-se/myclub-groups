@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"attributes": {
+		"postId": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"name": "myclub-groups/members",
+	"version": "0.1.0",
+	"title": "MyClub Group Members",
+	"category": "myclub",
+	"icon": "id",
+	"description": "Display members for a selected group",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "myclub-groups",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"render": "file:./render.php",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}

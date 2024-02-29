@@ -1,0 +1,22 @@
+.myclub-groups-navigation {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
+	.myclub-groups-navigation-icons {
+		display: flex;
+		max-width: 840px;
+		flex-direction: row;
+		justify-content: space-evenly;
+
+		a {
+			margin-right: 1rem;
+			margin-left: 1rem;
+			img {
+				width: auto;
+				height: 1rem;
+			}
+		}
+	}
+}

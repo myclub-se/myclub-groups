@@ -1,0 +1,74 @@
+/**
+ * The group menus styles
+ */
+
+.myclub-groups-menu {
+	margin-bottom: 2rem;
+
+	a {
+		text-decoration: none;
+		display: block;
+		height: 100%;
+		padding: 0.5rem 1rem;
+	}
+
+	ul.menu {
+		display: flex;
+		flex-wrap: wrap;
+
+		> li {
+			display: inline;
+			position: relative;
+
+			&.menu-item-has-children:hover {
+				background-color: #dcdcdc;
+
+				.sub-menu {
+					display: block;
+					position: absolute;
+					margin-top: -1rem;
+
+					&:hover {
+						display: block;
+					}
+				}
+			}
+		}
+	}
+
+	ul {
+		list-style: inside none;
+		margin-block-start: 0;
+		margin-block-end: 0;
+
+		li {
+			cursor: pointer;
+		}
+
+		&.sub-menu {
+			padding: 0.5rem 1rem;
+			display: none;
+			z-index: 999;
+			background-color: #fff;
+			border: 1px solid;
+
+			&:hover {
+				display: block;
+			}
+
+			li {
+				position: relative;
+
+				&:hover {
+					background-color: #dcdcdc;
+				}
+
+				a {
+					position: relative;
+					width: auto;
+					min-width: 200px;
+				}
+			}
+		}
+	}
+}

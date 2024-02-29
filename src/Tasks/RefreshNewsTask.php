@@ -1,0 +1,44 @@
+<?php
+
+namespace MyClub\MyClubGroups\Tasks;
+
+use MyClub\MyClubGroups\Services\NewsService;
+use MyClub\MyClubGroups\Utils;
+use WP_Background_Process;
+
+class RefreshNewsTask extends WP_Background_Process {
+    protected $action = 'myclub_refresh_news_task';
+
+    private static $instance = null;
+
+    /**
+     * Initializes the class if it hasn't been initialized already.
+     *
+     * @return object Returns an instance of the class. If the class has already been initialized, it returns the existing instance.
+     */
+    public static function init() {
+        if (!self::$instance) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    /**
+     * Refreshes news for the group id sent to the method or for the club if item is null
+     *
+     * @param mixed $item The groupId of the news to get or null
+     * @return mixed returns false to indicate that no further processing is required.
+     * @since 1.0.0
+     */
+    protected function task( $item ) {
+        $service = new NewsService();
+        $service->loadNews( $item );
+        return false;
+    }
+
+    protected function complete()
+    {
+        parent::complete();
+        Utils::updateOrCreateOption( 'myclub_groups_last_news_sync', date( "c" ), 'no' );
+    }
+}

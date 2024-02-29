@@ -1,0 +1,92 @@
+/**
+ * The group leaders styles
+ */
+@import '../shared/modal';
+
+.myclub-groups-leaders-list {
+  margin-bottom: 2rem;
+
+  .leaders-list {
+    display: flex;
+    flex-flow: row wrap;
+
+    .leader {
+      box-sizing: border-box;
+      margin: 0.5rem;
+      flex: 0 1 calc(50% - 1rem);
+      padding: 0.5rem;
+      cursor: pointer;
+
+      .leader-picture {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      .leader-name {
+        text-align: center;
+      }
+
+      .leader-role {
+        text-align: center;
+        font-size: smaller;
+      }
+    }
+
+    .leader-show-more, .leader-show-less {
+      cursor: pointer;
+      text-align: center;
+      padding: 0.5rem;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+
+      div {
+        position: relative;
+        background-color: inherit;
+        padding: 0 1rem;
+        z-index: 2;
+      }
+    }
+
+    .extended-list {
+      display: flex;
+      flex: 100%;
+      flex-flow: row wrap;
+    }
+
+    .hidden {
+      display: none;
+    }
+  }
+
+  .leader-modal {
+    @extend %modal;
+  }
+}
+
+
+@media(min-width: 768px) {
+  .myclub-groups-leaders-list {
+    .leaders-list {
+      .leader {
+        flex: 0 1 calc(33% - 1rem);
+      }
+    }
+  }
+}
+
+@media(min-width: 992px) {
+  .myclub-groups-leaders-list {
+    .leaders-list {
+      .leader {
+        flex: 0 1 calc(25% - 1rem);
+      }
+    }
+  }
+}

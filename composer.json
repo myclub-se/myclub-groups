@@ -1,0 +1,24 @@
+{
+    "name": "myclub/myclub-groups",
+    "description": "MyClub groups plugin for Wordpress",
+    "type": "wordpress-plugin",
+    "license": "GPL2",
+    "autoload": {
+        "psr-4": {
+            "MyClub\\MyClubGroups\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "MyClub AB",
+            "email": "dev@myclub.se"
+        }
+    ],
+    "require": {
+        "ext-json": "*",
+        "deliciousbrains/wp-background-processing": "^1.3"
+    },
+    "config": {
+        "vendor-dir": "lib"
+    }
+}

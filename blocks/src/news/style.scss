@@ -1,0 +1,47 @@
+/**
+ * The group news styles
+ */
+
+.myclub-groups-news {
+  margin-bottom: 2rem;
+
+  .myclub-groups-news-list {
+    display: flex;
+    flex-flow: row wrap;
+
+    .myclub-news-item {
+      box-sizing: border-box;
+      margin: 0.5rem;
+      flex: 0 1 calc(100% - 1rem);
+      padding: 0.5rem;
+
+      .myclub-news-image {
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+    }
+
+    .myclub-more-news {
+      padding: 1rem;
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  .no-news-found {
+    padding: 1rem;
+    text-align: center;
+  }
+}
+
+@media(min-width: 992px) {
+  .myclub-groups-news {
+    .myclub-groups-news-list {
+      .myclub-news-item {
+        flex: 0 1 calc(33% - 1rem);
+      }
+    }
+  }
+}
