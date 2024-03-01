@@ -4,16 +4,7 @@ function closeButtonListener() {
 
     modal.classList.remove('modal-open');
     close.removeEventListener('click', closeButtonListener);
-    modal.removeEventListener( 'click', closeModalListener );
-}
-
-function closeModalListener() {
-    const modal = document.getElementsByClassName('modal-open')[0];
-    const close = modal.getElementsByClassName('close')[0];
-
-    modal.classList.remove('modal-open');
-    close.removeEventListener('click', closeButtonListener);
-    modal.removeEventListener( 'click', closeModalListener );
+    modal.removeEventListener( 'click', closeButtonListener );
 }
 
 function getColorClass( baseType ) {
@@ -75,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
             content.innerHTML = output;
 
             modal.classList.add('modal-open');
-            modal.addEventListener( 'click', closeModalListener );
+            modal.addEventListener( 'click', closeButtonListener );
             close.addEventListener( 'click', closeButtonListener );
         },
         eventContent: (arg) => {

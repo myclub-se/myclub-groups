@@ -4,11 +4,8 @@ import { PanelBody, PanelRow, SelectControl } from '@wordpress/components';
 import './editor.scss';
 import {__} from "@wordpress/i18n";
 
-import { Calendar } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list';
 import {getMyClubGroups} from "../shared/edit-functions";
+import MyClubFullcalendar from "./myclub-fullcalendar";
 
 
 /**
@@ -20,23 +17,52 @@ import {getMyClubGroups} from "../shared/edit-functions";
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes } ) {
-	const calendarRef = useRef(null);
 	const [postEvents, setPostEvents] = useState({events: [], loaded: false});
 	const [posts, setPosts] = useState([]);
 	const {apiFetch} = wp;
+	const {useSelect} = wp.data;
+	const currentLocale = useSelect((select) => {
+		return select('core').getSite().language;
+	});
+	const startOfWeek = useSelect((select) => {
+		return select('core').getSite().start_of_week;
+	});
 
-	const renderEventContent = (eventInfo) => {
-		return (
-			<>
-			<div className="myclub-groups-event-time">{eventInfo.timeText}</div>
-			<div className="myclub-groups-event-title">{eventInfo.event.title}</div>
-			</>
-		)
+	let myClubCalendarRef = useRef();
+	const options = {
+		calendarRef: myClubCalendarRef,
+		events: postEvents.events,
+		locale: currentLocale ? currentLocale.substring(0, 2) : 'sv',
+		firstDay: startOfWeek
+	}
+
+	const subtractMinutes = (time, minutes) => {
+		let parts = time.split(':');
+		let date = new Date();
+		date.setHours(parts[0]);
+		date.setMinutes(parts[1]);
+		date.setSeconds(parts[2]);
+
+		date.setMinutes(date.getMinutes() - minutes);
+
+		let hrs = ("0" + date.getHours()).slice(-2);
+		let mins = ("0" + date.getMinutes()).slice(-2);
+		let secs = ("0" + date.getSeconds()).slice(-2);
+
+		return `${hrs}:${mins}:${secs}`;
 	}
 
 	useEffect(() => {
 		getMyClubGroups( setPosts );
 	}, []);
+
+	useEffect(() => {
+		if (myClubCalendarRef && myClubCalendarRef.current) {
+			const api = myClubCalendarRef.current.getApi();
+			api.removeAllEvents();
+			api.addEventSource(postEvents.events);
+		}
+	}, [postEvents])
 
 	useEffect(() => {
 		setPostEvents({
@@ -48,8 +74,15 @@ export default function Edit( { attributes, setAttributes } ) {
 			apiFetch({ path: `/myclub/v1/groups/${attributes.postId}`})
 				.then((post) => {
 					const allActivities = JSON.parse(post.activities);
-					let backgroundColor = '#9e8c39';
 					const events = allActivities.map((activity) => {
+						let backgroundColor = '#9e8c39';
+						let meetUpTime = parseInt(activity.meet_up_time);
+						let meetUpTimeString = activity.start_time;
+
+						if (meetUpTime) {
+							meetUpTimeString = subtractMinutes(activity.start_time, meetUpTime);
+						}
+
 						switch (activity.base_type) {
 							case 'match':
 								backgroundColor = '#c1272d';
@@ -72,10 +105,13 @@ export default function Edit( { attributes, setAttributes } ) {
 							display: 'block',
 							extendedProps: {
 								base_type: activity.base_type,
+								calendar_name: activity.calendar_name,
 								location: activity.location,
-								description: activity.description,
+								description: activity.description.replaceAll('<br /><br />', '<br />'),
 								endTime: activity.end_time,
 								startTime: activity.start_time,
+								meetUpPlace: activity.meet_up_place,
+								meetUpTime: meetUpTimeString,
 								type: activity.type
 							}
 						}
@@ -94,29 +130,6 @@ export default function Edit( { attributes, setAttributes } ) {
 		}
 	}, [attributes.postId]);
 
-	useEffect(() => {
-		setTimeout(() => {
-			const calendarEl = calendarRef?.current;
-
-			if ( !calendarEl ) {
-				return;
-			}
-
-			let calendar = new Calendar(calendarEl, {
-				plugins: [ dayGridPlugin, timeGridPlugin, listPlugin ],
-				initialView: 'dayGridMonth',
-				headerToolbar: {
-					left: 'prev,next today',
-					center: 'title',
-					right: 'dayGridMonth,timeGridWeek,listMonth'
-				},
-				events: postEvents.events,
-			});
-			calendar.render();
-
-		}, 1)
-	}, [postEvents]);
-
 	return (
 		<>
 			<InspectorControls>
@@ -134,7 +147,9 @@ export default function Edit( { attributes, setAttributes } ) {
 				</PanelBody>
 			</InspectorControls>
 			<div {...useBlockProps()}>
-				<div ref={calendarRef}></div>
+				<div className="myclub-groups-calendar">
+					<MyClubFullcalendar {...options} />
+				</div>
 			</div>
 		</>
 	);

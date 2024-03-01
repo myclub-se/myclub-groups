@@ -27,7 +27,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		if (attributes.postId) {
 			apiFetch({ path: `/myclub/v1/groups/${attributes.postId}`})
 				.then((post) => {
-					const allMembers = JSON.parse(post.meta.members);
+					const allMembers = JSON.parse(post.members);
 
 					setPostMembers( {
 						...allMembers,
