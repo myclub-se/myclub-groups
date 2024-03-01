@@ -24,13 +24,14 @@ class GroupService extends Groups
     private $api;
 
     /**
-     * Generates the post content for MyClub group post.
+     * Retrieves the content for a MyClub group post.
      *
-     * @param array|null $selectedBlocks The array of selected blocks. Default is null.
-     * @return string The post content for MyClub group post.
+     * @param int $postId The ID of the post.
+     * @param array|null $selectedBlocks Optional. The selected blocks to include in the content. Default is null.
+     * @return string The new content of the MyClub group post.
      * @since 1.0.0
      */
-    public static function getPostContent( array $selectedBlocks = null ): string {
+    public static function getPostContent( int $postId, array $selectedBlocks = null ): string {
         $optionNames = [
             'menu'         => 'myclub_groups_page_menu',
             'calendar'     => 'myclub_groups_page_calendar',
@@ -41,19 +42,21 @@ class GroupService extends Groups
             'coming-games' => 'myclub_groups_page_coming_games'
         ];
 
+        $postIdString = ' {"postId":"' . $postId . '"}';
+
         if ( empty( $selectedBlocks ) ) {
             $selectedBlocks = get_option( 'myclub_groups_show_items_order' );
         }
 
         if ( get_option( 'myclub_groups_page_title', true ) ) {
-            $content = '<!-- wp:myclub-groups/title /-->';
+            $content = '<!-- wp:myclub-groups/title' . $postIdString . ' /-->';
         } else {
             $content = '';
         }
 
         foreach ( $selectedBlocks as $block ) {
             if ( get_option( $optionNames[ $block ], true ) ) {
-                $content .= '<!-- wp:myclub-groups/' . $block . ' /-->';
+                $content .= '<!-- wp:myclub-groups/' . $block . $postIdString . ' /-->';
             }
         }
 
@@ -262,7 +265,7 @@ class GroupService extends Groups
             'post_name'     => sanitize_title( $group->name ),
             'post_status'   => 'publish',
             'post_type'     => 'myclub-groups',
-            'post_content'  => $this->getPostContent(),
+            'post_content'  => $this->getPostContent( $postId ),
             'page_template' => '',
             'meta_input'    => [
                 'myclubGroupId' => $group->id,

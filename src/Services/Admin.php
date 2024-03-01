@@ -1154,7 +1154,6 @@ class Admin extends Base
      */
     public function updateShownOrder( array $old_value, array $new_value )
     {
-        $content = GroupService::getPostContent( $new_value );
         $page_template = get_option( 'myclub_groups_page_template' );
 
         $args = array (
@@ -1167,6 +1166,7 @@ class Admin extends Base
             while ( $query->have_posts() ) {
                 $query->next_post();
                 $postId = $query->post->ID;
+                $content = GroupService::getPostContent( $postId, $new_value );
 
                 // Define the post content
                 $post_content = array (
