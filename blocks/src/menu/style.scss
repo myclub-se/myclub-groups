@@ -14,25 +14,11 @@
 
 	ul.menu {
 		display: flex;
-		flex-wrap: wrap;
+		flex-direction: column;
 
 		> li {
 			display: inline;
 			position: relative;
-
-			&.menu-item-has-children:hover {
-				background-color: #dcdcdc;
-
-				.sub-menu {
-					display: block;
-					position: absolute;
-					margin-top: -1rem;
-
-					&:hover {
-						display: block;
-					}
-				}
-			}
 		}
 	}
 
@@ -50,18 +36,9 @@
 			display: none;
 			z-index: 999;
 			background-color: #fff;
-			border: 1px solid;
-
-			&:hover {
-				display: block;
-			}
 
 			li {
 				position: relative;
-
-				&:hover {
-					background-color: #dcdcdc;
-				}
 
 				a {
 					position: relative;
@@ -69,6 +46,93 @@
 					min-width: 200px;
 				}
 			}
+		}
+	}
+
+	.mobile-menu-button {
+		display: block;
+		cursor: pointer;
+
+		span {
+			display: block;
+			width: 33px;
+			height: 4px;
+			margin-bottom: 7px;
+			background-color: #333;
+		}
+	}
+}
+
+@media (max-width: 995px) {
+	.myclub-groups-menu {
+		> ul.menu {
+			max-height: 0;
+			overflow: hidden;
+		}
+
+		&.show {
+			> ul.menu {
+				max-height: 2000px;
+				overflow-y: auto;
+			}
+		}
+
+		ul.sub-menu {
+			padding: 0;
+			display: block;
+			max-height: 0;
+			overflow: hidden;
+
+			&.show {
+				border: 1px solid;
+				max-height: 2000px;
+			}
+		}
+	}
+}
+
+@media (min-width: 996px) {
+	.myclub-groups-menu {
+		ul.menu {
+			flex-wrap: wrap;
+			flex-direction: row;
+			overflow: unset;
+
+			> li {
+				&.menu-item-has-children:hover {
+					background-color: #dcdcdc;
+
+					.sub-menu {
+						display: block;
+						position: absolute;
+						margin-top: -1rem;
+
+						&:hover {
+							display: block;
+						}
+					}
+				}
+			}
+		}
+
+		ul {
+			&.sub-menu {
+				border: 1px solid;
+
+				&:hover {
+					display: block;
+				}
+
+				li {
+					&:hover {
+						background-color: #dcdcdc;
+					}
+				}
+			}
+		}
+
+		.mobile-menu-button {
+			display: none;
 		}
 	}
 }
