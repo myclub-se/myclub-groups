@@ -53,6 +53,10 @@ if ( !empty( $meta ) ) {
             } catch ( Exception $e ) {
             }
         }
+        $description = str_replace( '<br /><br />', '<br />', $activity->description );
+        if ( empty( trim( wp_strip_all_tags ( $description ) ) ) ) {
+            $description = '';
+        }
 
         $events[] = array (
             'title'           => $activity->title,
@@ -67,7 +71,7 @@ if ( !empty( $meta ) ) {
                 'base_type'     => $activity->base_type,
                 'calendar_name' => $activity->calendar_name,
                 'location'      => $activity->location,
-                'description'   => str_replace( '<br /><br />', '<br />', $activity->description ),
+                'description'   => $description,
                 'endTime'       => $activity->end_time,
                 'meetUpTime'    => $meetUpTime,
                 'meetUpPlace'   => $activity->meet_up_place,
