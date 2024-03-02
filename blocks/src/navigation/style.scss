@@ -13,9 +13,27 @@
 		a {
 			margin-right: 1rem;
 			margin-left: 1rem;
+			text-align: center;
+
 			img {
 				width: auto;
 				height: 1rem;
+			}
+
+			div {
+				display: none;
+			}
+		}
+	}
+}
+
+@media (min-width: 996px) {
+	.myclub-groups-navigation {
+		.myclub-groups-navigation-icons {
+			a {
+				div {
+					display: block;
+				}
 			}
 		}
 	}
