@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"name": "myclub-groups/club-news",
 	"version": "0.1.0",
-	"title": "MyClub Groups Club News",
+	"title": "MyClub Club News",
 	"category": "myclub",
 	"icon": "media-text",
 	"description": "Display news for the entire Club",

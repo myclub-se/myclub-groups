@@ -22,6 +22,7 @@ class Blocks extends Base
         'title'
     ];
 
+    private $blockArgs = [];
     private $handles = [];
 
     /**
@@ -96,6 +97,49 @@ class Blocks extends Base
      */
     public function registerBlocks()
     {
+        $this->blockArgs = [
+            'calendar' => [
+                'description' => __( 'Display calendar for a selected group', 'myclub-groups' ),
+                'render_callback' => [
+                    $this,
+                    'renderCalendar'
+                ],
+                'title' => __( 'MyClub Group Calendar', 'myclub-groups' )
+            ],
+            'club-news' => [
+                'description' => __( 'Display news for the entire Club', 'myclub-groups' ),
+                'title' => __( 'MyClub Club News', 'myclub-groups')
+            ],
+            'coming-games' => [
+                'description' => __( 'Display upcoming games for a selected group', 'myclub-groups' ),
+                'title' => __( 'MyClub Group Upcoming games', 'myclub-groups')
+            ],
+            'leaders' => [
+                'description' => __( 'Display leaders for a selected group', 'myclub-groups' ),
+                'title' => __( 'MyClub Group Leaders', 'myclub-groups')
+            ],
+            'members' => [
+                'description' => __( 'Display members for a selected group', 'myclub-groups' ),
+                'title' => __( 'MyClub Group Members', 'myclub-groups')
+            ],
+            'menu' => [
+                'description' => __( 'Display the MyClub Group menu items', 'myclub-groups' ),
+                'title' => __( 'MyClub Groups Menu', 'myclub-groups')
+            ],
+            'navigation' => [
+                'description' => __( 'Display the MyClub group page navigation', 'myclub-groups' ),
+                'title' => __( 'MyClub Group Navigation', 'myclub-groups')
+            ],
+            'news' => [
+                'description' => __( 'Display news for a selected group', 'myclub-groups' ),
+                'title' => __( 'MyClub Group News', 'myclub-groups')
+            ],
+            'title' => [
+                'description' => __( 'Display title for a selected group', 'myclub-groups' ),
+                'title' => __( 'MyClub Group Title', 'myclub-groups')
+            ]
+        ];
+
         foreach ( Blocks::BLOCKS as $block ) {
             $this->registerBlock( $block );
         }
@@ -131,16 +175,7 @@ class Blocks extends Base
      */
     private function registerBlock( string $block )
     {
-        if ( $block !== 'calendar' ) {
-            $blockType = register_block_type( $this->plugin_path . 'blocks/build/' . $block );
-        } else {
-            $blockType = register_block_type( $this->plugin_path . 'blocks/build/' . $block, [
-                'render_callback' => [
-                    $this,
-                    'renderCalendar'
-                ]
-            ] );
-        }
+        $blockType = register_block_type( $this->plugin_path . 'blocks/build/' . $block, $this->blockArgs[ $block ] );
 
         if ( !$blockType ) {
             error_log( "Unable to register block $block" );

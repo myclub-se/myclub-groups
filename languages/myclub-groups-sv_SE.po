@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-04 16:13+0100\n"
-"PO-Revision-Date: 2024-03-04 16:14+0100\n"
+"POT-Creation-Date: 2024-03-04 17:11+0100\n"
+"PO-Revision-Date: 2024-03-04 17:18+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -86,8 +86,8 @@ msgstr "lista"
 
 #: blocks/src/calendar/myclub-fullcalendar.js:45
 #: blocks/src/calendar/render.php:15 src/Activation.php:30
-#: src/Services/Admin.php:179 src/Services/Admin.php:584
-#: src/Services/Admin.php:744 src/Services/Admin.php:858
+#: src/Services/Admin.php:179 src/Services/Admin.php:585
+#: src/Services/Admin.php:745 src/Services/Admin.php:859
 #: templates/admin/admin_settings.php:30
 msgid "Calendar"
 msgstr "Kalender"
@@ -136,8 +136,8 @@ msgstr "Vecka"
 #: blocks/src/club-news/render.php:3 blocks/src/club-news/render.php:47
 #: blocks/src/news/render.php:13 src/Activation.php:34
 #: src/Services/Admin.php:211 src/Services/Admin.php:218
-#: src/Services/Admin.php:660 src/Services/Admin.php:679
-#: src/Services/Admin.php:800 src/Services/Admin.php:864
+#: src/Services/Admin.php:661 src/Services/Admin.php:680
+#: src/Services/Admin.php:801 src/Services/Admin.php:865
 #: src/Services/NewsService.php:106 src/Services/NewsService.php:109
 #: templates/admin/admin_settings.php:36
 msgid "News"
@@ -170,8 +170,8 @@ msgid "No upcoming games"
 msgstr "Inga kommande matcher"
 
 #: blocks/src/leaders/edit.js:16 src/Activation.php:32
-#: src/Services/Admin.php:195 src/Services/Admin.php:622
-#: src/Services/Admin.php:730 src/Services/Admin.php:860
+#: src/Services/Admin.php:195 src/Services/Admin.php:623
+#: src/Services/Admin.php:731 src/Services/Admin.php:861
 #: templates/admin/admin_myclub_groups_members.php:27
 #: templates/admin/admin_settings.php:32
 msgid "Leaders"
@@ -204,8 +204,8 @@ msgid "Phone"
 msgstr "Telefon"
 
 #: blocks/src/members/edit.js:16 src/Activation.php:33
-#: src/Services/Admin.php:203 src/Services/Admin.php:641
-#: src/Services/Admin.php:758 src/Services/Admin.php:861
+#: src/Services/Admin.php:203 src/Services/Admin.php:642
+#: src/Services/Admin.php:759 src/Services/Admin.php:862
 #: templates/admin/admin_myclub_groups_members.php:15
 #: templates/admin/admin_myclub_groups_metabox_tabs.php:58
 #: templates/admin/admin_settings.php:33
@@ -225,8 +225,8 @@ msgstr "Kontaktperson"
 msgid "Telephone"
 msgstr "Telefon"
 
-#: src/Activation.php:31 src/Services/Admin.php:187 src/Services/Admin.php:603
-#: src/Services/Admin.php:842 src/Services/Admin.php:859
+#: src/Activation.php:31 src/Services/Admin.php:187 src/Services/Admin.php:604
+#: src/Services/Admin.php:843 src/Services/Admin.php:860
 #: templates/admin/admin_settings.php:31
 msgid "Upcoming games"
 msgstr "Kommande matcher"
@@ -235,7 +235,7 @@ msgstr "Kommande matcher"
 msgid "MyClub Groups plugin settings"
 msgstr "MyClub Grupper plugin inställningar"
 
-#: src/Services/Admin.php:87 src/Services/Admin.php:1127
+#: src/Services/Admin.php:87 src/Services/Admin.php:1128
 msgid "MyClub Groups"
 msgstr "MyClub Grupper"
 
@@ -348,19 +348,19 @@ msgstr "Visa kommande spel på gruppsidor"
 msgid "Shown items order"
 msgstr "Visningsordning på gruppsidor"
 
-#: src/Services/Admin.php:443 src/Services/Admin.php:467
+#: src/Services/Admin.php:444 src/Services/Admin.php:468
 msgid "Permission denied"
 msgstr "Åtkomst nekad"
 
-#: src/Services/Admin.php:451
+#: src/Services/Admin.php:452
 msgid "Successfully queued groups reloading"
 msgstr "Gruppuppdatering har schemalagts"
 
-#: src/Services/Admin.php:475
+#: src/Services/Admin.php:476
 msgid "Successfully queued news reloading"
 msgstr "Nyhetsuppdatering har schemalagts"
 
-#: src/Services/Admin.php:528
+#: src/Services/Admin.php:529
 #, php-format
 msgid ""
 "There is currently <strong>%1$s groups</strong> loaded from the MyClub "
@@ -369,7 +369,7 @@ msgstr ""
 "Det finns för närvarande <strong>%1$s grupper</strong> laddade från MyClub "
 "medlemssystem."
 
-#: src/Services/Admin.php:530
+#: src/Services/Admin.php:531
 #, php-format
 msgid ""
 "There is currently <strong>%1$s group news items</strong> loaded from the "
@@ -378,59 +378,131 @@ msgstr ""
 "Det finns för närvarande <strong>%1$s gruppnyheter</strong> laddade från "
 "MyClub medlemssystem."
 
-#: src/Services/Admin.php:772 src/Services/Admin.php:862
+#: src/Services/Admin.php:773 src/Services/Admin.php:863
 #: templates/admin/admin_settings.php:34
 msgid "Menu"
 msgstr "Meny"
 
-#: src/Services/Admin.php:786 src/Services/Admin.php:863
+#: src/Services/Admin.php:787 src/Services/Admin.php:864
 #: templates/admin/admin_settings.php:35
 msgid "Navigation"
 msgstr "Navigering"
 
-#: src/Services/Admin.php:901
+#: src/Services/Admin.php:902
 msgid "Invalid API key entered"
 msgstr "Ogiltig API nyckel"
 
-#: src/Services/Admin.php:921 src/Services/Admin.php:941
+#: src/Services/Admin.php:922 src/Services/Admin.php:942
 msgid "You have to enter a valid slug"
 msgstr "Du måste ange en giltig slug"
 
-#: src/Services/Admin.php:959
+#: src/Services/Admin.php:960
 msgid "You have to enter title for the calendar field"
 msgstr "Du måste ange en rubrik för kalenderdelen på gruppsidor"
 
-#: src/Services/Admin.php:977
+#: src/Services/Admin.php:978
 msgid "You have to enter title for the upcoming games field"
 msgstr "Du måste ange en rubrik för kommande matcher på gruppsidor"
 
-#: src/Services/Admin.php:995
+#: src/Services/Admin.php:996
 msgid "You have to enter title for the members field"
 msgstr "Du måste ange en rubrik för medlemmar på gruppsidor"
 
-#: src/Services/Admin.php:1013
+#: src/Services/Admin.php:1014
 msgid "You have to enter title for the leaders field"
 msgstr "Du måste ange en rubrik för ledare på gruppsidor"
 
-#: src/Services/Admin.php:1031
+#: src/Services/Admin.php:1032
 msgid "You must enter a title for the news field"
 msgstr "Du måste ange en rubrik för nyheter på gruppsidor"
 
-#: src/Services/Admin.php:1049
+#: src/Services/Admin.php:1050
 msgid "You must enter a title for the club news field"
 msgstr "Du måste ange en rubrik för nyheter för föreningen"
 
-#: src/Services/Admin.php:1094
+#: src/Services/Admin.php:1095
 msgid "The selected template was not found."
 msgstr "Vald mall kunde inte hittas."
 
-#: src/Services/Admin.php:1231
+#: src/Services/Admin.php:1232
 msgid "Not synchronized yet"
 msgstr "Ingen synkronisering än"
 
 #: src/Services/Api.php:105
 msgid "There is no MyClub Group post with that ID"
 msgstr "Det finns ingen MyClub grupp med det ID:t"
+
+#: src/Services/Blocks.php:102
+msgid "Display calendar for a selected group"
+msgstr "Visa kalendern för vald grupp"
+
+#: src/Services/Blocks.php:107
+msgid "MyClub Group Calendar"
+msgstr "MyClub Gruppkalender"
+
+#: src/Services/Blocks.php:110
+msgid "Display news for the entire Club"
+msgstr "Visa föreningens nyheter"
+
+#: src/Services/Blocks.php:111
+msgid "MyClub Club News"
+msgstr "MyClub Föreningsnyheter"
+
+#: src/Services/Blocks.php:114
+msgid "Display upcoming games for a selected group"
+msgstr "Visa kommande matcher för vald grupp"
+
+#: src/Services/Blocks.php:115
+msgid "MyClub Group Upcoming games"
+msgstr "MyClub kommande matcher"
+
+#: src/Services/Blocks.php:118
+msgid "Display leaders for a selected group"
+msgstr "Visa ledare för vald grupp"
+
+#: src/Services/Blocks.php:119
+msgid "MyClub Group Leaders"
+msgstr "MyClub Gruppledare"
+
+#: src/Services/Blocks.php:122
+msgid "Display members for a selected group"
+msgstr "Visa medlemmar för vald grupp"
+
+#: src/Services/Blocks.php:123
+msgid "MyClub Group Members"
+msgstr "MyClub Gruppmedlemmar"
+
+#: src/Services/Blocks.php:126
+msgid "Display the MyClub Group menu items"
+msgstr "Visa MyClub gruppmeny"
+
+#: src/Services/Blocks.php:127
+msgid "MyClub Groups Menu"
+msgstr "MyClub Gruppmeny"
+
+#: src/Services/Blocks.php:130
+msgid "Display the MyClub group page navigation"
+msgstr "Visa MyClub navigation för gruppsidor"
+
+#: src/Services/Blocks.php:131
+msgid "MyClub Group Navigation"
+msgstr "MyClub Gruppnavigation"
+
+#: src/Services/Blocks.php:134
+msgid "Display news for a selected group"
+msgstr "Visa nyheter för vald grupp"
+
+#: src/Services/Blocks.php:135
+msgid "MyClub Group News"
+msgstr "MyClub Gruppnyheter"
+
+#: src/Services/Blocks.php:138
+msgid "Display title for a selected group"
+msgstr "Visa titeln för vald grupp"
+
+#: src/Services/Blocks.php:139
+msgid "MyClub Group Title"
+msgstr "MyClub Grupptitel"
 
 #: src/Services/Taxonomy.php:54
 msgid "Groups"
