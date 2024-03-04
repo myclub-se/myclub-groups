@@ -31,6 +31,10 @@ def update_file_names(files):
                     source = 'news'
                 elif data['source'] == 'blocks/src/title/edit.js':
                     source = 'title'
+                elif data['source'] == 'assets/javascript/myclub_groups_settings.js':
+                    new_name = f"myclub-groups-sv_SE-myclub_groups_settings_js.json"
+                    os.rename(os.path.join(DIR_NAME, f), os.path.join(DIR_NAME, new_name))
+                    continue
 
                 if source:
                     new_name = f"myclub-groups-sv_SE-myclub-groups-{source}-editor-script.json"

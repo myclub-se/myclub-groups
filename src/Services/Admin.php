@@ -421,6 +421,7 @@ class Admin extends Base
         if ( $current_page->base === 'settings_page_myclub-groups-settings' ) {
             wp_register_script( 'myclub_groups_settings_js', $this->plugin_url . 'assets/javascript/myclub_groups_settings.js' );
             wp_register_style( 'myclub_groups_settings_css', $this->plugin_url . 'assets/css/myclub_groups_settings.css' );
+            wp_set_script_translations( 'myclub_groups_settings_js', 'myclub-groups', $this->plugin_path . 'languages' );
 
             wp_enqueue_script( 'jquery-ui-sortable' );
             wp_enqueue_script( 'myclub_groups_settings_js' );
