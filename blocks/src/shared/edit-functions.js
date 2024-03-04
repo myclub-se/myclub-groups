@@ -1,5 +1,3 @@
-import {__} from "@wordpress/i18n";
-
 export function changeHostName ( oldUrl ) {
     // Create a new URL object with the old URL
     let url = new URL(oldUrl);
@@ -25,7 +23,7 @@ export function setHeight ( ref, className ) {
     });
 }
 
-export function getMyClubGroups( setPosts ) {
+export function getMyClubGroups( setPosts, selectPostLabel ) {
     const { apiFetch } = wp;
 
     apiFetch( { path: '/myclub/v1/groups' } ).then(
@@ -35,10 +33,7 @@ export function getMyClubGroups( setPosts ) {
                 value: post.id
             }));
 
-            postOptions.unshift({
-                label: __( 'Select a group', 'myclub-groups' ),
-                value: ''
-            });
+            postOptions.unshift( selectPostLabel );
 
             setPosts( postOptions );
         }

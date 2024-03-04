@@ -15,9 +15,13 @@ import {getMyClubGroups} from "../shared/edit-functions";
  */
 export default function Edit( { attributes, setAttributes } ) {
 	const [posts, setPosts] = useState([]);
+	const selectPostLabel = {
+		label: __( 'Select a group', 'myclub-groups' ),
+		value: ''
+	};
 
 	useEffect(() => {
-		getMyClubGroups( setPosts );
+		getMyClubGroups( setPosts, selectPostLabel );
 	}, []);
 
 	return (

@@ -1,8 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2024-02-29 15:30+0100\n"
-"PO-Revision-Date: 2024-02-29 15:31+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-04 16:13+0100\n"
+"PO-Revision-Date: 2024-03-04 16:14+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -13,10 +14,10 @@ msgstr ""
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: src\n"
-"X-Poedit-SearchPath-1: blocks/src\n"
-"X-Poedit-SearchPath-2: templates\n"
-"X-Poedit-SearchPath-3: myclub-groups.php\n"
-"X-Poedit-SearchPath-4: assets/javascript\n"
+"X-Poedit-SearchPath-1: templates\n"
+"X-Poedit-SearchPath-2: myclub-groups.php\n"
+"X-Poedit-SearchPath-3: assets/javascript\n"
+"X-Poedit-SearchPath-4: blocks/src\n"
 
 #: assets/javascript/myclub_groups_settings.js:12
 msgid "Dismiss this notice."
@@ -28,7 +29,7 @@ msgstr "Laddar om grupper"
 
 #: assets/javascript/myclub_groups_settings.js:62
 msgid "Unable to reload groups"
-msgstr "Kunde inte uppdatera grupperna"
+msgstr "Kunde inte ladda om grupper"
 
 #: assets/javascript/myclub_groups_settings.js:69
 msgid "Reloading news"
@@ -38,27 +39,52 @@ msgstr "Laddar om nyheter"
 msgid "Unable to reload news"
 msgstr "Kunde inte ladda om nyheter"
 
-#: blocks/src/calendar/edit.js:46 blocks/src/coming-games/edit.js:29
-#: blocks/src/leaders/edit.js:72 blocks/src/members/edit.js:72
-#: blocks/src/navigation/edit.js:26 blocks/src/news/edit.js:28
-#: blocks/src/title/edit.js:55
+#: blocks/src/calendar/edit.js:31 blocks/src/coming-games/edit.js:19
+#: blocks/src/leaders/edit.js:21 blocks/src/members/edit.js:21
+#: blocks/src/navigation/edit.js:16 blocks/src/news/edit.js:17
 msgid "Select a group"
 msgstr "Välj en grupp"
 
-#: blocks/src/calendar/edit.js:137 blocks/src/coming-games/edit.js:41
-#: blocks/src/leaders/edit.js:111 blocks/src/members/edit.js:108
-#: blocks/src/navigation/edit.js:38 blocks/src/news/edit.js:41
-#: blocks/src/title/edit.js:68
+#: blocks/src/calendar/edit.js:140 blocks/src/coming-games/edit.js:30
+#: blocks/src/leaders/edit.js:99 blocks/src/members/edit.js:96
+#: blocks/src/navigation/edit.js:27 blocks/src/news/edit.js:29
+#: blocks/src/title/edit.js:59
 msgid "Content settings"
 msgstr "Innehållsinställningar"
 
-#: blocks/src/calendar/edit.js:140 blocks/src/coming-games/edit.js:45
-#: blocks/src/leaders/edit.js:115 blocks/src/members/edit.js:112
-#: blocks/src/navigation/edit.js:42 blocks/src/news/edit.js:45
-#: blocks/src/title/edit.js:72 src/Services/Taxonomy.php:55
+#: blocks/src/calendar/edit.js:143 blocks/src/coming-games/edit.js:34
+#: blocks/src/leaders/edit.js:103 blocks/src/members/edit.js:100
+#: blocks/src/navigation/edit.js:31 blocks/src/news/edit.js:33
+#: blocks/src/title/edit.js:63 src/Services/Taxonomy.php:55
 msgid "Group"
 msgstr "Grupp"
 
+#: blocks/src/calendar/myclub-fullcalendar.js:19
+#: blocks/src/calendar/render.php:22
+msgid "today"
+msgstr "idag"
+
+#: blocks/src/calendar/myclub-fullcalendar.js:20
+#: blocks/src/calendar/render.php:24
+msgid "month"
+msgstr "månad"
+
+#: blocks/src/calendar/myclub-fullcalendar.js:21
+#: blocks/src/calendar/render.php:25
+msgid "week"
+msgstr "vecka"
+
+#: blocks/src/calendar/myclub-fullcalendar.js:22
+#: blocks/src/calendar/render.php:23
+msgid "day"
+msgstr "dag"
+
+#: blocks/src/calendar/myclub-fullcalendar.js:23
+#: blocks/src/calendar/render.php:26
+msgid "list"
+msgstr "lista"
+
+#: blocks/src/calendar/myclub-fullcalendar.js:45
 #: blocks/src/calendar/render.php:15 src/Activation.php:30
 #: src/Services/Admin.php:179 src/Services/Admin.php:584
 #: src/Services/Admin.php:744 src/Services/Admin.php:858
@@ -66,52 +92,38 @@ msgstr "Grupp"
 msgid "Calendar"
 msgstr "Kalender"
 
-#: blocks/src/calendar/render.php:16
-msgid "Information"
-msgstr "Information"
-
+#: blocks/src/calendar/myclub-fullcalendar.js:46
 #: blocks/src/calendar/render.php:17
 #: templates/admin/admin_myclub_groups_activities.php:8
 #: templates/admin/admin_myclub_groups_members.php:8
 msgid "Name"
 msgstr "Namn"
 
+#: blocks/src/calendar/myclub-fullcalendar.js:47
 #: blocks/src/calendar/render.php:18
 msgid "When"
 msgstr "När"
 
+#: blocks/src/calendar/myclub-fullcalendar.js:48
 #: blocks/src/calendar/render.php:19
 #: templates/admin/admin_myclub_groups_activities.php:12
 msgid "Location"
 msgstr "Plats"
 
-#: blocks/src/calendar/render.php:20
-msgid "Gathering location"
-msgstr "Samlingsplats"
-
+#: blocks/src/calendar/myclub-fullcalendar.js:50
 #: blocks/src/calendar/render.php:21
 msgid "Gathering time"
 msgstr "Samling"
 
-#: blocks/src/calendar/render.php:22
-msgid "today"
-msgstr "idag"
+#: blocks/src/calendar/myclub-fullcalendar.js:53
+#: blocks/src/calendar/render.php:20
+msgid "Gathering location"
+msgstr "Samlingsplats"
 
-#: blocks/src/calendar/render.php:23
-msgid "day"
-msgstr "dag"
-
-#: blocks/src/calendar/render.php:24
-msgid "month"
-msgstr "månad"
-
-#: blocks/src/calendar/render.php:25
-msgid "week"
-msgstr "vecka"
-
-#: blocks/src/calendar/render.php:26
-msgid "list"
-msgstr "lista"
+#: blocks/src/calendar/myclub-fullcalendar.js:56
+#: blocks/src/calendar/render.php:16
+msgid "Information"
+msgstr "Information"
 
 #: blocks/src/calendar/render.php:27
 msgid "W"
@@ -139,7 +151,7 @@ msgstr "Finns inga nyheter"
 msgid "Show more news"
 msgstr "Visa fler nyheter"
 
-#: blocks/src/coming-games/edit.js:59
+#: blocks/src/coming-games/edit.js:48
 msgid "No group selected"
 msgstr "Ingen grupp vald"
 
@@ -157,7 +169,7 @@ msgstr "Visa mindre"
 msgid "No upcoming games"
 msgstr "Inga kommande matcher"
 
-#: blocks/src/leaders/edit.js:17 src/Activation.php:32
+#: blocks/src/leaders/edit.js:16 src/Activation.php:32
 #: src/Services/Admin.php:195 src/Services/Admin.php:622
 #: src/Services/Admin.php:730 src/Services/Admin.php:860
 #: templates/admin/admin_myclub_groups_members.php:27
@@ -165,7 +177,7 @@ msgstr "Inga kommande matcher"
 msgid "Leaders"
 msgstr "Ledare"
 
-#: blocks/src/leaders/edit.js:105
+#: blocks/src/leaders/edit.js:93
 msgid "No groups with leaders selected"
 msgstr "Ingen grupp med ledare vald"
 
@@ -191,7 +203,7 @@ msgstr "Roll"
 msgid "Phone"
 msgstr "Telefon"
 
-#: blocks/src/members/edit.js:17 src/Activation.php:33
+#: blocks/src/members/edit.js:16 src/Activation.php:33
 #: src/Services/Admin.php:203 src/Services/Admin.php:641
 #: src/Services/Admin.php:758 src/Services/Admin.php:861
 #: templates/admin/admin_myclub_groups_members.php:15
@@ -200,9 +212,9 @@ msgstr "Telefon"
 msgid "Members"
 msgstr "Medlemmar"
 
-#: blocks/src/members/edit.js:102
+#: blocks/src/members/edit.js:90
 msgid "No members found"
-msgstr "Inga medlemmar"
+msgstr "Ingen grupp med medlemmar vald"
 
 #: blocks/src/title/render.php:31
 #: templates/admin/admin_myclub_groups_metabox_tabs.php:66
@@ -415,6 +427,10 @@ msgstr "Vald mall kunde inte hittas."
 #: src/Services/Admin.php:1231
 msgid "Not synchronized yet"
 msgstr "Ingen synkronisering än"
+
+#: src/Services/Api.php:105
+msgid "There is no MyClub Group post with that ID"
+msgstr "Det finns ingen MyClub grupp med det ID:t"
 
 #: src/Services/Taxonomy.php:54
 msgid "Groups"

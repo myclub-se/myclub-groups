@@ -212,3 +212,4 @@ blocks/build
 
 *.zip
 build.sh
+languages/*.json

@@ -22,6 +22,22 @@ class Blocks extends Base
         'title'
     ];
 
+    private $handles = [];
+
+    /**
+     * Enqueues scripts and sets script translations for registered blocks.
+     *
+     * @return void
+     *
+     * @since 1.0.0
+     */
+    public function enqueueScripts()
+    {
+        foreach ( $this->handles as $handle ) {
+            wp_set_script_translations( $handle, 'myclub-groups', $this->plugin_path . 'languages' );
+        }
+    }
+
     /**
      * Renders the calendar block.
      *
@@ -63,6 +79,11 @@ class Blocks extends Base
             $this,
             'registerMyClubCategory'
         ] );
+        // Enqueue js scripts for translations
+        add_action( 'admin_enqueue_scripts', [
+            $this,
+            'enqueueScripts'
+        ] );
     }
 
 
@@ -70,22 +91,13 @@ class Blocks extends Base
      * Registers all blocks for the plugin.
      *
      * @return void
+     *
      * @since 1.0.0
      */
     public function registerBlocks()
     {
         foreach ( Blocks::BLOCKS as $block ) {
-            if ( $block !== 'calendar' ) {
-                if ( !register_block_type( $this->plugin_path . 'blocks/build/' . $block ) ) {
-                    error_log( "Unable to register block $block" );
-                }
-            } else {
-                if ( !register_block_type( $this->plugin_path . 'blocks/build/' . $block, [
-                    'render_callback' => [ $this, 'renderCalendar' ]
-                ] ) ) {
-                    error_log( "Unable to register block $block" );
-                }
-            }
+            $this->registerBlock( $block );
         }
 
         wp_register_script( 'fullcalendar-js', $this->plugin_url . 'assets/javascript/fullcalendar.6.1.11.min.js' );
@@ -101,10 +113,39 @@ class Blocks extends Base
     public function registerMyClubCategory( array $categories ): array
     {
         $categories[] = array (
-            'slug' => 'myclub',
+            'slug'  => 'myclub',
             'title' => 'MyClub'
         );
 
         return $categories;
+    }
+
+    /**
+     * Registers a single block for the plugin.
+     *
+     * @param string $block The name of the block to register.
+     *
+     * @return void
+     *
+     * @since 1.0.0
+     */
+    private function registerBlock( string $block )
+    {
+        if ( $block !== 'calendar' ) {
+            $blockType = register_block_type( $this->plugin_path . 'blocks/build/' . $block );
+        } else {
+            $blockType = register_block_type( $this->plugin_path . 'blocks/build/' . $block, [
+                'render_callback' => [
+                    $this,
+                    'renderCalendar'
+                ]
+            ] );
+        }
+
+        if ( !$blockType ) {
+            error_log( "Unable to register block $block" );
+        } else {
+            array_push( $this->handles, ...$blockType->view_script_handles, ...$blockType->editor_script_handles );
+        }
     }
 }

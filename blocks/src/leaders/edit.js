@@ -17,6 +17,10 @@ export default function Edit( { attributes, setAttributes } ) {
 	let memberOutput;
 	const {apiFetch} = wp;
 	const ref = useRef(null);
+	const selectPostLabel = {
+		label: __( 'Select a group', 'myclub-groups' ),
+		value: ''
+	};
 
 	useEffect(() => {
 		setPostLeaders( {
@@ -60,7 +64,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			setLeaderTitle ( options.myclub_groups_leaders_title );
 		} );
 
-		getMyClubGroups( setPosts );
+		getMyClubGroups( setPosts, selectPostLabel );
 	}, []);
 
 	if (postLeaders && postLeaders.members && postLeaders.members.length) {

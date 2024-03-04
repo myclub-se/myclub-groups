@@ -7,6 +7,8 @@ Description: Retrieves group information from the MyClub member administration p
 Version: 1.0
 Author: MyClub AB
 Author URI: https://www.myclub.se
+Text Domain: myclub-groups
+Domain Path: /languages
 License: GPL2
 */
 
@@ -59,12 +61,5 @@ if ( file_exists( plugin_dir_path( __FILE__) . '/src/Services.php' ) ) {
     // Register all plugin functionality
     Services::registerServices();
 }
-
-function load_translations() {
-    // Add translations for plugin
-
-}
-
-add_action( 'init', 'load_translations' );
 
 load_plugin_textdomain( 'myclub-groups', false,  plugin_basename( dirname( __FILE__ ) ) . '/languages/' );

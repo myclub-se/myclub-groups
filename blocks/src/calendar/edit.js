@@ -27,6 +27,10 @@ export default function Edit( { attributes, setAttributes } ) {
 	const startOfWeek = useSelect((select) => {
 		return select('core').getSite().start_of_week;
 	});
+	const selectPostLabel = {
+		label: __( 'Select a group', 'myclub-groups' ),
+		value: ''
+	};
 
 	let myClubCalendarRef = useRef();
 	const options = {
@@ -53,7 +57,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	}
 
 	useEffect(() => {
-		getMyClubGroups( setPosts );
+		getMyClubGroups( setPosts, selectPostLabel );
 	}, []);
 
 	useEffect(() => {
