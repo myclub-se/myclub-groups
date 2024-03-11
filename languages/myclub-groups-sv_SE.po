@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-04 17:11+0100\n"
-"PO-Revision-Date: 2024-03-04 17:18+0100\n"
+"POT-Creation-Date: 2024-03-11 09:12+0100\n"
+"PO-Revision-Date: 2024-03-11 09:12+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -39,52 +39,38 @@ msgstr "Laddar om nyheter"
 msgid "Unable to reload news"
 msgstr "Kunde inte ladda om nyheter"
 
-#: blocks/src/calendar/edit.js:31 blocks/src/coming-games/edit.js:19
+#: blocks/src/calendar/edit.js:34 blocks/src/coming-games/edit.js:19
 #: blocks/src/leaders/edit.js:21 blocks/src/members/edit.js:21
 #: blocks/src/navigation/edit.js:16 blocks/src/news/edit.js:17
 msgid "Select a group"
 msgstr "Välj en grupp"
 
-#: blocks/src/calendar/edit.js:140 blocks/src/coming-games/edit.js:30
-#: blocks/src/leaders/edit.js:99 blocks/src/members/edit.js:96
-#: blocks/src/navigation/edit.js:27 blocks/src/news/edit.js:29
-#: blocks/src/title/edit.js:59
-msgid "Content settings"
-msgstr "Innehållsinställningar"
-
-#: blocks/src/calendar/edit.js:143 blocks/src/coming-games/edit.js:34
-#: blocks/src/leaders/edit.js:103 blocks/src/members/edit.js:100
-#: blocks/src/navigation/edit.js:31 blocks/src/news/edit.js:33
-#: blocks/src/title/edit.js:63 src/Services/Taxonomy.php:55
-msgid "Group"
-msgstr "Grupp"
-
-#: blocks/src/calendar/myclub-fullcalendar.js:19
+#: blocks/src/calendar/edit.js:41 blocks/src/calendar/myclub-fullcalendar.js:19
 #: blocks/src/calendar/render.php:22
 msgid "today"
 msgstr "idag"
 
-#: blocks/src/calendar/myclub-fullcalendar.js:20
+#: blocks/src/calendar/edit.js:42 blocks/src/calendar/myclub-fullcalendar.js:20
 #: blocks/src/calendar/render.php:24
 msgid "month"
 msgstr "månad"
 
-#: blocks/src/calendar/myclub-fullcalendar.js:21
+#: blocks/src/calendar/edit.js:43 blocks/src/calendar/myclub-fullcalendar.js:21
 #: blocks/src/calendar/render.php:25
 msgid "week"
 msgstr "vecka"
 
-#: blocks/src/calendar/myclub-fullcalendar.js:22
+#: blocks/src/calendar/edit.js:44 blocks/src/calendar/myclub-fullcalendar.js:22
 #: blocks/src/calendar/render.php:23
 msgid "day"
 msgstr "dag"
 
-#: blocks/src/calendar/myclub-fullcalendar.js:23
+#: blocks/src/calendar/edit.js:45 blocks/src/calendar/myclub-fullcalendar.js:23
 #: blocks/src/calendar/render.php:26
 msgid "list"
 msgstr "lista"
 
-#: blocks/src/calendar/myclub-fullcalendar.js:45
+#: blocks/src/calendar/edit.js:67 blocks/src/calendar/myclub-fullcalendar.js:45
 #: blocks/src/calendar/render.php:15 src/Activation.php:30
 #: src/Services/Admin.php:179 src/Services/Admin.php:585
 #: src/Services/Admin.php:745 src/Services/Admin.php:859
@@ -92,38 +78,52 @@ msgstr "lista"
 msgid "Calendar"
 msgstr "Kalender"
 
-#: blocks/src/calendar/myclub-fullcalendar.js:46
+#: blocks/src/calendar/edit.js:68 blocks/src/calendar/myclub-fullcalendar.js:46
 #: blocks/src/calendar/render.php:17
 #: templates/admin/admin_myclub_groups_activities.php:8
 #: templates/admin/admin_myclub_groups_members.php:8
 msgid "Name"
 msgstr "Namn"
 
-#: blocks/src/calendar/myclub-fullcalendar.js:47
+#: blocks/src/calendar/edit.js:69 blocks/src/calendar/myclub-fullcalendar.js:47
 #: blocks/src/calendar/render.php:18
 msgid "When"
 msgstr "När"
 
-#: blocks/src/calendar/myclub-fullcalendar.js:48
+#: blocks/src/calendar/edit.js:70 blocks/src/calendar/myclub-fullcalendar.js:48
 #: blocks/src/calendar/render.php:19
 #: templates/admin/admin_myclub_groups_activities.php:12
 msgid "Location"
 msgstr "Plats"
 
-#: blocks/src/calendar/myclub-fullcalendar.js:50
+#: blocks/src/calendar/edit.js:72 blocks/src/calendar/myclub-fullcalendar.js:50
 #: blocks/src/calendar/render.php:21
 msgid "Gathering time"
 msgstr "Samling"
 
-#: blocks/src/calendar/myclub-fullcalendar.js:53
+#: blocks/src/calendar/edit.js:75 blocks/src/calendar/myclub-fullcalendar.js:53
 #: blocks/src/calendar/render.php:20
 msgid "Gathering location"
 msgstr "Samlingsplats"
 
-#: blocks/src/calendar/myclub-fullcalendar.js:56
+#: blocks/src/calendar/edit.js:78 blocks/src/calendar/myclub-fullcalendar.js:56
 #: blocks/src/calendar/render.php:16
 msgid "Information"
 msgstr "Information"
+
+#: blocks/src/calendar/edit.js:240 blocks/src/coming-games/edit.js:30
+#: blocks/src/leaders/edit.js:99 blocks/src/members/edit.js:96
+#: blocks/src/navigation/edit.js:27 blocks/src/news/edit.js:29
+#: blocks/src/title/edit.js:59
+msgid "Content settings"
+msgstr "Innehållsinställningar"
+
+#: blocks/src/calendar/edit.js:243 blocks/src/coming-games/edit.js:34
+#: blocks/src/leaders/edit.js:103 blocks/src/members/edit.js:100
+#: blocks/src/navigation/edit.js:31 blocks/src/news/edit.js:33
+#: blocks/src/title/edit.js:63 src/Services/Taxonomy.php:55
+msgid "Group"
+msgstr "Grupp"
 
 #: blocks/src/calendar/render.php:27
 msgid "W"
