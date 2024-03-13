@@ -4,6 +4,14 @@ namespace MyClub\MyClubGroups\Services;
 
 class ShortCodes extends Base
 {
+    /**
+     * Registers the shortcode for the plugin.
+     *
+     * This method hooks into the 'init' action and registers the shortcode for the plugin.
+     * It calls the 'registerShortcodes' method to handle the shortcode registration.
+     *
+     * @since 1.0.0
+     */
     public function register()
     {
         add_action( 'init', [
@@ -24,6 +32,11 @@ class ShortCodes extends Base
         add_shortcode( 'myclub-groups-calendar', [
             $this,
             'renderMyClubGroupsCalendar'
+        ] );
+
+        add_shortcode( 'myclub-groups-club-news', [
+            $this,
+            'renderMyClubGroupsClubNews'
         ] );
 
         add_shortcode( 'myclub-groups-coming-games', [
@@ -70,7 +83,31 @@ class ShortCodes extends Base
     public function renderMyClubGroupsCalendar( array $attrs = [], string $content = null ): string
     {
         $service = new Blocks();
-        return $service->renderCalendar( $attrs, $content );
+        return $service->renderCalendar( $this->getShortcodeAttrs( $attrs, 'myclub-groups-calendar' ), $content );
+    }
+
+    /**
+     * Renders the My Club Groups Club News block.
+     *
+     * @param array $attrs Optional. An array of attributes for the block. Default is an empty array.
+     * @param string $content Optional. The block content. Default is null.
+     *
+     * @return string The rendered HTML output of the block.
+     *
+     * @since 1.0.0
+     */
+    public function renderMyClubGroupsClubNews( array $attrs = [], string $content = null ): string
+    {
+        $attributes = $this->getShortcodeAttrs( $attrs, 'myclub-groups-club-news' );
+        $filePath = $this->pluginPath . 'blocks/build/club-news/render.php';
+
+        if ( file_exists( $filePath ) ) {
+            ob_start();
+            require( $filePath );
+            return ob_get_clean();
+        } else {
+            return __( 'The MyClub club news block couldn\'t be found', 'myclub-groups' );
+        }
     }
 
     /**
@@ -85,11 +122,16 @@ class ShortCodes extends Base
      */
     public function renderMyClubGroupsComingGames( array $attrs = [], string $content = null ): string
     {
-        $attributes = $attrs;
+        $attributes = $this->getShortcodeAttrs( $attrs, 'myclub-groups-coming-games' );
+        $filePath = $this->pluginPath . 'blocks/build/coming-games/render.php';
 
-        ob_start();
-        require( $this->plugin_path . 'blocks/build/coming-games/render.php' );
-        return ob_get_clean();
+        if ( file_exists( $filePath ) ) {
+            ob_start();
+            require( $filePath );
+            return ob_get_clean();
+        } else {
+            return __( 'The MyClub coming games block couldn\'t be found', 'myclub-groups' );
+        }
     }
 
     /**
@@ -104,11 +146,16 @@ class ShortCodes extends Base
      */
     public function renderMyClubGroupsLeaders( array $attrs = [], string $content = null ): string
     {
-        $attributes = $attrs;
+        $attributes = $this->getShortcodeAttrs( $attrs, 'myclub-groups-leaders' );
+        $filePath = $this->pluginPath . 'blocks/build/leaders/render.php';
 
-        ob_start();
-        require( $this->plugin_path . 'blocks/build/leaders/render.php' );
-        return ob_get_clean();
+        if ( file_exists( $filePath ) ) {
+            ob_start();
+            require( $filePath );
+            return ob_get_clean();
+        } else {
+            return __( 'The MyClub leaders block couldn\'t be found', 'myclub-groups' );
+        }
     }
 
     /**
@@ -123,11 +170,16 @@ class ShortCodes extends Base
      */
     public function renderMyClubGroupsMembers( array $attrs = [], string $content = null ): string
     {
-        $attributes = $attrs;
+        $attributes = $this->getShortcodeAttrs( $attrs, 'myclub-groups-members' );
+        $filePath = $this->pluginPath . 'blocks/build/members/render.php';
 
-        ob_start();
-        require( $this->plugin_path . 'blocks/build/members/render.php' );
-        return ob_get_clean();
+        if ( file_exists( $filePath ) ) {
+            ob_start();
+            require( $filePath );
+            return ob_get_clean();
+        } else {
+            return __( 'The MyClub members block couldn\'t be found', 'myclub-groups' );
+        }
     }
 
     /**
@@ -142,11 +194,16 @@ class ShortCodes extends Base
      */
     public function renderMyClubGroupsNavigation( array $attrs = [], string $content = null ): string
     {
-        $attributes = $attrs;
+        $attributes = $this->getShortcodeAttrs( $attrs, 'myclub-groups-navigation' );
+        $filePath = $this->pluginPath . 'blocks/build/navigation/render.php';
 
-        ob_start();
-        require( $this->plugin_path . 'blocks/build/navigation/render.php' );
-        return ob_get_clean();
+        if ( file_exists( $filePath ) ) {
+            ob_start();
+            require( $filePath );
+            return ob_get_clean();
+        } else {
+            return __( 'The MyClub navigation block couldn\'t be found', 'myclub-groups' );
+        }
     }
 
     /**
@@ -161,11 +218,16 @@ class ShortCodes extends Base
      */
     public function renderMyClubGroupsNews( array $attrs = [], string $content = null ): string
     {
-        $attributes = $attrs;
+        $attributes = $this->getShortcodeAttrs( $attrs, 'myclub-groups-news' );
+        $filePath = $this->pluginPath . 'blocks/build/news/render.php';
 
-        ob_start();
-        require( $this->plugin_path . 'blocks/build/news/render.php' );
-        return ob_get_clean();
+        if ( file_exists( $filePath ) ) {
+            ob_start();
+            require( $filePath );
+            return ob_get_clean();
+        } else {
+            return __( 'The MyClub news block couldn\'t be found', 'myclub-groups' );
+        }
     }
 
     /**
@@ -180,10 +242,32 @@ class ShortCodes extends Base
      */
     public function renderMyClubGroupsTitle( array $attrs = [], string $content = null ): string
     {
-        $attributes = $attrs;
+        $attributes = $this->getShortcodeAttrs( $attrs, 'myclub-groups-title' );
+        $filePath = $this->pluginPath . 'blocks/build/title/render.php';
 
-        ob_start();
-        require( $this->plugin_path . 'blocks/build/title/render.php' );
-        return ob_get_clean();
+        if ( file_exists( $filePath ) ) {
+            ob_start();
+            require( $filePath );
+            return ob_get_clean();
+        } else {
+            return __( 'The MyClub title block couldn\'t be found', 'myclub-groups' );
+        }
+    }
+
+    /**
+     * Retrieves the shortcode attributes for a given shortcode.
+     *
+     * @param array $attrs An array of attributes for the shortcode.
+     * @param string $shortCode The shortcode to retrieve attributes for.
+     *
+     * @return array The array of shortcode attributes.
+     *
+     * @since 1.0.0
+     */
+    private function getShortcodeAttrs( array $attrs, string $shortCode ): array
+    {
+        return shortcode_atts([
+            'postId' => ''
+        ], $attrs, $shortCode);
     }
 }
