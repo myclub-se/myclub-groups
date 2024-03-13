@@ -29,6 +29,10 @@ export default function Edit( { attributes, setAttributes } ) {
 		return featuredImageId && select('core').getMedia(featuredImageId);
 	}, [ featuredImageId ]);
 	const mediumImage = featuredImage?.media_details?.sizes?.medium?.source_url;
+	const selectPostLabel = {
+		label: __( 'Select a group', 'myclub-groups' ),
+		value: ''
+	};
 
 	useEffect(() => {
 		if (attributes.postId) {
@@ -46,7 +50,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	}, [ attributes.postId ])
 
 	useEffect(() => {
-		getMyClubGroups( setPosts );
+		getMyClubGroups( setPosts, selectPostLabel );
 		apiFetch( { path: '/myclub/v1/options' } )
 			.then( options => {
 				setShowImage( options.myclub_groups_page_picture === '1' );
