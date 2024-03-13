@@ -293,13 +293,7 @@ class Admin extends Base
                 'sanitizeShowItemsOrder'
             ],
             'default'           => array (
-                'menu',
-                'navigation',
-                'calendar',
-                'members',
-                'leaders',
-                'news',
-                'coming-games'
+                'default',
             )
         ] );
 
@@ -405,7 +399,7 @@ class Admin extends Base
      */
     public function adminSettings()
     {
-        return require_once( "$this->plugin_path/templates/admin/admin_settings.php" );
+        return require_once( "$this->pluginPath/templates/admin/admin_settings.php" );
     }
 
     /**
@@ -419,9 +413,9 @@ class Admin extends Base
         $current_page = get_current_screen();
 
         if ( $current_page->base === 'settings_page_myclub-groups-settings' ) {
-            wp_register_script( 'myclub_groups_settings_js', $this->plugin_url . 'assets/javascript/myclub_groups_settings.js' );
-            wp_register_style( 'myclub_groups_settings_css', $this->plugin_url . 'assets/css/myclub_groups_settings.css' );
-            wp_set_script_translations( 'myclub_groups_settings_js', 'myclub-groups', $this->plugin_path . 'languages' );
+            wp_register_script( 'myclub_groups_settings_js', $this->pluginUrl . 'assets/javascript/myclub_groups_settings.js' );
+            wp_register_style( 'myclub_groups_settings_css', $this->pluginUrl . 'assets/css/myclub_groups_settings.css' );
+            wp_set_script_translations( 'myclub_groups_settings_js', 'myclub-groups', $this->pluginPath . 'languages' );
 
             wp_enqueue_script( 'jquery-ui-sortable' );
             wp_enqueue_script( 'myclub_groups_settings_js' );
@@ -855,6 +849,18 @@ class Admin extends Base
     public function renderShowItemsOrder( array $args )
     {
         $items = get_option( 'myclub_groups_show_items_order', array () );
+        if ( in_array( 'default', $items ) ) {
+            $items = array (
+                'menu',
+                'navigation',
+                'calendar',
+                'members',
+                'leaders',
+                'news',
+                'coming-games'
+            );
+        }
+
         $sortNames = [
             'calendar'     => __( 'Calendar', 'myclub-groups' ),
             'coming-games' => __( 'Upcoming games', 'myclub-groups' ),
@@ -1147,15 +1153,15 @@ class Admin extends Base
     /**
      * Updates the shown order of all 'myclub-groups' posts with the new value.
      *
-     * @param array $old_value The old value of the shown order.
-     * @param array $new_value The new value of the shown order.
+     * @param array $oldValue The old value of the shown order.
+     * @param array $newValue The new value of the shown order.
      *
      * @return void
      * @since 1.0.0
      */
-    public function updateShownOrder( array $old_value, array $new_value )
+    public function updateShownOrder( array $oldValue, array $newValue )
     {
-        $page_template = get_option( 'myclub_groups_page_template' );
+        $pageTemplate = get_option( 'myclub_groups_page_template' );
 
         $args = array (
             'post_type'      => 'myclub-groups',
@@ -1167,24 +1173,7 @@ class Admin extends Base
             while ( $query->have_posts() ) {
                 $query->next_post();
                 $postId = $query->post->ID;
-                $content = GroupService::getPostContent( $postId, $new_value );
-
-                // Define the post content
-                $post_content = array (
-                    'ID'           => $postId,
-                    'post_content' => $content,
-                    'page_template' => ''
-                );
-
-                // Update the post into the database
-                $result = wp_update_post( $post_content, true );
-
-                if ( is_wp_error( $result ) ) {
-                    error_log( "Unable to update post $postId" );
-                    error_log( $result->get_error_message() );
-                }
-
-                update_post_meta( $postId, '_wp_page_template', $page_template );
+                GroupService::updateGroupPageContents( $postId, $newValue, $pageTemplate );
             }
         }
     }
@@ -1192,13 +1181,13 @@ class Admin extends Base
     /**
      * Updates the page template value for all posts of the "myclub-groups" post type.
      *
-     * @param mixed $old_value The old value of the page template.
-     * @param mixed $new_value The new value of the page template.
+     * @param mixed $oldValue The old value of the page template.
+     * @param mixed $newValue The new value of the page template.
      *
      * @return void
      * @since 1.0.0
      */
-    public function updatePageTemplate( $old_value, $new_value )
+    public function updatePageTemplate( $oldValue, $newValue )
     {
         $args = array (
             'post_type'      => 'myclub-groups',
@@ -1207,11 +1196,24 @@ class Admin extends Base
         $query = new WP_Query( $args );
 
         if ( $query->have_posts() ) {
-            while ( $query->have_posts() ) {
-                $query->next_post();
-                $postId = $query->post->ID;
+            if ( wp_is_block_theme() ) {
+                while ( $query->have_posts() ) {
+                    $query->next_post();
+                    $postId = $query->post->ID;
 
-                update_post_meta( $postId, '_wp_page_template', $new_value );
+                    update_post_meta( $postId, '_wp_page_template', $newValue );
+                }
+            } else {
+                while ( $query->have_posts() ) {
+                    $query->next_post();
+                    $postId = $query->post->ID;
+
+                    // Update the post into the database
+                    wp_update_post( array (
+                        'ID'            => $postId,
+                        'page_template' => $newValue,
+                    ) );
+                }
             }
         }
     }
