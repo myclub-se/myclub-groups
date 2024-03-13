@@ -5,5 +5,7 @@
  */
 
 .wp-block-myclub-groups-calendar {
-	border: 1px dotted #f00;
+	a.fc-event {
+		text-decoration: none !important;
+	}
 }

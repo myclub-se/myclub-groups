@@ -5,10 +5,10 @@ import './editor.scss';
 import {__} from "@wordpress/i18n";
 
 import {getMyClubGroups} from "../shared/edit-functions";
+import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
-import FullCalendar from "@fullcalendar/react";
 
 
 /**
@@ -24,11 +24,31 @@ export default function Edit( { attributes, setAttributes } ) {
 	const [posts, setPosts] = useState([]);
 	const {apiFetch} = wp;
 	const {useSelect} = wp.data;
+	let calendarRef = useRef();
+	let outerRef = useRef();
 	const currentLocale = useSelect((select) => {
-		return select('core').getSite().language;
+		if (select("core").getSite()) {
+			const language = select('core').getSite().language.substring(0, 2);
+			if (calendarRef && calendarRef.current) {
+				const api = calendarRef.current.getApi();
+				api.setOption('locale', language);
+			}
+			return language;
+		}
+
+		return 'sv';
 	});
 	const startOfWeek = useSelect((select) => {
-		return select('core').getSite().start_of_week;
+		if (select("core").getSite()) {
+			const startOfWeek = select('core').getSite().start_of_week;
+			if (calendarRef && calendarRef.current) {
+				const api = calendarRef.current.getApi();
+				api.setOption('firstDay', startOfWeek);
+			}
+			return startOfWeek;
+		}
+
+		return 1;
 	});
 	const selectPostLabel = {
 		label: __( 'Select a group', 'myclub-groups' ),
@@ -113,9 +133,9 @@ export default function Edit( { attributes, setAttributes } ) {
 		},
 		timeZone: 'Europe/Stockholm',
 		weekNumbers: true,
+		weekText: __( 'W', 'myclub-groups' ),
+		weekTextLong: __( 'Week', 'myclub-groups' )
 	}
-	let calendarRef = useRef();
-	let outerRef = useRef();
 
 	const closeButtonListener = () => {
 		const modal = outerRef.current.getElementsByClassName('modal-open')[0];
