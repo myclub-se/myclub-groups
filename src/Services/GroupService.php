@@ -42,25 +42,84 @@ class GroupService extends Groups
             'coming-games' => 'myclub_groups_page_coming_games'
         ];
 
-        $postIdString = ' {"postId":"' . $postId . '"}';
+        $postIdString = wp_is_block_theme() ? ' {"postId":"' . $postId . '"}' : ' "postId"="' . $postId . '"';
 
         if ( empty( $selectedBlocks ) ) {
             $selectedBlocks = get_option( 'myclub_groups_show_items_order' );
+
+            if ( in_array( 'default', $selectedBlocks ) ) {
+                $selectedBlocks = array (
+                    'menu',
+                    'navigation',
+                    'calendar',
+                    'members',
+                    'leaders',
+                    'news',
+                    'coming-games'
+                );
+            }
         }
 
-        if ( get_option( 'myclub_groups_page_title', true ) ) {
-            $content = '<!-- wp:myclub-groups/title' . $postIdString . ' /-->';
+        // TODO: This needs to be checked if this is correct - we could perhaps ONLY work with the Gutenberg blocks?
+        if ( wp_is_block_theme() ) {
+            if ( get_option( 'myclub_groups_page_title', true ) ) {
+                $content = '<!-- wp:myclub-groups/title' . $postIdString . ' /-->';
+            } else {
+                $content = '';
+            }
+
+            foreach ( $selectedBlocks as $block ) {
+                if ( get_option( $optionNames[ $block ], true ) ) {
+                    $content .= '<!-- wp:myclub-groups/' . $block . $postIdString . ' /-->';
+                }
+            }
         } else {
-            $content = '';
-        }
+            if ( get_option( 'myclub_groups_page_title', true ) ) {
+                $content = '[myclub-groups-title ' . $postIdString . ']';
+            } else {
+                $content = '';
+            }
 
-        foreach ( $selectedBlocks as $block ) {
-            if ( get_option( $optionNames[ $block ], true ) ) {
-                $content .= '<!-- wp:myclub-groups/' . $block . $postIdString . ' /-->';
+            foreach ( $selectedBlocks as $block ) {
+                if ( get_option( $optionNames[ $block ], true ) ) {
+                    $content .= '[myclub-groups-' . $block . $postIdString . ']';
+                }
             }
         }
 
         return $content;
+    }
+
+    /**
+     * Updates the content and page template of a group page.
+     *
+     * @param int $postId The post ID of the group page.
+     * @param array $pageContents The new content for the group page.
+     * @param string $pageTemplate The new page template for the group page.
+     * @return void
+     */
+    public static function updateGroupPageContents( int $postId, array $pageContents, string $pageTemplate )
+    {
+        $content = GroupService::getPostContent( $postId, $pageContents );
+        $isBlockTheme = wp_is_block_theme();
+        $postContent = array (
+            'ID'           => $postId,
+            'post_content' => $content,
+            'page_template' => $isBlockTheme ? '' : $pageTemplate,
+        );
+
+        // Update the post into the database
+        $result = wp_update_post( $postContent, true );
+
+        if ( is_wp_error( $result ) ) {
+            error_log( "Unable to update post $postId" );
+            error_log( $result->get_error_message() );
+        }
+
+        if ( $isBlockTheme )
+        {
+            update_post_meta( $postId, '_wp_page_template', $pageTemplate );
+        }
     }
 
     public function __construct()
@@ -136,24 +195,24 @@ class GroupService extends Groups
 
     public function updateGroupPage( $id )
     {
-        $page_template = get_option( 'myclub_groups_page_template' );
+        $pageTemplate = get_option( 'myclub_groups_page_template' );
         $response = $this->api->loadGroup( $id );
 
         if ( !is_wp_error( $response ) && $response !== false && $response->status === 200 ) {
             $group = $response->result;
             $postId = $this->getGroupPostId( $id );
 
-            if ( $postId ) {
-                $postId = wp_update_post( $this->createPostArgs( $group, $postId ) );
-            } else {
-                $postId = wp_insert_post( $this->createPostArgs( $group ) );
-            }
+            $postId = $postId ? wp_update_post( $this->createPostArgs( $group, $postId, $pageTemplate ) ) : wp_insert_post( $this->createPostArgs( $group, null, $pageTemplate ) );
 
-            Utils::addFeaturedImage( $postId, $group->team_image );
-            $this->addMembers( $postId, $group );
-            $this->addActivities( $postId, $group );
-            update_post_meta( $postId, '_wp_page_template', $page_template );
-            update_post_meta( $postId, 'lastUpdated', date( "c" ) );
+            if ( !is_wp_error( $postId ) ) {
+                Utils::addFeaturedImage( $postId, $group->team_image );
+                $this->addMembers( $postId, $group );
+                $this->addActivities( $postId, $group );
+                if ( wp_is_block_theme() ) {
+                    update_post_meta( $postId, '_wp_page_template', $pageTemplate );
+                }
+                update_post_meta( $postId, 'lastUpdated', date( "c" ) );
+            }
         }
     }
 
@@ -252,21 +311,22 @@ class GroupService extends Groups
     }
 
     /**
-     * Creates an array of arguments for creating a MyClub group post.
+     * Creates an array of arguments for creating or updating a post.
      *
-     * @param Object $group The group object.
-     * @return array The array of arguments for creating a post.
-     * @since 1.0.0
+     * @param mixed $group The group object.
+     * @param string $postId The post ID.
+     * @param string $pageTemplate The page template.
+     * @return array The array of arguments for creating or updating a post.
      */
-    private function createPostArgs( $group, string $postId = null ): array
+    private function createPostArgs( $group, string $postId, string $pageTemplate ): array
     {
         $args = [
             'post_title'    => $group->name,
             'post_name'     => sanitize_title( $group->name ),
             'post_status'   => 'publish',
             'post_type'     => 'myclub-groups',
-            'post_content'  => $this->getPostContent( $postId ),
-            'page_template' => '',
+            'post_content'  => $postId ? $this->getPostContent( $postId ) : '',
+            'page_template' => wp_is_block_theme() ? $pageTemplate : '',
             'meta_input'    => [
                 'myclubGroupId' => $group->id,
                 'phone'         => $group->phone,
