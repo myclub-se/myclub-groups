@@ -26,12 +26,11 @@ if ( !empty ( $meta ) ) {
     <div class="members-list" data-labels="<?= htmlspecialchars( json_encode( $labels, JSON_UNESCAPED_UNICODE ), ENT_QUOTES, 'UTF-8' ) ?>">
     <?php
     foreach ( $members as $key=>$member ) {
-        $imageUrl = $member->member_image->url;
-
+        $member->member_image->url = Utils::changeHostName( $member->member_image->url );
         ?>
         <div class="member" data-member="<?=  htmlspecialchars( json_encode( $member, JSON_UNESCAPED_UNICODE ), ENT_QUOTES, 'UTF-8' ) ?>">
             <div class="member-picture">
-                <img src="<?= Utils::changeHostName( $member->member_image->url ) ?>" alt="<?= $member->name ?>" />
+                <img src="<?= $member->member_image->url ?>" alt="<?= $member->name ?>" />
             </div>
             <div class="member-name"><?=  $member->name ?></div>
         </div>
