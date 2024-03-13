@@ -41,7 +41,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				</PanelBody>
 			</InspectorControls>
 			<div { ...useBlockProps() }>
-				<ServerSideRender block="myclub-groups/news" attributes={{ postId: attributes.postId }} />
+				<ServerSideRender block="myclub-groups/news" attributes={attributes} />
 			</div>
 		</>
 	);
