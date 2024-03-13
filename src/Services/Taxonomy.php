@@ -2,6 +2,8 @@
 
 namespace MyClub\MyClubGroups\Services;
 
+use WP_Screen;
+
 class Taxonomy extends Base
 {
     /**
@@ -23,6 +25,11 @@ class Taxonomy extends Base
             $this,
             'enqueueScripts'
         ] );
+
+        add_filter( 'hidden_meta_boxes', [
+            $this,
+            'showGroupsInScreenOptions'
+        ], 10, 2);
     }
 
     /**
@@ -185,5 +192,29 @@ class Taxonomy extends Base
     public function renderMetaBox()
     {
         return require_once( "$this->pluginPath/templates/admin/admin_myclub_groups_metabox_tabs.php" );
+    }
+
+    /**
+     * Show groups in screen options for nav-menus.
+     *
+     * This function removes the 'add-post-type-myclub-groups' option from the hidden items in the screen options for
+     * the nav-menus screen. This allows the 'add-post-type-myclub-groups' option to be displayed in the screen
+     * options for nav-menus.
+     *
+     * @param array $hidden The array of hidden items in the screen options.
+     * @param WP_Screen $screen The current screen object.
+     * @return array The updated array of hidden items in the screen options.
+     * @since 1.0.0
+     */
+    public function showGroupsInScreenOptions( array $hidden, WP_Screen $screen ): array {
+        if ( $screen->id == 'nav-menus' ) {
+            $index = array_search( 'add-post-type-myclub-groups', $hidden );
+
+            if ( false !== $index ) {
+                unset( $hidden[ $index ] );
+            }
+        }
+
+        return $hidden;
     }
 }
