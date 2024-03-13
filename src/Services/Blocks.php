@@ -35,7 +35,7 @@ class Blocks extends Base
     public function enqueueScripts()
     {
         foreach ( $this->handles as $handle ) {
-            wp_set_script_translations( $handle, 'myclub-groups', $this->plugin_path . 'languages' );
+            wp_set_script_translations( $handle, 'myclub-groups', $this->pluginPath . 'languages' );
         }
     }
 
@@ -53,7 +53,7 @@ class Blocks extends Base
         wp_enqueue_script( 'fullcalendar-js' );
 
         ob_start();
-        require( $this->plugin_path . 'blocks/build/calendar/render.php' );
+        require( $this->pluginPath . 'blocks/build/calendar/render.php' );
         return ob_get_clean();
     }
 
@@ -144,7 +144,7 @@ class Blocks extends Base
             $this->registerBlock( $block );
         }
 
-        wp_register_script( 'fullcalendar-js', $this->plugin_url . 'assets/javascript/fullcalendar.6.1.11.min.js' );
+        wp_register_script( 'fullcalendar-js', $this->pluginUrl . 'assets/javascript/fullcalendar.6.1.11.min.js' );
     }
 
     /**
@@ -175,7 +175,7 @@ class Blocks extends Base
      */
     private function registerBlock( string $block )
     {
-        $blockType = register_block_type( $this->plugin_path . 'blocks/build/' . $block, $this->blockArgs[ $block ] );
+        $blockType = register_block_type( $this->pluginPath . 'blocks/build/' . $block, $this->blockArgs[ $block ] );
 
         if ( !$blockType ) {
             error_log( "Unable to register block $block" );
