@@ -21,6 +21,8 @@ export default function Edit( { attributes, setAttributes } ) {
 		getMyClubGroups( setPosts, selectPostLabel );
 	}, []);
 
+	console.log(attributes);
+
 	return (
 		<>
 			<InspectorControls>
@@ -39,7 +41,11 @@ export default function Edit( { attributes, setAttributes } ) {
 				</PanelBody>
 			</InspectorControls>
 			<div {...useBlockProps()}>
-				<ServerSideRender block="myclub-groups/navigation" attributes={{ postId: attributes.postId }} />
+				{ attributes.postId ? <ServerSideRender block="myclub-groups/navigation" attributes={attributes} /> : <div className="myclub-groups-navigation">
+					<div className="no-group-selected">
+						{__( 'No group selected', 'myclub-groups' )}
+					</div>
+				</div> }
 			</div>
 		</>
 	);

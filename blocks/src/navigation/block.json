@@ -1,6 +1,12 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
+	"attributes": {
+		"postId": {
+			"type": "string",
+			"default": ""
+		}
+	},
 	"name": "myclub-groups/navigation",
 	"version": "0.1.0",
 	"title": "MyClub Group Navigation",
