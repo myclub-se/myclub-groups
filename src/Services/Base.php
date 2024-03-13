@@ -9,8 +9,8 @@ namespace MyClub\MyClubGroups\Services;
  */
 class Base
 {
-    protected $plugin_path;
-    protected $plugin_url;
+    protected $pluginPath;
+    protected $pluginUrl;
 
     /**
      * Class constructor.
@@ -22,7 +22,7 @@ class Base
      */
     public function __construct()
     {
-        $this->plugin_path = plugin_dir_path( dirname( __FILE__, 2 ) );
-        $this->plugin_url = plugin_dir_url( dirname( __FILE__, 2 ) );
+        $this->pluginPath = plugin_dir_path( dirname( __FILE__, 2 ) );
+        $this->pluginUrl = plugin_dir_url( dirname( __FILE__, 2 ) );
     }
 }
