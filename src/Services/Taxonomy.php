@@ -151,8 +151,8 @@ class Taxonomy extends Base
 
         if ( $current_page->post_type === 'myclub-groups' ) {
             // Register admin scripts and styles
-            wp_register_style( 'myclub_groups_tabs_css', $this->plugin_url . 'assets/css/myclub_groups.css' );
-            wp_register_script( 'myclub_groups_tabs_ui', $this->plugin_url . 'assets/javascript/myclub_groups_tabs.js', [ 'jquery' ] );
+            wp_register_style( 'myclub_groups_tabs_css', $this->pluginUrl . 'assets/css/myclub_groups.css' );
+            wp_register_script( 'myclub_groups_tabs_ui', $this->pluginUrl . 'assets/javascript/myclub_groups_tabs.js', [ 'jquery' ] );
 
             wp_enqueue_style( 'myclub_groups_tabs_css' );
             wp_enqueue_script( 'jquery-ui-tabs' );
@@ -184,6 +184,6 @@ class Taxonomy extends Base
      */
     public function renderMetaBox()
     {
-        return require_once( "$this->plugin_path/templates/admin/admin_myclub_groups_metabox_tabs.php" );
+        return require_once( "$this->pluginPath/templates/admin/admin_myclub_groups_metabox_tabs.php" );
     }
 }
