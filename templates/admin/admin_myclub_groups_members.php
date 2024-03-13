@@ -1,5 +1,5 @@
 <?php
-$members = json_decode( get_post_meta( get_the_ID(), 'members' )[ 0 ] );
+$members = json_decode( get_post_meta( get_the_ID(), 'members', true ) );
 ?>
 
 <div class="member-box">

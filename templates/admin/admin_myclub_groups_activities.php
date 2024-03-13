@@ -1,5 +1,5 @@
 <?php
-$activities = json_decode( get_post_meta( get_the_ID(), 'activities' )[ 0 ] );
+$activities = json_decode( get_post_meta( get_the_ID(), 'activities', true ) );
 ?>
 
 <div class="activity-box">
