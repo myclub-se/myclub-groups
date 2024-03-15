@@ -41,8 +41,44 @@ class NewsService extends Groups
             $this->myclubTimezone = new DateTimeZone( 'Europe/Stockholm' );
             $this->timezone = new DateTimeZone( get_option( 'timezone_string' ) );
             $this->utcTimezone = new DateTimeZone( 'UTC' );
-        } catch (Exception $e) {
+        } catch ( Exception $e ) {
             error_log( 'Unable to get timezones' );
+        }
+    }
+
+    /**
+     * Deletes all news posts that have a 'myclubNewsId' meta field.
+     *
+     * This method queries the WordPress database for all posts of type 'post' that have a 'myclubNewsId' meta field.
+     * It then loops through the query results and deletes each post using the `Utils::deletePost` method. This
+     * is a very destructive method and cannot be undone.
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function deleteAllNews()
+    {
+        $args = array(
+            'post_type'  => 'post',
+            'meta_query' => array(
+                array(
+                    'key'     => 'myclubNewsId',
+                    'compare' => 'EXISTS',
+                ),
+            ),
+            'posts_per_page' => -1,
+        );
+
+        $query = new WP_Query( $args );
+
+        if ( $query->have_posts() ) {
+            while ( $query->have_posts() ) {
+                $query->next_post();
+
+                $postId = $query->post->ID;
+
+                Utils::deletePost( $postId );
+            }
         }
     }
 
@@ -68,10 +104,10 @@ class NewsService extends Groups
             $ids = $this->getGroupIds( $menuItems, [] );
 
             $process = RefreshNewsTask::init();
-            $process->push_to_queue(null);
+            $process->push_to_queue( null );
 
-            foreach( $ids as $id ) {
-                $process->push_to_queue($id);
+            foreach ( $ids as $id ) {
+                $process->push_to_queue( $id );
             }
 
             // Enqueue and start the background task
@@ -79,7 +115,8 @@ class NewsService extends Groups
         }
     }
 
-    public function loadNews( string $groupId = null ) {
+    public function loadNews( string $groupId = null )
+    {
         $api = new RestApi();
         $response = $api->loadNews( $groupId );
         $group = null;
@@ -88,21 +125,22 @@ class NewsService extends Groups
             $groupName = $this->getGroupName( $groupId );
 
             if ( $groupName !== null ) {
-                $group = array(
-                    'id' => $groupId,
+                $group = array (
+                    'id'   => $groupId,
                     'name' => $groupName
                 );
             }
         }
 
-        if( !is_wp_error( $response ) && $response->status === 200 ) {
+        if ( !is_wp_error( $response ) && $response->status === 200 ) {
             foreach ( $response->result->results as $newsItem ) {
                 $this->addNews( $newsItem, $group );
             }
         }
     }
 
-    public function addDefaultCategory( $postId ) {
+    public function addDefaultCategory( $postId )
+    {
         $category = get_term_by( 'name', __( 'News', 'myclub-groups' ), 'category' );
 
         if ( $category === false ) {
@@ -116,7 +154,7 @@ class NewsService extends Groups
         }
 
         if ( $categoryId !== null ) {
-            wp_set_post_categories( $postId, array( $categoryId ) );
+            wp_set_post_categories( $postId, array ( $categoryId ) );
         }
     }
 
@@ -181,24 +219,30 @@ class NewsService extends Groups
                 $term = wp_insert_term( $myclubGroup[ 'name' ], NewsService::MYCLUB_GROUP_NEWS );
 
                 if ( is_wp_error( $term ) ) {
-                    if ( 'post_exists' === $term->get_error_code() ) {
-                        error_log('Post exists');
-                    }
-                }
+                    $termId = 0;
 
-                add_term_meta( $term[ 'term_id' ], 'myclubGroupId', $myclubGroup[ 'id' ] );
-                $termId = $term[ 'term_id' ];
+                    if ( 'post_exists' === $term->get_error_code() ) {
+                        $term = get_term_by( 'name', $myclubGroup[ 'name' ], NewsService::MYCLUB_GROUP_NEWS );
+
+                        if ( $term && !is_wp_error( $term ) ) {
+                            $termId = $term->term_id;
+                        }
+                    }
+                } else {
+                    add_term_meta( $term[ 'term_id' ], 'myclubGroupId', $myclubGroup[ 'id' ] );
+                    $termId = $term[ 'term_id' ];
+                }
             }
 
             $terms = wp_get_post_terms( $postId, NewsService::MYCLUB_GROUP_NEWS );
 
-            if ( !is_wp_error( $terms ) ) {
+            if ( !is_wp_error( $terms ) && $termId ) {
                 $termIds = array_map( function ( $term ) {
-                    return (int) $term->term_id;
+                    return (int)$term->term_id;
                 }, $terms );
 
                 if ( !array_search( $termId, $termIds ) ) {
-                    $termIds[] = (int) $termId;
+                    $termIds[] = (int)$termId;
                     wp_set_post_terms( $postId, $termIds, NewsService::MYCLUB_GROUP_NEWS );
                 }
             }
@@ -229,7 +273,7 @@ class NewsService extends Groups
 
             $dateTimeUtc->setTimezone( $this->timezone );
             $time = $dateTimeUtc->format( 'Y-m-d H:i:s' );
-        } catch (Exception $e) {
+        } catch ( Exception $e ) {
             $gmtTime = $time;
         }
 
@@ -260,11 +304,12 @@ class NewsService extends Groups
         return $args;
     }
 
-    private function getGroupName( string $groupId ) {
-        $args = array(
-            'post_type'  => 'myclub-groups',
-            'meta_query' => array(
-                array(
+    private function getGroupName( string $groupId )
+    {
+        $args = array (
+            'post_type'      => 'myclub-groups',
+            'meta_query'     => array (
+                array (
                     'key'     => 'myclubGroupId',
                     'value'   => $groupId,
                     'compare' => '='

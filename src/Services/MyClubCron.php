@@ -8,6 +8,10 @@ namespace MyClub\MyClubGroups\Services;
  * Provides functionality for scheduling cron jobs related to the MyClub plugin.
  */
 class MyClubCron {
+
+    const REFRESH_GROUPS_HOOK = 'myclub_groups_refresh_groups';
+    const REFRESH_NEWS_HOOK = 'myclub_groups_refresh_news';
+
     /**
      * Register the necessary actions for the plugin.
      *
@@ -20,8 +24,8 @@ class MyClubCron {
     public function register()
     {
         add_action( 'init', [ $this, 'setupSchedule' ] );
-        add_action( 'myclub_groups_refresh_news', [ $this, 'refreshNews' ] );
-        add_action( 'myclub_groups_refresh_groups', [ $this, 'refreshGroups' ] );
+        add_action( MyClubCron::REFRESH_NEWS_HOOK, [ $this, 'refreshNews' ] );
+        add_action( MyClubCron::REFRESH_GROUPS_HOOK, [ $this, 'refreshGroups' ] );
     }
 
     /**
@@ -35,12 +39,12 @@ class MyClubCron {
      */
     public function deactivate()
     {
-        if ( wp_next_scheduled( 'myclub_groups_refresh_news' ) ) {
-            wp_unschedule_event( time(), 'myclub_groups_refresh_news' );
+        if ( wp_next_scheduled( MyClubCron::REFRESH_NEWS_HOOK ) ) {
+            wp_clear_scheduled_hook(MyClubCron::REFRESH_NEWS_HOOK );
         }
 
-        if ( wp_next_scheduled( 'myclub_groups_refresh_groups' ) ) {
-            wp_unschedule_event( time(), 'myclub_groups_refresh_groups' );
+        if ( wp_next_scheduled( MyClubCron::REFRESH_GROUPS_HOOK ) ) {
+            wp_clear_scheduled_hook( MyClubCron::REFRESH_GROUPS_HOOK );
         }
     }
 
@@ -59,14 +63,12 @@ class MyClubCron {
      */
     public function setupSchedule()
     {
-        if ( !wp_next_scheduled( 'myclub_groups_refresh_news' ) ) {
-            wp_schedule_event( time(), 'hourly', 'myclub_groups_refresh_news' );
-            error_log( 'Scheduling myclub_groups_refresh_news event.' );
+        if ( !wp_next_scheduled( MyClubCron::REFRESH_NEWS_HOOK ) ) {
+            wp_schedule_event( time(), 'hourly', MyClubCron::REFRESH_NEWS_HOOK );
         }
 
-        if ( !wp_next_scheduled( 'myclub_groups_refresh_groups' ) ) {
-            wp_schedule_event( time(), 'hourly', 'myclub_groups_refresh_groups' );
-            error_log( 'Scheduling myclub_groups_refresh_groups event.' );
+        if ( !wp_next_scheduled( MyClubCron::REFRESH_GROUPS_HOOK ) ) {
+            wp_schedule_event( time(), 'hourly', MyClubCron::REFRESH_GROUPS_HOOK );
         }
     }
 

@@ -24,7 +24,7 @@ class Services
         Blocks::class,
         Menu::class,
         MyClubCron::class,
-        // ShortCodes::class,
+        ShortCodes::class,
         Taxonomy::class,
     ];
 

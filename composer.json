@@ -1,6 +1,6 @@
 {
     "name": "myclub/myclub-groups",
-    "description": "MyClub groups plugin for Wordpress",
+    "description": "MyClub groups plugin for WordPress",
     "type": "wordpress-plugin",
     "license": "GPL2",
     "autoload": {

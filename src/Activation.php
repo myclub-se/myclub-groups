@@ -2,7 +2,10 @@
 
 namespace MyClub\MyClubGroups;
 
+use MyClub\MyClubGroups\Services\GroupService;
+use MyClub\MyClubGroups\Services\MenuService;
 use MyClub\MyClubGroups\Services\MyClubCron;
+use MyClub\MyClubGroups\Services\NewsService;
 
 /**
  * Class Activation
@@ -11,6 +14,97 @@ use MyClub\MyClubGroups\Services\MyClubCron;
  */
 class Activation
 {
+    private $options = [];
+    
+    public function __construct()
+    {
+        $this->options = [
+            [
+                'name'  => 'myclub_groups_api_key',
+                'value' => null
+            ],
+            [
+                'name'  => 'myclub_groups_group_slug',
+                'value' => 'groups'
+            ],
+            [
+                'name'  => 'myclub_groups_group_news_slug',
+                'value' => 'group-news'
+            ],
+            [
+                'name'  => 'myclub_groups_last_news_sync',
+                'value' => null
+            ],
+            [
+                'name'  => 'myclub_groups_last_groups_sync',
+                'value' => null
+            ],
+            [
+                'name'  => 'myclub_groups_calendar_title',
+                'value' => __( 'Calendar', 'myclub-groups' )
+            ],
+            [
+                'name'  => 'myclub_groups_coming_games_title',
+                'value' => __( 'Upcoming games', 'myclub-groups' )
+            ],
+            [
+                'name'  => 'myclub_groups_leaders_title',
+                'value' => __( 'Leaders', 'myclub-groups' )
+            ],
+            [
+                'name'  => 'myclub_groups_members_title',
+                'value' => __( 'Members', 'myclub-groups' )
+            ],
+            [
+                'name'  => 'myclub_groups_news_title',
+                'value' => __( 'News', 'myclub-groups' )
+            ],
+            [
+                'name'  => 'myclub_groups_page_template',
+                'value' => ''
+            ],
+            [
+                'name'  => 'myclub_groups_page_calendar',
+                'value' => '1'
+            ],
+            [
+                'name'  => 'myclub_groups_page_navigation',
+                'value' => '1'
+            ],
+            [
+                'name'  => 'myclub_groups_page_leaders',
+                'value' => '1'
+            ],
+            [
+                'name'  => 'myclub_groups_page_menu',
+                'value' => '1'
+            ],
+            [
+                'name'  => 'myclub_groups_page_news',
+                'value' => '1'
+            ],
+            [
+                'name'  => 'myclub_groups_page_title',
+                'value' => '1'
+            ],
+            [
+                'name'  => 'myclub_groups_page_picture',
+                'value' => '1'
+            ],
+            [
+                'name'  => 'myclub_groups_page_coming_games',
+                'value' => '1'
+            ],
+            [
+                'name'  => 'myclub_groups_show_items_order',
+                'value' => array (
+                    'default',
+                )
+            ]
+        ];
+    }
+    
+    
     /**
      * Activates the plugin.
      *
@@ -22,34 +116,9 @@ class Activation
      */
     public function activate()
     {
-        $this->addOption( 'myclub_groups_api_key', NULL );
-        $this->addOption( 'myclub_groups_group_slug', 'groups' );
-        $this->addOption( 'myclub_groups_group_news_slug', 'group-news' );
-        $this->addOption( 'myclub_groups_last_news_sync', NULL );
-        $this->addOption( 'myclub_groups_last_groups_sync', NULL );
-        $this->addOption( 'myclub_groups_calendar_title',  __( 'Calendar', 'myclub-groups' ) );
-        $this->addOption( 'myclub_groups_coming_games_title',  __( 'Upcoming games', 'myclub-groups' ) );
-        $this->addOption( 'myclub_groups_leaders_title',  __( 'Leaders', 'myclub-groups' ) );
-        $this->addOption( 'myclub_groups_members_title',  __( 'Members', 'myclub-groups' ) );
-        $this->addOption( 'myclub_groups_news_title',  __( 'News', 'myclub-groups' ) );
-        $this->addOption( 'myclub_groups_page_template',  '' );
-        $this->addOption( 'myclub_groups_page_calendar', '1' );
-        $this->addOption( 'myclub_groups_page_navigation', '1' );
-        $this->addOption( 'myclub_groups_page_members', '1' );
-        $this->addOption( 'myclub_groups_page_leaders', '1' );
-        $this->addOption( 'myclub_groups_page_menu', '1' );
-        $this->addOption( 'myclub_groups_page_news', '1' );
-        $this->addOption( 'myclub_groups_page_title', '1' );
-        $this->addOption( 'myclub_groups_page_coming_games', '1' );
-        $this->addOption( 'myclub_groups_show_items_order', array (
-            'menu',
-            'navigation',
-            'calendar',
-            'members',
-            'leaders',
-            'news',
-            'coming-games'
-        ) );
+        foreach ( $this->options as $option ) {
+            $this->addOption( $option[ 'name' ], $option[ 'value' ]);
+        }
     }
 
     /**
@@ -62,6 +131,8 @@ class Activation
     {
         $cron = new MyClubCron();
         $cron->deactivate();
+
+        delete_option( 'myclub_groups_api_key' );
     }
 
     /**
@@ -69,7 +140,19 @@ class Activation
      */
     public function uninstall()
     {
+        // Delete all plugin options
+        foreach ( $this->options as $option ) {
+            delete_option( $option[ 'name' ] );
+        }
 
+        $newsService = new NewsService();
+        $newsService->deleteAllNews();
+
+        $menuService = new MenuService();
+        $menuService->deleteAllMenus();
+
+        $groupsService = new GroupService();
+        $groupsService->deleteAllGroups();
     }
 
 

@@ -10,7 +10,8 @@ use stdClass;
  *
  * The MenuService class provides methods for managing menus.
  */
-class MenuService extends Groups {
+class MenuService extends Groups
+{
     private $api;
     private $currentMenus;
     private $menu;
@@ -26,19 +27,35 @@ class MenuService extends Groups {
     }
 
     /**
+     * Deletes the "MyClub Groups Menu" if it exists.
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function deleteAllMenus()
+    {
+        $menuObject = wp_get_nav_menu_object( 'MyClub Groups Menu' );
+
+        if ( $menuObject ) {
+            wp_delete_nav_menu( $menuObject->term_id );
+        }
+    }
+
+    /**
      * Refreshes the menus by loading current menus, loading menu items from member backend,
      * adding menus if they exist, and deleting unused menus.
      *
      * @return void
      * @since 1.0.0
      */
-    public function refreshMenus() {
+    public function refreshMenus()
+    {
         $this->loadCurrentMenus();
 
         // Load menu items from member backend
         $menuItems = $this->api->loadMenuItems()->result;
 
-        if ( $this->menuItemsExist( $menuItems) && $this->menu )  {
+        if ( $this->menuItemsExist( $menuItems ) && $this->menu ) {
             $this->addMenus( 0, $menuItems );
 
             $this->deleteUnusedMenus();

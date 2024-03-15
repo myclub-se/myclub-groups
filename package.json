@@ -1,7 +1,7 @@
 {
 	"name": "myclub-groups",
 	"version": "1.0.0",
-	"description": "Blocks for displaying MyClub groups content on a Wordpress site.",
+	"description": "Blocks for displaying MyClub groups content on a WordPress site.",
 	"author": "MyClub AB",
 	"license": "GPL-2.0",
 	"main": "build/index.js",

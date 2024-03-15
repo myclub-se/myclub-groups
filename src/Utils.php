@@ -14,6 +14,43 @@ use WP_Query;
 class Utils
 {
     /**
+     * Delete a post and related attachments and meta data from the WordPress database.
+     *
+     * @param int $postId The ID of the post to delete.
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    static function deletePost( int $postId )
+    {
+        if ( has_post_thumbnail( $postId ) ) {
+            $attachmentId = get_post_thumbnail_id( $postId );
+            delete_post_thumbnail( $postId );
+            wp_delete_attachment( $attachmentId, true );
+        }
+
+        $meta = get_post_meta( $postId, 'members', true );
+
+        if ( $meta ) {
+            $members = json_decode( $meta );
+            foreach ( $members->members as $member ) {
+                if ( $member->member_image && $member->member_image->id ) {
+                    wp_delete_attachment( $member->member_image->id );
+                }
+            }
+
+            foreach ( $members->leaders as $member ) {
+                if ( $member->member_image && $member->member_image->id ) {
+                    wp_delete_attachment( $member->member_image->id );
+                }
+            }
+        }
+
+        wp_delete_post( $postId, true );
+    }
+
+
+    /**
      * Formats a given UTC time to the format specified in WordPress options.
      *
      * @param string|int $utcTime The UTC time to format.

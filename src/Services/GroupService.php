@@ -5,6 +5,7 @@ namespace MyClub\MyClubGroups\Services;
 use MyClub\MyClubGroups\Api\RestApi;
 use MyClub\MyClubGroups\Tasks\RefreshGroupsTask;
 use MyClub\MyClubGroups\Utils;
+use stdClass;
 use WP_Query;
 
 /**
@@ -31,7 +32,8 @@ class GroupService extends Groups
      * @return string The new content of the MyClub group post.
      * @since 1.0.0
      */
-    public static function getPostContent( int $postId, array $selectedBlocks = null ): string {
+    public static function getPostContent( int $postId, array $selectedBlocks = null ): string
+    {
         $optionNames = [
             'menu'         => 'myclub_groups_page_menu',
             'calendar'     => 'myclub_groups_page_calendar',
@@ -103,8 +105,8 @@ class GroupService extends Groups
         $content = GroupService::getPostContent( $postId, $pageContents );
         $isBlockTheme = wp_is_block_theme();
         $postContent = array (
-            'ID'           => $postId,
-            'post_content' => $content,
+            'ID'            => $postId,
+            'post_content'  => $content,
             'page_template' => $isBlockTheme ? '' : $pageTemplate,
         );
 
@@ -116,8 +118,7 @@ class GroupService extends Groups
             error_log( $result->get_error_message() );
         }
 
-        if ( $isBlockTheme )
-        {
+        if ( $isBlockTheme ) {
             update_post_meta( $postId, '_wp_page_template', $pageTemplate );
         }
     }
@@ -125,6 +126,36 @@ class GroupService extends Groups
     public function __construct()
     {
         $this->api = new RestApi();
+    }
+
+    /**
+     * Deletes all group pages from the database.
+     *
+     * Queries the database to retrieve all group pages with 'myclub-groups' post type.
+     * Deletes each group page using the Utils class' deletePost method. This is a very
+     * destructive method and can't be undone.
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function deleteAllGroups()
+    {
+        $args = array(
+            'post_type'  => 'myclub-groups',
+            'posts_per_page' => -1,
+        );
+
+        $query = new WP_Query( $args );
+
+        if ( $query->have_posts() ) {
+            while ( $query->have_posts() ) {
+                $query->next_post();
+
+                $postId = $query->post->ID;
+
+                Utils::deletePost( $postId );
+            }
+        }
     }
 
     /**
@@ -136,16 +167,13 @@ class GroupService extends Groups
     public function reloadGroups()
     {
         // Load menu items from member backend
-        $menu = $this->api->loadMenuItems()->result;
+        $groupIds = $this->getAllGroupIds();
 
-        if ( $this->menuItemsExist( $menu ) ) {
-            // Get the ids from the member backend
-            $ids = $this->getGroupIds( $menu, [] );
-
+        if ( $groupIds->success ) {
             $process = RefreshGroupsTask::init();
 
-            foreach( $ids as $id ) {
-                $process->push_to_queue($id);
+            foreach ( $groupIds->ids as $id ) {
+                $process->push_to_queue( $id );
             }
 
             // Enqueue and start the background task
@@ -153,16 +181,20 @@ class GroupService extends Groups
         }
     }
 
+    /**
+     * Removes unused group pages from the database.
+     *
+     * Queries the database to find group pages with 'myclubGroupId' meta key
+     * that are not in the current list of group IDs. Deletes these group pages.
+     *
+     * @return void
+     */
     public function removeUnusedGroupPages()
     {
-        // Load menuItems items from member backend
-        $menuItems = $this->api->loadMenuItems()->result;
+        $groupIds = $this->getAllGroupIds();
 
-        if ( $this->menuItemsExist( $menuItems ) ) {
+        if ( $groupIds->success ) {
             global $wpdb;
-
-            // Get the ids from the member backend
-            $ids = $this->getGroupIds( $menuItems, [] );
 
             $existingIds = $wpdb->get_col(
                 $wpdb->prepare(
@@ -171,23 +203,29 @@ class GroupService extends Groups
                 )
             );
 
-            $oldIds = array_diff( $existingIds, $ids );
-            $args = array(
-                'post_type'  => 'myclub-groups',
-                'meta_query' => array(
-                    array(
-                        'key'     => 'your_meta_key',
-                        'value'   => $oldIds,
-                        'compare' => 'IN'
+            $oldIds = array_diff( $existingIds, $groupIds->ids );
+
+            // Check so that there are any posts that should be deleted.
+            if ( count( $oldIds ) ) {
+                $args = array (
+                    'post_type'  => 'myclub-groups',
+                    'meta_query' => array (
+                        array (
+                            'key'     => 'myclubGroupId',
+                            'value'   => $oldIds,
+                            'compare' => 'IN'
+                        ),
                     ),
-                ),
-            );
+                    'posts_per_page' => -1
+                );
 
-            $query = new WP_Query( $args );
+                $query = new WP_Query( $args );
 
-            if ( $query->have_posts() ) {
-                foreach ($query->posts as $post_id) {
-                    wp_delete_post( $post_id, true );
+                if ( $query->have_posts() ) {
+                    while ( $query->have_posts() ) {
+                        $query->next_post();
+                        wp_delete_post( $query->post->ID, true );
+                    }
                 }
             }
         }
@@ -202,7 +240,7 @@ class GroupService extends Groups
             $group = $response->result;
             $postId = $this->getGroupPostId( $id );
 
-            $postId = $postId ? wp_update_post( $this->createPostArgs( $group, $postId, $pageTemplate ) ) : wp_insert_post( $this->createPostArgs( $group, null, $pageTemplate ) );
+            $postId = $postId ? wp_update_post( $this->createPostArgs( $group, $postId, $pageTemplate ) ) : wp_insert_post( $this->createPostArgs( $group, 0, $pageTemplate ) );
 
             if ( !is_wp_error( $postId ) ) {
                 Utils::addFeaturedImage( $postId, $group->team_image );
@@ -314,11 +352,11 @@ class GroupService extends Groups
      * Creates an array of arguments for creating or updating a post.
      *
      * @param mixed $group The group object.
-     * @param string $postId The post ID.
+     * @param int $postId The post ID.
      * @param string $pageTemplate The page template.
      * @return array The array of arguments for creating or updating a post.
      */
-    private function createPostArgs( $group, string $postId, string $pageTemplate ): array
+    private function createPostArgs( $group, int $postId, string $pageTemplate ): array
     {
         $args = [
             'post_title'    => $group->name,
@@ -341,5 +379,40 @@ class GroupService extends Groups
         }
 
         return $args;
+    }
+
+    /**
+     * Retrieves an array of all group IDs from the MyClub backend.
+     *
+     * @return stdClass An object with an array of ids and a success flag.
+     */
+    private function getAllGroupIds(): stdClass
+    {
+        $returnValue = new stdClass();
+        $returnValue->ids = [];
+        $returnValue->success = true;
+
+        // Load menuItems items from member backend
+        $response = $this->api->loadMenuItems();
+
+        if ( $response->status === 200 ) {
+            $menuItems = $response->result;
+
+            $returnValue->ids = $this->getGroupIds( $menuItems, [] );
+        } else {
+            $returnValue->success = false;
+        }
+
+        $response = $this->api->loadOtherTeams();
+        if ( $response->status === 200 ) {
+            $otherTeams = $response->result->results;
+            foreach ( $otherTeams as $otherTeam ) {
+                $returnValue->ids[] = $otherTeam->id;
+            }
+        } else {
+            $returnValue->success = false;
+        }
+
+        return $returnValue;
     }
 }

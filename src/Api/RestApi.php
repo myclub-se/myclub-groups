@@ -11,7 +11,7 @@ use WP_Error;
  */
 class RestApi
 {
-    const MYCLUB_SERVER_NAME = 'https://member.myclub.se';
+    const MYCLUB_SERVER_API_PATH = 'https://member.myclub.se/api/v3/external/';
 
     private $apiKey;
 
@@ -27,10 +27,10 @@ class RestApi
      */
     public function __construct( string $apiKey = null )
     {
-        $this->apiKey = get_option( 'myclub_groups_api_key' );
-
         if ( !empty( $apiKey ) ) {
             $this->apiKey = $apiKey;
+        } else {
+            $this->apiKey = get_option( 'myclub_groups_api_key' );
         }
     }
 
@@ -44,7 +44,7 @@ class RestApi
      */
     public function loadMenuItems()
     {
-        $service_path = '/api/v3/external/team_menu/';
+        $service_path = 'team_menu/';
 
         if ( empty( $this->apiKey ) ) {
             $return_value = new stdClass();
@@ -66,12 +66,44 @@ class RestApi
         return $decoded;
     }
 
+    /**
+     * Retrieves the menu items for other teams from the MyClub backend API.
+     *
+     * @return stdClass The other teams menu items fetched from the API. If the API key is empty, it returns an empty array
+     *                   with a status code of 401. If there is an error in the API call, it returns an empty array
+     *                   with a status code of 500. Otherwise, it returns the decoded menu items for other teams.
+     * @since 1.0.0
+     */
+    public function loadOtherTeams()
+    {
+        $service_path = 'team_menu/other_teams/';
+
+        if ( empty( $this->apiKey ) ) {
+            $return_value = new stdClass();
+            $return_value->result = [];
+            $return_value->status = 401;
+            return $return_value;
+        }
+
+        $decoded = $this->get( $service_path, [ 'limit' => "null" ] );
+
+        if ( is_wp_error( $decoded ) ) {
+            error_log( 'Error occurred in API call' );
+            $return_value = new stdClass();
+            $return_value->result = [];
+            $return_value->status = 500;
+            return $return_value;
+        }
+
+        return $decoded;
+    }
+
     /*
      * Retrieve a group from the MyClub backend API.
      *
      * @return stdClass|bool The group fetched from the API. If the API key is empty, it returns false.
      *                        If there is an error in the API call or the status code is not 200, it returns the
-     *                        decoded JSON or the Wordpress error. Otherwise, it returns the decoded group.
+     *                        decoded JSON or the WordPress error. Otherwise, it returns the decoded group.
      * @since 1.0.0
      */
     public function loadGroup( $groupId )
@@ -80,17 +112,17 @@ class RestApi
             return false;
         }
 
-        $decoded = $this->get( "/api/v3/external/teams/$groupId/info/" );
+        $decoded = $this->get( "teams/$groupId/info/" );
         if ( is_wp_error( $decoded ) || $decoded->status !== 200 ) {
             error_log( 'Error occurred in API call' );
             return $decoded;
         } else {
             // Load member info
-            $members = $this->get( "/api/v3/external/teams/$groupId/members/", [ "limit" => "null" ] );
+            $members = $this->get( "teams/$groupId/members/", [ "limit" => "null" ] );
             if ( $members->status === 200 ) {
                 $decoded->result->members = $members->result->results;
 
-                $activities = $this->get( "/api/v3/external/teams/$groupId/calendar/", [ "limit" => "null" ] );
+                $activities = $this->get( "teams/$groupId/calendar/", [ "limit" => "null" ] );
                 if ( $activities->status === 200 ) {
                     foreach ($activities->result->results as $activity) {
                         $activity->description = str_replace("\n", '<br />', htmlspecialchars( $activity->description, ENT_QUOTES, 'UTF-8' ) );
@@ -121,7 +153,7 @@ class RestApi
      *
      * @return stdClass|bool The news items fetched from the API. If the API key is empty, it returns false.
      *                        If there is an error in the API call or the status code is not 200, it returns the
-     *                        decoded JSON or Wordpress error. Otherwise, it returns the decoded news items.
+     *                        decoded JSON or WordPress error. Otherwise, it returns the decoded news items.
      * @since 1.0.0
      */
     public function loadNews( string $groupId = null )
@@ -135,7 +167,7 @@ class RestApi
             $args[ "team" ] = $groupId;
         }
 
-        $decoded = $this->get( "/api/v3/external/news/", $args );
+        $decoded = $this->get( "news/", $args );
         if ( is_wp_error( $decoded ) || $decoded->status !== 200 ) {
             error_log( 'Error occurred in API call' );
         }
@@ -149,7 +181,7 @@ class RestApi
      * @param string $service_path The path of the service to send the GET request to.
      * @param array $data An optional array of parameters to append to the service path as query parameters.
      * @return stdClass|WP_Error The response from the GET request. If an error occurs during the request, it returns a WP_Error object.
-     *                            Otherwise, it returns a \stdClass object with the result and status code.
+     *                            Otherwise, it returns a stdClass object with the result and status code.
      * @since 1.0.0
      */
     private function get( string $service_path, array $data = [] )
@@ -201,6 +233,6 @@ class RestApi
      */
     private function getServerUrl( string $path ): string
     {
-        return self::MYCLUB_SERVER_NAME . $path;
+        return self::MYCLUB_SERVER_API_PATH . $path;
     }
 }
