@@ -21,8 +21,6 @@ export default function Edit( { attributes, setAttributes } ) {
 		getMyClubGroups( setPosts, selectPostLabel );
 	}, []);
 
-	console.log(attributes);
-
 	return (
 		<>
 			<InspectorControls>
