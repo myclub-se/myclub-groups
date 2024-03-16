@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-13 13:17+0100\n"
-"PO-Revision-Date: 2024-03-16 17:24+0100\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/myclub-groups\n"
+"POT-Creation-Date: 2024-03-16T16:33:13+00:00\n"
+"PO-Revision-Date: 2024-03-16 17:37+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -19,338 +19,326 @@ msgstr ""
 "X-Poedit-SearchPath-3: assets/javascript\n"
 "X-Poedit-SearchPath-4: blocks/src\n"
 
-#: assets/javascript/myclub_groups_settings.js:12
-msgid "Dismiss this notice."
-msgstr "Avfärda denna notis."
+#. Plugin Name of the plugin
+#: src/Services/Admin.php:88 src/Services/Admin.php:1142
+msgid "MyClub Groups"
+msgstr "MyClub Grupper"
 
-#: assets/javascript/myclub_groups_settings.js:51
-msgid "Reloading groups"
-msgstr "Laddar om grupper"
+#. Plugin URI of the plugin
+msgid "https://github.com/myclub-se/wordpress-myclub-groups"
+msgstr ""
 
-#: assets/javascript/myclub_groups_settings.js:62
-msgid "Unable to reload groups"
-msgstr "Kunde inte ladda om grupper"
+#. Description of the plugin
+msgid ""
+"Retrieves group information from the MyClub member administration platform. "
+"Generates pages for groups defined in the MyClub member administration "
+"platform."
+msgstr ""
+"Hämtar gruppinformation från MyClub medlemssystem. Skapar sidor för de "
+"grupper som finns i MyClub medlemshantering."
 
-#: assets/javascript/myclub_groups_settings.js:69
-msgid "Reloading news"
-msgstr "Laddar om nyheter"
+#. Author of the plugin
+msgid "MyClub AB"
+msgstr ""
 
-#: assets/javascript/myclub_groups_settings.js:80
-msgid "Unable to reload news"
-msgstr "Kunde inte ladda om nyheter"
+#. Author URI of the plugin
+msgid "https://www.myclub.se"
+msgstr ""
 
-#: blocks/src/calendar/edit.js:54 blocks/src/coming-games/edit.js:19
-#: blocks/src/leaders/edit.js:21 blocks/src/members/edit.js:21
-#: blocks/src/navigation/edit.js:16 blocks/src/news/edit.js:17
-#: blocks/src/title/edit.js:33
-msgid "Select a group"
-msgstr "Välj en grupp"
-
-#: blocks/src/calendar/edit.js:61 blocks/src/calendar/render.php:22
-msgid "today"
-msgstr "idag"
-
-#: blocks/src/calendar/edit.js:62 blocks/src/calendar/render.php:24
-msgid "month"
-msgstr "månad"
-
-#: blocks/src/calendar/edit.js:63 blocks/src/calendar/render.php:25
-msgid "week"
-msgstr "vecka"
-
-#: blocks/src/calendar/edit.js:64 blocks/src/calendar/render.php:23
-msgid "day"
-msgstr "dag"
-
-#: blocks/src/calendar/edit.js:65 blocks/src/calendar/render.php:26
-msgid "list"
-msgstr "lista"
-
-#: blocks/src/calendar/edit.js:87 blocks/src/calendar/render.php:15
-#: src/Activation.php:30 src/Services/Admin.php:179 src/Services/Admin.php:579
-#: src/Services/Admin.php:739 src/Services/Admin.php:865
-#: templates/admin/admin_settings.php:30
+#: blocks/build/calendar/render.php:15 blocks/src/calendar/render.php:15
+#: src/Activation.php:44 src/Services/Admin.php:180 src/Services/Admin.php:587
+#: src/Services/Admin.php:747 src/Services/Admin.php:873
+#: templates/admin/admin_settings.php:30 blocks/build/calendar/index.js:1
+#: blocks/src/calendar/edit.js:87
 msgid "Calendar"
 msgstr "Kalender"
 
-#: blocks/src/calendar/edit.js:88 blocks/src/calendar/render.php:17
-#: templates/admin/admin_myclub_groups_activities.php:8
-#: templates/admin/admin_myclub_groups_members.php:8
-msgid "Name"
-msgstr "Namn"
-
-#: blocks/src/calendar/edit.js:89 blocks/src/calendar/render.php:18
-msgid "When"
-msgstr "När"
-
-#: blocks/src/calendar/edit.js:90 blocks/src/calendar/render.php:19
-#: templates/admin/admin_myclub_groups_activities.php:12
-msgid "Location"
-msgstr "Plats"
-
-#: blocks/src/calendar/edit.js:92 blocks/src/calendar/render.php:21
-msgid "Gathering time"
-msgstr "Samling"
-
-#: blocks/src/calendar/edit.js:95 blocks/src/calendar/render.php:20
-msgid "Gathering location"
-msgstr "Samlingsplats"
-
-#: blocks/src/calendar/edit.js:98 blocks/src/calendar/render.php:16
+#: blocks/build/calendar/render.php:16 blocks/src/calendar/render.php:16
+#: blocks/build/calendar/index.js:1 blocks/src/calendar/edit.js:98
 msgid "Information"
 msgstr "Information"
 
-#: blocks/src/calendar/edit.js:136 blocks/src/calendar/render.php:27
+#: blocks/build/calendar/render.php:17 blocks/src/calendar/render.php:17
+#: templates/admin/admin_myclub_groups_activities.php:8
+#: templates/admin/admin_myclub_groups_members.php:8
+#: blocks/build/calendar/index.js:1 blocks/src/calendar/edit.js:88
+msgid "Name"
+msgstr "Namn"
+
+#: blocks/build/calendar/render.php:18 blocks/src/calendar/render.php:18
+#: blocks/build/calendar/index.js:1 blocks/src/calendar/edit.js:89
+msgid "When"
+msgstr "När"
+
+#: blocks/build/calendar/render.php:19 blocks/src/calendar/render.php:19
+#: templates/admin/admin_myclub_groups_activities.php:12
+#: blocks/build/calendar/index.js:1 blocks/src/calendar/edit.js:90
+msgid "Location"
+msgstr "Plats"
+
+#: blocks/build/calendar/render.php:20 blocks/src/calendar/render.php:20
+#: blocks/build/calendar/index.js:1 blocks/src/calendar/edit.js:95
+msgid "Gathering location"
+msgstr "Samlingsplats"
+
+#: blocks/build/calendar/render.php:21 blocks/src/calendar/render.php:21
+#: blocks/build/calendar/index.js:1 blocks/src/calendar/edit.js:92
+msgid "Gathering time"
+msgstr "Samling"
+
+#: blocks/build/calendar/render.php:22 blocks/src/calendar/render.php:22
+#: blocks/build/calendar/index.js:1 blocks/src/calendar/edit.js:61
+msgid "today"
+msgstr "idag"
+
+#: blocks/build/calendar/render.php:23 blocks/src/calendar/render.php:23
+#: blocks/build/calendar/index.js:1 blocks/src/calendar/edit.js:64
+msgid "day"
+msgstr "dag"
+
+#: blocks/build/calendar/render.php:24 blocks/src/calendar/render.php:24
+#: blocks/build/calendar/index.js:1 blocks/src/calendar/edit.js:62
+msgid "month"
+msgstr "månad"
+
+#: blocks/build/calendar/render.php:25 blocks/src/calendar/render.php:25
+#: blocks/build/calendar/index.js:1 blocks/src/calendar/edit.js:63
+msgid "week"
+msgstr "vecka"
+
+#: blocks/build/calendar/render.php:26 blocks/src/calendar/render.php:26
+#: blocks/build/calendar/index.js:1 blocks/src/calendar/edit.js:65
+msgid "list"
+msgstr "lista"
+
+#: blocks/build/calendar/render.php:27 blocks/src/calendar/render.php:27
+#: blocks/build/calendar/index.js:1 blocks/src/calendar/edit.js:136
 msgid "W"
 msgstr "V"
 
-#: blocks/src/calendar/edit.js:137 blocks/src/calendar/render.php:28
+#: blocks/build/calendar/render.php:28 blocks/src/calendar/render.php:28
+#: blocks/build/calendar/index.js:1 blocks/src/calendar/edit.js:137
 msgid "Week"
 msgstr "Vecka"
 
-#: blocks/src/calendar/edit.js:260 blocks/src/coming-games/edit.js:30
-#: blocks/src/leaders/edit.js:99 blocks/src/members/edit.js:96
-#: blocks/src/navigation/edit.js:29 blocks/src/news/edit.js:29
-#: blocks/src/title/edit.js:63
-msgid "Content settings"
-msgstr "Innehållsinställningar"
-
-#: blocks/src/calendar/edit.js:263 blocks/src/coming-games/edit.js:34
-#: blocks/src/leaders/edit.js:103 blocks/src/members/edit.js:100
-#: blocks/src/navigation/edit.js:33 blocks/src/news/edit.js:33
-#: blocks/src/title/edit.js:67 src/Services/Taxonomy.php:55
-msgid "Group"
-msgstr "Grupp"
-
-#: blocks/src/club-news/render.php:3 blocks/src/club-news/render.php:47
-#: blocks/src/news/render.php:13 src/Activation.php:34
-#: src/Services/Admin.php:211 src/Services/Admin.php:218
-#: src/Services/Admin.php:655 src/Services/Admin.php:674
-#: src/Services/Admin.php:795 src/Services/Admin.php:871
-#: src/Services/NewsService.php:106 src/Services/NewsService.php:109
+#: blocks/build/club-news/render.php:3 blocks/build/club-news/render.php:47
+#: blocks/build/news/render.php:13 blocks/src/club-news/render.php:3
+#: blocks/src/club-news/render.php:47 blocks/src/news/render.php:13
+#: src/Activation.php:60 src/Services/Admin.php:212 src/Services/Admin.php:219
+#: src/Services/Admin.php:663 src/Services/Admin.php:682
+#: src/Services/Admin.php:803 src/Services/Admin.php:879
+#: src/Services/NewsService.php:142 src/Services/NewsService.php:145
 #: templates/admin/admin_settings.php:37
 msgid "News"
 msgstr "Nyheter"
 
+#: blocks/build/club-news/render.php:5 blocks/build/news/render.php:15
 #: blocks/src/club-news/render.php:5 blocks/src/news/render.php:15
 msgid "No news found"
 msgstr "Finns inga nyheter"
 
+#: blocks/build/club-news/render.php:69 blocks/build/news/render.php:96
 #: blocks/src/club-news/render.php:69 blocks/src/news/render.php:96
 msgid "Show more news"
 msgstr "Visa fler nyheter"
 
-#: blocks/src/coming-games/edit.js:48 blocks/src/navigation/edit.js:46
-msgid "No group selected"
-msgstr "Ingen grupp vald"
-
-#: blocks/src/coming-games/render.php:45 blocks/src/leaders/render.php:51
-#: blocks/src/members/render.php:46
+#: blocks/build/coming-games/render.php:45 blocks/build/leaders/render.php:52
+#: blocks/build/members/render.php:47 blocks/src/coming-games/render.php:45
+#: blocks/src/leaders/render.php:52 blocks/src/members/render.php:47
 msgid "Show more"
 msgstr "Visa mer"
 
-#: blocks/src/coming-games/render.php:46 blocks/src/leaders/render.php:52
-#: blocks/src/members/render.php:47
+#: blocks/build/coming-games/render.php:46 blocks/build/leaders/render.php:53
+#: blocks/build/members/render.php:48 blocks/src/coming-games/render.php:46
+#: blocks/src/leaders/render.php:53 blocks/src/members/render.php:48
 msgid "Show less"
 msgstr "Visa mindre"
 
+#: blocks/build/coming-games/render.php:50
 #: blocks/src/coming-games/render.php:50
 msgid "No upcoming games"
 msgstr "Inga kommande matcher"
 
-#: blocks/src/leaders/edit.js:16 src/Activation.php:32
-#: src/Services/Admin.php:195 src/Services/Admin.php:617
-#: src/Services/Admin.php:725 src/Services/Admin.php:867
-#: templates/admin/admin_myclub_groups_members.php:27
-#: templates/admin/admin_settings.php:33
-msgid "Leaders"
-msgstr "Ledare"
-
-#: blocks/src/leaders/edit.js:93
-msgid "No groups with leaders selected"
-msgstr "Ingen grupp med ledare vald"
-
+#: blocks/build/leaders/render.php:19 blocks/build/members/render.php:18
 #: blocks/src/leaders/render.php:19 blocks/src/members/render.php:18
 #: templates/admin/admin_myclub_groups_members.php:12
 msgid "Age"
 msgstr "Ålder"
 
-#: blocks/src/leaders/render.php:20 blocks/src/members/render.php:19
-#: blocks/src/title/render.php:37
+#: blocks/build/leaders/render.php:20 blocks/build/members/render.php:19
+#: blocks/build/title/render.php:37 blocks/src/leaders/render.php:20
+#: blocks/src/members/render.php:19 blocks/src/title/render.php:37
 #: templates/admin/admin_myclub_groups_members.php:10
+#: blocks/build/title/index.js:1 blocks/src/title/edit.js:99
 msgid "E-mail"
 msgstr "E-post"
 
+#: blocks/build/leaders/render.php:21 blocks/build/members/render.php:20
 #: blocks/src/leaders/render.php:21 blocks/src/members/render.php:20
 #: templates/admin/admin_myclub_groups_members.php:9
 msgid "Role"
 msgstr "Roll"
 
-#: blocks/src/leaders/render.php:22 blocks/src/members/render.php:21
-#: templates/admin/admin_myclub_groups_members.php:11
-#: templates/admin/admin_myclub_groups_metabox_tabs.php:68
-msgid "Phone"
-msgstr "Telefon"
-
-#: blocks/src/members/edit.js:16 src/Activation.php:33
-#: src/Services/Admin.php:203 src/Services/Admin.php:636
-#: src/Services/Admin.php:753 src/Services/Admin.php:868
-#: templates/admin/admin_myclub_groups_members.php:15
-#: templates/admin/admin_myclub_groups_metabox_tabs.php:58
-#: templates/admin/admin_settings.php:34
-msgid "Members"
-msgstr "Medlemmar"
-
-#: blocks/src/members/edit.js:90
-msgid "No members found"
-msgstr "Ingen grupp med medlemmar vald"
-
-#: blocks/src/title/render.php:31
+#: blocks/build/title/render.php:31 blocks/src/title/render.php:31
 #: templates/admin/admin_myclub_groups_metabox_tabs.php:66
+#: blocks/build/title/index.js:1 blocks/src/title/edit.js:91
 msgid "Contact person"
 msgstr "Kontaktperson"
 
-#: blocks/src/title/render.php:34
+#: blocks/build/title/render.php:34 blocks/src/title/render.php:34
+#: blocks/build/title/index.js:1 blocks/src/title/edit.js:95
 msgid "Telephone"
 msgstr "Telefon"
 
-#: src/Activation.php:31 src/Services/Admin.php:187 src/Services/Admin.php:598
-#: src/Services/Admin.php:837 src/Services/Admin.php:866
+#: src/Activation.php:48 src/Services/Admin.php:188 src/Services/Admin.php:606
+#: src/Services/Admin.php:845 src/Services/Admin.php:874
 #: templates/admin/admin_settings.php:32
 msgid "Upcoming games"
 msgstr "Kommande matcher"
 
-#: src/Services/Admin.php:86
+#: src/Activation.php:52 src/Services/Admin.php:196 src/Services/Admin.php:625
+#: src/Services/Admin.php:733 src/Services/Admin.php:875
+#: templates/admin/admin_myclub_groups_members.php:35
+#: templates/admin/admin_settings.php:33 blocks/build/leaders/index.js:1
+#: blocks/src/leaders/edit.js:16
+msgid "Leaders"
+msgstr "Ledare"
+
+#: src/Activation.php:56 src/Services/Admin.php:204 src/Services/Admin.php:644
+#: src/Services/Admin.php:761 src/Services/Admin.php:876
+#: templates/admin/admin_myclub_groups_members.php:18
+#: templates/admin/admin_myclub_groups_metabox_tabs.php:58
+#: templates/admin/admin_settings.php:34 blocks/build/members/index.js:1
+#: blocks/src/members/edit.js:16
+msgid "Members"
+msgstr "Medlemmar"
+
+#: src/Services/Admin.php:87
 msgid "MyClub Groups plugin settings"
 msgstr "MyClub Grupper plugin inställningar"
 
-#: src/Services/Admin.php:87 src/Services/Admin.php:1134
-msgid "MyClub Groups"
-msgstr "MyClub Grupper"
-
-#: src/Services/Admin.php:111 src/Services/Admin.php:115
-#: src/Services/Taxonomy.php:129
+#: src/Services/Admin.php:112 src/Services/Admin.php:116
+#: src/Services/Taxonomy.php:136
 msgid "Group news"
 msgstr "Gruppnyheter"
 
-#: src/Services/Admin.php:300
+#: src/Services/Admin.php:301
 msgid "MyClub Groups Main Settings"
 msgstr "MyClub Grupper huvudinställningar"
 
-#: src/Services/Admin.php:301
+#: src/Services/Admin.php:302
 msgid "Synchronization information"
 msgstr "Synkroniseringsinställningar"
 
-#: src/Services/Admin.php:302 templates/admin/admin_settings.php:9
+#: src/Services/Admin.php:303 templates/admin/admin_settings.php:9
 msgid "Title settings"
 msgstr "Rubrikinställningar"
 
-#: src/Services/Admin.php:303 templates/admin/admin_settings.php:10
+#: src/Services/Admin.php:304 templates/admin/admin_settings.php:10
 msgid "Display settings"
 msgstr "Visningsinställningar"
 
-#: src/Services/Admin.php:304
+#: src/Services/Admin.php:305
 msgid "MyClub API Key"
 msgstr "MyClub API nyckel"
 
-#: src/Services/Admin.php:308
+#: src/Services/Admin.php:309
 msgid "Slug for group pages"
 msgstr "Slug för gruppsidor"
 
-#: src/Services/Admin.php:312
+#: src/Services/Admin.php:313
 msgid "Slug for group news posts"
 msgstr "Slug för gruppnyheter"
 
-#: src/Services/Admin.php:316
+#: src/Services/Admin.php:317
 msgid "News last synchronized"
 msgstr "Nyheter synkroniserades senast"
 
-#: src/Services/Admin.php:320
+#: src/Services/Admin.php:321
 msgid "Groups last synchronized"
 msgstr "Grupper synkroniserades senast"
 
-#: src/Services/Admin.php:324
+#: src/Services/Admin.php:325
 msgid "Title for calendar field"
 msgstr "Rubrik för kalendern"
 
-#: src/Services/Admin.php:328
+#: src/Services/Admin.php:329
 msgid "Title for upcoming games field"
 msgstr "Rubrik för kommande matcher"
 
-#: src/Services/Admin.php:332
+#: src/Services/Admin.php:333
 msgid "Title for leaders field"
 msgstr "Rubrik för ledare"
 
-#: src/Services/Admin.php:336
+#: src/Services/Admin.php:337
 msgid "Title for members field"
 msgstr "Rurik för medlemmar"
 
-#: src/Services/Admin.php:340
+#: src/Services/Admin.php:341
 msgid "Title for news field"
 msgstr "Rubrik för nyheter"
 
-#: src/Services/Admin.php:344
+#: src/Services/Admin.php:345
 msgid "Title for club news field"
 msgstr "Rubrik för föreningens nyheter"
 
-#: src/Services/Admin.php:348
+#: src/Services/Admin.php:349
 msgid "Template for group pages"
 msgstr "Mall för gruppsidor"
 
-#: src/Services/Admin.php:352
+#: src/Services/Admin.php:353
 msgid "Show group title"
 msgstr "Visa rubrikfält på gruppsidor"
 
-#: src/Services/Admin.php:356
+#: src/Services/Admin.php:357
 msgid "Show group picture"
 msgstr "Visa grupp bilder"
 
-#: src/Services/Admin.php:360
+#: src/Services/Admin.php:361
 msgid "Show groups menu"
 msgstr "Visa meny på gruppsidor"
 
-#: src/Services/Admin.php:364
+#: src/Services/Admin.php:365
 msgid "Show group page navigation"
 msgstr "Visa navigation på gruppsidor"
 
-#: src/Services/Admin.php:368
+#: src/Services/Admin.php:369
 msgid "Show group calendar"
 msgstr "Visa kalender på gruppsidor"
 
-#: src/Services/Admin.php:372
+#: src/Services/Admin.php:373
 msgid "Show group members"
 msgstr "Visa medlemmar på gruppsidor"
 
-#: src/Services/Admin.php:376
+#: src/Services/Admin.php:377
 msgid "Show group leaders"
 msgstr "Visa ledare på gruppsidor"
 
-#: src/Services/Admin.php:380
+#: src/Services/Admin.php:381
 msgid "Show group news"
 msgstr "Visa nyheter på gruppsidor"
 
-#: src/Services/Admin.php:384
+#: src/Services/Admin.php:385
 msgid "Show group upcoming games"
 msgstr "Visa kommande matcher på gruppsidor"
 
-#: src/Services/Admin.php:388
+#: src/Services/Admin.php:389
 msgid "Shown items order"
 msgstr "Visningsordning på gruppsidor"
 
-#: src/Services/Admin.php:438 src/Services/Admin.php:462
+#: src/Services/Admin.php:446 src/Services/Admin.php:470
 msgid "Permission denied"
 msgstr "Åtkomst nekad"
 
-#: src/Services/Admin.php:446
+#: src/Services/Admin.php:454
 msgid "Successfully queued groups reloading"
 msgstr "Gruppuppdatering har schemalagts"
 
-#: src/Services/Admin.php:470
+#: src/Services/Admin.php:478
 msgid "Successfully queued news reloading"
 msgstr "Nyhetsuppdatering har schemalagts"
 
-#: src/Services/Admin.php:523
-#, php-format
+#: src/Services/Admin.php:531
 msgid ""
 "There is currently <strong>%1$s groups</strong> loaded from the MyClub "
 "member system."
@@ -358,8 +346,7 @@ msgstr ""
 "Det finns för närvarande <strong>%1$s grupper</strong> laddade från MyClub "
 "medlemssystem."
 
-#: src/Services/Admin.php:525
-#, php-format
+#: src/Services/Admin.php:533
 msgid ""
 "There is currently <strong>%1$s group news items</strong> loaded from the "
 "MyClub member system."
@@ -367,53 +354,53 @@ msgstr ""
 "Det finns för närvarande <strong>%1$s gruppnyheter</strong> laddade från "
 "MyClub medlemssystem."
 
-#: src/Services/Admin.php:767 src/Services/Admin.php:869
+#: src/Services/Admin.php:775 src/Services/Admin.php:877
 #: templates/admin/admin_settings.php:35
 msgid "Menu"
 msgstr "Meny"
 
-#: src/Services/Admin.php:781 src/Services/Admin.php:870
+#: src/Services/Admin.php:789 src/Services/Admin.php:878
 #: templates/admin/admin_settings.php:36
 msgid "Navigation"
 msgstr "Navigation"
 
-#: src/Services/Admin.php:908
+#: src/Services/Admin.php:916
 msgid "Invalid API key entered"
 msgstr "Ogiltig API nyckel"
 
-#: src/Services/Admin.php:928 src/Services/Admin.php:948
+#: src/Services/Admin.php:936 src/Services/Admin.php:956
 msgid "You have to enter a valid slug"
 msgstr "Du måste ange en giltig slug"
 
-#: src/Services/Admin.php:966
+#: src/Services/Admin.php:974
 msgid "You have to enter title for the calendar field"
 msgstr "Du måste ange en rubrik för kalenderdelen på gruppsidor"
 
-#: src/Services/Admin.php:984
+#: src/Services/Admin.php:992
 msgid "You have to enter title for the upcoming games field"
 msgstr "Du måste ange en rubrik för kommande matcher på gruppsidor"
 
-#: src/Services/Admin.php:1002
+#: src/Services/Admin.php:1010
 msgid "You have to enter title for the members field"
 msgstr "Du måste ange en rubrik för medlemmar på gruppsidor"
 
-#: src/Services/Admin.php:1020
+#: src/Services/Admin.php:1028
 msgid "You have to enter title for the leaders field"
 msgstr "Du måste ange en rubrik för ledare på gruppsidor"
 
-#: src/Services/Admin.php:1038
+#: src/Services/Admin.php:1046
 msgid "You must enter a title for the news field"
 msgstr "Du måste ange en rubrik för nyheter på gruppsidor"
 
-#: src/Services/Admin.php:1056
+#: src/Services/Admin.php:1064
 msgid "You must enter a title for the club news field"
 msgstr "Du måste ange en rubrik för nyheter för föreningen"
 
-#: src/Services/Admin.php:1101
+#: src/Services/Admin.php:1109
 msgid "The selected template was not found."
 msgstr "Vald mall kunde inte hittas."
 
-#: src/Services/Admin.php:1234
+#: src/Services/Admin.php:1242
 msgid "Not synchronized yet"
 msgstr "Ingen synkronisering än"
 
@@ -521,11 +508,22 @@ msgstr "Kunde inte hitta MyClub nyheter block"
 msgid "The MyClub title block couldn't be found"
 msgstr "Kunde inte hitta MyClub titel block"
 
-#: src/Services/Taxonomy.php:54
+#: src/Services/Taxonomy.php:61
 msgid "Groups"
 msgstr "Grupper"
 
-#: src/Services/Taxonomy.php:171
+#: src/Services/Taxonomy.php:62 blocks/build/calendar/index.js:1
+#: blocks/build/coming-games/index.js:1 blocks/build/leaders/index.js:1
+#: blocks/build/members/index.js:1 blocks/build/navigation/index.js:1
+#: blocks/build/news/index.js:1 blocks/build/title/index.js:1
+#: blocks/src/calendar/edit.js:263 blocks/src/coming-games/edit.js:34
+#: blocks/src/leaders/edit.js:103 blocks/src/members/edit.js:100
+#: blocks/src/navigation/edit.js:33 blocks/src/news/edit.js:33
+#: blocks/src/title/edit.js:67
+msgid "Group"
+msgstr "Grupp"
+
+#: src/Services/Taxonomy.php:178
 msgid "MyClub group information"
 msgstr "MyClub gruppinformation"
 
@@ -540,6 +538,11 @@ msgstr "Starttid"
 #: templates/admin/admin_myclub_groups_activities.php:11
 msgid "End time"
 msgstr "Sluttid"
+
+#: templates/admin/admin_myclub_groups_members.php:11
+#: templates/admin/admin_myclub_groups_metabox_tabs.php:68
+msgid "Phone"
+msgstr "Telefon"
 
 #: templates/admin/admin_myclub_groups_metabox_tabs.php:56
 msgid "Standard information"
@@ -777,24 +780,155 @@ msgstr ""
 "vill visa titeln för. Som standard används innevarande sida."
 
 #: templates/admin/admin_settings.php:60
-msgid "Reload groups"
-msgstr "Ladda om grupper"
-
-#: templates/admin/admin_settings.php:62
 msgid "Reload news"
 msgstr "Ladda om nyheter"
 
-#: templates/admin/admin_settings.php:64
-msgid "Save Changes"
-msgstr ""
+#: templates/admin/admin_settings.php:62
+msgid "Reload groups"
+msgstr "Ladda om grupper"
+
+#: assets/javascript/myclub_groups_settings.js:51
+msgid "Reloading groups"
+msgstr "Laddar om grupper"
+
+#: assets/javascript/myclub_groups_settings.js:62
+msgid "Unable to reload groups"
+msgstr "Kunde inte ladda om grupper"
+
+#: assets/javascript/myclub_groups_settings.js:69
+msgid "Reloading news"
+msgstr "Laddar om nyheter"
+
+#: assets/javascript/myclub_groups_settings.js:80
+msgid "Unable to reload news"
+msgstr "Kunde inte ladda om nyheter"
+
+#: blocks/build/calendar/index.js:1 blocks/build/coming-games/index.js:1
+#: blocks/build/leaders/index.js:1 blocks/build/members/index.js:1
+#: blocks/build/navigation/index.js:1 blocks/build/news/index.js:1
+#: blocks/build/title/index.js:1 blocks/src/calendar/edit.js:54
+#: blocks/src/coming-games/edit.js:19 blocks/src/leaders/edit.js:21
+#: blocks/src/members/edit.js:21 blocks/src/navigation/edit.js:16
+#: blocks/src/news/edit.js:17 blocks/src/title/edit.js:33
+msgid "Select a group"
+msgstr "Välj en grupp"
+
+#: blocks/build/calendar/index.js:1 blocks/build/coming-games/index.js:1
+#: blocks/build/leaders/index.js:1 blocks/build/members/index.js:1
+#: blocks/build/navigation/index.js:1 blocks/build/news/index.js:1
+#: blocks/build/title/index.js:1 blocks/src/calendar/edit.js:260
+#: blocks/src/coming-games/edit.js:30 blocks/src/leaders/edit.js:99
+#: blocks/src/members/edit.js:96 blocks/src/navigation/edit.js:29
+#: blocks/src/news/edit.js:29 blocks/src/title/edit.js:63
+msgid "Content settings"
+msgstr "Innehållsinställningar"
+
+#: blocks/build/coming-games/index.js:1 blocks/build/navigation/index.js:1
+#: blocks/build/title/index.js:1 blocks/src/coming-games/edit.js:48
+#: blocks/src/navigation/edit.js:46 blocks/src/title/edit.js:106
+msgid "No group selected"
+msgstr "Ingen grupp vald"
+
+#: blocks/build/leaders/index.js:1 blocks/src/leaders/edit.js:93
+msgid "No groups with leaders selected"
+msgstr "Ingen grupp med ledare vald"
+
+#: blocks/build/members/index.js:1 blocks/src/members/edit.js:90
+msgid "No members found"
+msgstr "Ingen grupp med medlemmar vald"
+
+#: blocks/build/calendar/block.json blocks/src/calendar/block.json
+msgctxt "block title"
+msgid "MyClub Group Calendar"
+msgstr "MyClub Gruppkalender"
+
+#: blocks/build/calendar/block.json blocks/src/calendar/block.json
+msgctxt "block description"
+msgid "Display calendar for a selected group"
+msgstr "Visa kalendern för vald grupp"
+
+#: blocks/build/club-news/block.json blocks/src/club-news/block.json
+msgctxt "block title"
+msgid "MyClub Club News"
+msgstr "MyClub Föreningsnyheter"
+
+#: blocks/build/club-news/block.json blocks/src/club-news/block.json
+msgctxt "block description"
+msgid "Display news for the entire Club"
+msgstr "Visa föreningens nyheter"
+
+#: blocks/build/coming-games/block.json blocks/src/coming-games/block.json
+msgctxt "block title"
+msgid "MyClub Group Upcoming games"
+msgstr "MyClub kommande matcher"
+
+#: blocks/build/coming-games/block.json blocks/src/coming-games/block.json
+msgctxt "block description"
+msgid "Display upcoming games for a selected group"
+msgstr "Visa kommande matcher för vald grupp"
+
+#: blocks/build/leaders/block.json blocks/src/leaders/block.json
+msgctxt "block title"
+msgid "MyClub Group Leaders"
+msgstr "MyClub Gruppledare"
+
+#: blocks/build/leaders/block.json blocks/src/leaders/block.json
+msgctxt "block description"
+msgid "Display leaders for a selected group"
+msgstr "Visa ledare för vald grupp"
+
+#: blocks/build/members/block.json blocks/src/members/block.json
+msgctxt "block title"
+msgid "MyClub Group Members"
+msgstr "MyClub Gruppmedlemmar"
+
+#: blocks/build/members/block.json blocks/src/members/block.json
+msgctxt "block description"
+msgid "Display members for a selected group"
+msgstr "Visa medlemmar för vald grupp"
+
+#: blocks/build/menu/block.json blocks/src/menu/block.json
+msgctxt "block title"
+msgid "MyClub Groups Menu"
+msgstr "MyClub Gruppmeny"
+
+#: blocks/build/menu/block.json blocks/src/menu/block.json
+msgctxt "block description"
+msgid "Display the MyClub Group menu items"
+msgstr "Visa MyClub gruppmeny"
+
+#: blocks/build/navigation/block.json blocks/src/navigation/block.json
+msgctxt "block title"
+msgid "MyClub Group Navigation"
+msgstr "MyClub Gruppnavigation"
+
+#: blocks/build/navigation/block.json blocks/src/navigation/block.json
+msgctxt "block description"
+msgid "Display the MyClub group page navigation"
+msgstr "Visa MyClub navigation för gruppsidor"
+
+#: blocks/build/news/block.json blocks/src/news/block.json
+msgctxt "block title"
+msgid "MyClub Group News"
+msgstr "MyClub Gruppnyheter"
+
+#: blocks/build/news/block.json blocks/src/news/block.json
+msgctxt "block description"
+msgid "Display news for a selected group"
+msgstr "Visa nyheter för vald grupp"
+
+#: blocks/build/title/block.json blocks/src/title/block.json
+msgctxt "block title"
+msgid "MyClub Group Title"
+msgstr "MyClub Grupptitel"
+
+#: blocks/build/title/block.json blocks/src/title/block.json
+msgctxt "block description"
+msgid "Display title for a selected group"
+msgstr "Visa titelfältet för vald grupp"
+
+#~ msgid "Dismiss this notice."
+#~ msgstr "Avfärda denna notis."
 
 #~ msgid "Groups Menu"
 #~ msgstr "Gruppmeny"
-
-#~ msgid ""
-#~ "Retrieves group information from the MyClub member administration "
-#~ "platform. Generates pages for groups defined in the MyClub member "
-#~ "administration platform."
-#~ msgstr ""
-#~ "Hämtar gruppinformation från MyClub medlemssystem. Skapar sidor för de "
-#~ "grupper som finns i MyClub medlemshantering."
