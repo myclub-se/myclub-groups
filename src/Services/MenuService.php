@@ -53,12 +53,16 @@ class MenuService extends Groups
         $this->loadCurrentMenus();
 
         // Load menu items from member backend
-        $menuItems = $this->api->loadMenuItems()->result;
+        $response = $this->api->loadMenuItems();
 
-        if ( $this->menuItemsExist( $menuItems ) && $this->menu ) {
-            $this->addMenus( 0, $menuItems );
+        if ( $response->status === 200 ) {
+            $menuItems = $response->result;
 
-            $this->deleteUnusedMenus();
+            if ( $this->menuItemsExist( $menuItems ) && $this->menu ) {
+                $this->addMenus( 0, $menuItems );
+
+                $this->deleteUnusedMenus();
+            }
         }
     }
 

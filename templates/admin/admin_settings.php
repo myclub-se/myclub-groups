@@ -56,10 +56,10 @@
     <?php if ( in_array( $active_tab, [ 'tab1', 'tab2', 'tab3' ] ) ) { ?>
         <div>
             <?php if( $active_tab === 'tab1' ) { ?>
-            <button type="button" id="myclub-reload-groups-button"
+                <button type="button" id="myclub-reload-news-button"
+                        class="button"><?= __( 'Reload news', 'myclub-groups' ) ?></button>
+                <button type="button" id="myclub-reload-groups-button"
                     class="button"><?= __( 'Reload groups', 'myclub-groups' ) ?></button>
-            <button type="button" id="myclub-reload-news-button"
-                    class="button"><?= __( 'Reload news', 'myclub-groups' ) ?></button>
             <?php }
             submit_button( __( 'Save Changes' ), 'primary', 'save', false ); ?>
         </div>

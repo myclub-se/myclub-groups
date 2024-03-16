@@ -2,6 +2,7 @@
 
 namespace MyClub\MyClubGroups\Services;
 
+use MyClub\MyClubGroups\Api\RestApi;
 use stdClass;
 use WP_Query;
 
@@ -12,6 +13,43 @@ use WP_Query;
  */
 class Groups
 {
+    /**
+     * Retrieves an array of all group IDs from the MyClub backend.
+     *
+     * @return stdClass An object with an array of ids and a success flag.
+     */
+    protected function getAllGroupIds(): stdClass
+    {
+        $api = new RestApi();
+
+        $returnValue = new stdClass();
+        $returnValue->ids = [];
+        $returnValue->success = true;
+
+        // Load menuItems items from member backend
+        $response = $api->loadMenuItems();
+
+        if ( $response->status === 200 ) {
+            $menuItems = $response->result;
+
+            $returnValue->ids = $this->getGroupIds( $menuItems, [] );
+        } else {
+            $returnValue->success = false;
+        }
+
+        $response = $api->loadOtherTeams();
+        if ( $response->status === 200 ) {
+            $otherTeams = $response->result->results;
+            foreach ( $otherTeams as $otherTeam ) {
+                $returnValue->ids[] = $otherTeam->id;
+            }
+        } else {
+            $returnValue->success = false;
+        }
+
+        return $returnValue;
+    }
+
     /**
      * Retrieves the IDs of the teams in a menu and its child menus recursively.
      *
@@ -47,11 +85,12 @@ class Groups
      *
      * @return int|false The ID of the group post if found, false otherwise.
      */
-    protected function getGroupPostId( string $myclubGroupId ) {
-        $args = array(
-            'post_type'  => 'myclub-groups',
-            'meta_query' => array(
-                array(
+    protected function getGroupPostId( string $myclubGroupId )
+    {
+        $args = array (
+            'post_type'      => 'myclub-groups',
+            'meta_query'     => array (
+                array (
                     'key'     => 'myclubGroupId',
                     'value'   => $myclubGroupId,
                     'compare' => '=',
@@ -62,7 +101,7 @@ class Groups
 
         $query = new WP_Query( $args );
 
-        if( $query->have_posts() ) {
+        if ( $query->have_posts() ) {
             return $query->posts[ 0 ]->ID;
         } else {
             return false;
@@ -79,8 +118,12 @@ class Groups
      */
     protected function menuItemsExist( $menuItems ): bool
     {
-        if ( ( property_exists( $menuItems, 'teams' ) && count( $menuItems->teams ) ) || ( property_exists( $menuItems, 'child_menus' ) && count( $menuItems->child_menus ) ) ) {
-            return true;
+        if ( !empty ( $menuItems ) ) {
+            if ( ( property_exists( $menuItems, 'teams' ) && count( $menuItems->teams ) ) || ( property_exists( $menuItems, 'child_menus' ) && count( $menuItems->child_menus ) ) ) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

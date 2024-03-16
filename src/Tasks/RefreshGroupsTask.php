@@ -28,10 +28,10 @@ class RefreshGroupsTask extends WP_Background_Process {
      * Refreshes a group page for the group id sent to the method.
      *
      * @param mixed $item The data to be used by the task.
-     * @return mixed returns false to indicate that no further processing is required.
+     * @return bool returns false to indicate that no further processing is required.
      * @since 1.0.0
      */
-    protected function task( $item ) {
+    protected function task( $item ): bool {
         $service = new GroupService();
         $service->updateGroupPage( $item );
         return false;

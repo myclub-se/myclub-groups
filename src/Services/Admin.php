@@ -3,7 +3,6 @@
 namespace MyClub\MyClubGroups\Services;
 
 use MyClub\MyClubGroups\Api\RestApi;
-use MyClub\MyClubGroups\Tasks\RefreshGroupsTask;
 use MyClub\MyClubGroups\Utils;
 use WP_Query;
 
@@ -72,6 +71,8 @@ class Admin extends Base
         ], 10, 2 );
 
         add_action( 'wp_dashboard_setup', [ $this, 'setupDashboardWidget' ] );
+
+        add_filter("plugin_action_links_myclub-groups/myclub-groups.php", [ $this, 'addPluginSettingsLink' ] );
     }
 
     /**
@@ -389,6 +390,13 @@ class Admin extends Base
             $this,
             'renderShowItemsOrder'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_show_items_order' ] );
+    }
+
+    public function addPluginSettingsLink( $links )
+    {
+        $settings_link = '<a href="options-general.php?page=myclub-groups-settings">' . __( 'Settings' ) . '</a>';
+        array_push($links, $settings_link);
+        return $links;
     }
 
     /**
@@ -1146,8 +1154,8 @@ class Admin extends Base
      */
     public function updateApiKey()
     {
-        $process = new RefreshGroupsTask();
-        $process->push_to_queue( [] )->save()->dispatch();
+        $service = new GroupService();
+        $service->reloadGroups();
     }
 
     /**

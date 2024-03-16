@@ -6,6 +6,7 @@ use DateTime;
 use DateTimeZone;
 use Exception;
 use MyClub\MyClubGroups\Api\RestApi;
+use MyClub\MyClubGroups\Tasks\ImageTask;
 use MyClub\MyClubGroups\Tasks\RefreshNewsTask;
 use MyClub\MyClubGroups\Utils;
 use WP_Query;
@@ -58,10 +59,10 @@ class NewsService extends Groups
      */
     public function deleteAllNews()
     {
-        $args = array(
-            'post_type'  => 'post',
-            'meta_query' => array(
-                array(
+        $args = array (
+            'post_type'      => 'post',
+            'meta_query'     => array (
+                array (
                     'key'     => 'myclubNewsId',
                     'compare' => 'EXISTS',
                 ),
@@ -96,17 +97,14 @@ class NewsService extends Groups
      */
     public function reloadNews()
     {
-        $api = new RestApi();
+        // Load menu items from member backend
+        $groups = $this->getAllGroupIds();
 
-        $menuItems = $api->loadMenuItems()->result;
-
-        if ( $this->menuItemsExist( $menuItems ) ) {
-            $ids = $this->getGroupIds( $menuItems, [] );
-
+        if ( $groups->success ) {
             $process = RefreshNewsTask::init();
             $process->push_to_queue( null );
 
-            foreach ( $ids as $id ) {
+            foreach ( $groups->ids as $id ) {
                 $process->push_to_queue( $id );
             }
 
@@ -196,7 +194,20 @@ class NewsService extends Groups
 
         $postId = $queryResults->have_posts() ? wp_update_post( $this->createNewsArgs( $newsItem, $queryResults->posts[ 0 ]->ID ) ) : wp_insert_post( $this->createNewsArgs( $newsItem ) );
 
-        Utils::addFeaturedImage( $postId, $newsItem->news_image, 'news_' . $newsItem->id );
+        if ( isset( $newsItem->news_image ) ) {
+            $imageTask = ImageTask::init();
+
+            $imageTask->push_to_queue(
+                wp_json_encode( array (
+                    'postId' => $postId,
+                    'type'   => 'news',
+                    'image'  => $newsItem->news_image,
+                    'newsId' => $newsItem->id
+                ), JSON_UNESCAPED_UNICODE )
+            );
+            $imageTask->save()->dispatch();
+        }
+
         $this->addDefaultCategory( $postId );
 
         if ( $myclubGroup ) {

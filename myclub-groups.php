@@ -14,6 +14,7 @@ License: GPL2
 
 use MyClub\MyClubGroups\Activation;
 use MyClub\MyClubGroups\Services;
+use MyClub\MyClubGroups\Tasks\ImageTask;
 use MyClub\MyClubGroups\Tasks\RefreshGroupsTask;
 use MyClub\MyClubGroups\Tasks\RefreshMenusTask;
 use MyClub\MyClubGroups\Tasks\RefreshNewsTask;
@@ -24,6 +25,7 @@ if ( file_exists( plugin_dir_path( __FILE__ ) . '/lib/autoload.php' ) ) {
     require_once( plugin_dir_path( __FILE__ ) . '/lib/autoload.php' );
 }
 
+ImageTask::init();
 RefreshGroupsTask::init();
 RefreshMenusTask::init();
 RefreshNewsTask::init();

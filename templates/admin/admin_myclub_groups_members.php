@@ -11,18 +11,26 @@ $members = json_decode( get_post_meta( get_the_ID(), 'members', true ) );
             <th><?php _e( 'Phone', 'myclub-groups' ) ?></th>
             <th><?php _e( 'Age', 'myclub-groups' ) ?></th>
         </tr>
-        <tr>
-            <td colspan="5" class="member-title"><?php _e( 'Members', 'myclub-groups' ) ?></td>
-        </tr>
-        <?php foreach ( $members->members as $member ) { ?>
+        <?php
+        if ( property_exists( $members, 'members' ) ) {
+            ?>
             <tr>
-                <td><?= $member->name ?></td>
-                <td><?= $member->role ?></td>
-                <td><?= $member->email ?></td>
-                <td><?= $member->phone ?></td>
-                <td><?= $member->age ?></td>
+                <td colspan="5" class="member-title"><?php _e( 'Members', 'myclub-groups' ) ?></td>
             </tr>
-        <?php } ?>
+        <?php
+            foreach ( $members->members as $member ) { ?>
+                <tr>
+                    <td><?= $member->name ?></td>
+                    <td><?= $member->role ?></td>
+                    <td><?= $member->email ?></td>
+                    <td><?= $member->phone ?></td>
+                    <td><?= $member->age ?></td>
+                </tr>
+            <?php }
+        }
+
+        if ( property_exists( $members, 'leaders' ) ) {
+        ?>
         <tr>
             <td colspan="5" class="member-title"><?php _e( 'Leaders', 'myclub-groups' ) ?></td>
         </tr>
@@ -34,6 +42,8 @@ $members = json_decode( get_post_meta( get_the_ID(), 'members', true ) );
                 <td><?= $leader->phone ?></td>
                 <td><?= $leader->age ?></td>
             </tr>
-        <?php } ?>
+        <?php }
+        }
+        ?>
     </table>
 </div>

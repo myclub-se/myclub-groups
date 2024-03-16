@@ -11,7 +11,9 @@ $activities = json_decode( get_post_meta( get_the_ID(), 'activities', true ) );
             <th><?php _e( 'End time', 'myclub-groups' ) ?></th>
             <th><?php _e( 'Location', 'myclub-groups' ) ?></th>
         </tr>
-        <?php foreach ( $activities as $activity ) { ?>
+        <?php
+        if ( !empty( $activities ) ) {
+        foreach ( $activities as $activity ) { ?>
             <tr>
                 <td><?= $activity->title . '(' . $activity->type . ')' ?></td>
                 <td><?= $activity->day ?></td>
@@ -19,6 +21,8 @@ $activities = json_decode( get_post_meta( get_the_ID(), 'activities', true ) );
                 <td><?= substr( $activity->end_time, 0, 5 ) ?></td>
                 <td><?= $activity->location ?></td>
             </tr>
-        <?php } ?>
+        <?php }
+        }
+        ?>
     </table>
 </div>

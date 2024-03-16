@@ -3,6 +3,7 @@
 namespace MyClub\MyClubGroups\Services;
 
 use MyClub\MyClubGroups\Api\RestApi;
+use MyClub\MyClubGroups\Tasks\ImageTask;
 use MyClub\MyClubGroups\Tasks\RefreshGroupsTask;
 use MyClub\MyClubGroups\Utils;
 use stdClass;
@@ -23,6 +24,7 @@ class GroupService extends Groups
     ];
 
     private $api;
+    private $imageTask;
 
     /**
      * Retrieves the content for a MyClub group post.
@@ -140,8 +142,8 @@ class GroupService extends Groups
      */
     public function deleteAllGroups()
     {
-        $args = array(
-            'post_type'  => 'myclub-groups',
+        $args = array (
+            'post_type'      => 'myclub-groups',
             'posts_per_page' => -1,
         );
 
@@ -167,12 +169,12 @@ class GroupService extends Groups
     public function reloadGroups()
     {
         // Load menu items from member backend
-        $groupIds = $this->getAllGroupIds();
+        $groups = $this->getAllGroupIds();
 
-        if ( $groupIds->success ) {
+        if ( $groups->success ) {
             $process = RefreshGroupsTask::init();
 
-            foreach ( $groupIds->ids as $id ) {
+            foreach ( $groups->ids as $id ) {
                 $process->push_to_queue( $id );
             }
 
@@ -208,8 +210,8 @@ class GroupService extends Groups
             // Check so that there are any posts that should be deleted.
             if ( count( $oldIds ) ) {
                 $args = array (
-                    'post_type'  => 'myclub-groups',
-                    'meta_query' => array (
+                    'post_type'      => 'myclub-groups',
+                    'meta_query'     => array (
                         array (
                             'key'     => 'myclubGroupId',
                             'value'   => $oldIds,
@@ -231,8 +233,26 @@ class GroupService extends Groups
         }
     }
 
-    public function updateGroupPage( $id )
+    /**
+     * Updates the group page in the database.
+     *
+     * Initializes the ImageTask object, retrieves the page template
+     * from the 'myclub_groups_page_template' option, and loads the group
+     * using the provided ID. If the response is successful, updates the
+     * existing group post if it exists, otherwise creates a new group post.
+     * If the update or insert is successful, processes the group image,
+     * adds members and activities to the group, updates the page template
+     * if the theme supports blocks, updates the 'lastUpdated' meta value,
+     * and saves the ImageTask queue and dispatches it.
+     *
+     * @param string $id The ID of the group.
+     * @return void
+     * @since 1.0.0
+     */
+    public function updateGroupPage( string $id )
     {
+        $this->imageTask = ImageTask::init();
+
         $pageTemplate = get_option( 'myclub_groups_page_template' );
         $response = $this->api->loadGroup( $id );
 
@@ -243,13 +263,24 @@ class GroupService extends Groups
             $postId = $postId ? wp_update_post( $this->createPostArgs( $group, $postId, $pageTemplate ) ) : wp_insert_post( $this->createPostArgs( $group, 0, $pageTemplate ) );
 
             if ( !is_wp_error( $postId ) ) {
-                Utils::addFeaturedImage( $postId, $group->team_image );
+                if ( isset( $group->team_image ) ) {
+                    $this->imageTask->push_to_queue(
+                        wp_json_encode( array (
+                            'postId'  => $postId,
+                            'type'    => 'group',
+                            'groupId' => $group->id,
+                            'image'   => $group->team_image
+                        ), JSON_UNESCAPED_UNICODE )
+                    );
+                }
                 $this->addMembers( $postId, $group );
                 $this->addActivities( $postId, $group );
                 if ( wp_is_block_theme() ) {
                     update_post_meta( $postId, '_wp_page_template', $pageTemplate );
                 }
                 update_post_meta( $postId, 'lastUpdated', date( "c" ) );
+
+                $this->imageTask->save()->dispatch();
             }
         }
     }
@@ -315,36 +346,38 @@ class GroupService extends Groups
             unset( $member->last_name );
 
             if ( isset( $member->member_image ) ) {
-                $url = $member->member_image->raw->url;
+                $this->imageTask->push_to_queue(
+                    wp_json_encode( array (
+                        'postId'     => $postId,
+                        'type'       => 'member',
+                        'memberId'   => $member->id,
+                        'memberType' => $member->is_leader ? 'leaders' : 'members',
+                        'image'      => $member->member_image
+                    ), JSON_UNESCAPED_UNICODE )
+                );
+            }
 
-                if ( in_array( $url, GroupService::DEFAULT_PICTURES ) ) {
-                    // Save non personal image (reuse image if present)
-                    $member->member_image = Utils::addImage( $member->member_image->raw->url );
-                } else {
-                    // Save image and save attachment id
-                    $member->member_image = Utils::addImage( $member->member_image->raw->url, $member->id . '_' );
-                }
+            unset( $member->member_image );
 
-                if ( $member->is_leader ) {
-                    $leaders[] = $member;
-                } else {
-                    $members[] = $member;
-                }
+            if ( $member->is_leader ) {
+                $leaders[] = $member;
+            } else {
+                $members[] = $member;
             }
         }
 
         array_multisort( array_column( $members, 'name' ), SORT_ASC, $members );
         array_multisort( array_column( $leaders, 'name' ), SORT_ASC, $leaders );
 
-        $member_json = wp_json_encode( [
-            'members' => $members,
-            'leaders' => $leaders
-        ], JSON_UNESCAPED_UNICODE );
-
-        if ( get_post_meta( $postId, 'members' ) ) {
-            update_post_meta( $postId, 'members', $member_json );
+        if ( metadata_exists( 'post', $postId, 'members' ) ) {
+            $this->updateMembers( $postId, $members, $leaders );
         } else {
-            add_post_meta( $postId, 'members', $member_json );
+            $memberJson = wp_json_encode( [
+                'members' => $members,
+                'leaders' => $leaders
+            ], JSON_UNESCAPED_UNICODE );
+
+            add_post_meta( $postId, 'members', $memberJson );
         }
     }
 
@@ -382,37 +415,63 @@ class GroupService extends Groups
     }
 
     /**
-     * Retrieves an array of all group IDs from the MyClub backend.
+     * Updates the members of a specific post.
+     * Retrieves the existing members from the post meta with the key 'members',
+     * maps them into an associative array called $mappedEntities,
+     * then updates the members and leaders with the provided $members and $leaders arrays.
+     * Finally, updates the post meta with the updated members data.
      *
-     * @return stdClass An object with an array of ids and a success flag.
+     * @param int $postId The ID of the post to update the member metadata for.
+     * @param array $members The loaded array of members.
+     * @param array $leaders The loaded array of leaders.
+     * @return void
+     * @since 1.0.0
      */
-    private function getAllGroupIds(): stdClass
+    private function updateMembers( int $postId, array $members, array $leaders )
     {
-        $returnValue = new stdClass();
-        $returnValue->ids = [];
-        $returnValue->success = true;
+        $metaJson = json_decode( get_post_meta( $postId, 'members', true ) );
+        $mappedEntities = [
+            'leaders' => [],
+            'members' => [],
+        ];
 
-        // Load menuItems items from member backend
-        $response = $this->api->loadMenuItems();
-
-        if ( $response->status === 200 ) {
-            $menuItems = $response->result;
-
-            $returnValue->ids = $this->getGroupIds( $menuItems, [] );
-        } else {
-            $returnValue->success = false;
-        }
-
-        $response = $this->api->loadOtherTeams();
-        if ( $response->status === 200 ) {
-            $otherTeams = $response->result->results;
-            foreach ( $otherTeams as $otherTeam ) {
-                $returnValue->ids[] = $otherTeam->id;
+        foreach ( $metaJson as $type => $entities ) {
+            foreach ( $entities as $entity ) {
+                $mappedEntities[ $type ][ $entity->id ] = $entity;
             }
-        } else {
-            $returnValue->success = false;
         }
 
-        return $returnValue;
+        $returnData = [
+            'members' => $this->updateMemberEntities( $members, $mappedEntities[ 'members' ] ),
+            'leaders' => $this->updateMemberEntities( $leaders, $mappedEntities[ 'leaders' ] ),
+        ];
+
+        update_post_meta( $postId, 'members', wp_json_encode( $returnData, JSON_UNESCAPED_UNICODE ) );
+    }
+
+    /**
+     * Updates the member entities by mapping their member_image property
+     * based on the provided mapped entities.
+     *
+     * Iterates over the given entities and checks if the mappedEntities array
+     * contains a member_image property for each entity. If a member_image property
+     * is found, the corresponding entity's member_image property gets updated with
+     * the mapped value.
+     *
+     * @param array $entities The array of member entities to update.
+     * @param array $mappedEntities The array of mapped entities containing the
+     *                              member_image property.
+     * @return array The updated array of member entities.
+     * @since 1.0.0
+     */
+    private function updateMemberEntities( array $entities, array $mappedEntities ): array
+    {
+        foreach ( $entities as $entity ) {
+            if ( isset( $mappedEntities[ $entity->id ]->member_image ) ) {
+                $entity->member_image = $mappedEntities[ $entity->id ]->member_image;
+            }
+        }
+
+        return $entities;
     }
 }
