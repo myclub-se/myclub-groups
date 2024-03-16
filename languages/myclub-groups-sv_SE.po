@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/myclub-groups\n"
-"POT-Creation-Date: 2024-03-16T16:33:13+00:00\n"
-"PO-Revision-Date: 2024-03-16 17:37+0100\n"
+"POT-Creation-Date: 2024-03-16T17:18:15+00:00\n"
+"PO-Revision-Date: 2024-03-16 18:18+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -162,6 +162,8 @@ msgstr "Inga kommande matcher"
 #: blocks/build/leaders/render.php:19 blocks/build/members/render.php:18
 #: blocks/src/leaders/render.php:19 blocks/src/members/render.php:18
 #: templates/admin/admin_myclub_groups_members.php:12
+#: blocks/build/leaders/index.js:1 blocks/build/members/index.js:1
+#: blocks/src/leaders/edit.js:27 blocks/src/members/edit.js:27
 msgid "Age"
 msgstr "Ålder"
 
@@ -169,13 +171,17 @@ msgstr "Ålder"
 #: blocks/build/title/render.php:37 blocks/src/leaders/render.php:20
 #: blocks/src/members/render.php:19 blocks/src/title/render.php:37
 #: templates/admin/admin_myclub_groups_members.php:10
-#: blocks/build/title/index.js:1 blocks/src/title/edit.js:99
+#: blocks/build/leaders/index.js:1 blocks/build/members/index.js:1
+#: blocks/build/title/index.js:1 blocks/src/leaders/edit.js:28
+#: blocks/src/members/edit.js:28 blocks/src/title/edit.js:99
 msgid "E-mail"
 msgstr "E-post"
 
 #: blocks/build/leaders/render.php:21 blocks/build/members/render.php:20
 #: blocks/src/leaders/render.php:21 blocks/src/members/render.php:20
 #: templates/admin/admin_myclub_groups_members.php:9
+#: blocks/build/leaders/index.js:1 blocks/build/members/index.js:1
+#: blocks/src/leaders/edit.js:26 blocks/src/members/edit.js:26
 msgid "Role"
 msgstr "Roll"
 
@@ -517,7 +523,7 @@ msgstr "Grupper"
 #: blocks/build/members/index.js:1 blocks/build/navigation/index.js:1
 #: blocks/build/news/index.js:1 blocks/build/title/index.js:1
 #: blocks/src/calendar/edit.js:263 blocks/src/coming-games/edit.js:34
-#: blocks/src/leaders/edit.js:103 blocks/src/members/edit.js:100
+#: blocks/src/leaders/edit.js:119 blocks/src/members/edit.js:116
 #: blocks/src/navigation/edit.js:33 blocks/src/news/edit.js:33
 #: blocks/src/title/edit.js:67
 msgid "Group"
@@ -541,6 +547,8 @@ msgstr "Sluttid"
 
 #: templates/admin/admin_myclub_groups_members.php:11
 #: templates/admin/admin_myclub_groups_metabox_tabs.php:68
+#: blocks/build/leaders/index.js:1 blocks/build/members/index.js:1
+#: blocks/src/leaders/edit.js:29 blocks/src/members/edit.js:29
 msgid "Phone"
 msgstr "Telefon"
 
@@ -807,8 +815,8 @@ msgstr "Kunde inte ladda om nyheter"
 #: blocks/build/leaders/index.js:1 blocks/build/members/index.js:1
 #: blocks/build/navigation/index.js:1 blocks/build/news/index.js:1
 #: blocks/build/title/index.js:1 blocks/src/calendar/edit.js:54
-#: blocks/src/coming-games/edit.js:19 blocks/src/leaders/edit.js:21
-#: blocks/src/members/edit.js:21 blocks/src/navigation/edit.js:16
+#: blocks/src/coming-games/edit.js:19 blocks/src/leaders/edit.js:22
+#: blocks/src/members/edit.js:22 blocks/src/navigation/edit.js:16
 #: blocks/src/news/edit.js:17 blocks/src/title/edit.js:33
 msgid "Select a group"
 msgstr "Välj en grupp"
@@ -817,8 +825,8 @@ msgstr "Välj en grupp"
 #: blocks/build/leaders/index.js:1 blocks/build/members/index.js:1
 #: blocks/build/navigation/index.js:1 blocks/build/news/index.js:1
 #: blocks/build/title/index.js:1 blocks/src/calendar/edit.js:260
-#: blocks/src/coming-games/edit.js:30 blocks/src/leaders/edit.js:99
-#: blocks/src/members/edit.js:96 blocks/src/navigation/edit.js:29
+#: blocks/src/coming-games/edit.js:30 blocks/src/leaders/edit.js:115
+#: blocks/src/members/edit.js:112 blocks/src/navigation/edit.js:29
 #: blocks/src/news/edit.js:29 blocks/src/title/edit.js:63
 msgid "Content settings"
 msgstr "Innehållsinställningar"
@@ -829,11 +837,11 @@ msgstr "Innehållsinställningar"
 msgid "No group selected"
 msgstr "Ingen grupp vald"
 
-#: blocks/build/leaders/index.js:1 blocks/src/leaders/edit.js:93
+#: blocks/build/leaders/index.js:1 blocks/src/leaders/edit.js:109
 msgid "No groups with leaders selected"
 msgstr "Ingen grupp med ledare vald"
 
-#: blocks/build/members/index.js:1 blocks/src/members/edit.js:90
+#: blocks/build/members/index.js:1 blocks/src/members/edit.js:106
 msgid "No members found"
 msgstr "Ingen grupp med medlemmar vald"
 
@@ -926,6 +934,11 @@ msgstr "MyClub Grupptitel"
 msgctxt "block description"
 msgid "Display title for a selected group"
 msgstr "Visa titelfältet för vald grupp"
+
+#, fuzzy
+#~| msgid "E-mail"
+#~ msgid "Email"
+#~ msgstr "E-post"
 
 #~ msgid "Dismiss this notice."
 #~ msgstr "Avfärda denna notis."

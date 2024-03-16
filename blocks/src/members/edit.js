@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from '@wordpress/element';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, PanelRow, SelectControl, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import {changeHostName, getMyClubGroups, setHeight} from "../shared/edit-functions";
+import {changeHostName, closeModal, getMyClubGroups, setHeight, showMemberModal} from "../shared/edit-functions";
 
 /**
  * The edit function required to handle the members component. Adds a settings field to choose the post to render
@@ -16,10 +16,17 @@ export default function Edit( { attributes, setAttributes } ) {
 	const [memberTitle, setMemberTitle] = useState(__( 'Members', 'myclub-groups' ) );
 	let memberOutput;
 	const {apiFetch} = wp;
+	const modalRef = useRef(null);
 	const ref = useRef(null);
 	const selectPostLabel = {
 		label: __( 'Select a group', 'myclub-groups' ),
 		value: ''
+	};
+	const labels = {
+		role: __( 'Role', 'myclub-groups' ),
+		age: __( 'Age', 'myclub-groups' ),
+		email: __( 'E-mail', 'myclub-groups' ),
+		phone: __( 'Phone', 'myclub-groups' )
 	};
 
 	useEffect(() => {
@@ -74,31 +81,40 @@ export default function Edit( { attributes, setAttributes } ) {
 				<div ref={ref} className="members-list">
 					{postMembers.members.slice(0, 8).map((member) => {
 						return (
-							<div className="member">
+							<div className="member" onClick={() => showMemberModal(modalRef, member, labels)}>
 								<div className="member-picture">
-									<img src={ changeHostName( member.member_image.url ) } alt={ member.name } />
+									<img src={changeHostName(member.member_image.url)} alt={member.name}/>
 								</div>
 								<div className="member-name">
-									{ member.name }
+									{member.name}
 								</div>
 							</div>
 						)
 					})}
 				</div>
+				<div className="member-modal" ref={modalRef}>
+					<div className="modal-content">
+						<span className="close" onClick={() => closeModal(modalRef)}>&times;</span>
+						<div className="modal-body">
+							<div className="image"></div>
+							<div className="information"></div>
+						</div>
+					</div>
+				</div>
 			</div>
 	} else {
-		memberOutput = <div>{ __( 'No members found', 'myclub-groups' ) }</div>
+		memberOutput = <div>{__('No members found', 'myclub-groups')}</div>
 	}
 
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={ __( 'Content settings', 'myclub-groups' ) }>
+				<PanelBody title={__('Content settings', 'myclub-groups')}>
 					<PanelRow>
-						{ posts.length ?
-						<SelectControl
-							label={ __('Group', 'myclub-groups') }
-							value={ attributes.postId }
+						{posts.length ?
+							<SelectControl
+								label={__('Group', 'myclub-groups')}
+								value={attributes.postId }
 							options={ posts }
 							onChange={ ( value ) => {
 								setAttributes({postId: value});

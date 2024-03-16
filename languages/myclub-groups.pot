@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-03-16T16:33:13+00:00\n"
+"POT-Creation-Date: 2024-03-16T17:18:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: myclub-groups\n"
@@ -204,6 +204,10 @@ msgstr ""
 #: blocks/src/leaders/render.php:19
 #: blocks/src/members/render.php:18
 #: templates/admin/admin_myclub_groups_members.php:12
+#: blocks/build/leaders/index.js:1
+#: blocks/build/members/index.js:1
+#: blocks/src/leaders/edit.js:27
+#: blocks/src/members/edit.js:27
 msgid "Age"
 msgstr ""
 
@@ -214,7 +218,11 @@ msgstr ""
 #: blocks/src/members/render.php:19
 #: blocks/src/title/render.php:37
 #: templates/admin/admin_myclub_groups_members.php:10
+#: blocks/build/leaders/index.js:1
+#: blocks/build/members/index.js:1
 #: blocks/build/title/index.js:1
+#: blocks/src/leaders/edit.js:28
+#: blocks/src/members/edit.js:28
 #: blocks/src/title/edit.js:99
 msgid "E-mail"
 msgstr ""
@@ -224,6 +232,10 @@ msgstr ""
 #: blocks/src/leaders/render.php:21
 #: blocks/src/members/render.php:20
 #: templates/admin/admin_myclub_groups_members.php:9
+#: blocks/build/leaders/index.js:1
+#: blocks/build/members/index.js:1
+#: blocks/src/leaders/edit.js:26
+#: blocks/src/members/edit.js:26
 msgid "Role"
 msgstr ""
 
@@ -584,8 +596,8 @@ msgstr ""
 #: blocks/build/title/index.js:1
 #: blocks/src/calendar/edit.js:263
 #: blocks/src/coming-games/edit.js:34
-#: blocks/src/leaders/edit.js:103
-#: blocks/src/members/edit.js:100
+#: blocks/src/leaders/edit.js:119
+#: blocks/src/members/edit.js:116
 #: blocks/src/navigation/edit.js:33
 #: blocks/src/news/edit.js:33
 #: blocks/src/title/edit.js:67
@@ -610,6 +622,10 @@ msgstr ""
 
 #: templates/admin/admin_myclub_groups_members.php:11
 #: templates/admin/admin_myclub_groups_metabox_tabs.php:68
+#: blocks/build/leaders/index.js:1
+#: blocks/build/members/index.js:1
+#: blocks/src/leaders/edit.js:29
+#: blocks/src/members/edit.js:29
 msgid "Phone"
 msgstr ""
 
@@ -777,8 +793,8 @@ msgstr ""
 #: blocks/build/title/index.js:1
 #: blocks/src/calendar/edit.js:54
 #: blocks/src/coming-games/edit.js:19
-#: blocks/src/leaders/edit.js:21
-#: blocks/src/members/edit.js:21
+#: blocks/src/leaders/edit.js:22
+#: blocks/src/members/edit.js:22
 #: blocks/src/navigation/edit.js:16
 #: blocks/src/news/edit.js:17
 #: blocks/src/title/edit.js:33
@@ -794,8 +810,8 @@ msgstr ""
 #: blocks/build/title/index.js:1
 #: blocks/src/calendar/edit.js:260
 #: blocks/src/coming-games/edit.js:30
-#: blocks/src/leaders/edit.js:99
-#: blocks/src/members/edit.js:96
+#: blocks/src/leaders/edit.js:115
+#: blocks/src/members/edit.js:112
 #: blocks/src/navigation/edit.js:29
 #: blocks/src/news/edit.js:29
 #: blocks/src/title/edit.js:63
@@ -812,12 +828,12 @@ msgid "No group selected"
 msgstr ""
 
 #: blocks/build/leaders/index.js:1
-#: blocks/src/leaders/edit.js:93
+#: blocks/src/leaders/edit.js:109
 msgid "No groups with leaders selected"
 msgstr ""
 
 #: blocks/build/members/index.js:1
-#: blocks/src/members/edit.js:90
+#: blocks/src/members/edit.js:106
 msgid "No members found"
 msgstr ""
 
