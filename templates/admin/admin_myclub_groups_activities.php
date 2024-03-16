@@ -15,7 +15,7 @@ $activities = json_decode( get_post_meta( get_the_ID(), 'activities', true ) );
         if ( !empty( $activities ) ) {
         foreach ( $activities as $activity ) { ?>
             <tr>
-                <td><?= $activity->title . '(' . $activity->type . ')' ?></td>
+                <td><?= $activity->title . ' (' . $activity->type . ')' ?></td>
                 <td><?= $activity->day ?></td>
                 <td><?= substr( $activity->start_time, 0, 5 ) ?></td>
                 <td><?= substr( $activity->end_time, 0, 5 ) ?></td>

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-13 13:17+0100\n"
-"PO-Revision-Date: 2024-03-13 13:17+0100\n"
+"PO-Revision-Date: 2024-03-16 17:24+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -548,7 +548,7 @@ msgstr "Standardinformation"
 #: templates/admin/admin_myclub_groups_metabox_tabs.php:57
 #: templates/admin/admin_myclub_groups_metabox_tabs.php:71
 msgid "Other information"
-msgstr "Övriginformation"
+msgstr "Övrig information"
 
 #: templates/admin/admin_myclub_groups_metabox_tabs.php:59
 msgid "Activities"

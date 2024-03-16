@@ -43,11 +43,11 @@ table.members-table, table.activities-table {
 }
 
 table.members-table td, table.members-table th, table.activities-table td, table.activities-table th {
-    padding: 2px 4px;
+    padding: 4px 8px;
 }
 
 table.members-table td, table.activities-table td {
-    border-right: 1px solid #aaa;
+    border-right: 1px solid #ddd;
 }
 
 table.members-table td:last-child, table.activities-table td:last-child {
