@@ -2,9 +2,9 @@
 
 use MyClub\MyClubGroups\Utils;
 
-function renderMetaDataDate( $post, $label, $name )
+function render_meta_data_date( $post, $label, $name )
 {
-    $value = Utils::formatDateTime( get_post_meta( $post, $name, true ) );
+    $value = Utils::format_date_time( get_post_meta( $post, $name, true ) );
 
     echo '<div class="metadata-wrap">';
     echo '<p class="post-attributes-label-wrapper">';
@@ -19,7 +19,7 @@ function renderMetaDataDate( $post, $label, $name )
  *
  * @return void
  */
-function renderMetaDataText( $post, $label, $name )
+function render_meta_data_text( $post, $label, $name )
 {
     $value = get_post_meta( $post, $name, true );
 
@@ -36,7 +36,7 @@ function renderMetaDataText( $post, $label, $name )
  *
  * @return void
  */
-function renderMetaDataTextArea( $post, $label, $name )
+function render_meta_data_textarea( $post, $label, $name )
 {
     $value = get_post_meta( $post, $name, true );
 
@@ -61,18 +61,18 @@ $post = get_the_ID();
     <div id="myclub-tab1" class="tabs-panel">
 <?php
 // All of these fields are readonly and will not be saved on post save.
-renderMetaDataText( $post, __( 'MyClub group id', 'myclub-groups' ), 'myclubGroupId' );
-renderMetaDataDate( $post, __( 'Last updated', 'myclub-groups' ), 'lastUpdated' );
-renderMetaDataText( $post, __( 'Contact person', 'myclub-groups' ), 'contactName' );
-renderMetaDataText( $post, __( 'E-mail address', 'myclub-groups' ), 'email' );
-renderMetaDataText( $post, __( 'Phone', 'myclub-groups' ), 'phone' );
+render_meta_data_text( $post, __( 'MyClub group id', 'myclub-groups' ), 'myclub_group_id' );
+render_meta_data_date( $post, __( 'Last updated', 'myclub-groups' ), 'last_updated' );
+render_meta_data_text( $post, __( 'Contact person', 'myclub-groups' ), 'contact_name' );
+render_meta_data_text( $post, __( 'E-mail address', 'myclub-groups' ), 'email' );
+render_meta_data_text( $post, __( 'Phone', 'myclub-groups' ), 'phone' );
 echo '</div>';
 echo '<div id="myclub-tab2" class="hidden tabs-panel">';
-renderMetaDataTextArea( $post, __( 'Other information', 'myclub-groups' ), 'infoText' );
+render_meta_data_textarea( $post, __( 'Other information', 'myclub-groups' ), 'info_text' );
 echo '</div>';
 echo '<div id="myclub-tab3" class="hidden tabs-panel">';
-require_once( $this->pluginPath . '/templates/admin/admin_myclub_groups_members.php' );
+require_once( $this->plugin_path . '/templates/admin/admin_myclub_groups_members.php' );
 echo '</div>';
 echo '<div id="myclub-tab4" class="hidden tabs-panel">';
-require_once( $this->pluginPath . '/templates/admin/admin_myclub_groups_activities.php' );
+require_once( $this->plugin_path . '/templates/admin/admin_myclub_groups_activities.php' );
 echo "</div></div>";

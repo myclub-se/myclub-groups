@@ -14,92 +14,112 @@ use MyClub\MyClubGroups\Services\NewsService;
  */
 class Activation
 {
-    private $options = [];
+    private array $options = [];
     
     public function __construct()
     {
         $this->options = [
             [
                 'name'  => 'myclub_groups_api_key',
-                'value' => null
+                'value' => null,
+                'autoload' => 'no',
             ],
             [
                 'name'  => 'myclub_groups_group_slug',
-                'value' => 'groups'
+                'value' => 'groups',
+                'autoload' => 'no',
             ],
             [
                 'name'  => 'myclub_groups_group_news_slug',
-                'value' => 'group-news'
+                'value' => 'group-news',
+                'autoload' => 'no',
             ],
             [
                 'name'  => 'myclub_groups_last_news_sync',
-                'value' => null
+                'value' => null,
+                'autoload' => 'no',
             ],
             [
                 'name'  => 'myclub_groups_last_groups_sync',
-                'value' => null
+                'value' => null,
+                'autoload' => 'no',
             ],
             [
                 'name'  => 'myclub_groups_calendar_title',
-                'value' => __( 'Calendar', 'myclub-groups' )
+                'value' => __( 'Calendar', 'myclub-groups' ),
+                'autoload' => 'yes',
             ],
             [
                 'name'  => 'myclub_groups_coming_games_title',
-                'value' => __( 'Upcoming games', 'myclub-groups' )
+                'value' => __( 'Upcoming games', 'myclub-groups' ),
+                'autoload' => 'yes',
             ],
             [
                 'name'  => 'myclub_groups_leaders_title',
-                'value' => __( 'Leaders', 'myclub-groups' )
+                'value' => __( 'Leaders', 'myclub-groups' ),
+                'autoload' => 'yes',
             ],
             [
                 'name'  => 'myclub_groups_members_title',
-                'value' => __( 'Members', 'myclub-groups' )
+                'value' => __( 'Members', 'myclub-groups' ),
+                'autoload' => 'yes',
             ],
             [
                 'name'  => 'myclub_groups_news_title',
-                'value' => __( 'News', 'myclub-groups' )
+                'value' => __( 'News', 'myclub-groups' ),
+                'autoload' => 'yes',
             ],
             [
                 'name'  => 'myclub_groups_page_template',
-                'value' => ''
+                'value' => '',
+                'autoload' => 'no',
             ],
             [
                 'name'  => 'myclub_groups_page_calendar',
-                'value' => '1'
+                'value' => '1',
+                'autoload' => 'no',
             ],
             [
                 'name'  => 'myclub_groups_page_navigation',
-                'value' => '1'
+                'value' => '1',
+                'autoload' => 'no',
             ],
             [
                 'name'  => 'myclub_groups_page_leaders',
-                'value' => '1'
+                'value' => '1',
+                'autoload' => 'no',
             ],
             [
                 'name'  => 'myclub_groups_page_menu',
-                'value' => '1'
+                'value' => '1',
+                'autoload' => 'no',
             ],
             [
                 'name'  => 'myclub_groups_page_news',
-                'value' => '1'
+                'value' => '1',
+                'autoload' => 'no',
             ],
             [
                 'name'  => 'myclub_groups_page_title',
-                'value' => '1'
+                'value' => '1',
+                'autoload' => 'no',
             ],
             [
                 'name'  => 'myclub_groups_page_picture',
-                'value' => '1'
+                'value' => '1',
+                'autoload' => 'no',
             ],
             [
                 'name'  => 'myclub_groups_page_coming_games',
-                'value' => '1'
+                'value' => '1',
+                'autoload' => 'no',
             ],
             [
                 'name'  => 'myclub_groups_show_items_order',
                 'value' => array (
                     'default',
-                )
+                ),
+                'autoload' => 'no',
             ]
         ];
     }
@@ -117,7 +137,7 @@ class Activation
     public function activate()
     {
         foreach ( $this->options as $option ) {
-            $this->addOption( $option[ 'name' ], $option[ 'value' ]);
+            $this->addOption( $option[ 'name' ], $option[ 'value' ], $option[ 'autoload' ] );
         }
     }
 
@@ -136,7 +156,13 @@ class Activation
     }
 
     /**
+     * Uninstalls the plugin.
+     *
+     * This method is responsible for deleting all the plugin options, deleting all news,
+     * menus, and groups associated with the plugin.
+     *
      * @return void
+     * @since 1.0.0
      */
     public function uninstall()
     {
@@ -146,13 +172,13 @@ class Activation
         }
 
         $newsService = new NewsService();
-        $newsService->deleteAllNews();
+        $newsService->delete_all_news();
 
         $menuService = new MenuService();
-        $menuService->deleteAllMenus();
+        $menuService->delete_all_menus();
 
         $groupsService = new GroupService();
-        $groupsService->deleteAllGroups();
+        $groupsService->delete_all_groups();
     }
 
 
@@ -161,12 +187,13 @@ class Activation
      *
      * @param string $optionName The name of the option.
      * @param mixed $default The default value for the option.
+     * @param string|null $autoload Sets if the option should be loaded.
      *
      * @return void
      */
-    private function addOption( string $optionName, $default) {
+    private function addOption( string $optionName, $default, string $autoload ) {
         if ( get_option( $optionName ) === false ) {
-            add_option( $optionName, $default );
+            add_option( $optionName, $default, null, $autoload );
         }
     }
 }

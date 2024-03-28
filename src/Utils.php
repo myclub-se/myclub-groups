@@ -16,43 +16,43 @@ class Utils
     /**
      * Add a featured image to a post in the WordPress database.
      *
-     * @param int $postId The ID of the post to add the featured image to.
+     * @param int $post_id The ID of the post to add the featured image to.
      * @param object|null $image The image information object. Should contain 'raw' property with 'url' property.
      * @param string $prefix Optional. The prefix to be added to the image URL before adding it to the database. Default is an empty string.
      *
      * @return void
      * @since 1.0.0
      */
-    static function addFeaturedImage( int $postId, $image, string $prefix = '' )
+    static function add_featured_image( int $post_id, $image, string $prefix = '' )
     {
-        $attachmentId = null;
+        $attachment_id = null;
 
         if ( isset( $image ) ) {
-            $attachment = Utils::addImage( $image->raw->url, $prefix );
+            $attachment = Utils::add_image( $image->raw->url, $prefix );
             if ( isset( $attachment ) ) {
-                $attachmentId = $attachment[ 'id' ];
+                $attachment_id = $attachment[ 'id' ];
             }
         }
 
-        if ( $attachmentId !== null && ( (int)get_post_meta( $postId, '_thumbnail_id', true ) ) !== $attachmentId ) {
-            set_post_thumbnail( $postId, $attachmentId );
+        if ( $attachment_id !== null && ( (int)get_post_meta( $post_id, '_thumbnail_id', true ) ) !== $attachment_id ) {
+            set_post_thumbnail( $post_id, $attachment_id );
         }
     }
 
     /**
      * Add an image to the WordPress media library.
      *
-     * @param string $imageUrl The URL of the image to add.
+     * @param string $image_url The URL of the image to add.
      * @param string $prefix Optional. Prefix to be added to the image filename. Default is an empty string.
      *
      * @return array|null The attachment information of the attachment or null
      *
      * @since 1.0.0
      */
-    static function addImage( string $imageUrl, string $prefix = '' )
+    static function add_image( string $image_url, string $prefix = '' )
     {
-        $attachmentId = null;
-        $image = pathinfo( $imageUrl );
+        $attachment_id = null;
+        $image = pathinfo( $image_url );
 
         $name = sanitize_title( $prefix . urldecode( $image[ 'filename' ] ) );
         $filename = $name;
@@ -66,42 +66,42 @@ class Utils
             'name'           => $name
         );
 
-        $queryResults = new WP_Query( $args );
+        $query_results = new WP_Query( $args );
 
-        if ( !isset( $queryResults->posts, $queryResults->posts[ 0 ] ) ) {
+        if ( !isset( $query_results->posts, $query_results->posts[ 0 ] ) ) {
             require_once( ABSPATH . 'wp-admin/includes/file.php' );
 
             $file = [
                 'name'     => $filename,
-                'tmp_name' => download_url( $imageUrl )
+                'tmp_name' => download_url( $image_url )
             ];
 
             if ( !is_wp_error( $file[ 'tmp_name' ] ) ) {
-                $attachmentId = media_handle_sideload( $file );
+                $attachment_id = media_handle_sideload( $file );
 
-                if ( is_wp_error( $attachmentId ) ) {
+                if ( is_wp_error( $attachment_id ) ) {
                     @unlink( $file[ 'tmp_name' ] );
-                    $attachmentId = null;
+                    $attachment_id = null;
                 }
             }
         } else {
-            $attachmentId = $queryResults->posts[ 0 ]->ID;
+            $attachment_id = $query_results->posts[ 0 ]->ID;
         }
 
-        if ( $attachmentId !== null ) {
-            $imageUrl = null;
-            $imageSrcArray = wp_get_attachment_image_src( $attachmentId, 'medium' );
+        if ( $attachment_id !== null ) {
+            $image_url = null;
+            $image_src_array = wp_get_attachment_image_src( $attachment_id, 'medium' );
 
-            if ( $imageSrcArray ) {
-                $imageUrl = $imageSrcArray[ 0 ];
+            if ( $image_src_array ) {
+                $image_url = $image_src_array[ 0 ];
             }
 
             return [
-                'id' => $attachmentId,
-                'url' => $imageUrl
+                'id' => $attachment_id,
+                'url' => $image_url
             ];
         } else {
-            return $attachmentId;
+            return $attachment_id;
         }
     }
 
@@ -114,17 +114,17 @@ class Utils
      *
      * @since 1.0.0
      */
-    static function changeHostName( string $oldUrl ): string
+    static function change_host_name( string $oldUrl ): string
     {
-        $hostUrlParts = parse_url( home_url() );
-        $oldUrlParts = parse_url( $oldUrl );
+        $host_url_parts = parse_url( home_url() );
+        $old_url_parts = parse_url( $oldUrl );
 
-        $scheme = isset( $hostUrlParts[ 'scheme' ] ) ? $hostUrlParts[ 'scheme' ] . '://' : '';
-        $host = $hostUrlParts[ 'host' ];
+        $scheme = isset( $host_url_parts[ 'scheme' ] ) ? $host_url_parts[ 'scheme' ] . '://' : '';
+        $host = $host_url_parts[ 'host' ];
 
-        $port = isset( $oldUrlParts[ 'port' ] ) ? ':' . $oldUrlParts[ 'port' ] : '';
-        $path = isset( $oldUrlParts[ 'path' ] ) ? $oldUrlParts[ 'path' ] : '';
-        $query = isset( $oldUrlParts[ 'query' ] ) ? '?' . $oldUrlParts[ 'query' ] : '';
+        $port = isset( $old_url_parts[ 'port' ] ) ? ':' . $old_url_parts[ 'port' ] : '';
+        $path = isset( $old_url_parts[ 'path' ] ) ? $old_url_parts[ 'path' ] : '';
+        $query = isset( $old_url_parts[ 'query' ] ) ? '?' . $old_url_parts[ 'query' ] : '';
 
         return $scheme . $host . $port . $path . $query;
     }
@@ -132,20 +132,20 @@ class Utils
     /**
      * Delete a post and related attachments and metadata from the WordPress database.
      *
-     * @param int $postId The ID of the post to delete.
+     * @param int $post_id The ID of the post to delete.
      *
      * @return void
      * @since 1.0.0
      */
-    static function deletePost( int $postId )
+    static function delete_post( int $post_id )
     {
-        if ( has_post_thumbnail( $postId ) ) {
-            $attachmentId = get_post_thumbnail_id( $postId );
-            delete_post_thumbnail( $postId );
-            wp_delete_attachment( $attachmentId, true );
+        if ( has_post_thumbnail( $post_id ) ) {
+            $attachment_id = get_post_thumbnail_id( $post_id );
+            delete_post_thumbnail( $post_id );
+            wp_delete_attachment( $attachment_id, true );
         }
 
-        $meta = get_post_meta( $postId, 'members', true );
+        $meta = get_post_meta( $post_id, 'members', true );
 
         if ( $meta ) {
             $members = json_decode( $meta );
@@ -162,56 +162,69 @@ class Utils
             }
         }
 
-        wp_delete_post( $postId, true );
+        wp_delete_post( $post_id, true );
     }
 
     /**
      * Formats a given UTC time to the format specified in WordPress options.
      *
-     * @param string|int $utcTime The UTC time to format.
+     * @param string|int $utc_time The UTC time to format.
      *
      * @return string The formatted date/time string.
      * @since 1.0.0
      */
-    static function formatDateTime( $utcTime ): string
+    static function format_date_time( $utc_time ): string
     {
         try {
             // Retrieve the timezone string from WordPress options
-            $wpTimezone = get_option( 'timezone_string' );
+            $wp_timezone = get_option( 'timezone_string' );
 
             // Create DateTimeZone object for WordPress timezone
-            $timezone = new DateTimeZone( $wpTimezone );
+            $timezone = new DateTimeZone( $wp_timezone );
 
             // Create DateTime object for last sync, correct it to WordPress timezone
-            $dateTimeUtc = new DateTime( $utcTime, new DateTimeZone( 'UTC' ) );
-            $dateTimeUtc->setTimezone( $timezone );
+            $date_time_utc = new DateTime( $utc_time, new DateTimeZone( 'UTC' ) );
+            $date_time_utc->setTimezone( $timezone );
 
             // Format the date/time string according to your requirements
-            $formattedTime = $dateTimeUtc->format( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
+            $formatted_time = $date_time_utc->format( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
 
         } catch ( Exception $e ) {
-            $formattedTime = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $utcTime );
+            $formatted_time = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $utc_time );
         }
 
-        return $formattedTime;
+        return $formatted_time;
+    }
+
+    static function sanitize_array( array $array ): array
+    {
+        foreach( $array as $key => &$value ) {
+            if ( is_array( $value ) ) {
+                $value = Utils::sanitize_array( $value );
+            } else {
+                $value = sanitize_text_field( $value );
+            }
+        }
+
+        return $array;
     }
 
     /**
      * Update or create an option in the WordPress database.
      *
-     * @param string $optionName The name of the option to update or create.
+     * @param string $option_name The name of the option to update or create.
      * @param mixed $value The value to update or create the option with.
      * @param string $autoload Optional. Whether to autoload the option. Default is 'yes'.
      *
      * @return void
      * @since 1.0.0
      */
-    static function updateOrCreateOption( string $optionName, $value, string $autoload = 'yes' )
+    static function update_or_create_option( string $option_name, $value, string $autoload = 'yes' )
     {
-        if ( get_option( $optionName, 'non-existent' ) === 'non-existent' ) {
-            add_option( $optionName, $value, '', $autoload );
+        if ( get_option( $option_name, 'non-existent' ) === 'non-existent' ) {
+            add_option( $option_name, $value, '', $autoload );
         } else {
-            update_option( $optionName, $value );
+            update_option( $option_name, $value, $autoload );
         }
     }
 }

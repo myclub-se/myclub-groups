@@ -1,40 +1,59 @@
 .myclub-groups-navigation {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-	.myclub-groups-navigation-icons {
-		display: flex;
-		max-width: 840px;
-		flex-direction: row;
-		justify-content: space-evenly;
+  .myclub-groups-navigation-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 
-		a {
-			margin-right: 1rem;
-			margin-left: 1rem;
-			text-align: center;
+    .myclub-groups-navigation-icons {
+      display: flex;
+      max-width: 840px;
+      flex-direction: row;
+      justify-content: space-evenly;
 
-			img {
-				width: auto;
-				height: 1rem;
-			}
+      a {
+        margin-right: 1rem;
+        margin-left: 1rem;
+        text-align: center;
 
-			div {
-				display: none;
-			}
-		}
-	}
+        img {
+          width: auto;
+          height: 1rem;
+        }
+
+        div {
+          display: none;
+        }
+      }
+    }
+  }
 }
 
 @media (min-width: 996px) {
-	.myclub-groups-navigation {
-		.myclub-groups-navigation-icons {
-			a {
-				div {
-					display: block;
-				}
-			}
-		}
-	}
+  .myclub-groups-navigation {
+    .myclub-groups-navigation-container {
+      max-width: 996px;
+
+      .myclub-groups-navigation-icons {
+        a {
+          div {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .myclub-groups-navigation {
+    .myclub-groups-navigation-container {
+      max-width: 1200px;
+    }
+  }
 }

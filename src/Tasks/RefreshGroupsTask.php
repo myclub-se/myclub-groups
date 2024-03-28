@@ -33,20 +33,31 @@ class RefreshGroupsTask extends WP_Background_Process {
      */
     protected function task( $item ): bool {
         $service = new GroupService();
-        $service->updateGroupPage( $item );
+        $service->update_group_page( $item );
         return false;
     }
 
+    /**
+     * Performs actions to complete the task.
+     *
+     * This method extends the "complete" method from the parent class and
+     * performs additional actions to mark the task as complete. It removes
+     * any unused group pages, refreshes the menus, and updates the last
+     * groups sync option.
+     *
+     * @return void
+     * @since 1.0.0
+     */
     protected function complete()
     {
         parent::complete();
 
         $service = new GroupService();
-        $service->removeUnusedGroupPages();
+        $service->remove_unused_group_pages();
 
         $process = RefreshMenusTask::init();
         $process->push_to_queue([])->save()->dispatch();
 
-        Utils::updateOrCreateOption( 'myclub_groups_last_groups_sync', date( "c" ), 'no' );
+        Utils::update_or_create_option( 'myclub_groups_last_groups_sync', date( "c" ), 'no' );
     }
 }

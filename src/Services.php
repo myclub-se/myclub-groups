@@ -5,6 +5,7 @@ namespace MyClub\MyClubGroups;
 use MyClub\MyClubGroups\Services\Admin;
 use MyClub\MyClubGroups\Services\Api;
 use MyClub\MyClubGroups\Services\Blocks;
+use MyClub\MyClubGroups\Services\i18n;
 use MyClub\MyClubGroups\Services\Menu;
 use MyClub\MyClubGroups\Services\MyClubCron;
 use MyClub\MyClubGroups\Services\ShortCodes;
@@ -22,6 +23,7 @@ class Services
         Admin::class,
         Api::class,
         Blocks::class,
+        i18n::class,
         Menu::class,
         MyClubCron::class,
         ShortCodes::class,
@@ -37,7 +39,7 @@ class Services
      * @return void
      * @since 1.0.0
      */
-    public static function registerServices()
+    public static function register_services()
     {
         foreach ( self::SERVICES as $class ) {
             $service = new $class();

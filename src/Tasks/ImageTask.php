@@ -18,74 +18,114 @@ class ImageTask extends WP_Background_Process {
         return self::$instance;
     }
 
+    /**
+     * Create an image from an external link.
+     *
+     * @param mixed $item The image to be processed.
+     *
+     * @return bool Indicates whether the task should be processed further.
+     * @since 1.0.0
+     */
     protected function task ( $item ): bool
     {
-        $decodedItem = json_decode( $item );
+        $decoded_item = json_decode( $item );
 
-        if ( $decodedItem ) {
-            switch ( $decodedItem->type) {
-                case 'group':
-                    $this->addGroupImage( $decodedItem );
-                    break;
-                case 'member':
-                    $this->addMemberImage( $decodedItem );
-                    break;
-                case 'news':
-                    $this->addNewsImage( $decodedItem );
-                    break;
+        if ( property_exists( $decoded_item, 'post_id' ) && property_exists( $decoded_item, 'image' ) ) {
+            if ( $decoded_item ) {
+                switch ( $decoded_item->type ) {
+                    case 'group':
+                        $this->add_group_image( $decoded_item );
+                        break;
+                    case 'member':
+                        $this->add_member_image( $decoded_item );
+                        break;
+                    case 'news':
+                        $this->addNewsImage( $decoded_item );
+                        break;
+                }
             }
         }
 
         return false;
     }
 
-    private function addGroupImage( $item )
+    /**
+     * Adds a group image to the featured images of a post.
+     *
+     * @param object $item The item containing the necessary data for adding the image.
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    private function add_group_image( $item )
     {
-        Utils::addFeaturedImage( $item->postId, $item->image, 'group_' . $item->groupId . '_');
+        if ( property_exists( $item, 'group_id' ) ) {
+            Utils::add_featured_image( $item->post_id, $item->image, 'group_' . $item->group_id . '_');
+        }
     }
 
-    private function addMemberImage( $item )
+    /**
+     * Adds a member image to the specified member item.
+     *
+     * @param object $item The item containing the necessary data for adding the image.
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    private function add_member_image( $item )
     {
-        $memberItems = json_decode( get_post_meta( $item->postId, 'members', true ) );
-        $memberType = $item->memberType;
-        $members = $memberItems->$memberType;
-        $memberUpdated = false;
+        if ( property_exists( $item, 'member_id' ) ) {
+            $member_items = json_decode( get_post_meta( $item->post_id, 'members', true ) );
+            $member_type = $item->member_type;
+            $members = $member_items->$member_type;
+            $member_updated = false;
 
-        if ( isset( $members ) ) {
-            foreach ( $members as $member ) {
-                if ( $member->id === $item->memberId ) {
-                    $url = $item->image->raw->url;
+            if ( isset( $members ) ) {
+                foreach ( $members as $member ) {
+                    if ( $member->id === $item->member_id ) {
+                        $url = $item->image->raw->url;
 
-                    if ( in_array( $url, GroupService::DEFAULT_PICTURES ) ) {
-                        // Save non personal image (reuse image if present)
-                        $member_image = Utils::addImage( $url );
-                    } else {
-                        // Save image and save attachment id
-                        $member_image = Utils::addImage( $url, 'member_' . $member->id . '_' );
-                    }
-
-                    if ( !property_exists( $member, 'member_image' ) || ( $member->member_image->id !== $member_image[ 'id' ] ) ) {
-                        if( property_exists( $member, 'member_image' ) && isset( $member->member_image->id ) ) {
-                            wp_delete_attachment( $member->member_image->id );
+                        if ( in_array( $url, GroupService::DEFAULT_PICTURES ) ) {
+                            // Save non personal image (reuse image if present)
+                            $member_image = Utils::add_image( $url );
+                        } else {
+                            // Save image and save attachment id
+                            $member_image = Utils::add_image( $url, 'member_' . $member->id . '_' );
                         }
-                        $member->member_image = $member_image;
-                        $memberUpdated = true;
-                    }
 
-                    break;
+                        if ( !property_exists( $member, 'member_image' ) || ( $member->member_image->id !== $member_image[ 'id' ] ) ) {
+                            if ( property_exists( $member, 'member_image' ) && isset( $member->member_image->id ) ) {
+                                wp_delete_attachment( $member->member_image->id );
+                            }
+                            $member->member_image = $member_image;
+                            $member_updated = true;
+                        }
+
+                        break;
+                    }
                 }
             }
-        }
 
-        if ( $memberUpdated ) {
-            $memberItems->$memberType = $members;
-            update_post_meta( $item->postId, 'members', wp_json_encode( $memberItems, JSON_UNESCAPED_UNICODE ) );
+            if ( $member_updated ) {
+                $member_items->$member_type = $members;
+                update_post_meta( $item->post_id, 'members', wp_json_encode( $member_items, JSON_UNESCAPED_UNICODE ) );
+            }
         }
     }
 
+    /**
+     * Adds a news image to the specified news item.
+     *
+     * @param object $item The item containing the necessary data for adding the image.
+     *
+     * @return void
+     * @since 1.0.0
+     */
     private function addNewsImage( $item )
     {
-        Utils::addFeaturedImage( $item->postId, $item->image, 'news_' . $item->newsId . '_');
+        if ( property_exists( $item, 'news_id' ) ) {
+            Utils::add_featured_image( $item->post_id, $item->image, 'news_' . $item->news_id . '_' );
+        }
     }
 }
 

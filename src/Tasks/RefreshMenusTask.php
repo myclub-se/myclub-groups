@@ -37,7 +37,7 @@ class RefreshMenusTask extends WP_Background_Process
      */
     protected function task( $item ) {
         $service = new MenuService();
-        $service->refreshMenus();
+        $service->refresh_menus();
         return false;
     }
 }

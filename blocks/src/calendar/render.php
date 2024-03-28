@@ -1,11 +1,11 @@
 <?php
-$postId = $attributes[ 'postId' ] ?? null;
+$post_id = $attributes[ 'postId' ] ?? null;
 
-if ( empty( $postId ) ) {
-    $postId = get_the_ID();
+if ( empty( $post_id ) ) {
+    $post_id = get_the_ID();
 }
 
-$meta = get_post_meta( $postId, 'activities', true );
+$meta = get_post_meta( $post_id, 'activities', true );
 
 if ( !empty( $meta ) ) {
     $header = get_option( 'myclub_groups_calendar_title' );
@@ -83,10 +83,12 @@ if ( !empty( $meta ) ) {
     ?>
 
     <div class="myclub-groups-calendar" id="calendar">
-        <h3 class="myclub-groups-header"><?= $header ?></h3>
-        <div id="calendar-div"
-             data-events="<?= htmlspecialchars( json_encode( $events, JSON_UNESCAPED_UNICODE ), ENT_QUOTES, 'UTF-8' ) ?>"
-             data-labels="<?= htmlspecialchars( json_encode( $labels, JSON_UNESCAPED_UNICODE ), ENT_QUOTES, 'UTF-8' ) ?>"></div>
+        <div class="myclub-groups-calendar-container">
+            <h3 class="myclub-groups-header"><?= $header ?></h3>
+            <div id="calendar-div"
+                 data-events="<?= htmlspecialchars( json_encode( $events, JSON_UNESCAPED_UNICODE ), ENT_QUOTES, 'UTF-8' ) ?>"
+                 data-labels="<?= htmlspecialchars( json_encode( $labels, JSON_UNESCAPED_UNICODE ), ENT_QUOTES, 'UTF-8' ) ?>"></div>
+        </div>
         <div class="calendar-modal">
             <div class="modal-content">
                 <span class="close">&times;</span>

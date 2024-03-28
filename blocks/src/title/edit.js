@@ -39,9 +39,9 @@ export default function Edit( { attributes, setAttributes } ) {
 			apiFetch( { path: `/myclub/v1/groups/${attributes.postId}` } )
 				.then( ( post ) => {
 					setPostData( {
-						contactName: post.contactName,
+						contactName: post.contact_name,
 						email: post.email,
-						infoText: post.infoText,
+						infoText: post.info_text,
 						phone: post.phone,
 						title: post.title
 					} );
@@ -77,29 +77,31 @@ export default function Edit( { attributes, setAttributes } ) {
 			<div { ...useBlockProps() }>
 				{postData?.title ?
 					<div className="myclub-groups-title">
-						<div className="myclub-groups-title-box">
-							{ showImage && featuredImage !== 0 && featuredImage?.source_url &&
-							<div className="myclub-groups-title-image">
-								<img src={mediumImage ? mediumImage : featuredImage?.source_url} alt={postData?.title}/>
-							</div>}
-							<div className="myclub-groups-title-information">
-								<div className={`myclub-groups-title-name ${postData?.infoText ? 'with-info-text' : ''}`}>{postData?.title}</div>
-								{postData?.infoText && <div className="myclub-groups-info-text">
-									{postData.infoText}
+						<div className="myclub-groups-title-container">
+							<div className="myclub-groups-title-box">
+								{ showImage && featuredImage !== 0 && featuredImage?.source_url &&
+								<div className="myclub-groups-title-image">
+									<img src={mediumImage ? mediumImage : featuredImage?.source_url} alt={postData?.title}/>
 								</div>}
-								{postData?.contactName && <div className="myclub-groups-information">
-									<div className="label">{__('Contact person', 'myclub-groups')}</div>
-									<div className="value">{postData.contactName}</div>
-								</div>}
-								{postData?.phone && <div className="myclub-groups-information">
-									<div className="label">{__('Telephone', 'myclub-groups')}</div>
-									<div className="value"><a href={`tel:${postData.phone}`}>{postData.phone}</a></div>
-								</div>}
-								{postData?.email && <div className="myclub-groups-information">
-									<div className="label">{__('E-mail', 'myclub-groups')}</div>
-									<div className="value"><a href={`mailto:${postData.email}`}>{postData.email}</a>
-									</div>
-								</div>}
+								<div className="myclub-groups-title-information">
+									<div className={`myclub-groups-title-name ${postData?.infoText ? 'with-info-text' : ''}`}>{postData?.title}</div>
+									{postData?.infoText && <div className="myclub-groups-info-text">
+										{postData.infoText}
+									</div>}
+									{postData?.contactName && <div className="myclub-groups-information">
+										<div className="label">{__('Contact person', 'myclub-groups')}</div>
+										<div className="value">{postData.contactName}</div>
+									</div>}
+									{postData?.phone && <div className="myclub-groups-information">
+										<div className="label">{__('Telephone', 'myclub-groups')}</div>
+										<div className="value"><a href={`tel:${postData.phone}`}>{postData.phone}</a></div>
+									</div>}
+									{postData?.email && <div className="myclub-groups-information">
+										<div className="label">{__('E-mail', 'myclub-groups')}</div>
+										<div className="value"><a href={`mailto:${postData.email}`}>{postData.email}</a>
+										</div>
+									</div>}
+								</div>
 							</div>
 						</div>
 					</div> : <div className="myclub-groups-title">

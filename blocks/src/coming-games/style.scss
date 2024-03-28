@@ -1,79 +1,98 @@
 .myclub-groups-coming-games {
   margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  .coming-games-list {
-    .myclub-groups-coming-game {
-      padding: 1rem;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
+  .myclub-groups-coming-games-container {
+    width: 100%;
 
-      .title {
-        .group-name {
-          font-size: smaller;
-        }
-      }
-
-      .venue {
+    .coming-games-list {
+      .myclub-groups-coming-game {
+        padding: 1rem;
+        color: #fff;
         display: flex;
-        align-items: center;
-        text-align: left;
-      }
+        flex-direction: column;
 
-      .date {
-        .time {
-          font-size: smaller;
+        .title {
+          .group-name {
+            font-size: smaller;
+          }
+        }
+
+        .venue {
+          display: flex;
+          align-items: center;
+          text-align: left;
+        }
+
+        .date {
+          .time {
+            font-size: smaller;
+          }
         }
       }
-    }
 
-    .myclub-groups-coming-game:nth-child(odd) {
-      background-color: rgb(83, 86, 90);
-    }
+      .myclub-groups-coming-game:nth-child(odd) {
+        background-color: rgb(83, 86, 90);
+      }
 
-    .myclub-groups-coming-game:nth-child(even) {
-      background-color: rgb(156, 158, 160);
-    }
+      .myclub-groups-coming-game:nth-child(even) {
+        background-color: rgb(156, 158, 160);
+      }
 
-    .coming-game-show-more, .coming-game-show-less {
-      cursor: pointer;
-      text-align: center;
-      padding: 0.5rem;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-    }
+      .coming-game-show-more, .coming-game-show-less {
+        cursor: pointer;
+        text-align: center;
+        padding: 0.5rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
 
-    .extended-list {
-      display: flex;
-      flex: 100%;
-      flex-flow: column;
-    }
+      .extended-list {
+        display: flex;
+        flex: 100%;
+        flex-flow: column;
+      }
 
-    .hidden {
-      display: none;
+      .hidden {
+        display: none;
+      }
     }
   }
 }
 
 @media(min-width: 996px) {
   .myclub-groups-coming-games {
-    .coming-games-list {
-      .myclub-groups-coming-game {
-        flex-direction: row;
+    .myclub-groups-coming-games-container {
+      max-width: 996px;
 
-        .title {
-          flex: 60%;
-        }
+      .coming-games-list {
+        .myclub-groups-coming-game {
+          flex-direction: row;
 
-        .venue, .date {
-          flex: 20%;
-        }
+          .title {
+            flex: 60%;
+          }
 
-        .date {
-          text-align: right;
+          .venue, .date {
+            flex: 20%;
+          }
+
+          .date {
+            text-align: right;
+          }
         }
       }
+    }
+  }
+}
+
+@media(min-width: 1200px) {
+  .myclub-groups-coming-games {
+    .myclub-groups-coming-games-container {
+      max-width: 1200px;
     }
   }
 }

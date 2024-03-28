@@ -2,16 +2,16 @@
 
 /*
 Plugin Name: MyClub Groups
-Plugin URI: https://github.com/myclub-se/wordpress-myclub-groups
+Plugin URI: https://github.com/myclub-se/myclub-groups
 Description: Retrieves group information from the MyClub member administration platform. Generates pages for groups defined in the MyClub member administration platform.
 Version: 1.0
 Requires at least: 6.4
-Requires PHP: 7.2
+Requires PHP: 7.4
 Author: MyClub AB
 Author URI: https://www.myclub.se
 Text Domain: myclub-groups
 Domain Path: /languages
-License: GPL2
+License: GPLv2 or later
 */
 
 use MyClub\MyClubGroups\Activation;
@@ -22,6 +22,10 @@ use MyClub\MyClubGroups\Tasks\RefreshMenusTask;
 use MyClub\MyClubGroups\Tasks\RefreshNewsTask;
 
 defined( 'ABSPATH' ) or die( 'Access denied' );
+
+if ( version_compare( PHP_VERSION, '8.0', '<' ) ) {
+    exit( "This plugin requires PHP 7.4 or higher. You're still on PHP " . PHP_VERSION );
+}
 
 if ( file_exists( plugin_dir_path( __FILE__ ) . '/lib/autoload.php' ) ) {
     require_once( plugin_dir_path( __FILE__ ) . '/lib/autoload.php' );
@@ -63,7 +67,5 @@ if ( file_exists( plugin_dir_path( __FILE__ ) . '/src/Activation.php' ) ) {
 
 if ( file_exists( plugin_dir_path( __FILE__) . '/src/Services.php' ) ) {
     // Register all plugin functionality
-    Services::registerServices();
+    Services::register_services();
 }
-
-load_plugin_textdomain( 'myclub-groups', false,  plugin_basename( dirname( __FILE__ ) ) . '/languages/' );

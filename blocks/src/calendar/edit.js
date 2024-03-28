@@ -20,6 +20,7 @@ import listPlugin from "@fullcalendar/list";
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes } ) {
+	const [calendarTitle, setCalendarTitle] = useState('');
 	const [postEvents, setPostEvents] = useState({events: [], loaded: false});
 	const [posts, setPosts] = useState([]);
 	const {apiFetch} = wp;
@@ -177,6 +178,10 @@ export default function Edit( { attributes, setAttributes } ) {
 	}
 
 	useEffect(() => {
+		apiFetch( { path: '/myclub/v1/options' } ).then(options => {
+			setCalendarTitle ( options.myclub_groups_calendar_title );
+		} );
+
 		getMyClubGroups( setPosts, selectPostLabel );
 	}, []);
 
@@ -272,7 +277,10 @@ export default function Edit( { attributes, setAttributes } ) {
 			</InspectorControls>
 			<div {...useBlockProps()}>
 				<div className="myclub-groups-calendar" ref={ outerRef }>
-					<FullCalendar ref={ calendarRef } { ...options } />
+					<div class="myclub-groups-calendar-container">
+						<h3 class="myclub-groups-header">{ calendarTitle }</h3>
+						<FullCalendar ref={ calendarRef } { ...options } />
+					</div>
 					<div className="calendar-modal">
 						<div className="modal-content">
 							<span className="close">&times;</span>

@@ -1,52 +1,52 @@
 <?php
-$postId = $attributes[ 'postId' ] ?? null;
+$post_id = $attributes[ 'postId' ] ?? null;
 
-if ( empty( $postId ) ) {
-    $postId = get_the_ID();
+if ( empty( $post_id ) ) {
+    $post_id = get_the_ID();
 }
 
-$post = get_post( $postId );
+$post = get_post( $post_id );
 
 $blocks = parse_blocks($post->post_content);
 
-$myClubBlocks = array();
+$myclub_blocks = array();
 
 foreach($blocks as $block) {
-    $blockName = $block['blockName'];
+    $block_name = $block[ 'blockName'];
 
     // Check if $blockName starts with "myclub-groups/"
-    if(!empty($blockName) && strpos($blockName, 'myclub-groups/') === 0) {
-        $blockParts = explode("/", $blockName);
-        $myClubBlocks[] = end($blockParts);
+    if(!empty($block_name) && strpos($block_name, 'myclub-groups/') === 0) {
+        $blockParts = explode("/", $block_name);
+        $myclub_blocks[] = end($blockParts);
     }
 }
 
-$calendarName = get_option ( 'myclub_groups_calendar_title' );
-$comingGamesName = get_option( 'myclub_groups_coming_games_title' );
-$leadersName = get_option( 'myclub_groups_leaders_title' );
-$membersName = get_option( 'myclub_groups_members_title' );
-$newsName = get_option( 'myclub_groups_news_title' );
+$calendar_name = get_option ( 'myclub_groups_calendar_title' );
+$coming_games_name = get_option( 'myclub_groups_coming_games_title' );
+$leaders_name = get_option( 'myclub_groups_leaders_title' );
+$members_name = get_option( 'myclub_groups_members_title' );
+$news_name = get_option( 'myclub_groups_news_title' );
 
-$blockLinkContents = [
+$block_link_contents = [
     'calendar'     => [
-        '<img src="' . plugins_url( '../../../assets/images/calendar.svg', __FILE__ ) . '" alt="' . $calendarName . '"><div>' . $calendarName . '</div>',
-        $calendarName
+        '<img src="' . plugins_url( '../../../resources/images/calendar.svg', __FILE__ ) . '" alt="' . $calendar_name . '"><div>' . $calendar_name . '</div>',
+        $calendar_name
     ],
     'coming-games' => [
-        '<img src="' . plugins_url( '../../../assets/images/coming-games.svg', __FILE__ ) . '" alt="' . $comingGamesName . '"><div>' . $comingGamesName . '</div>',
-        $comingGamesName,
+        '<img src="' . plugins_url( '../../../resources/images/coming-games.svg', __FILE__ ) . '" alt="' . $coming_games_name . '"><div>' . $coming_games_name . '</div>',
+        $coming_games_name,
     ],
     'members'      => [
-        '<img src="' . plugins_url( '../../../assets/images/members.svg', __FILE__ ) . '" alt="' . $membersName . '"><div>' . $membersName . '</div>',
-        $membersName
+        '<img src="' . plugins_url( '../../../resources/images/members.svg', __FILE__ ) . '" alt="' . $members_name . '"><div>' . $members_name . '</div>',
+        $members_name
     ],
     'leaders'      => [
-        '<img src="' . plugins_url( '../../../assets/images/leaders.svg', __FILE__ ) . '" alt="' . $leadersName . '"><div>' . $leadersName . '</div>',
-        $leadersName
+        '<img src="' . plugins_url( '../../../resources/images/leaders.svg', __FILE__ ) . '" alt="' . $leaders_name . '"><div>' . $leaders_name . '</div>',
+        $leaders_name
     ],
     'news'         => [
-        '<img src="' . plugins_url( '../../../assets/images/news.svg', __FILE__ ) . '" alt="' . $newsName . '"><div>' . $newsName . '</div>',
-        $newsName
+        '<img src="' . plugins_url( '../../../resources/images/news.svg', __FILE__ ) . '" alt="' . $news_name . '"><div>' . $news_name . '</div>',
+        $news_name
     ]
 ];
 
@@ -54,11 +54,13 @@ $blockLinkContents = [
 
 
 <div class="myclub-groups-navigation">
-    <div class="myclub-groups-navigation-icons">
-        <?php foreach ( $myClubBlocks as $myClubBlock ) {
-            if ( in_array( $myClubBlock, array_keys( $blockLinkContents ) ) ) {
-            ?><a href="#<?= $myClubBlock ?>" title="<?= $blockLinkContents[ $myClubBlock ][1] ?>" ><?= $blockLinkContents[ $myClubBlock ][0] ?></a><?php
-            }
-        } ?>
+    <div class="myclub-groups-navigation-container">
+        <div class="myclub-groups-navigation-icons">
+            <?php foreach ( $myclub_blocks as $myclub_block ) {
+                if ( in_array( $myclub_block, array_keys( $block_link_contents ) ) ) {
+                ?><a href="#<?= $myclub_block ?>"title="<?= $block_link_contents[ $myclub_block ][ 1] ?>" ><?= $block_link_contents[ $myclub_block ][ 0] ?></a><?php
+                }
+            } ?>
+        </div>
     </div>
 </div>

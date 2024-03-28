@@ -8,6 +8,13 @@
 .myclub-groups-calendar {
   position: relative;
   margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .myclub-groups-calendar-container {
+    width: 100%;
+  }
 
   .calendar-modal {
     display: none;
@@ -135,4 +142,20 @@
   word-wrap: normal;
   text-align: center;
   width: 100%;
+}
+
+@media (min-width: 996px) {
+  .myclub-groups-calendar {
+    .myclub-groups-calendar-container {
+      max-width: 996px;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .myclub-groups-calendar {
+    .myclub-groups-calendar-container {
+      max-width: 1200px;
+    }
+  }
 }

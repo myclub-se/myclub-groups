@@ -1,13 +1,13 @@
 <?php
 
-$newsTitle = get_option( 'myclub_groups_club_news_title' ) ?:  __( 'News', 'myclub-groups' );
+$news_title = get_option( 'myclub_groups_club_news_title' ) ?:  __( 'News', 'myclub-groups' );
 
-$emptyNews = '<div class="no-news">' . __( 'No news found', 'myclub-groups' ) . '</div>';
+$empty_news = '<div class="no-news">' . __( 'No news found', 'myclub-groups' ) . '</div>';
 
 ?>
 
 <div class="myclub-groups-club-news" id="news">
-    <h3 class="myclub-groups-header"><?= $newsTitle ?></h3>
+    <h3 class="myclub-groups-header"><?= $news_title ?></h3>
 
 <?php
 
@@ -24,15 +24,16 @@ $posts = get_posts( $args );
 if ( !empty( $posts ) ) {
 ?>
     <div class="myclub-groups-club-news-list">
+        <div class="myclub-groups-club-news-container">
         <?php
         foreach ( $posts as $post ) {
-        $imageUrl = get_the_post_thumbnail_url($post->ID, 'thumbnail');
+        $image_url = get_the_post_thumbnail_url($post->ID, 'thumbnail');
         ?>
         <div class="myclub-club-news-item">
             <h4><a href="<?= get_permalink($post->ID) ?>"><?= $post->post_title ?></a></h4>
-            <?php if ( $imageUrl ) {?>
+            <?php if ( $image_url ) {?>
                 <div class="myclub-club-news-image">
-                    <img src="<?= $imageUrl ?>" alt="<?= $post->post_title ?>" />
+                    <img src="<?= $image_url ?>" alt="<?= $post->post_title ?>" />
                 </div>
             <?php }
             if ( $post->post_excerpt ) {
@@ -43,21 +44,21 @@ if ( !empty( $posts ) ) {
         </div>
         <?php
             }
-            $categoryLink = null;
+            $category_link = null;
             $category = get_term_by( 'name', __( 'News', 'myclub-groups' ), 'category' );
 
             if ( !is_wp_error( $category ) && isset( $category ) ) {
-                $categoryId = $category->term_id;
-                $categoryLink = get_category_link( $category->term_id );
+                $category_id = $category->term_id;
+                $category_link = get_category_link( $category->term_id );
 
-                if ( is_wp_error( $categoryLink ) ) {
-                    $categoryLink = null;
+                if ( is_wp_error( $category_link ) ) {
+                    $category_link = null;
                 }
             }
 
-            if ( !empty( $categoryLink ) && !empty( $categoryId ) ) {
+            if ( !empty( $category_link ) && !empty( $category_id ) ) {
                 $args = array(
-                    'category__in' => array($categoryId),
+                    'category__in' => array( $category_id),
                     'post_type'   => 'post',
                     'post_status' => 'publish',
                 );
@@ -66,12 +67,13 @@ if ( !empty( $posts ) ) {
                 $total_posts = $query->found_posts;
 
                 if ( $total_posts > 3 ) {
-                    echo '<div class="myclub-more-news"><a href="' . $categoryLink . '">' . __( 'Show more news', 'myclub-groups' ) . '</a></div>';
+                    echo '<div class="myclub-more-news"><a href="' . $category_link . '">' . __( 'Show more news', 'myclub-groups' ) . '</a></div>';
                 }
             }
             echo '</div>';
         } else {
-            echo $emptyNews;
+            echo $empty_news;
         }
 ?>
+        </div>
     </div>

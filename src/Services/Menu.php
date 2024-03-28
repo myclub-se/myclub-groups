@@ -20,7 +20,7 @@ class Menu
     {
         add_action( 'init', [
             $this,
-            'initGroupsMenu'
+            'init_groups_menu'
         ] );
     }
 
@@ -32,17 +32,17 @@ class Menu
      *
      * @return void
      */
-    public function initGroupsMenu()
+    public function init_groups_menu()
     {
         register_nav_menu( 'myclub-groups-menu', 'MyClub Groups Menu Location' );
 
-        $menuExists = wp_get_nav_menu_object( 'MyClub Groups Menu' );
+        $menu_exists = wp_get_nav_menu_object( 'MyClub Groups Menu' );
 
-        if ( !$menuExists ) {
-            $menuId = wp_create_nav_menu( 'MyClub Groups Menu' );
+        if ( !$menu_exists ) {
+            $menu_id = wp_create_nav_menu( 'MyClub Groups Menu' );
 
             $locations = get_theme_mod( 'nav_menu_locations' );
-            $locations[ 'myclub-groups-menu' ] = $menuId;
+            $locations[ 'myclub-groups-menu' ] = $menu_id;
             set_theme_mod( 'nav_menu_locations', $locations );
         }
     }

@@ -42,7 +42,7 @@ class RestApi
      *                   with a status code of 500. Otherwise, it returns the decoded menu items.
      * @since 1.0.0
      */
-    public function loadMenuItems()
+    public function load_menu_items()
     {
         $service_path = 'team_menu/';
 
@@ -74,7 +74,7 @@ class RestApi
      *                   with a status code of 500. Otherwise, it returns the decoded menu items for other teams.
      * @since 1.0.0
      */
-    public function loadOtherTeams()
+    public function load_other_teams()
     {
         $service_path = 'team_menu/other_teams/';
 
@@ -106,7 +106,7 @@ class RestApi
      *                        decoded JSON or the WordPress error. Otherwise, it returns the decoded group.
      * @since 1.0.0
      */
-    public function loadGroup( $groupId )
+    public function load_group( $groupId )
     {
         if ( empty( $this->apiKey ) ) {
             return false;
@@ -156,7 +156,7 @@ class RestApi
      *                        decoded JSON or WordPress error. Otherwise, it returns the decoded news items.
      * @since 1.0.0
      */
-    public function loadNews( string $groupId = null )
+    public function load_news( string $groupId = null )
     {
         if ( empty( $this->apiKey ) ) {
             return false;
@@ -189,9 +189,9 @@ class RestApi
         if ( !empty ( $data ) ) {
             $service_path = $service_path . '?' . http_build_query( $data );
         }
-        $response = wp_remote_get( $this->getServerUrl( $service_path ),
+        $response = wp_remote_get( $this->get_server_url( $service_path ),
             [
-                'headers' => $this->getRequestHeaders(),
+                'headers' => $this->create_request_headers(),
                 'timeout' => 20
             ]
         );
@@ -215,11 +215,12 @@ class RestApi
      *               class property $apiKey.
      * @since 1.0.0
      */
-    private function getRequestHeaders(): array
+    private function create_request_headers(): array
     {
         return [
-            'Accept'        => 'application/json',
-            'Authorization' => "Api-Key $this->apiKey"
+            'Accept'           => 'application/json',
+            'Authorization'    => "Api-Key $this->apiKey",
+            'X-MyClub-Request' => 'MyClub Groups WordPress'
         ];
     }
 
@@ -231,7 +232,7 @@ class RestApi
      * @return string The complete URL to be used for the API request.
      * @since 1.0.0
      */
-    private function getServerUrl( string $path ): string
+    private function get_server_url( string $path ): string
     {
         return self::MYCLUB_SERVER_API_PATH . $path;
     }

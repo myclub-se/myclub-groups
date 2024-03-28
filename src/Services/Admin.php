@@ -13,11 +13,6 @@ use WP_Query;
  */
 class Admin extends Base
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     /**
      * Registers various actions and filters related to the plugin.
      *
@@ -31,48 +26,54 @@ class Admin extends Base
     {
         add_action( 'admin_menu', [
             $this,
-            'addAdminMenu'
+            'add_admin_menu'
         ] );
         add_action( 'admin_init', [
             $this,
-            'addMyClubGroupsSettings'
+            'add_myclub_groups_settings'
         ] );
         add_action( 'update_option_myclub_groups_api_key', [
             $this,
-            'updateApiKey'
+            'update_api_key'
         ], 10, 0 );
         add_action( 'update_option_myclub_groups_show_items_order', [
             $this,
-            'updateShownOrder'
+            'update_show_order'
         ], 10, 2 );
         add_action( 'update_option_myclub_groups_page_template', [
             $this,
-            'updatePageTemplate'
+            'update_page_template'
         ], 10, 2 );
         add_action( 'wp_ajax_myclub_reload_groups', [
             $this,
-            'ajaxReloadGroups'
+            'ajax_reload_groups'
         ] );
         add_action( 'wp_ajax_myclub_reload_news', [
             $this,
-            'ajaxReloadNews'
+            'ajax_reload_news'
         ] );
         add_action( 'admin_enqueue_scripts', [
             $this,
-            'enqueueAdminJS'
+            'enqueue_admin_JS'
         ] );
         add_action( 'manage_post_posts_columns', [
             $this,
-            'addGroupNewsColumn'
+            'add_group_news_column'
         ] );
+        add_action( 'after_switch_theme', [ $this,
+                                            'update_theme_page_template'
+        ] );
+        add_action( 'wp_dashboard_setup', [ $this,
+                                            'setup_dashboard_widget'
+        ] );
+
         add_filter( 'manage_post_posts_custom_column', [
             $this,
-            'addGroupNewsColumnContent'
+            'add_group_news_column_content'
         ], 10, 2 );
-
-        add_action( 'wp_dashboard_setup', [ $this, 'setupDashboardWidget' ] );
-
-        add_filter("plugin_action_links_myclub-groups/myclub-groups.php", [ $this, 'addPluginSettingsLink' ] );
+        add_filter("plugin_action_links_" . plugin_basename( $this->plugin_path . '/myclub-groups.php' ) , [ $this,
+                                                                                                             'add_plugin_settings_link'
+        ] );
     }
 
     /**
@@ -81,7 +82,7 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function addAdminMenu()
+    public function add_admin_menu()
     {
         add_options_page(
             __( 'MyClub Groups plugin settings', 'myclub-groups' ),
@@ -90,7 +91,7 @@ class Admin extends Base
             'myclub-groups-settings',
             [
                 $this,
-                'adminSettings'
+                'admin_settings'
             ]
         );
     }
@@ -102,7 +103,7 @@ class Admin extends Base
      * @return array Updated array with the "Group news" column added.
      * @since 1.0.0
      */
-    public function addGroupNewsColumn( array $columns ): array
+    public function add_group_news_column( array $columns ): array
     {
         $index = array_search( 'author', array_keys( $columns ) );
 
@@ -121,15 +122,15 @@ class Admin extends Base
      * Adds the content for the 'group_news' column for post listing page.
      *
      * @param string $column_key The key of the column.
-     * @param int $postId The ID of the post.
+     * @param int $post_id The ID of the post.
      * @return void
      * @since 1.0.0
      */
-    public function addGroupNewsColumnContent( string $column_key, int $postId )
+    public function add_group_news_column_content( string $column_key, int $post_id )
     {
         if ( $column_key === 'group_news' ) {
             $names = [];
-            $terms = wp_get_post_terms( $postId, NewsService::MYCLUB_GROUP_NEWS );
+            $terms = wp_get_post_terms( $post_id, NewsService::MYCLUB_GROUP_NEWS );
             foreach ( $terms as $term ) {
                 $names[] = $term->name;
             }
@@ -143,26 +144,26 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function addMyClubGroupsSettings()
+    public function add_myclub_groups_settings()
     {
         register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_api_key', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeApiKey'
+                'sanitize_api_key'
             ],
             'default'           => NULL
         ] );
         register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_group_slug', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeGroupSlug'
+                'sanitize_group_slug'
             ],
             'default'           => 'groups'
         ] );
         register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_group_news_slug', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeGroupNewsSlug'
+                'sanitize_group_news_slug'
             ],
             'default'           => 'group-news'
         ] );
@@ -175,7 +176,7 @@ class Admin extends Base
         register_setting( 'myclub_groups_settings_tab2', 'myclub_groups_calendar_title', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeCalendarTitle'
+                'sanitize_calendar_title'
             ],
             'default'           => __( 'Calendar', 'myclub-groups' ),
             'show_in_rest'      => true
@@ -183,7 +184,7 @@ class Admin extends Base
         register_setting( 'myclub_groups_settings_tab2', 'myclub_groups_coming_games_title', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeComingGamesTitle'
+                'sanitize_coming_games_title'
             ],
             'default'           => __( 'Upcoming games', 'myclub-groups' ),
             'show_in_rest'      => true
@@ -191,7 +192,7 @@ class Admin extends Base
         register_setting( 'myclub_groups_settings_tab2', 'myclub_groups_leaders_title', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeLeadersTitle'
+                'sanitize_leaders_title'
             ],
             'default'           => __( 'Leaders', 'myclub-groups' ),
             'show_in_rest'      => true
@@ -199,7 +200,7 @@ class Admin extends Base
         register_setting( 'myclub_groups_settings_tab2', 'myclub_groups_members_title', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeMembersTitle'
+                'sanitize_members_title'
             ],
             'default'           => __( 'Members', 'myclub-groups' ),
             'show_in_rest'      => true
@@ -207,91 +208,91 @@ class Admin extends Base
         register_setting( 'myclub_groups_settings_tab2', 'myclub_groups_news_title', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeNewsTitle'
+                'sanitize_news_title'
             ],
             'default'           => __( 'News', 'myclub-groups' )
         ] );
         register_setting( 'myclub_groups_settings_tab2', 'myclub_groups_club_news_title', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeClubNewsTitle'
+                'sanitize_club_news_title'
             ],
             'default'           => __( 'News', 'myclub-groups' )
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_template', [
             'sanitize_callback' => [
                 $this,
-                'sanitizePageTemplate'
+                'sanitize_page_template'
             ],
             'default'           => ''
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_calendar', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeCheckbox'
+                'sanitize_checkbox'
             ],
             'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_navigation', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeCheckbox'
+                'sanitize_checkbox'
             ],
             'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_members', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeCheckbox'
+                'sanitize_checkbox'
             ],
             'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_leaders', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeCheckbox'
+                'sanitize_checkbox'
             ],
             'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_menu', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeCheckbox'
+                'sanitize_checkbox'
             ],
             'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_news', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeCheckbox'
+                'sanitize_checkbox'
             ],
             'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_title', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeCheckbox'
+                'sanitize_checkbox'
             ],
             'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_picture', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeCheckbox'
+                'sanitize_checkbox'
             ],
             'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_coming_games', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeCheckbox'
+                'sanitize_checkbox'
             ],
             'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_show_items_order', [
             'sanitize_callback' => [
                 $this,
-                'sanitizeShowItemsOrder'
+                'sanitize_show_items_order'
             ],
             'default'           => array (
                 'default',
@@ -304,98 +305,109 @@ class Admin extends Base
         add_settings_section( 'myclub_groups_display_settings', __( 'Display settings', 'myclub-groups' ), function(){}, 'myclub_groups_settings_tab3' );
         add_settings_field( 'myclub_groups_api_key', __( 'MyClub API Key', 'myclub-groups' ), [
             $this,
-            'renderApiKey'
+            'render_api_key'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_main', [ 'label_for' => 'myclub_groups_api_key' ] );
         add_settings_field( 'myclub_groups_group_slug', __( 'Slug for group pages', 'myclub-groups' ), [
             $this,
-            'renderGroupSlug'
+            'render_group_slug'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_main', [ 'label_for' => 'myclub_groups_group_slug' ] );
         add_settings_field( 'myclub_groups_group_news_slug', __( 'Slug for group news posts', 'myclub-groups' ), [
             $this,
-            'renderGroupNewsSlug'
+            'render_group_news_slug'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_main', [ 'label_for' => 'myclub_groups_group_news_slug' ] );
         add_settings_field( 'myclub_groups_last_news_sync', __( 'News last synchronized', 'myclub-groups' ), [
             $this,
-            'renderNewsLastSync'
+            'render_news_last_sync'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_sync' );
         add_settings_field( 'myclub_groups_last_groups_sync', __( 'Groups last synchronized', 'myclub-groups' ), [
             $this,
-            'renderGroupsLastSync'
+            'render_groups_last_sync'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_sync' );
         add_settings_field( 'myclub_groups_calendar_title', __( 'Title for calendar field', 'myclub-groups' ), [
             $this,
-            'renderCalendarTitle'
+            'render_calendar_title'
         ], 'myclub_groups_settings_tab2', 'myclub_groups_title_settings', [ 'label_for' => 'myclub_groups_calendar_title' ] );
         add_settings_field( 'myclub_groups_coming_games_title', __( 'Title for upcoming games field', 'myclub-groups' ), [
             $this,
-            'renderComingGamesTitle'
+            'render_coming_games_title'
         ], 'myclub_groups_settings_tab2', 'myclub_groups_title_settings', [ 'label_for' => 'myclub_groups_coming_games_title' ] );
         add_settings_field( 'myclub_groups_leaders_title', __( 'Title for leaders field', 'myclub-groups' ), [
             $this,
-            'renderLeadersTitle'
+            'render_leaders_title'
         ], 'myclub_groups_settings_tab2', 'myclub_groups_title_settings', [ 'label_for' => 'myclub_groups_leaders_title' ] );
         add_settings_field( 'myclub_groups_members_title', __( 'Title for members field', 'myclub-groups' ), [
             $this,
-            'renderMembersTitle'
+            'render_members_title'
         ], 'myclub_groups_settings_tab2', 'myclub_groups_title_settings', [ 'label_for' => 'myclub_groups_members_title' ] );
         add_settings_field( 'myclub_groups_news_title', __( 'Title for news field', 'myclub-groups' ), [
             $this,
-            'renderNewsTitle'
+            'render_news_title'
         ], 'myclub_groups_settings_tab2', 'myclub_groups_title_settings', [ 'label_for' => 'myclub_groups_news_title' ] );
         add_settings_field( 'myclub_groups_club_news_title', __( 'Title for club news field', 'myclub-groups' ), [
             $this,
-            'renderClubNewsTitle'
+            'render_club_news_title'
         ], 'myclub_groups_settings_tab2', 'myclub_groups_title_settings', [ 'label_for' => 'myclub_groups_club_news_title' ] );
-        add_settings_field( 'myclub_groups_page_template', __( 'Template for group pages', 'myclub-groups' ), [
-            $this,
-            'renderPageTemplate'
-        ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_template' ] );
+        if ( wp_is_block_theme() ) {
+            add_settings_field( 'myclub_groups_page_template', __( 'Template for group pages', 'myclub-groups' ), [
+                $this,
+                'render_page_template'
+            ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_template' ] );
+        }
         add_settings_field( 'myclub_groups_page_title', __( 'Show group title', 'myclub-groups' ), [
             $this,
-            'renderPageTitle'
+            'render_page_title'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_title' ] );
         add_settings_field( 'myclub_groups_page_picture', __( 'Show group picture', 'myclub-groups' ), [
             $this,
-            'renderPagePicture'
+            'render_page_picture'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_picture' ] );
         add_settings_field( 'myclub_groups_page_menu', __( 'Show groups menu', 'myclub-groups' ), [
             $this,
-            'renderPageMenu'
+            'render_page_menu'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_menu' ] );
         add_settings_field( 'myclub_groups_page_navigation', __( 'Show group page navigation', 'myclub-groups' ), [
             $this,
-            'renderPageNavigation'
+            'render_page_navigation'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_navigation' ] );
         add_settings_field( 'myclub_groups_page_calendar', __( 'Show group calendar', 'myclub-groups' ), [
             $this,
-            'renderPageCalendar'
+            'render_page_calendar'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_calendar' ] );
         add_settings_field( 'myclub_groups_page_leaders', __( 'Show group members', 'myclub-groups' ), [
             $this,
-            'renderPageMembers'
+            'render_page_members'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_leaders' ] );
         add_settings_field( 'myclub_groups_page_members', __( 'Show group leaders', 'myclub-groups' ), [
             $this,
-            'renderPageLeaders'
+            'render_page_leaders'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_members' ] );
         add_settings_field( 'myclub_groups_page_news', __( 'Show group news', 'myclub-groups' ), [
             $this,
-            'renderPageNews'
+            'render_page_news'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_news' ] );
         add_settings_field( 'myclub_groups_page_coming_games', __( 'Show group upcoming games', 'myclub-groups' ), [
             $this,
-            'renderPageComingGames'
+            'render_page_coming_games'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_coming_games' ] );
         add_settings_field( 'myclub_groups_show_items_order', __( 'Shown items order', 'myclub-groups' ), [
             $this,
-            'renderShowItemsOrder'
+            'render_show_items_order'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_show_items_order' ] );
     }
 
-    public function addPluginSettingsLink( $links )
+    /**
+     * Adds the plugin settings link to the list of plugin action links.
+     *
+     * This method accepts an array of links and adds a link to the plugin settings page.
+     *
+     * @param array $links An array of existing plugin action links.
+     * @return array An array of modified plugin action links with the added settings link.
+     * @since 1.0.0
+     */
+    public function add_plugin_settings_link( array $links ): array
     {
         $settings_link = '<a href="options-general.php?page=myclub-groups-settings">' . __( 'Settings' ) . '</a>';
-        array_push($links, $settings_link);
+        $links[] = $settings_link;
         return $links;
     }
 
@@ -405,9 +417,9 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function adminSettings()
+    public function admin_settings()
     {
-        return require_once( "$this->pluginPath/templates/admin/admin_settings.php" );
+        return require_once( "$this->plugin_path/templates/admin/admin_settings.php" );
     }
 
     /**
@@ -416,14 +428,14 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function enqueueAdminJS()
+    public function enqueue_admin_JS()
     {
         $current_page = get_current_screen();
 
         if ( $current_page->base === 'settings_page_myclub-groups-settings' ) {
-            wp_register_script( 'myclub_groups_settings_js', $this->pluginUrl . 'assets/javascript/myclub_groups_settings.js' );
-            wp_register_style( 'myclub_groups_settings_css', $this->pluginUrl . 'assets/css/myclub_groups_settings.css' );
-            wp_set_script_translations( 'myclub_groups_settings_js', 'myclub-groups', $this->pluginPath . 'languages' );
+            wp_register_script( 'myclub_groups_settings_js', $this->plugin_url . 'resources/javascript/myclub_groups_settings.js' );
+            wp_register_style( 'myclub_groups_settings_css', $this->plugin_url . 'resources/css/myclub_groups_settings.css' );
+            wp_set_script_translations( 'myclub_groups_settings_js', 'myclub-groups', $this->plugin_path . 'languages' );
 
             wp_enqueue_script( 'jquery-ui-sortable' );
             wp_enqueue_script( 'myclub_groups_settings_js' );
@@ -439,7 +451,7 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function ajaxReloadGroups()
+    public function ajax_reload_groups()
     {
         if ( !current_user_can( 'manage_options' ) ) {
             wp_send_json_error( [
@@ -448,7 +460,7 @@ class Admin extends Base
         }
 
         $service = new GroupService();
-        $service->reloadGroups();
+        $service->reload_groups();
 
         wp_send_json_success( [
             'message' => __( 'Successfully queued groups reloading', 'myclub-groups' )
@@ -463,7 +475,7 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function ajaxReloadNews()
+    public function ajax_reload_news()
     {
         if ( !current_user_can( 'manage_options' ) ) {
             wp_send_json_error( [
@@ -472,7 +484,7 @@ class Admin extends Base
         }
 
         $service = new NewsService();
-        $service->reloadNews();
+        $service->reload_news();
 
         wp_send_json_success( [
             'message' => __( 'Successfully queued news reloading', 'myclub-groups' )
@@ -488,7 +500,7 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderApiKey( array $args )
+    public function render_api_key( array $args )
     {
         echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_api_key" value="' . esc_attr( get_option( 'myclub_groups_api_key' ) ) . '" />';
     }
@@ -503,7 +515,7 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderDashboardWidget()
+    public function render_dashboard_widget()
     {
         // Count the number of group posts in WordPress
         $args = array(
@@ -520,7 +532,7 @@ class Admin extends Base
             'posts_per_page' => -1,
             'meta_query'     => array(
                 array(
-                    'key'     => 'myclubNewsId',
+                    'key'     => 'myclub_news_id',
                     'compare' => 'EXISTS'
                 ),
             ),
@@ -542,14 +554,14 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderGroupSlug( array $args )
+    public function render_group_slug( array $args )
     {
-        $groupSlug = get_option( 'myclub_groups_group_slug' );
-        if ( empty( $groupSlug ) ) {
-            $groupSlug = 'groups';
+        $group_slug = get_option( 'myclub_groups_group_slug' );
+        if ( empty( $group_slug ) ) {
+            $group_slug = 'groups';
         }
 
-        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_group_slug" value="' . esc_attr( $groupSlug ) . '" />';
+        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_group_slug" value="' . esc_attr( $group_slug ) . '" />';
     }
 
     /**
@@ -561,14 +573,14 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderGroupNewsSlug( array $args )
+    public function render_group_news_slug( array $args )
     {
-        $groupNewsSlug = get_option( 'myclub_groups_group_news_slug' );
-        if ( empty( $groupNewsSlug ) ) {
-            $groupNewsSlug = 'group-news';
+        $group_news_slug = get_option( 'myclub_groups_group_news_slug' );
+        if ( empty( $group_news_slug ) ) {
+            $group_news_slug = 'group-news';
         }
 
-        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_group_news_slug" value="' . esc_attr( $groupNewsSlug ) . '" />';
+        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_group_news_slug" value="' . esc_attr( $group_news_slug ) . '" />';
     }
 
     /**
@@ -580,90 +592,14 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderCalendarTitle( array $args )
+    public function render_calendar_title( array $args )
     {
-        $calendarTitle = get_option( 'myclub_groups_calendar_title' );
-        if ( empty( $calendarTitle ) ) {
-            $calendarTitle = __( 'Calendar', 'myclub-groups' );
+        $calendar_title = get_option( 'myclub_groups_calendar_title' );
+        if ( empty( $calendar_title ) ) {
+            $calendar_title = __( 'Calendar', 'myclub-groups' );
         }
 
-        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_calendar_title" value="' . esc_attr( $calendarTitle ) . '" />';
-    }
-
-    /**
-     * Renders the input field for the group upcoming games title setting in the admin page.
-     *
-     * @param array $args The arguments for rendering the input field.
-     *                    - 'label_for' (string) The ID of the input field.
-     *
-     * @return void
-     * @since 1.0.0
-     */
-    public function renderComingGamesTitle( array $args )
-    {
-        $comingGamesTitle = get_option( 'myclub_groups_coming_games_title' );
-        if ( empty( $comingGamesTitle ) ) {
-            $comingGamesTitle = __( 'Upcoming games', 'myclub-groups' );
-        }
-
-        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_coming_games_title" value="' . esc_attr( $comingGamesTitle ) . '" />';
-    }
-
-    /**
-     * Renders the input field for the group leaders title setting in the admin page.
-     *
-     * @param array $args The arguments for rendering the input field.
-     *                    - 'label_for' (string) The ID of the input field.
-     *
-     * @return void
-     * @since 1.0.0
-     */
-    public function renderLeadersTitle( array $args )
-    {
-        $leadersTitle = get_option( 'myclub_groups_leaders_title' );
-        if ( empty( $leadersTitle ) ) {
-            $leadersTitle = __( 'Leaders', 'myclub-groups' );
-        }
-
-        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_leaders_title" value="' . esc_attr( $leadersTitle ) . '" />';
-    }
-
-    /**
-     * Renders the input field for the group members title setting in the admin page.
-     *
-     * @param array $args The arguments for rendering the input field.
-     *                    - 'label_for' (string) The ID of the input field.
-     *
-     * @return void
-     * @since 1.0.0
-     */
-    public function renderMembersTitle( array $args )
-    {
-        $membersTitle = get_option( 'myclub_groups_members_title' );
-        if ( empty( $membersTitle ) ) {
-            $membersTitle = __( 'Members', 'myclub-groups' );
-        }
-
-        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_members_title" value="' . esc_attr( $membersTitle ) . '" />';
-    }
-
-    /**
-     * Renders the input field for the group news title setting in the admin page.
-     *
-     * @param array $args The arguments for rendering the input field.
-     *                    - 'label_for' (string) The ID of the input field.
-     *
-     * @return void
-     * @since 1.0.0
-     */
-    public function renderNewsTitle( array $args )
-    {
-        $newsTitle = get_option( 'myclub_groups_news_title' );
-        if ( empty( $newsTitle ) ) {
-            $newsTitle = __( 'News', 'myclub-groups' );
-        }
-
-        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_news_title" value="' . esc_attr( $newsTitle ) . '" />';
+        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_calendar_title" value="' . esc_attr( $calendar_title ) . '" />';
     }
 
     /**
@@ -675,14 +611,71 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderClubNewsTitle( array $args )
+    public function render_club_news_title( array $args )
     {
-        $newsTitle = get_option( 'myclub_groups_club_news_title' );
-        if ( empty( $newsTitle ) ) {
-            $newsTitle = __( 'News', 'myclub-groups' );
+        $club_news_title = get_option( 'myclub_groups_club_news_title' );
+        if ( empty( $club_news_title ) ) {
+            $club_news_title = __( 'News', 'myclub-groups' );
         }
 
-        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_club_news_title" value="' . esc_attr( $newsTitle ) . '" />';
+        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_club_news_title" value="' . esc_attr( $club_news_title ) . '" />';
+    }
+
+    /**
+     * Renders the input field for the group upcoming games title setting in the admin page.
+     *
+     * @param array $args The arguments for rendering the input field.
+     *                    - 'label_for' (string) The ID of the input field.
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function render_coming_games_title( array $args )
+    {
+        $coming_games_title = get_option( 'myclub_groups_coming_games_title' );
+        if ( empty( $coming_games_title ) ) {
+            $coming_games_title = __( 'Upcoming games', 'myclub-groups' );
+        }
+
+        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_coming_games_title" value="' . esc_attr( $coming_games_title ) . '" />';
+    }
+
+    /**
+     * Renders the input field for the group leaders title setting in the admin page.
+     *
+     * @param array $args The arguments for rendering the input field.
+     *                    - 'label_for' (string) The ID of the input field.
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function render_leaders_title( array $args )
+    {
+        $leaders_title = get_option( 'myclub_groups_leaders_title' );
+        if ( empty( $leaders_title ) ) {
+            $leaders_title = __( 'Leaders', 'myclub-groups' );
+        }
+
+        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_leaders_title" value="' . esc_attr( $leaders_title ) . '" />';
+    }
+
+    /**
+     * Renders the input field for the group members title setting in the admin page.
+     *
+     * @param array $args The arguments for rendering the input field.
+     *                    - 'label_for' (string) The ID of the input field.
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function render_members_title( array $args )
+    {
+        $members_title = get_option( 'myclub_groups_members_title' );
+        if ( empty( $members_title ) ) {
+            $members_title = __( 'Members', 'myclub-groups' );
+        }
+
+        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_members_title" value="' . esc_attr( $members_title ) . '" />';
     }
 
     /**
@@ -691,9 +684,28 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderNewsLastSync()
+    public function render_news_last_sync()
     {
-        $this->renderDateTimeField( 'myclub_groups_last_news_sync' );
+        $this->render_date_time_field( 'myclub_groups_last_news_sync' );
+    }
+
+    /**
+     * Renders the input field for the group news title setting in the admin page.
+     *
+     * @param array $args The arguments for rendering the input field.
+     *                    - 'label_for' (string) The ID of the input field.
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function render_news_title( array $args )
+    {
+        $news_title = get_option( 'myclub_groups_news_title' );
+        if ( empty( $news_title ) ) {
+            $news_title = __( 'News', 'myclub-groups' );
+        }
+
+        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_news_title" value="' . esc_attr( $news_title ) . '" />';
     }
 
     /**
@@ -704,7 +716,7 @@ class Admin extends Base
      *
      * @since 1.0.0
      */
-    public function renderPageTemplate( array $args )
+    public function render_page_template( array $args )
     {
         $templates = wp_get_theme()->get_page_templates();
         $options = array ();
@@ -714,7 +726,7 @@ class Admin extends Base
         echo '<select id="' . $args[ 'label_for' ] . '" name="myclub_groups_page_template">';
         foreach ( $options as $value => $name ) {
             $selected = selected( get_option( 'myclub_groups_page_template' ), $value, false );
-            echo '<option value="' . $value . '"' . $selected . '>' . $name . '</option>';
+            echo '<option value="' . esc_attr( $value ) . '"' . $selected . '>' . esc_attr( $name ) . '</option>';
         }
         echo '</select>';
     }
@@ -728,9 +740,9 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderPageLeaders( array $args )
+    public function render_page_leaders( array $args )
     {
-        $this->renderCheckbox( $args, 'myclub_groups_page_leaders', 'leaders', __( 'Leaders', 'myclub-groups' ) );
+        $this->render_checkbox( $args, 'myclub_groups_page_leaders', 'leaders', __( 'Leaders', 'myclub-groups' ) );
     }
 
     /**
@@ -742,9 +754,9 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderPageCalendar( array $args )
+    public function render_page_calendar( array $args )
     {
-        $this->renderCheckbox( $args, 'myclub_groups_page_calendar', 'calendar', __( 'Calendar', 'myclub-groups' ) );
+        $this->render_checkbox( $args, 'myclub_groups_page_calendar', 'calendar', __( 'Calendar', 'myclub-groups' ) );
     }
 
     /**
@@ -756,9 +768,9 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderPageMembers( array $args )
+    public function render_page_members( array $args )
     {
-        $this->renderCheckbox( $args, 'myclub_groups_page_members', 'members', __( 'Members', 'myclub-groups' ) );
+        $this->render_checkbox( $args, 'myclub_groups_page_members', 'members', __( 'Members', 'myclub-groups' ) );
     }
 
     /**
@@ -770,9 +782,9 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderPageMenu( array $args )
+    public function render_page_menu( array $args )
     {
-        $this->renderCheckbox( $args, 'myclub_groups_page_menu', 'menu', __( 'Menu', 'myclub-groups' ) );
+        $this->render_checkbox( $args, 'myclub_groups_page_menu', 'menu', __( 'Menu', 'myclub-groups' ) );
     }
 
     /**
@@ -784,9 +796,9 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderPageNavigation( array $args )
+    public function render_page_navigation( array $args )
     {
-        $this->renderCheckbox( $args, 'myclub_groups_page_navigation', 'navigation', __( 'Navigation', 'myclub-groups' ) );
+        $this->render_checkbox( $args, 'myclub_groups_page_navigation', 'navigation', __( 'Navigation', 'myclub-groups' ) );
     }
 
     /**
@@ -798,9 +810,9 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderPageNews( array $args )
+    public function render_page_news( array $args )
     {
-        $this->renderCheckbox( $args, 'myclub_groups_page_news', 'news', __( 'News', 'myclub-groups' ) );
+        $this->render_checkbox( $args, 'myclub_groups_page_news', 'news', __( 'News', 'myclub-groups' ) );
     }
 
     /**
@@ -812,9 +824,9 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderPageTitle( array $args )
+    public function render_page_title( array $args )
     {
-        $this->renderCheckbox( $args, 'myclub_groups_page_title' );
+        $this->render_checkbox( $args, 'myclub_groups_page_title' );
     }
 
     /**
@@ -826,9 +838,9 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderPagePicture( array $args )
+    public function render_page_picture( array $args )
     {
-        $this->renderCheckbox( $args, 'myclub_groups_page_picture' );
+        $this->render_checkbox( $args, 'myclub_groups_page_picture' );
     }
 
     /**
@@ -840,9 +852,9 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderPageComingGames( array $args )
+    public function render_page_coming_games( array $args )
     {
-        $this->renderCheckbox( $args, 'myclub_groups_page_coming_games', 'coming-games', __( 'Upcoming games', 'myclub-groups' ) );
+        $this->render_checkbox( $args, 'myclub_groups_page_coming_games', 'coming-games', __( 'Upcoming games', 'myclub-groups' ) );
     }
 
     /**
@@ -854,7 +866,7 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderShowItemsOrder( array $args )
+    public function render_show_items_order( array $args )
     {
         $items = get_option( 'myclub_groups_show_items_order', array () );
         if ( in_array( 'default', $items ) ) {
@@ -869,7 +881,7 @@ class Admin extends Base
             );
         }
 
-        $sortNames = [
+        $sort_names = [
             'calendar'     => __( 'Calendar', 'myclub-groups' ),
             'coming-games' => __( 'Upcoming games', 'myclub-groups' ),
             'leaders'      => __( 'Leaders', 'myclub-groups' ),
@@ -882,7 +894,7 @@ class Admin extends Base
         echo '<ul id="' . $args[ 'label_for' ] . '">';
 
         foreach ( $items as $item ) {
-            echo '<li><input type="hidden" value="' . $item . '" name="myclub_groups_show_items_order[]" />' . $sortNames[ $item ] . '</li>';
+            echo '<li><input type="hidden" value="' . esc_attr( $item ) . '" name="myclub_groups_show_items_order[]" />' . esc_attr( $sort_names[ $item ] ) . '</li>';
         }
 
         echo '</ul>';
@@ -894,9 +906,9 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function renderGroupsLastSync()
+    public function render_groups_last_sync()
     {
-        $this->renderDateTimeField( 'myclub_groups_last_groups_sync' );
+        $this->render_date_time_field( 'myclub_groups_last_groups_sync' );
     }
 
     /**
@@ -907,12 +919,12 @@ class Admin extends Base
      * @return string The sanitized API key, or the previously stored API key if the new key is invalid.
      * @since 1.0.0
      */
-    public function sanitizeApiKey( string $input ): string
+    public function sanitize_api_key( string $input ): string
     {
         $input = sanitize_text_field( $input );
 
         $api = new RestApi( $input );
-        if ( $api->loadMenuItems()->status !== 200 ) {
+        if ( $api->load_menu_items()->status !== 200 ) {
             add_settings_error( 'myclub_groups_api_key', 'invalid-api-key', __( 'Invalid API key entered', 'myclub-groups' ) );
             return get_option( 'myclub_groups_api_key' );
         } else {
@@ -928,7 +940,7 @@ class Admin extends Base
      * @return string The sanitized group slug.
      * @since 1.0.0
      */
-    public function sanitizeGroupSlug( string $input ): string
+    public function sanitize_group_slug( string $input ): string
     {
         $input = sanitize_title( $input );
 
@@ -948,7 +960,7 @@ class Admin extends Base
      * @return string The sanitized version of the input slug.
      * @since 1.0.0
      */
-    public function sanitizeGroupNewsSlug( string $input ): string
+    public function sanitize_group_news_slug( string $input ): string
     {
         $input = sanitize_title( $input );
 
@@ -968,13 +980,13 @@ class Admin extends Base
      * @return string The sanitized title.
      * @since 1.0.0
      */
-    public function sanitizeCalendarTitle( string $input ): string
+    public function sanitize_calendar_title( string $input ): string
     {
         if ( empty ( $input ) ) {
             add_settings_error( 'myclub_groups_calendar_title', 'empty-value', __( 'You have to enter title for the calendar field', 'myclub-groups' ) );
             return get_option( 'myclub_groups_calendar_title' );
         } else {
-            return $input;
+            return sanitize_text_field( $input );
         }
     }
 
@@ -986,13 +998,13 @@ class Admin extends Base
      * @return string The sanitized title.
      * @since 1.0.0
      */
-    public function sanitizeComingGamesTitle( string $input ): string
+    public function sanitize_coming_games_title( string $input ): string
     {
         if ( empty ( $input ) ) {
             add_settings_error( 'myclub_groups_coming_games_title', 'empty-value', __( 'You have to enter title for the upcoming games field', 'myclub-groups' ) );
             return get_option( 'myclub_groups_coming_games_title' );
         } else {
-            return $input;
+            return sanitize_text_field( $input );
         }
     }
 
@@ -1004,13 +1016,13 @@ class Admin extends Base
      * @return string The sanitized title.
      * @since 1.0.0
      */
-    public function sanitizeLeadersTitle( string $input ): string
+    public function sanitize_leaders_title( string $input ): string
     {
         if ( empty ( $input ) ) {
             add_settings_error( 'myclub_groups_leaders_title', 'empty-value', __( 'You have to enter title for the members field', 'myclub-groups' ) );
             return get_option( 'myclub_groups_leaders_title' );
         } else {
-            return $input;
+            return sanitize_text_field( $input );
         }
     }
 
@@ -1022,13 +1034,13 @@ class Admin extends Base
      * @return string The sanitized title.
      * @since 1.0.0
      */
-    public function sanitizeMembersTitle( string $input ): string
+    public function sanitize_members_title( string $input ): string
     {
         if ( empty ( $input ) ) {
             add_settings_error( 'myclub_groups_members_title', 'empty-value', __( 'You have to enter title for the leaders field', 'myclub-groups' ) );
             return get_option( 'myclub_groups_members_title' );
         } else {
-            return $input;
+            return sanitize_text_field( $input );
         }
     }
 
@@ -1040,13 +1052,13 @@ class Admin extends Base
      * @return string The sanitized title.
      * @since 1.0.0
      */
-    public function sanitizeNewsTitle( string $input ): string
+    public function sanitize_news_title( string $input ): string
     {
         if ( empty ( $input ) ) {
             add_settings_error( 'myclub_groups_news_title', 'empty-value', __( 'You must enter a title for the news field', 'myclub-groups' ) );
             return get_option( 'myclub_groups_news_title' );
         } else {
-            return $input;
+            return sanitize_text_field( $input );
         }
     }
 
@@ -1058,13 +1070,13 @@ class Admin extends Base
      * @return string The sanitized title.
      * @since 1.0.0
      */
-    public function sanitizeClubNewsTitle( string $input ): string
+    public function sanitize_club_news_title( string $input ): string
     {
         if ( empty ( $input ) ) {
             add_settings_error( 'myclub_groups_club_news_title', 'empty-value', __( 'You must enter a title for the club news field', 'myclub-groups' ) );
             return get_option( 'myclub_groups_club_news_title' );
         } else {
-            return $input;
+            return sanitize_text_field( $input );
         }
     }
 
@@ -1076,9 +1088,9 @@ class Admin extends Base
      * @return array The sanitized array.
      * @since 1.0.0
      */
-    public function sanitizeShowItemsOrder( array $items ): array
+    public function sanitize_show_items_order( array $items ): array
     {
-        $allowedItems = [
+        $allowed_items = [
             'calendar',
             'coming-games',
             'leaders',
@@ -1088,7 +1100,7 @@ class Admin extends Base
             'news'
         ];
 
-        return array_intersect( $items, $allowedItems );
+        return array_intersect( Utils::sanitize_array( $items ), $allowed_items );
     }
 
     /**
@@ -1099,16 +1111,16 @@ class Admin extends Base
      * @return string The sanitized input. If the input does not exist in the list of available templates, an error message is added and the input is set to 'page.php' (default template).
      * @since 1.0.0
      */
-    public function sanitizePageTemplate( string $input ): string
+    public function sanitize_page_template( string $input ): string
     {
         $templates = get_page_templates();
+
+        $input = sanitize_text_field( $input );
 
         // Check if the selected template exists in the list of available templates
         if ( !in_array( $input, $templates ) ) {
             // If the template doesn't exist, output an error message and revert the setting to default
             add_settings_error( 'myclub_groups_page_template', esc_attr( 'settings_updated' ), __( 'The selected template was not found.', 'myclub-groups' ) );
-
-            $input = 'page.php';
         }
 
         return $input;
@@ -1122,7 +1134,7 @@ class Admin extends Base
      * @return string The sanitized input. Returns '1' if the input is equal to '1', otherwise returns '0'.
      * @since 1.0.0
      */
-    public function sanitizeCheckbox( $input ): string
+    public function sanitize_checkbox( $input ): string
     {
         return $input === '1' ?: '0';
     }
@@ -1135,12 +1147,14 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function setupDashboardWidget()
+    public function setup_dashboard_widget()
     {
         wp_add_dashboard_widget(
             'myclub_groups_dashboard_widget',
             __( 'MyClub Groups', 'myclub-groups' ),
-            [ $this, 'renderDashboardWidget' ]
+            [ $this,
+              'render_dashboard_widget'
+            ]
         );
     }
 
@@ -1152,25 +1166,42 @@ class Admin extends Base
      * @return void
      * @since 1.0.0
      */
-    public function updateApiKey()
+    public function update_api_key()
     {
         $service = new GroupService();
-        $service->reloadGroups();
+        $service->reload_groups();
+    }
+
+    /**
+     * Updates the page template value for all posts of the "myclub-groups" post type.
+     *
+     * @param mixed $old_value The old value of the page template.
+     * @param mixed $new_value The new value of the page template.
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function update_page_template( $old_value, $new_value )
+    {
+        global $wpdb;
+
+        $sql = $wpdb->prepare("UPDATE {$wpdb->prefix}postmeta pm INNER JOIN {$wpdb->prefix}posts p ON pm.post_id = p.ID SET pm.meta_value = %s WHERE pm.meta_key = %s AND p.post_type = %s",
+            sanitize_text_field( $new_value ), '_wp_page_template', 'myclub-groups');
+
+        $wpdb->query($sql);
     }
 
     /**
      * Updates the shown order of all 'myclub-groups' posts with the new value.
      *
-     * @param array $oldValue The old value of the shown order.
-     * @param array $newValue The new value of the shown order.
+     * @param array $old_value The old value of the shown order.
+     * @param array $new_value The new value of the shown order.
      *
      * @return void
      * @since 1.0.0
      */
-    public function updateShownOrder( array $oldValue, array $newValue )
+    public function update_show_order( array $old_value, array $new_value )
     {
-        $pageTemplate = get_option( 'myclub_groups_page_template' );
-
         $args = array (
             'post_type'      => 'myclub-groups',
             'posts_per_page' => -1,
@@ -1180,89 +1211,75 @@ class Admin extends Base
         if ( $query->have_posts() ) {
             while ( $query->have_posts() ) {
                 $query->next_post();
-                $postId = $query->post->ID;
-                GroupService::updateGroupPageContents( $postId, $newValue, $pageTemplate );
+                $post_id = $query->post->ID;
+                GroupService::update_group_page_contents( $post_id, Utils::sanitize_array( $new_value ) );
             }
         }
     }
 
     /**
-     * Updates the page template value for all posts of the "myclub-groups" post type.
+     * Updates the page template for MyClub Groups.
      *
-     * @param mixed $oldValue The old value of the page template.
-     * @param mixed $newValue The new value of the page template.
+     * This method updates the page template for MyClub Groups based on the current WordPress block theme.
+     * If there are available page templates, it will update the template and set the 'myclub_groups_page_template' option.
+     * If the block theme is not enabled or there are no available templates, it will delete the page template meta for 'myclub-groups' post type.
      *
      * @return void
      * @since 1.0.0
      */
-    public function updatePageTemplate( $oldValue, $newValue )
+    public function update_theme_page_template()
     {
-        $args = array (
-            'post_type'      => 'myclub-groups',
-            'posts_per_page' => -1,
-        );
-        $query = new WP_Query( $args );
+        if ( wp_is_block_theme() ) {
+            $templates = wp_get_theme()->get_page_templates();
 
-        if ( $query->have_posts() ) {
-            if ( wp_is_block_theme() ) {
-                while ( $query->have_posts() ) {
-                    $query->next_post();
-                    $postId = $query->post->ID;
+            if ( count( $templates ) ) {
+                $template = key( $templates );
 
-                    update_post_meta( $postId, '_wp_page_template', $newValue );
-                }
-            } else {
-                while ( $query->have_posts() ) {
-                    $query->next_post();
-                    $postId = $query->post->ID;
-
-                    // Update the post into the database
-                    wp_update_post( array (
-                        'ID'            => $postId,
-                        'page_template' => $newValue,
-                    ) );
-                }
+                $this->update_page_template( null,  $template );
+                get_option( 'myclub_groups_page_template' ) === false ? add_option( 'myclub_groups_page_template', $template, false, 'no' ) : update_option( 'myclub_groups_page_template', $template, 'no' );
+                return;
             }
         }
+
+        global $wpdb;
+
+        $sql = $wpdb->prepare("DELETE pm FROM {$wpdb->prefix}postmeta pm INNER JOIN {$wpdb->prefix}posts p ON pm.post_id = p.ID WHERE pm.meta_key = %s AND p.post_type = %s", '_wp_page_template', 'myclub-groups');
+        $wpdb->query($sql);
     }
 
     /**
      * Renders a datetime field.
      *
-     * @param string $fieldName The name of the option field.
+     * @param string $field_name The name of the option field.
      *
      * @return void
      * @since 1.0.0
      */
-    private function renderDateTimeField( string $fieldName )
+    private function render_date_time_field( string $field_name )
     {
-        $lastSync = esc_attr( get_option( $fieldName ) );
+        $last_sync = esc_attr( get_option( $field_name ) );
 
-        if ( empty( $lastSync ) ) {
-            $output = __( 'Not synchronized yet', 'myclub-groups' );
-        } else {
-            $output = Utils::formatDateTime( $lastSync );
-        }
+        $output = empty( $last_sync ) ? __( 'Not synchronized yet', 'myclub-groups' ) : $output = Utils::format_date_time( $last_sync );
 
-        echo '<div>' . $output . '</div>';
+        echo '<div>' . esc_attr( $output ) . '</div>';
     }
 
     /**
      * Renders a checkbox element with the given arguments and field name.
      *
      * @param array $args An array of arguments for the checkbox element.
-     * @param string $fieldName The name of the field associated with the checkbox.
+     * @param string $field_name The name of the field associated with the checkbox.
      * @param string $name The name of the field in the sorting box.
-     * @param string $displayName The display name of the field in the sorting box.
+     * @param string $display_name The display name of the field in the sorting box.
      *
      * @return void
      * @since 1.0.0
      */
-    private function renderCheckbox( array $args, string $fieldName, string $name = null, string $displayName = null )
+    private function render_checkbox( array $args, string $field_name, string $name = null, string $display_name = null )
     {
-        $checked = get_option( $fieldName ) === '1' ? ' checked="checked"' : '';
+        $checked = get_option( $field_name ) === '1' ? ' checked="checked"' : '';
         $class = $name ? ' class="sort-item-setter"' : '';
 
-        echo '<input type="checkbox" id="' . $args[ 'label_for' ] . '" data-name="' . $name . '" data-display-name="' . $displayName . '" name="' . $fieldName . '" value="1" ' . $checked . $class . ' />';
+        echo '<input type="checkbox" id="' . $args[ 'label_for' ] . '" data-name="' . $name . '" data-display-name="' . $display_name . '" name="' . $field_name . '" value="1" ' . $checked . $class . ' />';
     }
 }

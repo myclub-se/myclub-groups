@@ -21,9 +21,9 @@ class NewsService extends Groups
 {
     const MYCLUB_GROUP_NEWS = 'myclub-group-news';
 
-    private $myclubTimezone;
+    private $myclub_timezone;
     private $timezone;
-    private $utcTimezone;
+    private $utc_timezone;
 
     /**
      * Constructor method for the class.
@@ -39,31 +39,31 @@ class NewsService extends Groups
     public function __construct()
     {
         try {
-            $this->myclubTimezone = new DateTimeZone( 'Europe/Stockholm' );
+            $this->myclub_timezone = new DateTimeZone( 'Europe/Stockholm' );
             $this->timezone = new DateTimeZone( get_option( 'timezone_string' ) );
-            $this->utcTimezone = new DateTimeZone( 'UTC' );
+            $this->utc_timezone = new DateTimeZone( 'UTC' );
         } catch ( Exception $e ) {
             error_log( 'Unable to get timezones' );
         }
     }
 
     /**
-     * Deletes all news posts that have a 'myclubNewsId' meta field.
+     * Deletes all news posts that have a 'myclub_news_id' meta field.
      *
-     * This method queries the WordPress database for all posts of type 'post' that have a 'myclubNewsId' meta field.
+     * This method queries the WordPress database for all posts of type 'post' that have a 'myclub_news_id' meta field.
      * It then loops through the query results and deletes each post using the `Utils::deletePost` method. This
      * is a very destructive method and cannot be undone.
      *
      * @return void
      * @since 1.0.0
      */
-    public function deleteAllNews()
+    public function delete_all_news()
     {
         $args = array (
             'post_type'      => 'post',
             'meta_query'     => array (
                 array (
-                    'key'     => 'myclubNewsId',
+                    'key'     => 'myclub_news_id',
                     'compare' => 'EXISTS',
                 ),
             ),
@@ -76,9 +76,9 @@ class NewsService extends Groups
             while ( $query->have_posts() ) {
                 $query->next_post();
 
-                $postId = $query->post->ID;
+                $post_id = $query->post->ID;
 
-                Utils::deletePost( $postId );
+                Utils::delete_post( $post_id );
             }
         }
     }
@@ -95,10 +95,10 @@ class NewsService extends Groups
      *
      * @return void
      */
-    public function reloadNews()
+    public function reload_news()
     {
         // Load menu items from member backend
-        $groups = $this->getAllGroupIds();
+        $groups = $this->get_all_group_ids();
 
         if ( $groups->success ) {
             $process = RefreshNewsTask::init();
@@ -113,18 +113,18 @@ class NewsService extends Groups
         }
     }
 
-    public function loadNews( string $groupId = null )
+    public function load_news( string $group_id = null )
     {
         $api = new RestApi();
-        $response = $api->loadNews( $groupId );
+        $response = $api->load_news( $group_id );
         $group = null;
 
-        if ( $groupId !== null ) {
-            $groupName = $this->getGroupName( $groupId );
+        if ( $group_id !== null ) {
+            $groupName = $this->get_group_name( $group_id );
 
             if ( $groupName !== null ) {
                 $group = array (
-                    'id'   => $groupId,
+                    'id'   => $group_id,
                     'name' => $groupName
                 );
             }
@@ -132,129 +132,146 @@ class NewsService extends Groups
 
         if ( !is_wp_error( $response ) && $response->status === 200 ) {
             foreach ( $response->result->results as $newsItem ) {
-                $this->addNews( $newsItem, $group );
+                $this->add_news( $newsItem, $group );
             }
         }
     }
 
-    public function addDefaultCategory( $postId )
+    /**
+     * Adds the default category 'News' to a post.
+     *
+     * This method checks if the category 'News' exists in the 'category' taxonomy. If the category does not
+     * exist, it creates the category using the 'wp_insert_term' function and assigns the generated category ID to the
+     * `$categoryId` variable. If the category already exists, it retrieves the category ID using the 'get_term_by' function.
+     *
+     * If the category ID is not null, the method sets the post categories using the 'wp_set_post_categories' function,
+     * assigning the 'News' category to the specified post identified by the `$post_id` parameter.
+     *
+     * @param int $post_id The ID of the post to add the default category to.
+     * @return void
+     * @since 1.0.0
+     */
+    public function add_default_category( int $post_id )
     {
         $category = get_term_by( 'name', __( 'News', 'myclub-groups' ), 'category' );
 
         if ( $category === false ) {
-            $categoryId = wp_insert_term( __( 'News', 'myclub-groups' ), 'category' );
-            if ( $categoryId == 0 || is_wp_error( $categoryId ) ) {
+            $category_id = wp_insert_term( __( 'News', 'myclub-groups' ), 'category' );
+            if ( $category_id == 0 || is_wp_error( $category_id ) ) {
                 error_log( 'Unable to add default category' );
-                $categoryId = null;
+                $category_id = null;
             }
         } else {
-            $categoryId = $category->term_id;
+            $category_id = $category->term_id;
         }
 
-        if ( $categoryId !== null ) {
-            wp_set_post_categories( $postId, array ( $categoryId ) );
+        if ( $category_id !== null ) {
+            wp_set_post_categories( $post_id, array ( $category_id ) );
         }
     }
 
     /**
      * Adds a news item to the database.
      *
-     * Retrieves an existing news item from the database if it already exists based on the 'myclubNewsId' meta value.
+     * Retrieves an existing news item from the database if it already exists based on the 'myclub_news_id' meta value.
      * If the news item already exists, updates the existing post using the 'wp_update_post()' function.
      * If the news item does not exist, creates a new post using the 'wp_insert_post()' function.
      *
      * Adds a featured image to the news item post using the 'Utils::addFeaturedImage()' method.
      *
-     * If a myclub group is specified, checks if a term with the 'myclubGroupId' meta value exists in the 'RefreshNews::MYCLUB_GROUP_NEWS' taxonomy.
+     * If a myclub group is specified, checks if a term with the 'myclub_group_id' meta value exists in the 'RefreshNews::MYCLUB_GROUP_NEWS' taxonomy.
      * If the term exists, assigns the term to the news item post using the 'wp_set_post_terms()' function.
      * If the term does not exist, inserts a new term with the myclub group name and assigns it to the news item post.
      *
-     * @param object $newsItem The news item to be added to the database.
-     * @param array|null $myclubGroup Optional. The myclub group to assign to the news item.
+     * @param object $news_item The news item to be added to the database.
+     * @param array|null $myclub_group Optional. The myclub group to assign to the news item.
      *
      * @return void
      * @since 1.0.0
      *
      */
-    private function addNews( $newsItem, array $myclubGroup = null )
+    private function add_news( $news_item, array $myclub_group = null )
     {
-        $queryArgs = array (
+        $query_args = array (
             'posts_per_page' => 1,
             'post_type'      => 'post',
             'meta_query'     => [
                 [
-                    'key'     => 'myclubNewsId',
-                    'value'   => $newsItem->id,
+                    'key'     => 'myclub_news_id',
+                    'value'   => $news_item->id,
                     'compare' => '='
                 ]
             ]
         );
 
-        $queryResults = new WP_Query( $queryArgs );
+        $query_results = new WP_Query( $query_args );
 
-        $postId = $queryResults->have_posts() ? wp_update_post( $this->createNewsArgs( $newsItem, $queryResults->posts[ 0 ]->ID ) ) : wp_insert_post( $this->createNewsArgs( $newsItem ) );
+        $post_id = $query_results->have_posts() ? wp_update_post( $this->create_news_args( $news_item, $query_results->posts[ 0 ]->ID ) ) : wp_insert_post( $this->create_news_args( $news_item ) );
 
-        if ( isset( $newsItem->news_image ) ) {
-            $imageTask = ImageTask::init();
+        if ( isset( $news_item->news_image ) ) {
+            $image_task = ImageTask::init();
 
-            $imageTask->push_to_queue(
+            $image_task->push_to_queue(
                 wp_json_encode( array (
-                    'postId' => $postId,
-                    'type'   => 'news',
-                    'image'  => $newsItem->news_image,
-                    'newsId' => $newsItem->id
+                    'post_id' => $post_id,
+                    'type'    => 'news',
+                    'image'   => $news_item->news_image,
+                    'news_id' => $news_item->id
                 ), JSON_UNESCAPED_UNICODE )
             );
-            $imageTask->save()->dispatch();
+            $image_task->save()->dispatch();
         }
 
-        $this->addDefaultCategory( $postId );
+        $this->add_default_category( $post_id );
 
-        if ( $myclubGroup ) {
-            $queryArgs = array (
+        if ( $myclub_group ) {
+            $query_args = array (
                 'taxonomy'   => NewsService::MYCLUB_GROUP_NEWS,
                 'meta_query' => [
                     [
-                        'key'     => 'myclubGroupId',
-                        'value'   => $myclubGroup[ 'id' ],
+                        'key'     => 'myclub_group_id',
+                        'value'   => $myclub_group[ 'id' ],
                         'compare' => '='
                     ]
                 ]
             );
 
-            $terms = get_terms( $queryArgs );
+            $terms = get_terms( $query_args );
 
             if ( !empty( $terms ) ) {
-                $termId = $terms[ 0 ]->term_id;
+                $term_id = $terms[ 0 ]->term_id;
             } else {
-                $term = wp_insert_term( $myclubGroup[ 'name' ], NewsService::MYCLUB_GROUP_NEWS );
+                $term = wp_insert_term( $myclub_group[ 'name' ], NewsService::MYCLUB_GROUP_NEWS );
 
                 if ( is_wp_error( $term ) ) {
-                    $termId = 0;
+                    $term_id = 0;
 
-                    if ( 'post_exists' === $term->get_error_code() ) {
-                        $term = get_term_by( 'name', $myclubGroup[ 'name' ], NewsService::MYCLUB_GROUP_NEWS );
+                    if ( 'term_exists' === $term->get_error_code() ) {
+                        $term = get_term_by( 'name', $myclub_group[ 'name' ], NewsService::MYCLUB_GROUP_NEWS );
 
                         if ( $term && !is_wp_error( $term ) ) {
-                            $termId = $term->term_id;
+                            $term_id = $term->term_id;
                         }
                     }
                 } else {
-                    add_term_meta( $term[ 'term_id' ], 'myclubGroupId', $myclubGroup[ 'id' ] );
-                    $termId = $term[ 'term_id' ];
+                    $term_id = $term[ 'term_id' ];
+                }
+
+                if ( $term_id ) {
+                    add_term_meta( $term_id, 'myclub_group_id', $myclub_group[ 'id' ] );
                 }
             }
 
-            $terms = wp_get_post_terms( $postId, NewsService::MYCLUB_GROUP_NEWS );
+            $terms = wp_get_post_terms( $post_id, NewsService::MYCLUB_GROUP_NEWS );
 
-            if ( !is_wp_error( $terms ) && $termId ) {
-                $termIds = array_map( function ( $term ) {
+            if ( !is_wp_error( $terms ) && $term_id ) {
+                $term_ids = array_map( function ( $term ) {
                     return (int)$term->term_id;
                 }, $terms );
 
-                if ( !array_search( $termId, $termIds ) ) {
-                    $termIds[] = (int)$termId;
-                    wp_set_post_terms( $postId, $termIds, NewsService::MYCLUB_GROUP_NEWS );
+                if ( !array_search( $term_id, $term_ids ) ) {
+                    $term_ids[] = (int)$term_id;
+                    wp_set_post_terms( $post_id, $term_ids, NewsService::MYCLUB_GROUP_NEWS );
                 }
             }
         }
@@ -266,63 +283,74 @@ class NewsService extends Groups
      * This method takes a news item object and an optional post ID as parameters and
      * returns an array with the necessary arguments for creating or updating a news post.
      *
-     * @param object $newsItem The news item object containing the necessary data.
-     * @param int|null $postId The ID of the post to update, or null to create a new post.
+     * @param object $news_item The news item object containing the necessary data.
+     * @param int|null $post_id The ID of the post to update, or null to create a new post.
      *
      * @return array The arguments array for creating or updating a news post.
      * @since 1.0.0
      */
-    private function createNewsArgs( $newsItem, int $postId = null ): array
+    private function create_news_args( $news_item, int $post_id = null ): array
     {
-        $time = str_replace( 'T', ' ', str_replace( 'Z', '', $newsItem->published_date ) );
+        $time = str_replace( 'T', ' ', str_replace( 'Z', '', $news_item->published_date ) );
 
         // Get time for post and make sure that the time is correct with utc time as well
         try {
-            $dateTimeUtc = new DateTime( $time, $this->myclubTimezone );
-            $dateTimeUtc->setTimezone( $this->utcTimezone );
-            $gmtTime = $dateTimeUtc->format( 'Y-m-d H:i:s' );
+            $date_time_utc = new DateTime( $time, $this->myclub_timezone );
+            $date_time_utc->setTimezone( $this->utc_timezone );
+            $gmtTime = $date_time_utc->format( 'Y-m-d H:i:s' );
 
-            $dateTimeUtc->setTimezone( $this->timezone );
-            $time = $dateTimeUtc->format( 'Y-m-d H:i:s' );
+            $date_time_utc->setTimezone( $this->timezone );
+            $time = $date_time_utc->format( 'Y-m-d H:i:s' );
         } catch ( Exception $e ) {
             $gmtTime = $time;
         }
 
-        $postContent = $newsItem->ingress;
+        $post_content = $news_item->ingress;
 
-        if ( !empty ( wp_strip_all_tags( $newsItem->text ) ) ) {
-            $postContent .= $newsItem->text;
+        if ( !empty ( wp_strip_all_tags( $news_item->text ) ) ) {
+            $post_content .= $news_item->text;
         }
 
         $args = [
             'post_date'     => $time,
             'post_date_gmt' => $gmtTime,
-            'post_title'    => $newsItem->title,
-            'post_name'     => sanitize_title( $newsItem->title ),
+            'post_title'    => $news_item->title,
+            'post_name'     => sanitize_title( $news_item->title ),
             'post_status'   => 'publish',
             'post_type'     => 'post',
-            'post_excerpt'  => $newsItem->ingress,
-            'post_content'  => $postContent,
+            'post_excerpt'  => $news_item->ingress,
+            'post_content'  => $post_content,
             'meta_input'    => [
-                'myclubNewsId' => $newsItem->id,
+                'myclub_news_id' => $news_item->id,
             ]
         ];
 
-        if ( $postId !== null ) {
-            $args[ 'ID' ] = $postId;
+        if ( $post_id !== null ) {
+            $args[ 'ID' ] = $post_id;
         }
 
         return $args;
     }
 
-    private function getGroupName( string $groupId )
+    /**
+     * Returns the name of a group based on its ID.
+     *
+     * This method queries the WordPress database for a post of type 'myclub-groups' that has a 'myclub_group_id'
+     * meta field matching the provided group ID. If a matching group is found, its name is returned. If no matching
+     * group is found, null is returned.
+     *
+     * @param string $group_id The ID of the group to retrieve the name for.
+     * @return string|null The name of the group, or null if no matching group is found.
+     * @since 1.0.0
+     */
+    private function get_group_name( string $group_id )
     {
         $args = array (
             'post_type'      => 'myclub-groups',
             'meta_query'     => array (
                 array (
-                    'key'     => 'myclubGroupId',
-                    'value'   => $groupId,
+                    'key'     => 'myclub_group_id',
+                    'value'   => $group_id,
                     'compare' => '='
                 ),
             ),

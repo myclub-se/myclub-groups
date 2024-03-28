@@ -22,7 +22,7 @@ class Blocks extends Base
         'title'
     ];
 
-    private $blockArgs = [];
+    private $block_args = [];
     private $handles = [];
 
     /**
@@ -32,10 +32,10 @@ class Blocks extends Base
      *
      * @since 1.0.0
      */
-    public function enqueueScripts()
+    public function enqueue_scripts()
     {
         foreach ( $this->handles as $handle ) {
-            wp_set_script_translations( $handle, 'myclub-groups', $this->pluginPath . 'languages' );
+            wp_set_script_translations( $handle, 'myclub-groups', $this->plugin_path . 'languages' );
         }
     }
 
@@ -48,12 +48,12 @@ class Blocks extends Base
      * @return string The rendered HTML content of the calendar block.
      * @since 1.0.0
      */
-    public function renderCalendar( array $attributes, string $content = '' ): string
+    public function render_calendar( array $attributes, string $content = '' ): string
     {
         wp_enqueue_script( 'fullcalendar-js' );
 
         ob_start();
-        require( $this->pluginPath . 'blocks/build/calendar/render.php' );
+        require( $this->plugin_path . 'blocks/build/calendar/render.php' );
         return ob_get_clean();
     }
 
@@ -73,17 +73,18 @@ class Blocks extends Base
         // Register custom MyClub blocks
         add_action( 'init', [
             $this,
-            'registerBlocks'
-        ] );
-        // Add custom category to blocks chooser
-        add_filter( 'block_categories_all', [
-            $this,
-            'registerMyClubCategory'
+            'register_blocks'
         ] );
         // Enqueue js scripts for translations
         add_action( 'admin_enqueue_scripts', [
             $this,
-            'enqueueScripts'
+            'enqueue_scripts'
+        ] );
+
+        // Add custom category to blocks chooser
+        add_filter( 'block_categories_all', [
+            $this,
+            'register_myclub_category'
         ] );
     }
 
@@ -95,14 +96,14 @@ class Blocks extends Base
      *
      * @since 1.0.0
      */
-    public function registerBlocks()
+    public function register_blocks()
     {
-        $this->blockArgs = [
+        $this->block_args = [
             'calendar' => [
                 'description' => __( 'Display calendar for a selected group', 'myclub-groups' ),
                 'render_callback' => [
                     $this,
-                    'renderCalendar'
+                    'render_calendar'
                 ],
                 'title' => __( 'MyClub Group Calendar', 'myclub-groups' )
             ],
@@ -141,10 +142,10 @@ class Blocks extends Base
         ];
 
         foreach ( Blocks::BLOCKS as $block ) {
-            $this->registerBlock( $block );
+            $this->register_block( $block );
         }
 
-        wp_register_script( 'fullcalendar-js', $this->pluginUrl . 'assets/javascript/fullcalendar.6.1.11.min.js' );
+        wp_register_script( 'fullcalendar-js', $this->plugin_url . 'resources/javascript/fullcalendar.6.1.11.min.js' );
     }
 
     /**
@@ -154,7 +155,7 @@ class Blocks extends Base
      * @return array The updated block categories list.
      * @since 1.0.0
      */
-    public function registerMyClubCategory( array $categories ): array
+    public function register_myclub_category( array $categories ): array
     {
         $categories[] = array (
             'slug'  => 'myclub',
@@ -173,14 +174,14 @@ class Blocks extends Base
      *
      * @since 1.0.0
      */
-    private function registerBlock( string $block )
+    private function register_block( string $block )
     {
-        $blockType = register_block_type( $this->pluginPath . 'blocks/build/' . $block, $this->blockArgs[ $block ] );
+        $block_type = register_block_type( $this->plugin_path . 'blocks/build/' . $block, $this->block_args[ $block ] );
 
-        if ( !$blockType ) {
+        if ( !$block_type ) {
             error_log( "Unable to register block $block" );
         } else {
-            array_push( $this->handles, ...$blockType->view_script_handles, ...$blockType->editor_script_handles );
+            array_push( $this->handles, ...$block_type->view_script_handles, ...$block_type->editor_script_handles );
         }
     }
 }

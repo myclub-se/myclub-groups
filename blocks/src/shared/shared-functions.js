@@ -21,7 +21,9 @@ function showModal ( modalClassName, labels, data ) {
     const image = modal.getElementsByClassName('image')[0];
     const information = modal.getElementsByClassName('information')[0];
     const close = modal.getElementsByClassName('close')[0];
-    image.innerHTML = '<img src="' + data.member_image.url + '" alt="' + data.name + '" />';
+    if (data.member_image) {
+        image.innerHTML = '<img src="' + data.member_image.url + '" alt="' + data.name + '" />';
+    }
     let output = '<div class="name">' + data.name + '</div>';
 
     if ( data.role || data.phone || data.email || data.age ) {

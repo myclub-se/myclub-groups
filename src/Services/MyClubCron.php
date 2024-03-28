@@ -7,7 +7,8 @@ namespace MyClub\MyClubGroups\Services;
  *
  * Provides functionality for scheduling cron jobs related to the MyClub plugin.
  */
-class MyClubCron {
+class MyClubCron
+{
 
     const REFRESH_GROUPS_HOOK = 'myclub_groups_refresh_groups';
     const REFRESH_NEWS_HOOK = 'myclub_groups_refresh_news';
@@ -23,9 +24,18 @@ class MyClubCron {
      */
     public function register()
     {
-        add_action( 'init', [ $this, 'setupSchedule' ] );
-        add_action( MyClubCron::REFRESH_NEWS_HOOK, [ $this, 'refreshNews' ] );
-        add_action( MyClubCron::REFRESH_GROUPS_HOOK, [ $this, 'refreshGroups' ] );
+        add_action( 'init', [
+            $this,
+            'setup_schedule'
+        ] );
+        add_action( MyClubCron::REFRESH_NEWS_HOOK, [
+            $this,
+            'reload_news'
+        ] );
+        add_action( MyClubCron::REFRESH_GROUPS_HOOK, [
+            $this,
+            'reload_groups'
+        ] );
     }
 
     /**
@@ -40,7 +50,7 @@ class MyClubCron {
     public function deactivate()
     {
         if ( wp_next_scheduled( MyClubCron::REFRESH_NEWS_HOOK ) ) {
-            wp_clear_scheduled_hook(MyClubCron::REFRESH_NEWS_HOOK );
+            wp_clear_scheduled_hook( MyClubCron::REFRESH_NEWS_HOOK );
         }
 
         if ( wp_next_scheduled( MyClubCron::REFRESH_GROUPS_HOOK ) ) {
@@ -61,7 +71,7 @@ class MyClubCron {
      *
      * @return void
      */
-    public function setupSchedule()
+    public function setup_schedule()
     {
         if ( !wp_next_scheduled( MyClubCron::REFRESH_NEWS_HOOK ) ) {
             wp_schedule_event( time(), 'hourly', MyClubCron::REFRESH_NEWS_HOOK );
@@ -72,15 +82,31 @@ class MyClubCron {
         }
     }
 
-    public function refreshGroups()
+    /**
+     * Reloads the groups by reloading them from the MyClub backend.
+     *
+     * The method creates a new instance of the GroupService class and calls the reloadGroups method on it.
+     * This method is responsible for reloading the groups from the data source.
+     *
+     * @return void
+     */
+    public function reload_groups()
     {
         $service = new GroupService();
-        $service->reloadGroups();
+        $service->reload_groups();
     }
 
-    public function refreshNews()
+    /**
+     * Reloads the news by reloading them from the MyClub backend.
+     *
+     * The method creates a new instance of the NewsService class and calls its reloadNews() method.
+     * The reloadNews() method is responsible for reloading the news from the external source.
+     *
+     * @return void
+     */
+    public function reload_news()
     {
         $service = new NewsService();
-        $service->reloadNews();
+        $service->reload_news();
     }
 }

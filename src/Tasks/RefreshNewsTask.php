@@ -32,13 +32,19 @@ class RefreshNewsTask extends WP_Background_Process {
      */
     protected function task( $item ) {
         $service = new NewsService();
-        $service->loadNews( $item );
+        $service->load_news( $item );
         return false;
     }
 
+    /**
+     * Completes the processing of retrieving news for the group id sent to the method or for the club if item is null
+     *
+     * @return void
+     * @since 1.0.0
+     */
     protected function complete()
     {
         parent::complete();
-        Utils::updateOrCreateOption( 'myclub_groups_last_news_sync', date( "c" ), 'no' );
+        Utils::update_or_create_option( 'myclub_groups_last_news_sync', date( "c" ), 'no' );
     }
 }

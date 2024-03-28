@@ -77,20 +77,22 @@ export default function Edit( { attributes, setAttributes } ) {
 	if (postMembers && postMembers.members && postMembers.members.length) {
 		memberOutput =
 			<div className="myclub-groups-members-list">
-				<h3 className="myclub-groups-header">{memberTitle}</h3>
-				<div ref={ref} className="members-list">
-					{postMembers.members.slice(0, 8).map((member) => {
-						return (
-							<div className="member" onClick={() => showMemberModal(modalRef, member, labels)}>
-								<div className="member-picture">
-									<img src={changeHostName(member.member_image.url)} alt={member.name}/>
+				<div className="myclub-groups-members-container">
+					<h3 className="myclub-groups-header">{memberTitle}</h3>
+					<div ref={ref} className="members-list">
+						{postMembers.members.slice(0, 8).map((member) => {
+							return (
+								<div className="member" onClick={() => showMemberModal(modalRef, member, labels)}>
+									<div className="member-picture">
+										{ member.member_image && <img src={changeHostName(member.member_image.url)} alt={member.name}/> }
+									</div>
+									<div className="member-name">
+										{member.name}
+									</div>
 								</div>
-								<div className="member-name">
-									{member.name}
-								</div>
-							</div>
-						)
-					})}
+							)
+						})}
+					</div>
 				</div>
 				<div className="member-modal" ref={modalRef}>
 					<div className="modal-content">

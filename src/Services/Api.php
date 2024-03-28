@@ -27,7 +27,7 @@ class Api
     {
         add_action( 'rest_api_init', [
             $this,
-            'registerRoutes'
+            'register_routes'
         ] );
     }
 
@@ -38,13 +38,13 @@ class Api
      *
      * @return void
      */
-    public function registerRoutes()
+    public function register_routes()
     {
         register_rest_route( 'myclub/v1', '/options', [
             'methods'             => 'GET',
             'callback'            => [
                 $this,
-                'returnOptions'
+                'return_options'
             ],
             'permission_callback' => function () {
                 return current_user_can( 'manage_options' );
@@ -55,7 +55,7 @@ class Api
             'methods'             => 'GET',
             'callback'            => [
                 $this,
-                'returnGroups'
+                'return_groups'
             ],
             'permission_callback' => function () {
                 return current_user_can( 'edit_posts' );
@@ -66,7 +66,7 @@ class Api
             'methods'             => 'GET',
             'callback'            => [
                 $this,
-                'returnGroup'
+                'return_group'
             ],
             'permission_callback' => function () {
                 return current_user_can( 'edit_posts' );
@@ -95,7 +95,7 @@ class Api
      * @since 1.0.0
      *
      */
-    public function returnGroup( WP_REST_Request $request ): WP_REST_Response
+    public function return_group( WP_REST_Request $request ): WP_REST_Response
     {
         $post = get_post( $request[ 'id' ] );
 
@@ -107,16 +107,16 @@ class Api
             );
         }
 
-        $postId = $post->ID;
+        $post_id = $post->ID;
 
         return new WP_REST_Response( [
-            'activities'  => get_post_meta( $postId, 'activities', true ),
-            'contactName' => get_post_meta( $postId, 'contactName', true ),
-            'email'       => get_post_meta( $postId, 'email', true ),
-            'infoText'    => get_post_meta( $postId, 'infoText', true ),
-            'members'     => get_post_meta( $postId, 'members', true ),
-            'phone'       => get_post_meta( $postId, 'phone', true ),
-            'title'       => get_the_title( $postId ),
+            'activities'   => get_post_meta( $post_id, 'activities', true ),
+            'contact_name' => get_post_meta( $post_id, 'contact_name', true ),
+            'email'        => get_post_meta( $post_id, 'email', true ),
+            'info_text'    => get_post_meta( $post_id, 'info_text', true ),
+            'members'      => get_post_meta( $post_id, 'members', true ),
+            'phone'        => get_post_meta( $post_id, 'phone', true ),
+            'title'        => get_the_title( $post_id ),
         ], 200 );
     }
 
@@ -130,7 +130,7 @@ class Api
      *
      * @since 1.0.0
      */
-    public function returnGroups(): WP_REST_Response
+    public function return_groups(): WP_REST_Response
     {
         $args = array (
             'post_type'      => 'myclub-groups',
@@ -146,10 +146,10 @@ class Api
         $myclub_groups = array ();
 
         if ( $myclub_groups_query->have_posts() ) {
-            foreach ( $myclub_groups_query->posts as $postId ) {
+            foreach ( $myclub_groups_query->posts as $post_id ) {
                 $myclub_groups[] = array (
-                    'id'    => $postId,
-                    'title' => get_the_title( $postId ),
+                    'id'    => $post_id,
+                    'title' => get_the_title( $post_id ),
                 );
             }
         }
@@ -169,13 +169,14 @@ class Api
      *
      * @since 1.0.0
      */
-    public function returnOptions(): WP_REST_Response
+    public function return_options(): WP_REST_Response
     {
         return new WP_REST_Response( [
-            'myclub_groups_coming_games_title' => get_option( 'myclub_groups_coming_games_title' ),
-            'myclub_groups_leaders_title'      => get_option( 'myclub_groups_leaders_title' ),
-            'myclub_groups_members_title'      => get_option( 'myclub_groups_members_title' ),
-            'myclub_groups_page_picture'       => get_option( 'myclub_groups_page_picture' )
+            'myclub_groups_calendar_title'     => esc_attr( get_option( 'myclub_groups_calendar_title' ) ),
+            'myclub_groups_coming_games_title' => esc_attr( get_option( 'myclub_groups_coming_games_title' ) ),
+            'myclub_groups_leaders_title'      => esc_attr( get_option( 'myclub_groups_leaders_title' ) ),
+            'myclub_groups_members_title'      => esc_attr( get_option( 'myclub_groups_members_title' ) ),
+            'myclub_groups_page_picture'       => esc_attr( get_option( 'myclub_groups_page_picture' ) )
         ], 200 );
     }
 }
