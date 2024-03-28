@@ -9,20 +9,15 @@ Requires PHP: 8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin retrieves group information from the MyClub member administration platform and generates pages for
-groups defined in the platform.
+This plugin retrieves group information from the MyClub member administration platform and generates pages for groups defined in the platform.
 
 == Description ==
 
-The MyClub Groups plugin is designed to retrieve group information from the MyClub member administration platform.
-It automatically generates WordPress pages for each group, making it easy to manage and display organized data for
-all groups in your club.
+The MyClub Groups plugin is designed to retrieve group information from the MyClub member administration platform. It automatically generates WordPress pages for each group, making it easy to manage and display organized data for all groups in your club.
 
-The plugin automatically creates pages for all groups defined in your WordPress settings in MyClub. You can also
-use both the Gutenberg blocks and shortcodes for adding data on other pages.
+The plugin automatically creates pages for all groups defined in your WordPress settings in MyClub. You can also use both the Gutenberg blocks and shortcodes for adding data on other pages.
 
-Please ensure that your server is running on PHP 8.0 or higher and your WordPress version is at least 6.4 to utilize
-this plugin fully.
+Please ensure that your server is running on PHP 8.0 or higher and your WordPress version is at least 6.4 to utilize this plugin fully.
 
 == Installation ==
 
