@@ -7,7 +7,8 @@ $empty_news = '<div class="no-news">' . __( 'No news found', 'myclub-groups' ) .
 ?>
 
 <div class="myclub-groups-club-news" id="news">
-    <h3 class="myclub-groups-header"><?= $news_title ?></h3>
+    <div class="myclub-groups-club-news-container">
+        <h3 class="myclub-groups-header"><?= $news_title ?></h3>
 
 <?php
 
@@ -23,8 +24,8 @@ $posts = get_posts( $args );
 
 if ( !empty( $posts ) ) {
 ?>
-    <div class="myclub-groups-club-news-list">
-        <div class="myclub-groups-club-news-container">
+        <div class="myclub-groups-club-news-list">
+
         <?php
         foreach ( $posts as $post ) {
         $image_url = get_the_post_thumbnail_url($post->ID, 'thumbnail');
@@ -67,7 +68,7 @@ if ( !empty( $posts ) ) {
                 $total_posts = $query->found_posts;
 
                 if ( $total_posts > 3 ) {
-                    echo '<div class="myclub-more-news"><a href="' . $category_link . '">' . __( 'Show more news', 'myclub-groups' ) . '</a></div>';
+                    echo '<div class="myclub-more-club-news"><a href="' . $category_link . '">' . __( 'Show more news', 'myclub-groups' ) . '</a></div>';
                 }
             }
             echo '</div>';

@@ -35,8 +35,8 @@ export default function Edit( { attributes, setAttributes } ) {
 			loaded: false
 		});
 
-		if (attributes.postId) {
-			apiFetch({ path: `/myclub/v1/groups/${attributes.postId}`})
+		if (attributes.post_id) {
+			apiFetch({ path: `/myclub/v1/groups/${attributes.post_id}`})
 				.then((post) => {
 					const allMembers = JSON.parse(post.members);
 
@@ -52,7 +52,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				loaded: true
 			});
 		}
-	}, [attributes.postId]);
+	}, [attributes.post_id]);
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -116,18 +116,18 @@ export default function Edit( { attributes, setAttributes } ) {
 						{posts.length ?
 							<SelectControl
 								label={__('Group', 'myclub-groups')}
-								value={attributes.postId }
+								value={attributes.post_id }
 							options={ posts }
 							onChange={ ( value ) => {
-								setAttributes({postId: value});
+								setAttributes({post_id: value});
 							} }
 						/> : <Spinner /> }
 					</PanelRow>
 				</PanelBody>
 			</InspectorControls>
 			<div {...useBlockProps()}>
-				{ attributes.postId && !postMembers.loaded && <Spinner /> }
-				{ (postMembers.loaded || !attributes.postId) && memberOutput }
+				{ attributes.post_id && !postMembers.loaded && <Spinner /> }
+				{ (postMembers.loaded || !attributes.post_id) && memberOutput }
 			</div>
 		</>
 	);

@@ -22,8 +22,8 @@ export default function Edit( { attributes, setAttributes } ) {
 	const {apiFetch} = wp;
 	const {useSelect} = wp.data;
 	const featuredImageId = useSelect((select) => {
-		return attributes.postId && select('core').getEntityRecord('postType', 'myclub-groups', attributes.postId)?.featured_media;
-	}, [ attributes.postId ]);
+		return attributes.post_id && select('core').getEntityRecord('postType', 'myclub-groups', attributes.post_id)?.featured_media;
+	}, [ attributes.post_id ]);
 
 	const featuredImage = useSelect((select) => {
 		return featuredImageId && select('core').getMedia(featuredImageId);
@@ -35,8 +35,8 @@ export default function Edit( { attributes, setAttributes } ) {
 	};
 
 	useEffect(() => {
-		if (attributes.postId) {
-			apiFetch( { path: `/myclub/v1/groups/${attributes.postId}` } )
+		if (attributes.post_id) {
+			apiFetch( { path: `/myclub/v1/groups/${attributes.post_id}` } )
 				.then( ( post ) => {
 					setPostData( {
 						contactName: post.contact_name,
@@ -47,7 +47,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					} );
 				} );
 		}
-	}, [ attributes.postId ])
+	}, [ attributes.post_id ])
 
 	useEffect(() => {
 		getMyClubGroups( setPosts, selectPostLabel );
@@ -65,10 +65,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						{ posts.length ?
 							<SelectControl
 								label={ __('Group', 'myclub-groups') }
-								value={ attributes.postId }
+								value={ attributes.post_id }
 								options={ posts }
 								onChange={ ( value ) => {
-									setAttributes({postId: value});
+									setAttributes({post_id: value});
 								} }
 							/> : <Spinner /> }
 					</PanelRow>

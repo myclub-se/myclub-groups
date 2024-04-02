@@ -31,10 +31,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						{ posts.length ?
 							<SelectControl
 								label={ __('Group', 'myclub-groups') }
-								value={ attributes.postId }
+								value={ attributes.post_id }
 								options={ posts }
 								onChange={ ( value ) => {
-									setAttributes({postId: value});
+									setAttributes({post_id: value});
 								} }
 							/> : <Spinner /> }
 					</PanelRow>

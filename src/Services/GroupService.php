@@ -50,7 +50,7 @@ class GroupService extends Groups
             'news'         => 'myclub_groups_page_news',
         ];
 
-        $post_id_string = ' {"postId":"' . $post_id . '"}';
+        $post_id_string = ' {"post_id":"' . $post_id . '"}';
 
         if ( empty( $selected_blocks ) ) {
             $selected_blocks = get_option( 'myclub_groups_show_items_order' );

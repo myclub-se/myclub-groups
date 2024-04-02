@@ -1,5 +1,5 @@
 <?php
-$post_id = $attributes[ 'postId' ] ?? null;
+$post_id = $attributes[ 'post_id' ] ?? null;
 
 if ( empty( $post_id ) ) {
     $post_id = get_the_ID();

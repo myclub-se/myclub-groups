@@ -199,8 +199,8 @@ export default function Edit( { attributes, setAttributes } ) {
 			loaded: false
 		});
 
-		if (attributes.postId) {
-			apiFetch({ path: `/myclub/v1/groups/${attributes.postId}`})
+		if (attributes.post_id) {
+			apiFetch({ path: `/myclub/v1/groups/${attributes.post_id}`})
 				.then((post) => {
 					const allActivities = JSON.parse(post.activities);
 					const events = allActivities.map((activity) => {
@@ -257,7 +257,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				loaded: true
 			});
 		}
-	}, [attributes.postId]);
+	}, [attributes.post_id]);
 
 	return (
 		<>
@@ -266,10 +266,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					<PanelRow>
 						<SelectControl
 							label={ __('Group', 'myclub-groups') }
-							value={ attributes.postId }
+							value={ attributes.post_id }
 							options={ posts }
 							onChange={ ( value ) => {
-								setAttributes({postId: value});
+								setAttributes({post_id: value});
 							} }
 						/>
 					</PanelRow>

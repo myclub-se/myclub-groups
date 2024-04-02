@@ -32,10 +32,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						{ posts.length ?
 						<SelectControl
 							label={ __('Group', 'myclub-groups') }
-							value={ attributes.postId }
+							value={ attributes.post_id }
 							options={ posts }
 							onChange={ ( value ) => {
-								setAttributes({postId: value});
+								setAttributes({post_id: value});
 							} }
 						/> : <Spinner />
 						}
@@ -43,7 +43,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				</PanelBody>
 			</InspectorControls>
 			<div { ...useBlockProps() }>
-				{ attributes.postId ? <ServerSideRender block="myclub-groups/coming-games" attributes={attributes} /> : <div className="myclub-groups-coming-games">
+				{ attributes.post_id ? <ServerSideRender block="myclub-groups/coming-games" attributes={attributes} /> : <div className="myclub-groups-coming-games">
 					<div className="no-group-selected">
 						{__( 'No group selected', 'myclub-groups' )}
 					</div>
