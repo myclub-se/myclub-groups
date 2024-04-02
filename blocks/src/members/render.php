@@ -23,28 +23,29 @@ if ( !empty ( $meta ) ) {
     ?>
 <div class="myclub-groups-members-list" id="members">
     <div class="myclub-groups-members-container">
-        <h3 class="myclub-groups-header"><?= $member_title ?></h3>
-        <div class="members-list" data-labels="<?= htmlspecialchars( json_encode( $labels, JSON_UNESCAPED_UNICODE ), ENT_QUOTES, 'UTF-8' ) ?>">
+        <h3 class="myclub-groups-header"><?php echo esc_attr( $member_title ) ?></h3>
+        <div class="members-list" data-labels="<?php echo esc_attr( wp_json_encode( $labels, JSON_UNESCAPED_UNICODE ) ); ?>">
         <?php
         foreach ( $members as $key=>$member ) {
-            if( $member->member_image ) {
-                $member->member_image->url = Utils::change_host_name( $member->member_image->url );
-                ?>
-                <div class="member" data-member="<?=  htmlspecialchars( json_encode( $member, JSON_UNESCAPED_UNICODE ), ENT_QUOTES, 'UTF-8' ) ?>">
-                    <div class="member-picture">
-                        <img src="<?= $member->member_image->url ?>" alt="<?= $member->name ?>" />
-                    </div>
-                    <div class="member-name"><?=  $member->name ?></div>
+            ?>
+                <div class="member" data-member="<?php echo esc_attr( wp_json_encode( $member, JSON_UNESCAPED_UNICODE ) ); ?>">
+                    <?php
+                        if ( $member->member_image ) {
+                            $member->member_image->url = Utils::change_host_name( $member->member_image->url );
+
+                            ?>
+                            <div class="member-picture">
+                                <img src="<?php echo esc_url( $member->member_image->url ); ?>" alt="<?php echo esc_attr( $member->name ); ?>" />
+                            </div>
+                            <?php
+
+                        } else {
+                            echo '<div class="member-picture"></div>';
+                        }
+                    ?>
+                    <div class="member-name"><?php echo esc_attr( $member->name ); ?></div>
                 </div>
-                <?php
-            } else {
-                ?>
-                <div class="member" data-member="<?=  htmlspecialchars( json_encode( $member, JSON_UNESCAPED_UNICODE ), ENT_QUOTES, 'UTF-8' ) ?>">
-                    <div class="member-picture"></div>
-                    <div class="member-name"><?=  $member->name ?></div>
-                </div>
-                <?php
-            }
+            <?php
             if ( $key  === 7) {
                 echo '<div class="hidden extended-list">';
                 $hidden_added = true;
@@ -54,8 +55,8 @@ if ( !empty ( $meta ) ) {
         if ($hidden_added) {
             ?>
             </div>
-            <div class="member-show-more"><?= __( 'Show more', 'myclub-groups' ) ?></div>
-            <div class="member-show-less hidden"><?= __( 'Show less', 'myclub-groups' ) ?></div>
+            <div class="member-show-more"><?php echo esc_attr__( 'Show more', 'myclub-groups' ); ?></div>
+            <div class="member-show-less hidden"><?php echo esc_attr__( 'Show less', 'myclub-groups' ); ?></div>
         <?php } ?>
         </div>
         <div class="member-modal">

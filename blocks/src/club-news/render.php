@@ -2,13 +2,11 @@
 
 $news_title = get_option( 'myclub_groups_club_news_title' ) ?:  __( 'News', 'myclub-groups' );
 
-$empty_news = '<div class="no-news">' . __( 'No news found', 'myclub-groups' ) . '</div>';
-
 ?>
 
 <div class="myclub-groups-club-news" id="news">
     <div class="myclub-groups-club-news-container">
-        <h3 class="myclub-groups-header"><?= $news_title ?></h3>
+        <h3 class="myclub-groups-header"><?php echo esc_attr( $news_title ); ?></h3>
 
 <?php
 
@@ -28,19 +26,19 @@ if ( !empty( $posts ) ) {
 
         <?php
         foreach ( $posts as $post ) {
-        $image_url = get_the_post_thumbnail_url($post->ID, 'thumbnail');
+        $image_url = get_the_post_thumbnail_url( $post->ID, 'thumbnail' );
         ?>
         <div class="myclub-club-news-item">
-            <h4><a href="<?= get_permalink($post->ID) ?>"><?= $post->post_title ?></a></h4>
+            <h4><a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>"><?php echo esc_attr( $post->post_title ); ?></a></h4>
             <?php if ( $image_url ) {?>
                 <div class="myclub-club-news-image">
-                    <img src="<?= $image_url ?>" alt="<?= $post->post_title ?>" />
+                    <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $post->post_title ); ?>" />
                 </div>
             <?php }
             if ( $post->post_excerpt ) {
-                echo $post->post_excerpt;
+                echo esc_attr( $post->post_excerpt );
             } else {
-                echo $post->post_content;
+                echo esc_attr( $post->post_content );
             } ?>
         </div>
         <?php
@@ -68,12 +66,12 @@ if ( !empty( $posts ) ) {
                 $total_posts = $query->found_posts;
 
                 if ( $total_posts > 3 ) {
-                    echo '<div class="myclub-more-club-news"><a href="' . $category_link . '">' . __( 'Show more news', 'myclub-groups' ) . '</a></div>';
+                    echo '<div class="myclub-more-club-news"><a href="' . esc_url( $category_link ) . '">' . esc_attr__( 'Show more news', 'myclub-groups' ) . '</a></div>';
                 }
             }
             echo '</div>';
         } else {
-            echo $empty_news;
+            echo '<div class="no-news">' . esc_attr__( 'No news found', 'myclub-groups' ) . '</div>';
         }
 ?>
         </div>

@@ -96,10 +96,10 @@ class ShortCodes extends Base
 
         foreach( $available_blocks as $block ) {
             if ( file_exists ( $this->plugin_path . 'blocks/build/' . $block . '/view.js' ) ) {
-                wp_register_script( 'myclub-groups-' . $block . '-js', $this->plugin_url . 'blocks/build/' . $block . '/view.js' );
+                wp_register_script( 'myclub-groups-' . $block . '-js', $this->plugin_url . 'blocks/build/' . $block . '/view.js', [], MYCLUB_GROUPS_PLUGIN_VERSION, true );
             }
             if ( file_exists ( $this->plugin_path . 'blocks/build/' . $block . '/style-index.css' ) ) {
-                wp_register_style( 'myclub-groups-' . $block . '-css', $this->plugin_url . 'blocks/build/' . $block . '/style-index.css' );
+                wp_register_style( 'myclub-groups-' . $block . '-css', $this->plugin_url . 'blocks/build/' . $block . '/style-index.css', [], MYCLUB_GROUPS_PLUGIN_VERSION );
             }
         }
     }

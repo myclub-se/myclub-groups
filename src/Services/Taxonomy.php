@@ -199,8 +199,8 @@ class Taxonomy extends Base
 
         if ( $current_page->post_type === 'myclub-groups' ) {
             // Register admin scripts and styles
-            wp_register_style( 'myclub_groups_tabs_css', $this->plugin_url . 'resources/css/myclub_groups.css' );
-            wp_register_script( 'myclub_groups_tabs_ui', $this->plugin_url . 'resources/javascript/myclub_groups_tabs.js', [ 'jquery' ] );
+            wp_register_style( 'myclub_groups_tabs_css', $this->plugin_url . 'resources/css/myclub_groups.css', [], MYCLUB_GROUPS_PLUGIN_VERSION );
+            wp_register_script( 'myclub_groups_tabs_ui', $this->plugin_url . 'resources/javascript/myclub_groups_tabs.js', [ 'jquery' ], MYCLUB_GROUPS_PLUGIN_VERSION, true );
 
             wp_enqueue_style( 'myclub_groups_tabs_css' );
             wp_enqueue_script( 'jquery-ui-tabs' );

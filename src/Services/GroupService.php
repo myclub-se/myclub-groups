@@ -258,7 +258,7 @@ class GroupService extends Groups
                 }
                 $this->add_members( $post_id, $group );
                 $this->add_activities( $post_id, $group );
-                update_post_meta( $post_id, 'last_updated', date( "c" ) );
+                update_post_meta( $post_id, 'last_updated', gmdate( "c" ) );
                 update_post_meta( $post_id, '_wp_page_template', $page_template );
 
                 $this->image_task->save()->dispatch();

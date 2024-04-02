@@ -25,35 +25,32 @@ if ( !empty( $meta ) ) {
     ?>
 <div class="myclub-groups-leaders-list" id="leaders">
     <div class="myclub-groups-leaders-container">
-        <h3 class="myclub-groups-header"><?= $leader_title ?></h3>
-        <div class="leaders-list" data-labels="<?= htmlspecialchars( json_encode( $labels, JSON_UNESCAPED_UNICODE ), ENT_QUOTES, 'UTF-8' ) ?>">
+        <h3 class="myclub-groups-header"><?php echo esc_attr( $leader_title ); ?></h3>
+        <div class="leaders-list" data-labels="<?php echo esc_attr( wp_json_encode( $labels, JSON_UNESCAPED_UNICODE ) ); ?>">
         <?php
         foreach ( $leaders as $key=>$leader ) {
-            if( $leader->member_image ) {
+            ?>
+            <div class="leader" data-leader="<?php echo esc_attr( wp_json_encode( $leader, JSON_UNESCAPED_UNICODE ) ); ?>">
+                <?php
+                if ( $leader->member_image ) {
+                    $leader->member_image->url = Utils::change_host_name( $leader->member_image->url );
 
-                $leader->member_image->url = Utils::change_host_name( $leader->member_image->url );
-                ?>
-                <div class="leader" data-leader="<?= htmlspecialchars( json_encode( $leader, JSON_UNESCAPED_UNICODE ), ENT_QUOTES, 'UTF-8' ) ?>">
+                    ?>
                     <div class="leader-picture">
-                        <img src="<?= $leader->member_image->url ?>" alt="<?= $leader->name ?>" />
+                        <img src="<?php echo esc_url( $leader->member_image->url ); ?>" alt="<?php echo esc_attr( $leader->name ); ?>" />
                     </div>
-                    <div class="leader-name">
-                        <?=$leader->name ?>
-                        <div class="leader-role"><?= $leader->role ?></div>
-                    </div>
-                </div>
-                <?php
-            } else {
+                    <?php
+
+                } else {
+                    echo '<div class="leader-picture"></div>';
+                }
                 ?>
-                <div class="leader" data-member="<?=  htmlspecialchars( json_encode( $leader, JSON_UNESCAPED_UNICODE ), ENT_QUOTES, 'UTF-8' ) ?>">
-                    <div class="leader-picture"></div>
-                    <div class="leader-name">
-                        <?=$leader->name ?>
-                        <div class="leader-role"><?= $leader->role ?></div>
-                    </div>
+                <div class="leader-name">
+                    <?php echo esc_attr( $leader->name ); ?>
+                    <div class="leader-role"><?php echo esc_attr( $leader->role ); ?></div>
                 </div>
-                <?php
-            }
+            </div>
+            <?php
 
             if ( $key  === 3) {
                 echo '<div class="hidden extended-list">';
@@ -64,8 +61,8 @@ if ( !empty( $meta ) ) {
         if ($hidden_added) {
             ?>
             </div>
-            <div class="leader-show-more"><?= __( 'Show more', 'myclub-groups' ) ?></div>
-            <div class="leader-show-less hidden"><?= __( 'Show less', 'myclub-groups' ) ?></div>
+            <div class="leader-show-more"><?php esc_attr_e( 'Show more', 'myclub-groups' ); ?></div>
+            <div class="leader-show-less hidden"><?php esc_attr_e( 'Show less', 'myclub-groups' ); ?></div>
         <?php  } ?>
         </div>
     </div>

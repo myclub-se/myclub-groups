@@ -84,10 +84,10 @@ if ( !empty( $meta ) ) {
 
     <div class="myclub-groups-calendar" id="calendar">
         <div class="myclub-groups-calendar-container">
-            <h3 class="myclub-groups-header"><?= $header ?></h3>
+            <h3 class="myclub-groups-header"><?php echo esc_attr( $header ) ?></h3>
             <div id="calendar-div"
-                 data-events="<?= htmlspecialchars( json_encode( $events, JSON_UNESCAPED_UNICODE ), ENT_QUOTES, 'UTF-8' ) ?>"
-                 data-labels="<?= htmlspecialchars( json_encode( $labels, JSON_UNESCAPED_UNICODE ), ENT_QUOTES, 'UTF-8' ) ?>"></div>
+                 data-events="<?php echo esc_attr( wp_json_encode( $events, JSON_UNESCAPED_UNICODE ) ); ?>"
+                 data-labels="<?php echo esc_attr( wp_json_encode( $labels, JSON_UNESCAPED_UNICODE ) ); ?>"></div>
         </div>
         <div class="calendar-modal">
             <div class="modal-content">

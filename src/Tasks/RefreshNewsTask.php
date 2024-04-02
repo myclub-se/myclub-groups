@@ -45,6 +45,6 @@ class RefreshNewsTask extends WP_Background_Process {
     protected function complete()
     {
         parent::complete();
-        Utils::update_or_create_option( 'myclub_groups_last_news_sync', date( "c" ), 'no' );
+        Utils::update_or_create_option( 'myclub_groups_last_news_sync', gmdate( "c" ), 'no' );
     }
 }

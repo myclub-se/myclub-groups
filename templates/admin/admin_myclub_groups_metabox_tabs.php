@@ -8,9 +8,9 @@ function render_meta_data_date( $post, $label, $name )
 
     echo '<div class="metadata-wrap">';
     echo '<p class="post-attributes-label-wrapper">';
-    echo '<label class="post-attributes-label" for="' . $name . '">' . $label . '</label>';
+    echo '<label class="post-attributes-label" for="' . esc_attr( $name ) . '">' . esc_html( $label ) . '</label>';
     echo '</p>';
-    echo '<input type="text" id="' . $name . '" name="' . $name . '" value="' . esc_attr( $value ) . '" readonly class="widefat" />';
+    echo '<input type="text" id="' . esc_attr( $name ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" readonly class="widefat" />';
     echo '</div>';
 }
 
@@ -25,9 +25,9 @@ function render_meta_data_text( $post, $label, $name )
 
     echo '<div class="metadata-wrap">';
     echo '<p class="post-attributes-label-wrapper">';
-    echo '<label class="post-attributes-label" for="' . $name . '">' . $label . '</label>';
+    echo '<label class="post-attributes-label" for="' . esc_attr( $name ) . '">' . esc_attr( $label ) . '</label>';
     echo '</p>';
-    echo '<input type="text" id="' . $name . '" name="' . $name . '" value="' . esc_attr( $value ) . '" readonly class="widefat" />';
+    echo '<input type="text" id="' . esc_attr( $name ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" readonly class="widefat" />';
     echo '</div>';
 }
 
@@ -42,9 +42,9 @@ function render_meta_data_textarea( $post, $label, $name )
 
     echo '<div class="metadata-wrap">';
     echo '<p class="post-attributes-label-wrapper">';
-    echo '<label class="post-attributes-label" for="' . $name . '">' . $label . '</label>';
+    echo '<label class="post-attributes-label" for="' . esc_attr( $name ) . '">' . esc_attr( $label ) . '</label>';
     echo '</p>';
-    echo '<textarea id="' . $name . '" name="' . $name . '" readonly class="widefat" rows="10">' . esc_attr( $value ) . '</textarea>';
+    echo '<textarea id="' . esc_attr( $name ) . '" name="' . esc_attr( $name ) . '" readonly class="widefat" rows="10">' . esc_attr( $value ) . '</textarea>';
     echo '</div>';
 }
 
@@ -53,10 +53,10 @@ $post = get_the_ID();
 ?>
     <div id="myclub-tabs">
     <ul>
-        <li class="tabs"><a href="#myclub-tab1"><?php _e( 'Standard information', 'myclub-groups' ) ?></a></li>
-        <li class="tabs"><a href="#myclub-tab2"><?php _e( 'Other information', 'myclub-groups' ) ?></a></li>
-        <li class="tabs"><a href="#myclub-tab3"><?php _e( 'Members', 'myclub-groups' ) ?></a></li>
-        <li class="tabs"><a href="#myclub-tab4"><?php _e( 'Activities', 'myclub-groups' ) ?></a></li>
+        <li class="tabs"><a href="#myclub-tab1"><?php esc_attr_e( 'Standard information', 'myclub-groups' ) ?></a></li>
+        <li class="tabs"><a href="#myclub-tab2"><?php esc_attr_e( 'Other information', 'myclub-groups' ) ?></a></li>
+        <li class="tabs"><a href="#myclub-tab3"><?php esc_attr_e( 'Members', 'myclub-groups' ) ?></a></li>
+        <li class="tabs"><a href="#myclub-tab4"><?php esc_attr_e( 'Activities', 'myclub-groups' ) ?></a></li>
     </ul>
     <div id="myclub-tab1" class="tabs-panel">
 <?php

@@ -145,7 +145,7 @@ class Blocks extends Base
             $this->register_block( $block );
         }
 
-        wp_register_script( 'fullcalendar-js', $this->plugin_url . 'resources/javascript/fullcalendar.6.1.11.min.js' );
+        wp_register_script( 'fullcalendar-js', $this->plugin_url . 'resources/javascript/fullcalendar.6.1.11.min.js', [], '6.1.11', true );
     }
 
     /**

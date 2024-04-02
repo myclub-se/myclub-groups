@@ -5,10 +5,10 @@
             <span></span>
             <span></span>
         </div>
-        <?= wp_nav_menu( array (
+        <?php echo wp_nav_menu( array (
             'theme_location' => 'myclub-groups-menu',
             'container'  => false,
             'echo' => false
-        ) ) ?>
+        ) ); ?>
     </div>
 </div>

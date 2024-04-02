@@ -193,7 +193,7 @@ class Activation
      */
     private function addOption( string $optionName, $default, string $autoload ) {
         if ( get_option( $optionName ) === false ) {
-            add_option( $optionName, $default, null, $autoload );
+            add_option( $optionName, $default, '', $autoload );
         }
     }
 }

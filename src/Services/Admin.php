@@ -60,19 +60,22 @@ class Admin extends Base
             $this,
             'add_group_news_column'
         ] );
-        add_action( 'after_switch_theme', [ $this,
-                                            'update_theme_page_template'
+        add_action( 'after_switch_theme', [
+            $this,
+            'update_theme_page_template'
         ] );
-        add_action( 'wp_dashboard_setup', [ $this,
-                                            'setup_dashboard_widget'
+        add_action( 'wp_dashboard_setup', [
+            $this,
+            'setup_dashboard_widget'
         ] );
 
         add_filter( 'manage_post_posts_custom_column', [
             $this,
             'add_group_news_column_content'
         ], 10, 2 );
-        add_filter("plugin_action_links_" . plugin_basename( $this->plugin_path . '/myclub-groups.php' ) , [ $this,
-                                                                                                             'add_plugin_settings_link'
+        add_filter( "plugin_action_links_" . plugin_basename( $this->plugin_path . '/myclub-groups.php' ), [
+            $this,
+            'add_plugin_settings_link'
         ] );
     }
 
@@ -134,7 +137,7 @@ class Admin extends Base
             foreach ( $terms as $term ) {
                 $names[] = $term->name;
             }
-            echo join( ', ', $names );
+            echo esc_attr( join( ', ', $names ) );
         }
     }
 
@@ -299,10 +302,14 @@ class Admin extends Base
             )
         ] );
 
-        add_settings_section( 'myclub_groups_main', __( 'MyClub Groups Main Settings', 'myclub-groups' ), function(){}, 'myclub_groups_settings_tab1' );
-        add_settings_section( 'myclub_groups_sync', __( 'Synchronization information', 'myclub-groups' ), function(){}, 'myclub_groups_settings_tab1' );
-        add_settings_section( 'myclub_groups_title_settings', __( 'Title settings', 'myclub-groups' ), function(){}, 'myclub_groups_settings_tab2' );
-        add_settings_section( 'myclub_groups_display_settings', __( 'Display settings', 'myclub-groups' ), function(){}, 'myclub_groups_settings_tab3' );
+        add_settings_section( 'myclub_groups_main', __( 'MyClub Groups Main Settings', 'myclub-groups' ), function () {
+        }, 'myclub_groups_settings_tab1' );
+        add_settings_section( 'myclub_groups_sync', __( 'Synchronization information', 'myclub-groups' ), function () {
+        }, 'myclub_groups_settings_tab1' );
+        add_settings_section( 'myclub_groups_title_settings', __( 'Title settings', 'myclub-groups' ), function () {
+        }, 'myclub_groups_settings_tab2' );
+        add_settings_section( 'myclub_groups_display_settings', __( 'Display settings', 'myclub-groups' ), function () {
+        }, 'myclub_groups_settings_tab3' );
         add_settings_field( 'myclub_groups_api_key', __( 'MyClub API Key', 'myclub-groups' ), [
             $this,
             'render_api_key'
@@ -433,8 +440,8 @@ class Admin extends Base
         $current_page = get_current_screen();
 
         if ( $current_page->base === 'settings_page_myclub-groups-settings' ) {
-            wp_register_script( 'myclub_groups_settings_js', $this->plugin_url . 'resources/javascript/myclub_groups_settings.js' );
-            wp_register_style( 'myclub_groups_settings_css', $this->plugin_url . 'resources/css/myclub_groups_settings.css' );
+            wp_register_script( 'myclub_groups_settings_js', $this->plugin_url . 'resources/javascript/myclub_groups_settings.js', [], MYCLUB_GROUPS_PLUGIN_VERSION, true );
+            wp_register_style( 'myclub_groups_settings_css', $this->plugin_url . 'resources/css/myclub_groups_settings.css', [], MYCLUB_GROUPS_PLUGIN_VERSION );
             wp_set_script_translations( 'myclub_groups_settings_js', 'myclub-groups', $this->plugin_path . 'languages' );
 
             wp_enqueue_script( 'jquery-ui-sortable' );
@@ -502,7 +509,7 @@ class Admin extends Base
      */
     public function render_api_key( array $args )
     {
-        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_api_key" value="' . esc_attr( get_option( 'myclub_groups_api_key' ) ) . '" />';
+        echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_api_key" value="' . esc_attr( get_option( 'myclub_groups_api_key' ) ) . '" />';
     }
 
     /**
@@ -518,31 +525,33 @@ class Admin extends Base
     public function render_dashboard_widget()
     {
         // Count the number of group posts in WordPress
-        $args = array(
-            'post_type'=> 'myclub-groups',
-            'post_status'=> 'publish',
+        $args = array (
+            'post_type'      => 'myclub-groups',
+            'post_status'    => 'publish',
             'posts_per_page' => -1
         );
-        $query = new WP_Query($args);
+        $query = new WP_Query( $args );
         $groups_count = $query->found_posts;
 
         // Count the number of news items imported to WordPress
-        $args = array(
+        $args = array (
             'post_status'    => 'publish',
             'posts_per_page' => -1,
-            'meta_query'     => array(
-                array(
+            'meta_query'     => array (
+                array (
                     'key'     => 'myclub_news_id',
                     'compare' => 'EXISTS'
                 ),
             ),
         );
-        $query = new WP_Query($args);
+        $query = new WP_Query( $args );
         $news_count = $query->found_posts;
 
-        echo sprintf( __( 'There is currently <strong>%1$s groups</strong> loaded from the MyClub member system.', 'myclub-groups' ), $groups_count );
+        /* translators: 1: number of groups */
+        echo sprintf( __( 'There is currently <strong>%1$s groups</strong> loaded from the MyClub member system.', 'myclub-groups' ), esc_attr( $groups_count ) );
         echo '<br>';
-        echo sprintf( __( 'There is currently <strong>%1$s group news items</strong> loaded from the MyClub member system.', 'myclub-groups' ), $news_count );
+        /* translators: 1: number of news items */
+        echo sprintf( __( 'There is currently <strong>%1$s group news items</strong> loaded from the MyClub member system.', 'myclub-groups' ), esc_attr( $news_count ) );
     }
 
     /**
@@ -561,7 +570,7 @@ class Admin extends Base
             $group_slug = 'groups';
         }
 
-        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_group_slug" value="' . esc_attr( $group_slug ) . '" />';
+        echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_group_slug" value="' . esc_attr( $group_slug ) . '" />';
     }
 
     /**
@@ -580,7 +589,7 @@ class Admin extends Base
             $group_news_slug = 'group-news';
         }
 
-        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_group_news_slug" value="' . esc_attr( $group_news_slug ) . '" />';
+        echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_group_news_slug" value="' . esc_attr( $group_news_slug ) . '" />';
     }
 
     /**
@@ -599,7 +608,7 @@ class Admin extends Base
             $calendar_title = __( 'Calendar', 'myclub-groups' );
         }
 
-        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_calendar_title" value="' . esc_attr( $calendar_title ) . '" />';
+        echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_calendar_title" value="' . esc_attr( $calendar_title ) . '" />';
     }
 
     /**
@@ -618,7 +627,7 @@ class Admin extends Base
             $club_news_title = __( 'News', 'myclub-groups' );
         }
 
-        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_club_news_title" value="' . esc_attr( $club_news_title ) . '" />';
+        echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_club_news_title" value="' . esc_attr( $club_news_title ) . '" />';
     }
 
     /**
@@ -637,7 +646,7 @@ class Admin extends Base
             $coming_games_title = __( 'Upcoming games', 'myclub-groups' );
         }
 
-        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_coming_games_title" value="' . esc_attr( $coming_games_title ) . '" />';
+        echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_coming_games_title" value="' . esc_attr( $coming_games_title ) . '" />';
     }
 
     /**
@@ -656,7 +665,7 @@ class Admin extends Base
             $leaders_title = __( 'Leaders', 'myclub-groups' );
         }
 
-        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_leaders_title" value="' . esc_attr( $leaders_title ) . '" />';
+        echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_leaders_title" value="' . esc_attr( $leaders_title ) . '" />';
     }
 
     /**
@@ -675,7 +684,7 @@ class Admin extends Base
             $members_title = __( 'Members', 'myclub-groups' );
         }
 
-        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_members_title" value="' . esc_attr( $members_title ) . '" />';
+        echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_members_title" value="' . esc_attr( $members_title ) . '" />';
     }
 
     /**
@@ -705,7 +714,7 @@ class Admin extends Base
             $news_title = __( 'News', 'myclub-groups' );
         }
 
-        echo '<input type="text" id="' . $args[ 'label_for' ] . '" name="myclub_groups_news_title" value="' . esc_attr( $news_title ) . '" />';
+        echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_news_title" value="' . esc_attr( $news_title ) . '" />';
     }
 
     /**
@@ -723,7 +732,7 @@ class Admin extends Base
         foreach ( $templates as $template => $name ) {
             $options[ $template ] = $name;
         }
-        echo '<select id="' . $args[ 'label_for' ] . '" name="myclub_groups_page_template">';
+        echo '<select id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_page_template">';
         foreach ( $options as $value => $name ) {
             $selected = selected( get_option( 'myclub_groups_page_template' ), $value, false );
             echo '<option value="' . esc_attr( $value ) . '"' . $selected . '>' . esc_attr( $name ) . '</option>';
@@ -891,7 +900,7 @@ class Admin extends Base
             'news'         => __( 'News', 'myclub-groups' )
         ];
 
-        echo '<ul id="' . $args[ 'label_for' ] . '">';
+        echo '<ul id="' . esc_attr( $args[ 'label_for' ] ) . '">';
 
         foreach ( $items as $item ) {
             echo '<li><input type="hidden" value="' . esc_attr( $item ) . '" name="myclub_groups_show_items_order[]" />' . esc_attr( $sort_names[ $item ] ) . '</li>';
@@ -1152,8 +1161,9 @@ class Admin extends Base
         wp_add_dashboard_widget(
             'myclub_groups_dashboard_widget',
             __( 'MyClub Groups', 'myclub-groups' ),
-            [ $this,
-              'render_dashboard_widget'
+            [
+                $this,
+                'render_dashboard_widget'
             ]
         );
     }
@@ -1240,16 +1250,15 @@ class Admin extends Base
             if ( count( $templates ) ) {
                 $template = key( $templates );
 
-                $this->update_page_template( null,  $template );
-                get_option( 'myclub_groups_page_template' ) === false ? add_option( 'myclub_groups_page_template', $template, false, 'no' ) : update_option( 'myclub_groups_page_template', $template, 'no' );
+                $this->update_page_template( null, $template );
+                get_option( 'myclub_groups_page_template' ) === false ? add_option( 'myclub_groups_page_template', $template, '', 'no' ) : update_option( 'myclub_groups_page_template', $template, 'no' );
                 return;
             }
         }
 
         global $wpdb;
 
-        $sql = $wpdb->prepare("DELETE pm FROM {$wpdb->prefix}postmeta pm INNER JOIN {$wpdb->prefix}posts p ON pm.post_id = p.ID WHERE pm.meta_key = %s AND p.post_type = %s", '_wp_page_template', 'myclub-groups');
-        $wpdb->query($sql);
+        $wpdb->query( $wpdb->prepare( "DELETE pm FROM {$wpdb->prefix}postmeta pm INNER JOIN {$wpdb->prefix}posts p ON pm.post_id = p.ID WHERE pm.meta_key = %s AND p.post_type = %s", '_wp_page_template', 'myclub-groups' ) );
     }
 
     /**
@@ -1285,6 +1294,6 @@ class Admin extends Base
         $checked = get_option( $field_name ) === '1' ? ' checked="checked"' : '';
         $class = $name ? ' class="sort-item-setter"' : '';
 
-        echo '<input type="checkbox" id="' . $args[ 'label_for' ] . '" data-name="' . $name . '" data-display-name="' . $display_name . '" name="' . $field_name . '" value="1" ' . $checked . $class . ' />';
+        echo '<input type="checkbox" id="' . esc_attr( $args[ 'label_for' ] ) . '" data-name="' . esc_attr( $name ) . '" data-display-name="' . esc_attr( $display_name ) . '" name="' . esc_attr( $field_name ) . '" value="1" ' . $checked . $class . ' />';
     }
 }

@@ -58,7 +58,7 @@ $block_link_contents = [
         <div class="myclub-groups-navigation-icons">
             <?php foreach ( $myclub_blocks as $myclub_block ) {
                 if ( in_array( $myclub_block, array_keys( $block_link_contents ) ) ) {
-                ?><a href="#<?= $myclub_block ?>" title="<?= $block_link_contents[ $myclub_block ][ 1] ?>" ><?= $block_link_contents[ $myclub_block ][ 0] ?></a><?php
+                ?><a href="#<?php echo esc_attr( $myclub_block ); ?>" title="<?php echo esc_attr( $block_link_contents[ $myclub_block ][ 1 ] ); ?>" ><?php echo $block_link_contents[ $myclub_block ][ 0 ]; ?></a><?php
                 }
             } ?>
         </div>

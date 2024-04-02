@@ -80,7 +80,7 @@ class Utils
                 $attachment_id = media_handle_sideload( $file );
 
                 if ( is_wp_error( $attachment_id ) ) {
-                    @unlink( $file[ 'tmp_name' ] );
+                    wp_delete_file( $file[ 'tmp_name' ] );
                     $attachment_id = null;
                 }
             }
@@ -116,8 +116,8 @@ class Utils
      */
     static function change_host_name( string $oldUrl ): string
     {
-        $host_url_parts = parse_url( home_url() );
-        $old_url_parts = parse_url( $oldUrl );
+        $host_url_parts = wp_parse_url( home_url() );
+        $old_url_parts = wp_parse_url( $oldUrl );
 
         $scheme = isset( $host_url_parts[ 'scheme' ] ) ? $host_url_parts[ 'scheme' ] . '://' : '';
         $host = $host_url_parts[ 'host' ];
