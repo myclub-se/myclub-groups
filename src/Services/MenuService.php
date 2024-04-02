@@ -4,6 +4,7 @@ namespace MyClub\MyClubGroups\Services;
 
 use MyClub\MyClubGroups\Api\RestApi;
 use stdClass;
+use WP_Term;
 
 /**
  * Class MenuService
@@ -12,9 +13,9 @@ use stdClass;
  */
 class MenuService extends Groups
 {
-    private $api;
-    private $current_menus;
-    private $menu;
+    private RestApi $api;
+    private array $current_menus;
+    private WP_Term $menu;
 
     public function __construct()
     {
@@ -58,7 +59,7 @@ class MenuService extends Groups
         if ( $response->status === 200 ) {
             $menu_items = $response->result;
 
-            if ( $this->menu_items_exist( $menu_items ) && $this->menu ) {
+            if ( $this->menu_items_exist( $menu_items ) && !empty( $this->menu ) ) {
                 $this->add_menus( 0, $menu_items );
 
                 $this->delete_unused_menus();
@@ -76,7 +77,7 @@ class MenuService extends Groups
      * @return int The updated position after adding menus.
      * @since 1.0.0
      */
-    private function add_menus( int $parent_item, $api_menu, int $position = 1 ): int
+    private function add_menus( int $parent_item, object $api_menu, int $position = 1 ): int
     {
         foreach ( $api_menu->child_menus as $child_menu ) {
             // Check if menu item already exists - overwrite in that case

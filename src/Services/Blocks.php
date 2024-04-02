@@ -22,8 +22,8 @@ class Blocks extends Base
         'title'
     ];
 
-    private $block_args = [];
-    private $handles = [];
+    private array $block_args = [];
+    private array $handles = [];
 
     /**
      * Enqueues scripts and sets script translations for registered blocks.

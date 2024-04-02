@@ -39,11 +39,11 @@ class MyClubCron
     }
 
     /**
-     * Deactivates the plugin by unscheduling the specified events.
+     * Deactivates the plugin by removing the schedule for the specified events.
      *
-     * The method checks if the 'myclub_groups_refresh_news' event is scheduled and unschedules it if it is.
+     * The method checks if the 'myclub_groups_refresh_news' event is scheduled and removes the schedule it if it is.
      *
-     * The method also checks if the 'myclub_groups_refresh_groups' event is scheduled and unschedules it if it is.
+     * The method also checks if the 'myclub_groups_refresh_groups' event is scheduled and removes the schedule it if it is.
      *
      * @return void
      */

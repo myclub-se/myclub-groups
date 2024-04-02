@@ -15,9 +15,10 @@ class RefreshGroupsTask extends WP_Background_Process {
     /**
      * Initializes the class if it hasn't been initialized already.
      *
-     * @return object Returns an instance of the class. If the class has already been initialized, it returns the existing instance.
+     * @return RefreshGroupsTask Returns an instance of the class. If the class has already been initialized, it returns the existing instance.
+     * @since 1.0.0
      */
-    public static function init() {
+    public static function init(): RefreshGroupsTask {
         if (!self::$instance) {
             self::$instance = new self();
         }

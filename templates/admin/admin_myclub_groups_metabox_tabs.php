@@ -66,13 +66,21 @@ render_meta_data_date( $post, __( 'Last updated', 'myclub-groups' ), 'last_updat
 render_meta_data_text( $post, __( 'Contact person', 'myclub-groups' ), 'contact_name' );
 render_meta_data_text( $post, __( 'E-mail address', 'myclub-groups' ), 'email' );
 render_meta_data_text( $post, __( 'Phone', 'myclub-groups' ), 'phone' );
-echo '</div>';
-echo '<div id="myclub-tab2" class="hidden tabs-panel">';
+?>
+    </div>
+    <div id="myclub-tab2" class="hidden tabs-panel">
+<?php
 render_meta_data_textarea( $post, __( 'Other information', 'myclub-groups' ), 'info_text' );
-echo '</div>';
-echo '<div id="myclub-tab3" class="hidden tabs-panel">';
+?>
+    </div>
+    <div id="myclub-tab3" class="hidden tabs-panel">
+<?php
 require_once( $this->plugin_path . '/templates/admin/admin_myclub_groups_members.php' );
-echo '</div>';
-echo '<div id="myclub-tab4" class="hidden tabs-panel">';
+?>
+    </div>
+    <div id="myclub-tab4" class="hidden tabs-panel">
+<?php
 require_once( $this->plugin_path . '/templates/admin/admin_myclub_groups_activities.php' );
-echo "</div></div>";
+?>
+    </div>
+</div>

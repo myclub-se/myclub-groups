@@ -14,9 +14,9 @@ class RefreshNewsTask extends WP_Background_Process {
     /**
      * Initializes the class if it hasn't been initialized already.
      *
-     * @return object Returns an instance of the class. If the class has already been initialized, it returns the existing instance.
+     * @return RefreshNewsTask Returns an instance of the class. If the class has already been initialized, it returns the existing instance.
      */
-    public static function init() {
+    public static function init(): RefreshNewsTask {
         if (!self::$instance) {
             self::$instance = new self();
         }

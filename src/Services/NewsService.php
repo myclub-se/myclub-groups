@@ -21,9 +21,9 @@ class NewsService extends Groups
 {
     const MYCLUB_GROUP_NEWS = 'myclub-group-news';
 
-    private $myclub_timezone;
-    private $timezone;
-    private $utc_timezone;
+    private DateTimeZone $myclub_timezone;
+    private DateTimeZone $timezone;
+    private DateTimeZone $utc_timezone;
 
     /**
      * Constructor method for the class.
@@ -190,7 +190,7 @@ class NewsService extends Groups
      * @since 1.0.0
      *
      */
-    private function add_news( $news_item, array $myclub_group = null )
+    private function add_news( object $news_item, array $myclub_group = null )
     {
         $query_args = array (
             'posts_per_page' => 1,
@@ -289,7 +289,7 @@ class NewsService extends Groups
      * @return array The arguments array for creating or updating a news post.
      * @since 1.0.0
      */
-    private function create_news_args( $news_item, int $post_id = null ): array
+    private function create_news_args( object $news_item, int $post_id = null ): array
     {
         $time = str_replace( 'T', ' ', str_replace( 'Z', '', $news_item->published_date ) );
 

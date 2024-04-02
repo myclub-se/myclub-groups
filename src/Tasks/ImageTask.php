@@ -11,7 +11,13 @@ class ImageTask extends WP_Background_Process {
 
     private static $instance = null;
 
-    public static function init() {
+    /**
+     * Initializes the ImageTask class and returns an instance of it.
+     *
+     * @return ImageTask The initialized instance of the ImageTask class.
+     * @since 1.0.0
+     */
+    public static function init(): ImageTask {
         if (!self::$instance) {
             self::$instance = new self();
         }
@@ -57,7 +63,7 @@ class ImageTask extends WP_Background_Process {
      * @return void
      * @since 1.0.0
      */
-    private function add_group_image( $item )
+    private function add_group_image( object $item )
     {
         if ( property_exists( $item, 'group_id' ) ) {
             Utils::add_featured_image( $item->post_id, $item->image, 'group_' . $item->group_id . '_');
@@ -72,7 +78,7 @@ class ImageTask extends WP_Background_Process {
      * @return void
      * @since 1.0.0
      */
-    private function add_member_image( $item )
+    private function add_member_image( object $item )
     {
         if ( property_exists( $item, 'member_id' ) ) {
             $member_items = json_decode( get_post_meta( $item->post_id, 'members', true ) );
@@ -121,7 +127,7 @@ class ImageTask extends WP_Background_Process {
      * @return void
      * @since 1.0.0
      */
-    private function addNewsImage( $item )
+    private function addNewsImage( object $item )
     {
         if ( property_exists( $item, 'news_id' ) ) {
             Utils::add_featured_image( $item->post_id, $item->image, 'news_' . $item->news_id . '_' );

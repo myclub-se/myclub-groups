@@ -9,8 +9,8 @@ namespace MyClub\MyClubGroups\Services;
  */
 class Base
 {
-    protected $plugin_path;
-    protected $plugin_url;
+    protected string $plugin_path;
+    protected string $plugin_url;
 
     /**
      * Class constructor.

@@ -18,7 +18,7 @@ if ( !empty ( $meta ) ) {
         'age'   => __( 'Age', 'myclub-groups' ),
         'email' => __( 'E-mail', 'myclub-groups' ),
         'role'  => __( 'Role', 'myclub-groups' ),
-        'phone' => __( 'Phone', 'mcylub-groups' )
+        'phone' => __( 'Phone', 'myclub-groups' )
     ];
     ?>
 <div class="myclub-groups-members-list" id="members">

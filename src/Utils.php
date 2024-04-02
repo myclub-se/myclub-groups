@@ -49,7 +49,7 @@ class Utils
      *
      * @since 1.0.0
      */
-    static function add_image( string $image_url, string $prefix = '' )
+    static function add_image( string $image_url, string $prefix = '' ): ?array
     {
         $attachment_id = null;
         $image = pathinfo( $image_url );

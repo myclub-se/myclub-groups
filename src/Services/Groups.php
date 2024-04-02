@@ -53,13 +53,13 @@ class Groups
     /**
      * Retrieves the IDs of the teams in a menu and its child menus recursively.
      *
-     * @param Object $menu The menu object.
+     * @param object $menu The menu object.
      * @param array $team_ids The array of team IDs to add the ids to.
      * @return array The updated array of team IDs.
      *
      * @since 1.0.0
      */
-    protected function get_group_ids( $menu, array $team_ids ): array
+    protected function get_group_ids( object $menu, array $team_ids ): array
     {
         if ( property_exists( $menu, 'teams' ) ) {
             foreach ( $menu->teams as $team ) {
@@ -111,12 +111,12 @@ class Groups
     /**
      * Checks if there are any menu items (teams or child menus) in the given menuItems object.
      *
-     * @param Object $menu_items The menuItems object to check.
+     * @param object $menu_items The menuItems object to check.
      * @return bool Returns true if there are menu items, false otherwise.
      *
      * @since 1.0.0
      */
-    protected function menu_items_exist( $menu_items ): bool
+    protected function menu_items_exist( object $menu_items ): bool
     {
         if ( !empty ( $menu_items ) ) {
             if ( ( property_exists( $menu_items, 'teams' ) && count( $menu_items->teams ) ) || ( property_exists( $menu_items, 'child_menus' ) && count( $menu_items->child_menus ) ) ) {

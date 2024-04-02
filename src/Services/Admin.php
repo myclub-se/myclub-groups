@@ -1183,12 +1183,18 @@ class Admin extends Base
      */
     public function update_page_template( $old_value, $new_value )
     {
-        global $wpdb;
+        $args = array (
+            'post_type'      => 'myclub-groups',
+            'posts_per_page' => -1,
+        );
+        $query = new WP_Query( $args );
 
-        $sql = $wpdb->prepare("UPDATE {$wpdb->prefix}postmeta pm INNER JOIN {$wpdb->prefix}posts p ON pm.post_id = p.ID SET pm.meta_value = %s WHERE pm.meta_key = %s AND p.post_type = %s",
-            sanitize_text_field( $new_value ), '_wp_page_template', 'myclub-groups');
-
-        $wpdb->query($sql);
+        if ( $query->have_posts() ) {
+            while ( $query->have_posts() ) {
+                $query->next_post();
+                update_post_meta( $query->post->ID, '_wp_page_template', $new_value );
+            }
+        }
     }
 
     /**
@@ -1211,8 +1217,7 @@ class Admin extends Base
         if ( $query->have_posts() ) {
             while ( $query->have_posts() ) {
                 $query->next_post();
-                $post_id = $query->post->ID;
-                GroupService::update_group_page_contents( $post_id, Utils::sanitize_array( $new_value ) );
+                GroupService::update_group_page_contents( $query->post->ID, Utils::sanitize_array( $new_value ) );
             }
         }
     }
@@ -1259,7 +1264,7 @@ class Admin extends Base
     {
         $last_sync = esc_attr( get_option( $field_name ) );
 
-        $output = empty( $last_sync ) ? __( 'Not synchronized yet', 'myclub-groups' ) : $output = Utils::format_date_time( $last_sync );
+        $output = empty( $last_sync ) ? __( 'Not synchronized yet', 'myclub-groups' ) : Utils::format_date_time( $last_sync );
 
         echo '<div>' . esc_attr( $output ) . '</div>';
     }
@@ -1269,8 +1274,8 @@ class Admin extends Base
      *
      * @param array $args An array of arguments for the checkbox element.
      * @param string $field_name The name of the field associated with the checkbox.
-     * @param string $name The name of the field in the sorting box.
-     * @param string $display_name The display name of the field in the sorting box.
+     * @param string|null $name The name of the field in the sorting box.
+     * @param string|null $display_name The display name of the field in the sorting box.
      *
      * @return void
      * @since 1.0.0

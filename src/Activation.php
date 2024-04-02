@@ -14,7 +14,7 @@ use MyClub\MyClubGroups\Services\NewsService;
  */
 class Activation
 {
-    private array $options = [];
+    private array $options;
     
     public function __construct()
     {

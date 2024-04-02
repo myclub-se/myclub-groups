@@ -10,7 +10,7 @@ namespace MyClub\MyClubGroups\Services;
 class Menu
 {
     /**
-     * Registers the initialization of the groups menu.
+     * Registers the initialization of the groups' menu.
      *
      * This method adds an action hook to the 'init' event that calls the 'initGroupsMenu' method.
      *
@@ -25,7 +25,7 @@ class Menu
     }
 
     /**
-     * Initializes the groups menu.
+     * Initializes the groups' menu.
      *
      * This method registers a navigation menu called "myclub-groups-menu" with the label "Groups Menu".
      * It checks if the menu already exists, and if not, it creates the menu and assigns it to the "myclub-groups-menu" location.

@@ -108,7 +108,7 @@ class ShortCodes extends Base
      * Renders the MyClub groups calendar.
      *
      * @param array $attrs Optional. An array of attributes for the block. Default is an empty array.
-     * @param string $content Optional. The block content. Default is null.
+     * @param string|null $content Optional. The block content. Default is null.
      *
      * @return string The rendered calendar HTML.
      *
@@ -128,7 +128,7 @@ class ShortCodes extends Base
      * Renders the My Club Groups Club News block.
      *
      * @param mixed $attrs Optional. An array of attributes for the block. Default is an empty array.
-     * @param string $content Optional. The block content. Default is null.
+     * @param string|null $content Optional. The block content. Default is null.
      *
      * @return string The rendered HTML output of the block.
      *
@@ -143,7 +143,7 @@ class ShortCodes extends Base
      * Renders the upcoming games for MyClub groups.
      *
      * @param array $attrs Optional. An array of attributes for the block. Default is an empty array.
-     * @param string $content Optional. The block content. Default is null.
+     * @param string|null $content Optional. The block content. Default is null.
      *
      * @return string The rendered HTML output.
      *
@@ -158,7 +158,7 @@ class ShortCodes extends Base
      * Renders the My Club Groups Leaders block.
      *
      * @param array $attrs Optional. An array of attributes for the block. Default is an empty array.
-     * @param string $content Optional. The block content. Default is null.
+     * @param string|null $content Optional. The block content. Default is null.
      *
      * @return string The rendered HTML output of the block.
      *
@@ -173,7 +173,7 @@ class ShortCodes extends Base
      * Renders the My Club Groups Members block.
      *
      * @param array $attrs Optional. An array of attributes for the block. Default is an empty array.
-     * @param string $content Optional. The block content. Default is null.
+     * @param string|null $content Optional. The block content. Default is null.
      *
      * @return string The rendered HTML output of the block.
      *
@@ -188,7 +188,7 @@ class ShortCodes extends Base
      * Renders the My Club Groups Menu block.
      *
      * @param mixed $attrs Optional. An array of attributes for the block. Default is an empty array.
-     * @param string $content Optional. The block content. Default is null.
+     * @param string|null $content Optional. The block content. Default is null.
      *
      * @return string The rendered HTML output of the block.
      *
@@ -203,7 +203,7 @@ class ShortCodes extends Base
      * Renders the My Club Groups Navigation block.
      *
      * @param array $attrs Optional. An array of attributes for the block. Default is an empty array.
-     * @param string $content Optional. The block content. Default is null.
+     * @param string|null $content Optional. The block content. Default is null.
      *
      * @return string The rendered HTML output of the block.
      *
@@ -218,7 +218,7 @@ class ShortCodes extends Base
      * Renders the My Club Groups News block.
      *
      * @param array $attrs Optional. An array of attributes for the block. Default is an empty array.
-     * @param string $content Optional. The block content. Default is null.
+     * @param string|null $content Optional. The block content. Default is null.
      *
      * @return string The rendered HTML output of the block.
      *
@@ -233,7 +233,7 @@ class ShortCodes extends Base
      * Renders the My Club Groups Title block.
      *
      * @param array $attrs Optional. An array of attributes for the block. Default is an empty array.
-     * @param string $content Optional. The block content. Default is null.
+     * @param string|null $content Optional. The block content. Default is null.
      *
      * @return string The rendered HTML output of the block.
      *

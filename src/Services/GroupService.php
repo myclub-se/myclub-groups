@@ -6,7 +6,6 @@ use MyClub\MyClubGroups\Api\RestApi;
 use MyClub\MyClubGroups\Tasks\ImageTask;
 use MyClub\MyClubGroups\Tasks\RefreshGroupsTask;
 use MyClub\MyClubGroups\Utils;
-use stdClass;
 use WP_Query;
 
 /**
@@ -22,8 +21,8 @@ class GroupService extends Groups
         'https://myclub-member.s3.eu-west-1.amazonaws.com/media/webpage/default_user_man.png',
     ];
 
-    private $api;
-    private $image_task;
+    private RestApi $api;
+    private ImageTask $image_task;
 
     public function __construct()
     {
@@ -260,6 +259,7 @@ class GroupService extends Groups
                 $this->add_members( $post_id, $group );
                 $this->add_activities( $post_id, $group );
                 update_post_meta( $post_id, 'last_updated', date( "c" ) );
+                update_post_meta( $post_id, '_wp_page_template', $page_template );
 
                 $this->image_task->save()->dispatch();
             }
@@ -278,7 +278,7 @@ class GroupService extends Groups
      * @return void
      * @since 1.0.0
      */
-    private function add_activities( int $post_id, $group )
+    private function add_activities( int $post_id, object $group )
     {
         $activities_json = wp_json_encode( $group->activities, JSON_UNESCAPED_UNICODE );
 
@@ -305,7 +305,7 @@ class GroupService extends Groups
      * @return void
      * @since 1.0.0
      */
-    private function add_members( int $post_id, $group )
+    private function add_members( int $post_id, object $group )
     {
         $members = array ();
         $leaders = array ();
@@ -387,7 +387,7 @@ class GroupService extends Groups
      * Retrieves the existing members from the post meta with the key 'members',
      * maps them into an associative array called $mappedEntities,
      * then updates the members and leaders with the provided $members and $leaders arrays.
-     * Finally, updates the post meta with the updated members data.
+     * Finally, updates the post meta with the updated members' data.
      *
      * @param int $post_id The ID of the post to update the member metadata for.
      * @param array $members The loaded array of members.
