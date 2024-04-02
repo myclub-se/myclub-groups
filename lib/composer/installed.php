@@ -1,13 +1,13 @@
 <?php return array(
     'root' => array(
         'name' => 'myclub/myclub-groups',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'f2d61219798949151c80a5f99b1a09c812a95982',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'dev' => true,
+        'dev' => false,
     ),
     'versions' => array(
         'deliciousbrains/wp-background-processing' => array(
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'myclub/myclub-groups' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'f2d61219798949151c80a5f99b1a09c812a95982',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

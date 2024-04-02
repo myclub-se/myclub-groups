@@ -54,6 +54,6 @@
             "install-path": "../deliciousbrains/wp-background-processing"
         }
     ],
-    "dev": true,
+    "dev": false,
     "dev-package-names": []
 }
