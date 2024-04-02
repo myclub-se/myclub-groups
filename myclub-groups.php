@@ -23,7 +23,7 @@ use MyClub\MyClubGroups\Tasks\RefreshNewsTask;
 
 defined( 'ABSPATH' ) or die( 'Access denied' );
 
-if ( version_compare( PHP_VERSION, '8.0', '<' ) ) {
+if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
     exit( "This plugin requires PHP 7.4 or higher. You're still on PHP " . PHP_VERSION );
 }
 
