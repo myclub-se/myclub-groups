@@ -280,8 +280,16 @@ class GroupService extends Groups
      */
     private function add_activities( int $post_id, object $group )
     {
-        $activities_json = wp_json_encode( $group->activities, JSON_UNESCAPED_UNICODE );
+        foreach( $group->activities as $activity ) {
+            $activity->description = str_replace( '<br /> <br />', '<br />', $activity->description );
+            $activity->description = str_replace( '<br /><br />', '<br />', $activity->description );
+            $activity->description = str_replace( '<br /><br /><br />', '<br /><br />', $activity->description );
+            if ( empty( trim( wp_strip_all_tags ( $activity->description ) ) ) ) {
+                $activity->description = '';
+            }
+        }
 
+        $activities_json = wp_json_encode( $group->activities, JSON_UNESCAPED_UNICODE );
         update_post_meta( $post_id, 'activities', $activities_json );
     }
 

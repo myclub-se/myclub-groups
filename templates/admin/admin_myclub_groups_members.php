@@ -1,7 +1,6 @@
 <?php
 $members = json_decode( get_post_meta( get_the_ID(), 'members', true ) );
 ?>
-
 <div class="member-box">
     <table class="members-table">
         <tr>
@@ -12,7 +11,7 @@ $members = json_decode( get_post_meta( get_the_ID(), 'members', true ) );
             <th><?php esc_attr_e( 'Age', 'myclub-groups' ); ?></th>
         </tr>
         <?php
-        if ( property_exists( $members, 'members' ) ) {
+        if ( !empty( $members ) && property_exists( $members, 'members' ) ) {
             ?>
             <tr>
                 <td colspan="5" class="member-title"><?php esc_attr_e( 'Members', 'myclub-groups' ); ?></td>
@@ -29,7 +28,7 @@ $members = json_decode( get_post_meta( get_the_ID(), 'members', true ) );
             <?php }
         }
 
-        if ( property_exists( $members, 'leaders' ) ) {
+        if ( !empty( $members ) && property_exists( $members, 'leaders' ) ) {
         ?>
         <tr>
             <td colspan="5" class="member-title"><?php esc_attr_e( 'Leaders', 'myclub-groups' ); ?></td>

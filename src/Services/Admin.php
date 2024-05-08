@@ -56,6 +56,10 @@ class Admin extends Base
             $this,
             'enqueue_admin_JS'
         ] );
+        add_action( 'admin_notices', [
+            $this,
+            'wp_cron_admin_notice'
+        ] );
         add_action( 'manage_post_posts_columns', [
             $this,
             'add_group_news_column'
@@ -552,6 +556,10 @@ class Admin extends Base
         echo '<br>';
         /* translators: 1: number of news items */
         echo sprintf( __( 'There is currently <strong>%1$s group news items</strong> loaded from the MyClub member system.', 'myclub-groups' ), esc_attr( $news_count ) );
+        if ( !wp_next_scheduled( 'wp_version_check' ) ) {
+            echo '<br><br>';
+            _e('WP Cron is not running. This is required for running the MyClub groups plugin.', 'myclub-groups' );
+        }
     }
 
     /**
@@ -1115,24 +1123,26 @@ class Admin extends Base
     /**
      * Sanitizes the input for a page template option.
      *
-     * @param string $input The input to be sanitized.
+     * @param mixed $input The input to be sanitized.
      *
-     * @return string The sanitized input. If the input does not exist in the list of available templates, an error message is added and the input is set to 'page.php' (default template).
+     * @return string The sanitized input. If the input does not exist in the list of available templates, an error message is shown.
      * @since 1.0.0
      */
-    public function sanitize_page_template( string $input ): string
+    public function sanitize_page_template( $input ): string
     {
-        $templates = get_page_templates();
+        if ( wp_is_block_theme() ) {
+            $templates = get_page_templates();
+            $input = sanitize_text_field( $input );
 
-        $input = sanitize_text_field( $input );
-
-        // Check if the selected template exists in the list of available templates
-        if ( !in_array( $input, $templates ) ) {
-            // If the template doesn't exist, output an error message and revert the setting to default
-            add_settings_error( 'myclub_groups_page_template', esc_attr( 'settings_updated' ), __( 'The selected template was not found.', 'myclub-groups' ) );
+            // Check if the selected template exists in the list of available templates
+            if ( !in_array( $input, $templates ) ) {
+                // If the template doesn't exist, output an error message and revert the setting to default
+                add_settings_error( 'myclub_groups_page_template', esc_attr( 'settings_updated' ), __( 'The selected template was not found.', 'myclub-groups' ) );
+                $input = '';
+            }
         }
 
-        return $input;
+        return !empty( $input ) ? sanitize_text_field ( $input ) : '';
     }
 
     /**
@@ -1252,13 +1262,23 @@ class Admin extends Base
 
                 $this->update_page_template( null, $template );
                 get_option( 'myclub_groups_page_template' ) === false ? add_option( 'myclub_groups_page_template', $template, '', 'no' ) : update_option( 'myclub_groups_page_template', $template, 'no' );
-                return;
             }
+        } else {
+            global $wpdb;
+
+            $wpdb->query( $wpdb->prepare( "DELETE pm FROM {$wpdb->prefix}postmeta pm INNER JOIN {$wpdb->prefix}posts p ON pm.post_id = p.ID WHERE pm.meta_key = %s AND p.post_type = %s", '_wp_page_template', 'myclub-groups' ) );
         }
+    }
 
-        global $wpdb;
-
-        $wpdb->query( $wpdb->prepare( "DELETE pm FROM {$wpdb->prefix}postmeta pm INNER JOIN {$wpdb->prefix}posts p ON pm.post_id = p.ID WHERE pm.meta_key = %s AND p.post_type = %s", '_wp_page_template', 'myclub-groups' ) );
+    public function wp_cron_admin_notice()
+    {
+        if ( !wp_next_scheduled( 'wp_version_check' ) ) {
+            ?>
+            <div class="notice notice-warning is-dismissible">
+                <p><?php _e('WP Cron is not running. This is required for running the MyClub groups plugin.', 'myclub-groups' ); ?></p>
+            </div>
+            <?php
+        }
     }
 
     /**

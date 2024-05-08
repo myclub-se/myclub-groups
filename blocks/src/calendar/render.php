@@ -7,7 +7,7 @@ if ( empty( $post_id ) ) {
 
 $meta = get_post_meta( $post_id, 'activities', true );
 
-if ( !empty( $meta ) ) {
+if ( !empty( $meta ) ):
     $header = get_option( 'myclub_groups_calendar_title' );
     $activities = json_decode( $meta );
     $events = [];
@@ -53,10 +53,6 @@ if ( !empty( $meta ) ) {
             } catch ( Exception $e ) {
             }
         }
-        $description = str_replace( '<br /><br />', '<br />', $activity->description );
-        if ( empty( trim( wp_strip_all_tags ( $description ) ) ) ) {
-            $description = '';
-        }
 
         $events[] = array (
             'title'           => $activity->title,
@@ -71,7 +67,7 @@ if ( !empty( $meta ) ) {
                 'base_type'     => $activity->base_type,
                 'calendar_name' => $activity->calendar_name,
                 'location'      => $activity->location,
-                'description'   => $description,
+                'description'   => $activity->description,
                 'endTime'       => $activity->end_time,
                 'meetUpTime'    => $meetUpTime,
                 'meetUpPlace'   => $activity->meet_up_place,
@@ -97,4 +93,4 @@ if ( !empty( $meta ) ) {
             </div>
         </div>
     </div>
-<?php } ?>
+<?php endif; ?>
