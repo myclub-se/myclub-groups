@@ -15,7 +15,7 @@ $activities = json_decode( get_post_meta( get_the_ID(), 'activities', true ) );
         if ( !empty( $activities ) ) {
         foreach ( $activities as $activity ) { ?>
             <tr>
-                <td><?php echo esc_attr( $activity->title . ' (' . $activity->type . ')' ); ?></td>
+                <td><?php echo esc_attr( str_replace( 'u0022', '"', $activity->title ) . ' (' . $activity->type . ')' ); ?></td>
                 <td><?php echo esc_attr( $activity->day ); ?></td>
                 <td><?php echo esc_attr( substr( $activity->start_time, 0, 5 ) ); ?></td>
                 <td><?php echo esc_attr( substr( $activity->end_time, 0, 5 ) ); ?></td>

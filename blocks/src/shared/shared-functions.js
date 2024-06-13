@@ -22,15 +22,15 @@ function showModal ( modalClassName, labels, data ) {
     const information = modal.getElementsByClassName('information')[0];
     const close = modal.getElementsByClassName('close')[0];
     if (data.member_image) {
-        image.innerHTML = '<img src="' + data.member_image.url + '" alt="' + data.name + '" />';
+        image.innerHTML = '<img src="' + data.member_image.url + '" alt="' + data.name.replaceAll('u0022', '\"') + '" />';
     }
-    let output = '<div class="name">' + data.name + '</div>';
+    let output = '<div class="name">' + data.name.replaceAll('u0022', '\"') + '</div>';
 
     if ( data.role || data.phone || data.email || data.age ) {
         output += '<table>';
 
         if ( data.role ) {
-            output += `<tr><th>${labels.role}</th><td>${data.role}</td></tr>`;
+            output += `<tr><th>${labels.role}</th><td>${data.role.replaceAll('u0022', '\"')}</td></tr>`;
         }
 
         if ( data.age ) {

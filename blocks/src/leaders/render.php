@@ -29,27 +29,31 @@ if ( !empty( $meta ) ) {
         <div class="leaders-list" data-labels="<?php echo esc_attr( wp_json_encode( $labels, JSON_UNESCAPED_UNICODE ) ); ?>">
         <?php
         foreach ( $leaders as $key=>$leader ) {
+            $leader->name = str_replace( 'u0022', '\"', $leader->name );
+            if ( isset ( $leader->role ) ) {
+                $leader->role = str_replace( 'u0022', '\"', $leader->role );
+            }
             ?>
-            <div class="leader" data-leader="<?php echo esc_attr( wp_json_encode( $leader, JSON_UNESCAPED_UNICODE ) ); ?>">
-                <?php
-                if ( $leader->member_image ) {
-                    $leader->member_image->url = Utils::change_host_name( $leader->member_image->url );
-
-                    ?>
-                    <div class="leader-picture">
-                        <img src="<?php echo esc_url( $leader->member_image->url ); ?>" alt="<?php echo esc_attr( $leader->name ); ?>" />
-                    </div>
+                <div class="leader" data-leader="<?php echo esc_attr( wp_json_encode( $leader, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT ) ); ?>">
                     <?php
+                        if ( $leader->member_image ) {
+                            $leader->member_image->url = Utils::change_host_name( $leader->member_image->url );
 
-                } else {
-                    echo '<div class="leader-picture"></div>';
-                }
-                ?>
-                <div class="leader-name">
-                    <?php echo esc_attr( $leader->name ); ?>
-                    <div class="leader-role"><?php echo esc_attr( $leader->role ); ?></div>
+                            ?>
+                            <div class="leader-picture">
+                                <img src="<?php echo esc_url( $leader->member_image->url ); ?>" alt="<?php echo esc_attr( $leader->name ); ?>" />
+                            </div>
+                            <?php
+
+                        } else {
+                            echo '<div class="leader-picture"></div>';
+                        }
+                    ?>
+                    <div class="leader-name">
+                        <?php echo esc_attr( $leader->name ); ?>
+                        <div class="leader-role"><?php echo esc_attr( $leader->role ); ?></div>
+                    </div>
                 </div>
-            </div>
             <?php
 
             if ( $key  === 3) {

@@ -27,8 +27,12 @@ if ( !empty ( $meta ) ) {
         <div class="members-list" data-labels="<?php echo esc_attr( wp_json_encode( $labels, JSON_UNESCAPED_UNICODE ) ); ?>">
         <?php
         foreach ( $members as $key=>$member ) {
+            $member->name = str_replace( 'u0022', '\"', $member->name );
+            if ( isset ( $member->role ) ) {
+                $member->role = str_replace( 'u0022', '\"', $member->role );
+            }
             ?>
-                <div class="member" data-member="<?php echo esc_attr( wp_json_encode( $member, JSON_UNESCAPED_UNICODE ) ); ?>">
+                <div class="member" data-member="<?php echo esc_attr( wp_json_encode( $member, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT ) ); ?>">
                     <?php
                         if ( $member->member_image ) {
                             $member->member_image->url = Utils::change_host_name( $member->member_image->url );

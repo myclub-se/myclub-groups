@@ -225,7 +225,7 @@ export default function Edit( { attributes, setAttributes } ) {
 						}
 
 						return {
-							title: activity.title,
+							title: activity.title.replaceAll('u0022', '\"'),
 							start: `${activity.day} ${activity.start_time}`,
 							end: `${activity.day} ${activity.end_time}`,
 							backgroundColor,

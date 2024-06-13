@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
             output += '<table>';
 
             output += `<tr><th>${labels.calendar}</th><td>${item.extendedProps.calendar_name}</td></tr>`;
-            output += `<tr><th>${labels.name}</th><td>${item.title}</td></tr>`;
+            output += `<tr><th>${labels.name}</th><td>${item.title.replaceAll('u0022', '\"')}</td></tr>`;
             output += `<tr><th>${labels.when}</th><td>${item.extendedProps.startTime.substring(0, 5)} - ${item.extendedProps.endTime.substring(0, 5)}</td></tr>`;
             output += `<tr><th>${labels.location}</th><td>${item.extendedProps.location}</td></tr>`;
             if ( item.extendedProps.meetUpTime && item.extendedProps.meetUpTime !== item.extendedProps.startTime ) {
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 output += `<tr><th>${labels.meetUpLocation}</th><td>${item.extendedProps.meetUpPlace}</td></tr>`;
             }
             if ( item.extendedProps.description ) {
-                output += `<tr><th>${labels.description}</th><td>${item.extendedProps.description}</td></tr>`;
+                output += `<tr><th>${labels.description}</th><td>${item.extendedProps.description.replaceAll('u0022', '\"')}</td></tr>`;
             }
             output += '</table>'
 
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             element.innerHTML = '<div class="myclub-groups-event-time">' +
                 timeText + '</div><div class="myclub-groups-event-title">' +
-                item.title +
+                item.title.replaceAll('u0022', '\"') +
                 '</div>';
 
             let arrayOfDomNodes = [

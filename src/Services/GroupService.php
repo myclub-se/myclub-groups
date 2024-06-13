@@ -289,7 +289,7 @@ class GroupService extends Groups
             }
         }
 
-        $activities_json = wp_json_encode( $group->activities, JSON_UNESCAPED_UNICODE );
+        $activities_json = wp_json_encode( $group->activities, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT );
         update_post_meta( $post_id, 'activities', $activities_json );
     }
 
@@ -431,7 +431,7 @@ class GroupService extends Groups
             ];
         }
 
-        update_post_meta( $post_id, 'members', wp_json_encode( $updated_metadata, JSON_UNESCAPED_UNICODE ) );
+        update_post_meta( $post_id, 'members', wp_json_encode( $updated_metadata, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT ) );
     }
 
     /**

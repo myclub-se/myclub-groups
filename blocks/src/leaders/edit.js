@@ -81,6 +81,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					<h3 className="myclub-groups-header">{leaderTitle}</h3>
 					<div ref={ref} className="leaders-list">
 						{postLeaders.leaders.slice(0, 4).map((leader) => {
+							leader.name = leader.name.replaceAll('u0022', '\"');
+							if (leader.role) {
+								leader.role = leader.role.replaceAll('u0022', '\"');
+							}
 							return (
 								<div className="leader" onClick={() => showMemberModal(modalRef, leader, labels)}>
 									<div className="leader-picture">

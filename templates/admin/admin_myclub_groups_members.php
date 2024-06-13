@@ -19,8 +19,8 @@ $members = json_decode( get_post_meta( get_the_ID(), 'members', true ) );
         <?php
             foreach ( $members->members as $member ) { ?>
                 <tr>
-                    <td><?php echo esc_attr( $member->name ); ?></td>
-                    <td><?php echo esc_attr( $member->role ); ?></td>
+                    <td><?php echo esc_attr( str_replace( 'u0022', '"', $member->name ) ); ?></td>
+                    <td><?php echo esc_attr( $member->role ? str_replace( 'u0022', '"', $member->role ) : '' ); ?></td>
                     <td><?php echo esc_attr( $member->email ); ?></td>
                     <td><?php echo esc_attr( $member->phone ); ?></td>
                     <td><?php echo esc_attr( $member->age ); ?></td>
@@ -35,8 +35,8 @@ $members = json_decode( get_post_meta( get_the_ID(), 'members', true ) );
         </tr>
         <?php foreach ( $members->leaders as $leader ) { ?>
             <tr>
-                <td><?php echo esc_attr( $leader->name ); ?></td>
-                <td><?php echo esc_attr( $leader->role ); ?></td>
+                <td><?php echo esc_attr( str_replace( 'u0022', '"', $leader->name ) ); ?></td>
+                <td><?php echo esc_attr( $leader->role ? str_replace( 'u0022', '"', $leader->role ) : '' ); ?></td>
                 <td><?php echo esc_attr( $leader->email ); ?></td>
                 <td><?php echo esc_attr( $leader->phone ); ?></td>
                 <td><?php echo esc_attr( $leader->age ); ?></td>

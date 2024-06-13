@@ -67,7 +67,7 @@ if ( !empty( $meta ) ):
                 'base_type'     => $activity->base_type,
                 'calendar_name' => $activity->calendar_name,
                 'location'      => $activity->location,
-                'description'   => $activity->description,
+                'description'   => str_replace( '&quot;', 'u0022', $activity->description ),
                 'endTime'       => $activity->end_time,
                 'meetUpTime'    => $meetUpTime,
                 'meetUpPlace'   => $activity->meet_up_place,
@@ -82,7 +82,7 @@ if ( !empty( $meta ) ):
         <div class="myclub-groups-calendar-container">
             <h3 class="myclub-groups-header"><?php echo esc_attr( $header ) ?></h3>
             <div id="calendar-div"
-                 data-events="<?php echo esc_attr( wp_json_encode( $events, JSON_UNESCAPED_UNICODE ) ); ?>"
+                 data-events="<?php echo esc_attr( wp_json_encode( $events, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT ) ); ?>"
                  data-labels="<?php echo esc_attr( wp_json_encode( $labels, JSON_UNESCAPED_UNICODE ) ); ?>"></div>
         </div>
         <div class="calendar-modal">
