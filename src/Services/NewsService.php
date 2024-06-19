@@ -40,8 +40,12 @@ class NewsService extends Groups
     {
         try {
             $this->myclub_timezone = new DateTimeZone( 'Europe/Stockholm' );
-            $this->timezone = new DateTimeZone( get_option( 'timezone_string' ) );
             $this->utc_timezone = new DateTimeZone( 'UTC' );
+            $timezone_string = wp_timezone_string();
+            if ( !$timezone_string ) {
+                $timezone_string = 'Europe/Stockholm';
+            }
+            $this->timezone = new DateTimeZone( $timezone_string );
         } catch ( Exception $e ) {
             error_log( 'Unable to get timezones' );
         }
