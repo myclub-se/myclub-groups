@@ -177,10 +177,11 @@ class Utils
     {
         try {
             // Retrieve the timezone string from WordPress options
-            $wp_timezone = get_option( 'timezone_string' );
-
-            // Create DateTimeZone object for WordPress timezone
-            $timezone = new DateTimeZone( $wp_timezone );
+            $timezone_string = wp_timezone_string();
+            if ( !$timezone_string ) {
+                $timezone_string = 'Europe/Stockholm';
+            }
+            $timezone = new DateTimeZone( $timezone_string );
 
             // Create DateTime object for last sync, correct it to WordPress timezone
             $date_time_utc = new DateTime( $utc_time, new DateTimeZone( 'UTC' ) );
