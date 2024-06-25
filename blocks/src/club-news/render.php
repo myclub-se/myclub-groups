@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 $news_title = get_option( 'myclub_groups_club_news_title' ) ?:  __( 'News', 'myclub-groups' );
 
 ?>

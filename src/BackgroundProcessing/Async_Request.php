@@ -2,15 +2,26 @@
 /**
  * WP Async Request
  *
- * @package WP-Background-Processing
- */
+ * @package Background-Processing
+ *
+ * Based on the WP background processing package by deliciousbrains. Full code here:
+ * https://github.com/deliciousbrains/wp-background-processing. Only rewritten in parts to make package smaller and
+ * confirm to WordPress coding rules.
+ *
+ * License: GPLv2+
+ *
+  */
+
+namespace MyClub\MyClubGroups\BackgroundProcessing;
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
- * Abstract WP_Async_Request class.
+ * Abstract Async_Request class.
  *
  * @abstract
  */
-abstract class WP_Async_Request {
+abstract class Async_Request {
 
 	/**
 	 * Prefix
@@ -142,7 +153,6 @@ abstract class WP_Async_Request {
 			'timeout'   => 5,
 			'blocking'  => false,
 			'body'      => $this->data,
-			'cookies'   => $_COOKIE, // Passing cookies ensures request is performed as initiating user.
 			'sslverify' => apply_filters( 'https_local_ssl_verify', false ), // Local requests, fine to pass false.
 		);
 

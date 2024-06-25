@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 use MyClub\MyClubGroups\Utils;
 
 $post_id = $attributes[ 'post_id' ] ?? null;

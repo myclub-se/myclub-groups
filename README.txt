@@ -3,21 +3,23 @@ Contributors: myclubse
 Donate link: https://www.myclub.se
 Tags: myclub, groups, members, administration
 Requires at least: 6.4
-Tested up to: 6.5.2
-Stable tag: 1.0.1
+Tested up to: 6.5.5
+Stable tag: 1.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin retrieves group information from the MyClub member administration platform and generates pages for groups defined in the platform.
+This plugin retrieves group information from the MyClub member administration platform (https://member.myclub.se) and generates pages for groups defined in the platform.
 
 == Description ==
 
-The MyClub Groups plugin is designed to retrieve group information from the MyClub member administration platform. It automatically generates WordPress pages for each group, making it easy to manage and display organized data for all groups in your club.
+The MyClub Groups plugin is designed to retrieve group information from the MyClub member administration platform. It automatically generates WordPress pages for each group, making it easy to manage and display organized data for all groups in your club. The plugin is dependent on you having an account and subscription to the MyClub member administration platform (https://member.myclub.se). Without a subscription and an API key to the MyClub member administration platform, the plugin will not work. For terms of usage please see https://www.myclub.se/customeragreement
 
-The plugin automatically creates pages for all groups defined in your WordPress settings in MyClub. You can also use both the Gutenberg blocks and shortcodes for adding data on other pages.
+The plugin automatically retrieves group information from the MyClub member administration platform and creates pages for all groups defined in your WordPress settings in MyClub. You can also use both Gutenberg blocks and shortcodes for adding data on other pages.
 
-Please ensure that your server is running on PHP 8.0 or higher and your WordPress version is at least 6.4 to utilize this plugin fully.
+For the calendar views the plugin uses the open source version of the FullCalendar (v.6.1.11) plugin, which can be seen here: https://fullcalendar.io/. All source to the plugin is available here: https://github.com/fullcalendar/fullcalendar. No data is being sent to the FullCalendar plugin website.
+
+Please ensure that your server is running on PHP 7.4 or higher and your WordPress version is at least 6.4 to utilize this plugin fully.
 
 == Installation ==
 
@@ -29,9 +31,6 @@ Please ensure that your server is running on PHP 8.0 or higher and your WordPres
 6. Add your API key to the plugin settings.
 
 == Changelog ==
-= 1.0.1 =
-* Buggfixes
-
 = 1.0 =
 * Initial release.
 

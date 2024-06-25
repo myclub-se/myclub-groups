@@ -1,4 +1,6 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 $members = json_decode( get_post_meta( get_the_ID(), 'members', true ) );
 ?>
 <div class="member-box">

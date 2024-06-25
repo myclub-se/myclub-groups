@@ -39,32 +39,32 @@ RefreshMenusTask::init();
 RefreshNewsTask::init();
 
 if ( file_exists( plugin_dir_path( __FILE__ ) . '/src/Activation.php' ) ) {
-    function activate_myclub_groups()
+    function myclub_groups_activate()
     {
         $activation = new Activation();
         $activation->activate();
     }
 
     // Register activation code
-    register_activation_hook( __FILE__, 'activate_myclub_groups' );
+    register_activation_hook( __FILE__, 'myclub_groups_activate' );
 
-    function deactivate_myclub_groups()
+    function myclub_groups_deactivate()
     {
         $activation = new Activation();
         $activation->deactivate();
     }
 
     // Register deactivation code
-    register_deactivation_hook( __FILE__, 'deactivate_myclub_groups' );
+    register_deactivation_hook( __FILE__, 'myclub_groups_deactivate' );
 
-    function uninstall_myclub_groups()
+    function myclub_groups_uninstall()
     {
         $activation = new Activation();
         $activation->uninstall();
     }
 
     // Register uninstall code
-    register_uninstall_hook( __FILE__, 'uninstall_myclub_groups' );
+    register_uninstall_hook( __FILE__, 'myclub_groups_uninstall' );
 }
 
 if ( file_exists( plugin_dir_path( __FILE__) . '/src/Services.php' ) ) {

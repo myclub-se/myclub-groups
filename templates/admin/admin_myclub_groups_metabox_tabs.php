@@ -2,7 +2,9 @@
 
 use MyClub\MyClubGroups\Utils;
 
-function render_meta_data_date( $post, $label, $name )
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+function myclub_groups_render_meta_data_date( $post, $label, $name )
 {
     $value = Utils::format_date_time( get_post_meta( $post, $name, true ) );
 
@@ -19,7 +21,7 @@ function render_meta_data_date( $post, $label, $name )
  *
  * @return void
  */
-function render_meta_data_text( $post, $label, $name )
+function myclub_groups_render_meta_data_text( $post, $label, $name )
 {
     $value = get_post_meta( $post, $name, true );
 
@@ -36,7 +38,7 @@ function render_meta_data_text( $post, $label, $name )
  *
  * @return void
  */
-function render_meta_data_textarea( $post, $label, $name )
+function myclub_groups_render_meta_data_textarea( $post, $label, $name )
 {
     $value = get_post_meta( $post, $name, true );
 
@@ -61,16 +63,16 @@ $post = get_the_ID();
     <div id="myclub-tab1" class="tabs-panel">
 <?php
 // All of these fields are readonly and will not be saved on post save.
-render_meta_data_text( $post, __( 'MyClub group id', 'myclub-groups' ), 'myclub_group_id' );
-render_meta_data_date( $post, __( 'Last updated', 'myclub-groups' ), 'last_updated' );
-render_meta_data_text( $post, __( 'Contact person', 'myclub-groups' ), 'contact_name' );
-render_meta_data_text( $post, __( 'E-mail address', 'myclub-groups' ), 'email' );
-render_meta_data_text( $post, __( 'Phone', 'myclub-groups' ), 'phone' );
+myclub_groups_render_meta_data_text( $post, __( 'MyClub group id', 'myclub-groups' ), 'myclub_group_id' );
+myclub_groups_render_meta_data_date( $post, __( 'Last updated', 'myclub-groups' ), 'last_updated' );
+myclub_groups_render_meta_data_text( $post, __( 'Contact person', 'myclub-groups' ), 'contact_name' );
+myclub_groups_render_meta_data_text( $post, __( 'E-mail address', 'myclub-groups' ), 'email' );
+myclub_groups_render_meta_data_text( $post, __( 'Phone', 'myclub-groups' ), 'phone' );
 ?>
     </div>
     <div id="myclub-tab2" class="hidden tabs-panel">
 <?php
-render_meta_data_textarea( $post, __( 'Other information', 'myclub-groups' ), 'info_text' );
+myclub_groups_render_meta_data_textarea( $post, __( 'Other information', 'myclub-groups' ), 'info_text' );
 ?>
     </div>
     <div id="myclub-tab3" class="hidden tabs-panel">

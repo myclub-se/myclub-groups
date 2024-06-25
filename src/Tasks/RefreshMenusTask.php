@@ -2,18 +2,22 @@
 
 namespace MyClub\MyClubGroups\Tasks;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+use MyClub\MyClubGroups\BackgroundProcessing\Background_Process;
 use MyClub\MyClubGroups\Services\MenuService;
-use WP_Background_Process;
 
 /**
  * Class RefreshMenusTask
  *
- * This class extends the WP_Background_Process class and is responsible for refreshing the group menu items.
+ * This class extends the Background_Process class and is responsible for refreshing the group menu items.
  *
  * @since 1.0.0
  */
-class RefreshMenusTask extends WP_Background_Process
+class RefreshMenusTask extends Background_Process
 {
+    protected $prefix = 'myclub_groups';
+    protected $action = 'refresh_menus_task';
     private static $instance = null;
 
     /**

@@ -2,6 +2,8 @@
 
 namespace MyClub\MyClubGroups\Services;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 use MyClub\MyClubGroups\Api\RestApi;
 use MyClub\MyClubGroups\Utils;
 use WP_Query;
@@ -550,15 +552,16 @@ class Admin extends Base
         );
         $query = new WP_Query( $args );
         $news_count = $query->found_posts;
+        $allow_strong = array( "strong" => array() );
 
         /* translators: 1: number of groups */
-        echo sprintf( __( 'There is currently <strong>%1$s groups</strong> loaded from the MyClub member system.', 'myclub-groups' ), esc_attr( $groups_count ) );
+        echo wp_kses( sprintf( __( 'There is currently <strong>%1$s groups</strong> loaded from the MyClub member system.', 'myclub-groups' ), esc_attr( $groups_count ) ), $allow_strong );
         echo '<br>';
         /* translators: 1: number of news items */
-        echo sprintf( __( 'There is currently <strong>%1$s group news items</strong> loaded from the MyClub member system.', 'myclub-groups' ), esc_attr( $news_count ) );
+        echo wp_kses( sprintf( __( 'There is currently <strong>%1$s group news items</strong> loaded from the MyClub member system.', 'myclub-groups' ), esc_attr( $news_count ) ), $allow_strong );
         if ( !wp_next_scheduled( 'wp_version_check' ) ) {
             echo '<br><br>';
-            _e('WP Cron is not running. This is required for running the MyClub groups plugin.', 'myclub-groups' );
+            esc_html_e('WP Cron is not running. This is required for running the MyClub groups plugin.', 'myclub-groups' );
         }
     }
 

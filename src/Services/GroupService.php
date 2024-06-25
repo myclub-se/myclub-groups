@@ -2,6 +2,8 @@
 
 namespace MyClub\MyClubGroups\Services;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 use MyClub\MyClubGroups\Api\RestApi;
 use MyClub\MyClubGroups\Tasks\ImageTask;
 use MyClub\MyClubGroups\Tasks\RefreshGroupsTask;
@@ -15,12 +17,6 @@ use WP_Query;
  */
 class GroupService extends Groups
 {
-    const DEFAULT_PICTURES = [
-        'https://myclub-member.s3.eu-west-1.amazonaws.com/media/webpage/person.png',
-        'https://myclub-member.s3.eu-west-1.amazonaws.com/media/webpage/default_user_woman.png',
-        'https://myclub-member.s3.eu-west-1.amazonaws.com/media/webpage/default_user_man.png',
-    ];
-
     private RestApi $api;
     private ImageTask $image_task;
 

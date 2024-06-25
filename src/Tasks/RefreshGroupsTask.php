@@ -2,13 +2,20 @@
 
 namespace MyClub\MyClubGroups\Tasks;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+use MyClub\MyClubGroups\BackgroundProcessing\Background_Process;
 use MyClub\MyClubGroups\Utils;
-use WP_Background_Process;
 use MyClub\MyClubGroups\Services\GroupService;
 
-class RefreshGroupsTask extends WP_Background_Process {
-    protected $action = 'myclub_refresh_groups_task';
+/**
+ * Class RefreshGroupsTask
+ *
+ * Extends the Background_Process class to refresh group pages for the given data and perform additional actions to mark the task as complete.
+ */
+class RefreshGroupsTask extends Background_Process {
+    protected $prefix = 'myclub_groups';
+    protected $action = 'refresh_groups_task';
 
     private static $instance = null;
 

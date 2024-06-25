@@ -2,6 +2,8 @@
 
 namespace MyClub\MyClubGroups\Services;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 use WP_Error;
 use WP_Query;
 use WP_REST_Request;

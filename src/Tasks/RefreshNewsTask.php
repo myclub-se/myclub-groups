@@ -2,12 +2,15 @@
 
 namespace MyClub\MyClubGroups\Tasks;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+use MyClub\MyClubGroups\BackgroundProcessing\Background_Process;
 use MyClub\MyClubGroups\Services\NewsService;
 use MyClub\MyClubGroups\Utils;
-use WP_Background_Process;
 
-class RefreshNewsTask extends WP_Background_Process {
-    protected $action = 'myclub_refresh_news_task';
+class RefreshNewsTask extends Background_Process {
+    protected $prefix = 'myclub_groups';
+    protected $action = 'refresh_news_task';
 
     private static $instance = null;
 

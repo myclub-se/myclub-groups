@@ -2,12 +2,30 @@
 
 namespace MyClub\MyClubGroups\Tasks;
 
-use MyClub\MyClubGroups\Services\GroupService;
-use MyClub\MyClubGroups\Utils;
-use WP_Background_Process;
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class ImageTask extends WP_Background_Process {
-    protected $action = 'myclub_image_task';
+use MyClub\MyClubGroups\BackgroundProcessing\Background_Process;
+use MyClub\MyClubGroups\Utils;
+
+/**
+ * Class ImageTask
+ *
+ * Represents an image task that creates images from external links for different types of items (group, member, news).
+ */
+class ImageTask extends Background_Process {
+    protected $prefix = 'myclub_groups';
+    protected $action = 'image_task';
+
+    /*
+     * The below array is used for comparing which images are default images. They are stored here only
+     * for comparison and are not used to retrieve anything. The images will be returned from the API that
+     * is mentioned in the readme.txt file.
+     */
+    const DEFAULT_PICTURES = [
+        'https://myclub-member.s3.eu-west-1.amazonaws.com/media/webpage/person.png',
+        'https://myclub-member.s3.eu-west-1.amazonaws.com/media/webpage/default_user_woman.png',
+        'https://myclub-member.s3.eu-west-1.amazonaws.com/media/webpage/default_user_man.png',
+    ];
 
     private static $instance = null;
 
@@ -91,7 +109,7 @@ class ImageTask extends WP_Background_Process {
                     if ( $member->id === $item->member_id ) {
                         $url = $item->image->raw->url;
 
-                        if ( in_array( $url, GroupService::DEFAULT_PICTURES ) ) {
+                        if ( in_array( $url, ImageTask::DEFAULT_PICTURES ) ) {
                             // Save non personal image (reuse image if present)
                             $member_image = Utils::add_image( $url );
                         } else {

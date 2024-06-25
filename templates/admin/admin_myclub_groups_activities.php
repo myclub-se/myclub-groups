@@ -1,4 +1,6 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 $activities = json_decode( get_post_meta( get_the_ID(), 'activities', true ) );
 ?>
 

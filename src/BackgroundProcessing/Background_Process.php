@@ -2,16 +2,28 @@
 /**
  * WP Background Process
  *
- * @package WP-Background-Processing
+ * @package Background-Processing
+ *
+ *  Based on the WP background processing package by deliciousbrains. Full code here:
+ *  https://github.com/deliciousbrains/wp-background-processing. Only rewritten in parts to make package smaller and
+ *  confirm to WordPress coding rules.
+ *
+ * * License: GPLv2+
  */
+
+namespace MyClub\MyClubGroups\BackgroundProcessing;
+
+use stdClass;
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
  * Abstract WP_Background_Process class.
  *
  * @abstract
- * @extends WP_Async_Request
+ * @extends Async_Request
  */
-abstract class WP_Background_Process extends WP_Async_Request {
+abstract class Background_Process extends Async_Request {
 
 	/**
 	 * Action
@@ -577,7 +589,7 @@ abstract class WP_Background_Process extends WP_Async_Request {
 	 * @return bool
 	 */
 	protected function memory_exceeded() {
-		$memory_limit   = $this->get_memory_limit() * 0.9; // 90% of max memory
+		$memory_limit   = $this->get_memory_limit() * 0.8; // 80% of max memory
 		$current_memory = memory_get_usage( true );
 		$return         = false;
 

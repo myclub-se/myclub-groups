@@ -2,6 +2,8 @@
 
 namespace MyClub\MyClubGroups;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 use DateTime;
 use DateTimeZone;
 use Exception;

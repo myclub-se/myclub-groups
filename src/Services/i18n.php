@@ -2,6 +2,7 @@
 
 namespace MyClub\MyClubGroups\Services;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class i18n extends Base
 {
     /**

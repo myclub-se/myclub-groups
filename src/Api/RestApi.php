@@ -2,6 +2,8 @@
 
 namespace MyClub\MyClubGroups\Api;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 
 use stdClass;
 use WP_Error;

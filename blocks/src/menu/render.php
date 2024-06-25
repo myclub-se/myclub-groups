@@ -1,3 +1,7 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+?>
+
 <div class="myclub-groups-menu">
     <div class="myclub-groups-menu-container">
         <div class="mobile-menu-button">

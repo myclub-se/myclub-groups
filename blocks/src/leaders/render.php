@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 use MyClub\MyClubGroups\Utils;
 
 $post_id = $attributes[ 'post_id' ] ?? null;
@@ -9,7 +11,6 @@ if ( empty( $post_id ) ) {
 }
 
 $meta = get_post_meta( $post_id, 'members', true );
-$domain_name = $_SERVER['HTTP_HOST'];
 
 if ( !empty( $meta ) ) {
     $hidden_added = false;

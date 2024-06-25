@@ -2,6 +2,8 @@
 
 namespace MyClub\MyClubGroups\Services;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 /**
  * Registers the shortcode for the plugin.
  *

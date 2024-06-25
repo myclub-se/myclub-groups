@@ -1,4 +1,7 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 $post_id = $attributes[ 'post_id' ] ?? null;
 
 if ( empty( $post_id ) ) {
