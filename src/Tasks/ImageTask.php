@@ -16,17 +16,6 @@ class ImageTask extends Background_Process {
     protected $prefix = 'myclub_groups';
     protected $action = 'image_task';
 
-    /*
-     * The below array is used for comparing which images are default images. They are stored here only
-     * for comparison and are not used to retrieve anything. The images will be returned from the API that
-     * is mentioned in the readme.txt file.
-     */
-    const DEFAULT_PICTURES = [
-        'https://myclub-member.s3.eu-west-1.amazonaws.com/media/webpage/person.png',
-        'https://myclub-member.s3.eu-west-1.amazonaws.com/media/webpage/default_user_woman.png',
-        'https://myclub-member.s3.eu-west-1.amazonaws.com/media/webpage/default_user_man.png',
-    ];
-
     private static $instance = null;
 
     /**
@@ -99,7 +88,7 @@ class ImageTask extends Background_Process {
     private function add_member_image( object $item )
     {
         if ( property_exists( $item, 'member_id' ) ) {
-            $member_items = json_decode( get_post_meta( $item->post_id, 'members', true ) );
+            $member_items = json_decode( get_post_meta( $item->post_id, 'myclub_groups_members', true ) );
             $member_type = $item->member_type;
             $members = $member_items->$member_type;
             $member_updated = false;
@@ -109,7 +98,7 @@ class ImageTask extends Background_Process {
                     if ( $member->id === $item->member_id ) {
                         $url = $item->image->raw->url;
 
-                        if ( in_array( $url, ImageTask::DEFAULT_PICTURES ) ) {
+                        if ( $item->image->member_default_image ) {
                             // Save non personal image (reuse image if present)
                             $member_image = Utils::add_image( $url );
                         } else {
@@ -132,7 +121,7 @@ class ImageTask extends Background_Process {
 
             if ( $member_updated ) {
                 $member_items->$member_type = $members;
-                update_post_meta( $item->post_id, 'members', wp_json_encode( $member_items, JSON_UNESCAPED_UNICODE ) );
+                update_post_meta( $item->post_id, 'myclub_groups_members', wp_json_encode( $member_items, JSON_UNESCAPED_UNICODE ) );
             }
         }
     }

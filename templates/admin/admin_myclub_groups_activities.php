@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-$activities = json_decode( get_post_meta( get_the_ID(), 'activities', true ) );
+$activities = json_decode( get_post_meta( get_the_ID(), 'myclub_groups_activities', true ) );
 ?>
 
 <div class="activity-box">

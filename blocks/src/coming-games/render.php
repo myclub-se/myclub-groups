@@ -8,7 +8,7 @@ if ( empty( $post_id ) ) {
     $post_id = get_the_ID();
 }
 
-$meta = json_decode( get_post_meta( $post_id, 'activities', true ) );
+$meta = json_decode( get_post_meta( $post_id, 'myclub_groups_activities', true ) );
 
 if ( !empty( $meta ) ) {
     $activities = array_filter( $meta, function($activity) {

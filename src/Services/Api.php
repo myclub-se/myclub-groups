@@ -112,12 +112,12 @@ class Api
         $post_id = $post->ID;
 
         return new WP_REST_Response( [
-            'activities'   => get_post_meta( $post_id, 'activities', true ),
-            'contact_name' => get_post_meta( $post_id, 'contact_name', true ),
-            'email'        => get_post_meta( $post_id, 'email', true ),
-            'info_text'    => get_post_meta( $post_id, 'info_text', true ),
-            'members'      => get_post_meta( $post_id, 'members', true ),
-            'phone'        => get_post_meta( $post_id, 'phone', true ),
+            'activities'   => get_post_meta( $post_id, 'myclub_groups_activities', true ),
+            'contact_name' => get_post_meta( $post_id, 'myclub_groups_contact_name', true ),
+            'email'        => get_post_meta( $post_id, 'myclub_groups_email', true ),
+            'info_text'    => get_post_meta( $post_id, 'myclub_groups_info_text', true ),
+            'members'      => get_post_meta( $post_id, 'myclub_groups_members', true ),
+            'phone'        => get_post_meta( $post_id, 'myclub_groups_phone', true ),
             'title'        => get_the_title( $post_id ),
         ], 200 );
     }

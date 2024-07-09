@@ -147,7 +147,7 @@ class Utils
             wp_delete_attachment( $attachment_id, true );
         }
 
-        $meta = get_post_meta( $post_id, 'members', true );
+        $meta = get_post_meta( $post_id, 'myclub_groups_members', true );
 
         if ( $meta ) {
             $members = json_decode( $meta );

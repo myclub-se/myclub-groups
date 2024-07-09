@@ -81,20 +81,20 @@ class Groups
     }
 
     /**
-     * Retrieves the post ID of the group post with the given myclub_group_id.
+     * Retrieves the post ID of the group post with the given myclub_groups_id.
      *
-     * @param string $myclub_group_id The myclub_group_id to search for.
+     * @param string $myclub_groups_id The myclub_groups_id to search for.
      *
      * @return int|false The ID of the group post if found, false otherwise.
      */
-    protected function get_group_post_id( string $myclub_group_id )
+    protected function get_group_post_id( string $myclub_groups_id )
     {
         $args = array (
             'post_type'      => 'myclub-groups',
             'meta_query'     => array (
                 array (
-                    'key'     => 'myclub_group_id',
-                    'value'   => $myclub_group_id,
+                    'key'     => 'myclub_groups_id',
+                    'value'   => $myclub_groups_id,
                     'compare' => '=',
                 ),
             ),

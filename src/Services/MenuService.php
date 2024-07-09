@@ -108,7 +108,7 @@ class MenuService extends Groups
                 $menu_item_info = $this->create_menu_item_args( $group->name, $parent_item, $position, $post_id );
 
                 $menu_id = wp_update_nav_menu_item( $this->menu->term_id, $menu_item_id, $menu_item_info );
-                update_post_meta( $menu_id, 'myclub_group_id', $group->id );
+                update_post_meta( $menu_id, 'myclub_groups_id', $group->id );
 
                 // Update current menu items
                 $this->update_current_menus( $group->id, $menu_id, $parent_item, $group->name, $group->id );
@@ -184,14 +184,14 @@ class MenuService extends Groups
                 $menu_item->id = $menu->ID;
                 $menu_item->name = $menu->title;
                 $menu_item->parent_id = $menu->menu_item_parent;
-                $menu_item->myclub_group_id = $menu->myclub_group_id;
+                $menu_item->myclub_groups_id = $menu->myclub_groups_id;
                 // Menu status:
                 // 0 - present - not updated (default)
                 // 1 - present - updated
                 // 2 - new group menu
                 $menu_item->status = 0;
 
-                $this->current_menus[ $menu_item->myclub_group_id ?: 'menu' . $menu_item->id ] = $menu_item;
+                $this->current_menus[ $menu_item->myclub_groups_id ?: 'menu' . $menu_item->id ] = $menu_item;
             }
         }
     }
@@ -240,11 +240,11 @@ class MenuService extends Groups
      * @param int $menu_id The ID of the menu item.
      * @param int $parent_item The ID of the parent menu item.
      * @param string $name The name of the menu item.
-     * @param string $myclub_group_id The ID of the MyClub group associated with the menu item (optional).
+     * @param string $myclub_groups_id The ID of the MyClub group associated with the menu item (optional).
      * @return void
      * @since 1.0.0
      */
-    private function update_current_menus( string $key, int $menu_id, int $parent_item, string $name, string $myclub_group_id = '' )
+    private function update_current_menus( string $key, int $menu_id, int $parent_item, string $name, string $myclub_groups_id = '' )
     {
         if ( key_exists( $key, $this->current_menus ) ) {
             $this->current_menus[ $key ]->status = 1;
@@ -253,7 +253,7 @@ class MenuService extends Groups
             $menuItem->id = $menu_id;
             $menuItem->name = $name;
             $menuItem->parent_id = $parent_item ?: 0;
-            $menuItem->myclub_group_id = $myclub_group_id;
+            $menuItem->myclub_groups_id = $myclub_groups_id;
             $menuItem->status = 2;
             $this->current_menus[ $key ] = $menuItem;
         }

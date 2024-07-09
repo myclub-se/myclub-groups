@@ -7,7 +7,7 @@ if ( empty( $post_id ) ) {
     $post_id = get_the_ID();
 }
 
-$meta = get_post_meta( $post_id, 'activities', true );
+$meta = get_post_meta( $post_id, 'myclub_groups_activities', true );
 
 if ( !empty( $meta ) ):
     $header = get_option( 'myclub_groups_calendar_title' );

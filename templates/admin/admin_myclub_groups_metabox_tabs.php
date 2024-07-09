@@ -63,11 +63,11 @@ $post = get_the_ID();
     <div id="myclub-tab1" class="tabs-panel">
 <?php
 // All of these fields are readonly and will not be saved on post save.
-myclub_groups_render_meta_data_text( $post, __( 'MyClub group id', 'myclub-groups' ), 'myclub_group_id' );
-myclub_groups_render_meta_data_date( $post, __( 'Last updated', 'myclub-groups' ), 'last_updated' );
-myclub_groups_render_meta_data_text( $post, __( 'Contact person', 'myclub-groups' ), 'contact_name' );
-myclub_groups_render_meta_data_text( $post, __( 'E-mail address', 'myclub-groups' ), 'email' );
-myclub_groups_render_meta_data_text( $post, __( 'Phone', 'myclub-groups' ), 'phone' );
+myclub_groups_render_meta_data_text( $post, __( 'MyClub group id', 'myclub-groups' ), 'myclub_groups_id' );
+myclub_groups_render_meta_data_date( $post, __( 'Last updated', 'myclub-groups' ), 'myclub_groups_last_updated' );
+myclub_groups_render_meta_data_text( $post, __( 'Contact person', 'myclub-groups' ), 'myclub_groups_contact_name' );
+myclub_groups_render_meta_data_text( $post, __( 'E-mail address', 'myclub-groups' ), 'myclub_groups_email' );
+myclub_groups_render_meta_data_text( $post, __( 'Phone', 'myclub-groups' ), 'myclub_groups_phone' );
 ?>
     </div>
     <div id="myclub-tab2" class="hidden tabs-panel">

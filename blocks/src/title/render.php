@@ -8,10 +8,10 @@ if ( empty( $post_id ) ) {
 }
 
 $title = get_the_title($post_id);
-$contact_name = get_post_meta( $post_id, 'contact_name', true );
-$email = get_post_meta( $post_id, 'email', true );
-$phone = get_post_meta( $post_id, 'phone', true );
-$info_text = get_post_meta( $post_id, 'info_text', true );
+$contact_name = get_post_meta( $post_id, 'myclub_groups_contact_name', true );
+$email = get_post_meta( $post_id, 'myclub_groups_email', true );
+$phone = get_post_meta( $post_id, 'myclub_groups_phone', true );
+$info_text = get_post_meta( $post_id, 'myclub_groups_nfo_text', true );
 
 $image_url = get_the_post_thumbnail_url( $post_id );
 $allow_image = get_option( 'myclub_groups_page_picture', '1' ) === '1';

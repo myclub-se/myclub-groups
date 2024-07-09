@@ -2,7 +2,7 @@
 
 namespace MyClub\MyClubGroups\Services;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 use MyClub\MyClubGroups\Api\RestApi;
 use MyClub\MyClubGroups\Tasks\ImageTask;
@@ -157,7 +157,7 @@ class GroupService extends Groups
     /**
      * Removes unused group pages from the database.
      *
-     * Queries the database to find group pages with 'myclub_group_id' meta key
+     * Queries the database to find group pages with 'myclub_groups_id' meta key
      * that are not in the current list of group IDs. Deletes these group pages.
      *
      * @return void
@@ -172,7 +172,7 @@ class GroupService extends Groups
             $existing_ids = $wpdb->get_col(
                 $wpdb->prepare(
                     "SELECT pm.meta_value FROM {$wpdb->postmeta} pm LEFT JOIN {$wpdb->posts} p ON (p.ID = pm.post_id) WHERE pm.meta_key= %s and p.post_type = %s",
-                    'myclub_group_id', 'myclub-groups'
+                    'myclub_groups_id', 'myclub-groups'
                 )
             );
 
@@ -184,7 +184,7 @@ class GroupService extends Groups
                     'post_type'      => 'myclub-groups',
                     'meta_query'     => array (
                         array (
-                            'key'     => 'myclub_group_id',
+                            'key'     => 'myclub_groups_id',
                             'value'   => $old_ids,
                             'compare' => 'IN'
                         ),
@@ -254,7 +254,7 @@ class GroupService extends Groups
                 }
                 $this->add_members( $post_id, $group );
                 $this->add_activities( $post_id, $group );
-                update_post_meta( $post_id, 'last_updated', gmdate( "c" ) );
+                update_post_meta( $post_id, 'myclub_groups_last_updated', gmdate( "c" ) );
                 update_post_meta( $post_id, '_wp_page_template', $page_template );
 
                 $this->image_task->save()->dispatch();
@@ -276,17 +276,17 @@ class GroupService extends Groups
      */
     private function add_activities( int $post_id, object $group )
     {
-        foreach( $group->activities as $activity ) {
+        foreach ( $group->activities as $activity ) {
             $activity->description = str_replace( '<br /> <br />', '<br />', $activity->description );
             $activity->description = str_replace( '<br /><br />', '<br />', $activity->description );
-            $activity->description = str_replace( '<br /><br /><br />', '<br /><br />', $activity->description );
-            if ( empty( trim( wp_strip_all_tags ( $activity->description ) ) ) ) {
+            $activity->description = addslashes( str_replace( '<br /><br /><br />', '<br /><br />', $activity->description ) );
+            if ( empty( trim( wp_strip_all_tags( $activity->description ) ) ) ) {
                 $activity->description = '';
             }
         }
 
-        $activities_json = wp_json_encode( $group->activities, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT );
-        update_post_meta( $post_id, 'activities', $activities_json );
+        $activities_json = json_encode( $group->activities, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT );
+        update_post_meta( $post_id, 'myclub_groups_activities', $activities_json );
     }
 
     /**
@@ -370,12 +370,12 @@ class GroupService extends Groups
             'post_type'     => 'myclub-groups',
             'post_content'  => $post_id ? $this->create_post_content( $post_id ) : '',
             'page_template' => wp_is_block_theme() ? $page_template : '',
-            'meta_input' => [
-                'myclub_group_id' => sanitize_text_field( $group->id ),
-                'phone'           => sanitize_text_field( $group->phone ),
-                'email'           => sanitize_text_field( $group->email ),
-                'contact_name'    => sanitize_text_field( $group->contact_name ),
-                'info_text'       => sanitize_text_field( $group->info_text )
+            'meta_input'    => [
+                'myclub_groups_id'           => sanitize_text_field( $group->id ),
+                'myclub_groups_phone'        => sanitize_text_field( $group->phone ),
+                'myclub_groups_email'        => sanitize_text_field( $group->email ),
+                'myclub_groups_contact_name' => sanitize_text_field( $group->contact_name ),
+                'myclub_groups_info_text'    => sanitize_text_field( $group->info_text )
             ]
         ];
 
@@ -401,7 +401,7 @@ class GroupService extends Groups
      */
     private function update_members( int $post_id, array $members, array $leaders )
     {
-        $metadata = get_post_meta( $post_id, 'members', true );
+        $metadata = get_post_meta( $post_id, 'myclub_groups_members', true );
 
         if ( !empty( $metadata ) ) {
             $metadata_json = json_decode( $metadata );
@@ -427,7 +427,7 @@ class GroupService extends Groups
             ];
         }
 
-        update_post_meta( $post_id, 'members', wp_json_encode( $updated_metadata, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT ) );
+        update_post_meta( $post_id, 'myclub_groups_members', wp_json_encode( $updated_metadata, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT ) );
     }
 
     /**

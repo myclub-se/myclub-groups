@@ -110,43 +110,43 @@ class Taxonomy extends Base
             ]
         );
 
-        register_post_meta( 'myclub-groups', 'activities', [
+        register_post_meta( 'myclub-groups', 'myclub_groups_activities', [
             'show_in_rest' => true,
             'single' => true,
             'type' => 'string'
         ] );
 
-        register_post_meta( 'myclub-groups', 'members', [
+        register_post_meta( 'myclub-groups', 'myclub_groups_members', [
             'show_in_rest' => true,
             'single' => true,
             'type' => 'string'
         ] );
 
-        register_post_meta( 'myclub-groups', 'myclub_group_id', [
+        register_post_meta( 'myclub-groups', 'myclub_groups_id', [
             'show_in_rest' => true,
             'single' => true,
             'type' => 'string'
         ] );
 
-        register_post_meta( 'myclub-groups', 'contact_name', [
+        register_post_meta( 'myclub-groups', 'myclub_groups_contact_name', [
             'show_in_rest' => true,
             'single' => true,
             'type' => 'string'
         ] );
 
-        register_post_meta( 'myclub-groups', 'email', [
+        register_post_meta( 'myclub-groups', 'myclub_groups_email', [
             'show_in_rest' => true,
             'single' => true,
             'type' => 'string'
         ] );
 
-        register_post_meta( 'myclub-groups', 'info_text', [
+        register_post_meta( 'myclub-groups', 'myclub_groups_info_text', [
             'show_in_rest' => true,
             'single' => true,
             'type' => 'string'
         ] );
 
-        register_post_meta( 'myclub-groups', 'phone', [
+        register_post_meta( 'myclub-groups', 'myclub_groups_phone', [
             'show_in_rest' => true,
             'single' => true,
             'type' => 'string'

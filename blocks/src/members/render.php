@@ -10,7 +10,7 @@ if ( empty( $post_id ) ) {
     $post_id = get_the_ID();
 }
 
-$meta = get_post_meta( $post_id, 'members', true );
+$meta = get_post_meta( $post_id, 'myclub_groups_members', true );
 
 if ( !empty ( $meta ) ) {
     $hidden_added = false;

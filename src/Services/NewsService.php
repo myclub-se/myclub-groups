@@ -185,7 +185,7 @@ class NewsService extends Groups
      *
      * Adds a featured image to the news item post using the 'Utils::addFeaturedImage()' method.
      *
-     * If a myclub group is specified, checks if a term with the 'myclub_group_id' meta value exists in the 'RefreshNews::MYCLUB_GROUP_NEWS' taxonomy.
+     * If a myclub group is specified, checks if a term with the 'myclub_groups_id' meta value exists in the 'RefreshNews::MYCLUB_GROUP_NEWS' taxonomy.
      * If the term exists, assigns the term to the news item post using the 'wp_set_post_terms()' function.
      * If the term does not exist, inserts a new term with the myclub group name and assigns it to the news item post.
      *
@@ -235,7 +235,7 @@ class NewsService extends Groups
                 'taxonomy'   => NewsService::MYCLUB_GROUP_NEWS,
                 'meta_query' => [
                     [
-                        'key'     => 'myclub_group_id',
+                        'key'     => 'myclub_groups_id',
                         'value'   => $myclub_group[ 'id' ],
                         'compare' => '='
                     ]
@@ -264,7 +264,7 @@ class NewsService extends Groups
                 }
 
                 if ( $term_id ) {
-                    add_term_meta( $term_id, 'myclub_group_id', $myclub_group[ 'id' ] );
+                    add_term_meta( $term_id, 'myclub_groups_id', $myclub_group[ 'id' ] );
                 }
             }
 
@@ -341,7 +341,7 @@ class NewsService extends Groups
     /**
      * Returns the name of a group based on its ID.
      *
-     * This method queries the WordPress database for a post of type 'myclub-groups' that has a 'myclub_group_id'
+     * This method queries the WordPress database for a post of type 'myclub-groups' that has a 'myclub_groups_id'
      * meta field matching the provided group ID. If a matching group is found, its name is returned. If no matching
      * group is found, null is returned.
      *
@@ -355,7 +355,7 @@ class NewsService extends Groups
             'post_type'      => 'myclub-groups',
             'meta_query'     => array (
                 array (
-                    'key'     => 'myclub_group_id',
+                    'key'     => 'myclub_groups_id',
                     'value'   => $group_id,
                     'compare' => '='
                 ),

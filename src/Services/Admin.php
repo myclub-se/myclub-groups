@@ -1278,7 +1278,7 @@ class Admin extends Base
         if ( !wp_next_scheduled( 'wp_version_check' ) ) {
             ?>
             <div class="notice notice-warning is-dismissible">
-                <p><?php _e('WP Cron is not running. This is required for running the MyClub groups plugin.', 'myclub-groups' ); ?></p>
+                <p><?php esc_html_e('WP Cron is not running. This is required for running the MyClub groups plugin.', 'myclub-groups' ); ?></p>
             </div>
             <?php
         }
