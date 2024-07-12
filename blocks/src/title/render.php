@@ -1,24 +1,32 @@
 <?php
+
+use MyClub\MyClubGroups\Utils;
+
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-$post_id = $attributes[ 'post_id' ] ?? null;
+?>
+    <div class="myclub-groups-title">
+        <div class="myclub-groups-title-container">
 
-if ( empty( $post_id ) ) {
-    $post_id = get_the_ID();
+<?php
+
+if ( !empty( $attributes ) ) {
+    $post_id = Utils::get_post_id( $attributes );
 }
 
-$title = get_the_title($post_id);
-$contact_name = get_post_meta( $post_id, 'myclub_groups_contact_name', true );
-$email = get_post_meta( $post_id, 'myclub_groups_email', true );
-$phone = get_post_meta( $post_id, 'myclub_groups_phone', true );
-$info_text = get_post_meta( $post_id, 'myclub_groups_nfo_text', true );
+if ( empty ( $post_id ) || $post_id == 0 ) {
+    echo esc_html__( 'No group page found. Invalid post_id or group_id.', 'myclub-groups' );
+} else {
+    $title = get_the_title($post_id);
+    $contact_name = get_post_meta( $post_id, 'myclub_groups_contact_name', true );
+    $email = get_post_meta( $post_id, 'myclub_groups_email', true );
+    $phone = get_post_meta( $post_id, 'myclub_groups_phone', true );
+    $info_text = get_post_meta( $post_id, 'myclub_groups_nfo_text', true );
 
-$image_url = get_the_post_thumbnail_url( $post_id );
-$allow_image = get_option( 'myclub_groups_page_picture', '1' ) === '1';
+    $image_url = get_the_post_thumbnail_url( $post_id );
+    $allow_image = get_option( 'myclub_groups_page_picture', '1' ) === '1';
 
-?>
-<div class="myclub-groups-title">
-    <div class="myclub-groups-title-container">
+    ?>
         <div class="myclub-groups-title-box">
             <?php if( $allow_image && !empty( $image_url ) ) { ?>
                 <div class="myclub-groups-title-image">
@@ -41,5 +49,8 @@ $allow_image = get_option( 'myclub_groups_page_picture', '1' ) === '1';
                 <?php } ?>
             </div>
         </div>
+<?php
+}
+?>
     </div>
 </div>

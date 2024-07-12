@@ -2,6 +2,10 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"attributes": {
+		"group_id": {
+			"type": "string",
+			"default": ""
+		},
 		"post_id": {
 			"type": "string",
 			"default": ""

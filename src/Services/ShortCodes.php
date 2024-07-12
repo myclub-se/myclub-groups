@@ -259,7 +259,8 @@ class ShortCodes extends Base
     private function get_shortcode_attrs( array $attrs, string $shortCode ): array
     {
         return shortcode_atts([
-            'post_id' => ''
+            'group_id' => '',
+            'post_id' => '',
         ], $attrs, $shortCode);
     }
 

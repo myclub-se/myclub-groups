@@ -7,6 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 use DateTime;
 use DateTimeZone;
 use Exception;
+use MyClub\MyClubGroups\Services\Groups;
 use WP_Query;
 
 /**
@@ -199,6 +200,46 @@ class Utils
         return $formatted_time;
     }
 
+    /**
+     * Get the post ID based on the given attributes.
+     *
+     * @param array $attributes The attributes used to determine the post ID.
+     *                         Supported attributes:
+     *                         - post_id: The specific post ID to retrieve.
+     *                         - group_id: The group ID used to retrieve the post ID from the database.
+     *
+     * @return int The retrieved post ID.
+     * @since 1.0.0
+     */
+    static function get_post_id( array $attributes ): int {
+        if ( !empty( $attributes[ 'post_id' ] ) ) {
+            $post_id = (int) $attributes[ 'post_id' ];
+        } else if ( !empty( $attributes[ 'group_id' ] ) ) {
+            $args = array(
+                'post_type' => 'myclub-groups',
+                'meta_key' => 'myclub_groups_id',
+                'meta_value' => $attributes[ 'group_id' ]
+            );
+            $posts = get_posts($args);
+
+            // If posts were found.
+            if ( !empty( $posts ) ) {
+                $post_id = $posts[0]->ID;
+            }
+        }
+
+        return empty( $post_id ) ? 0 : $post_id;
+    }
+
+    /**
+     * Sanitize an array by recursively sanitizing text fields.
+     *
+     * @param array $array The array to be sanitized.
+     *
+     * @return array The sanitized array.
+     *
+     * @since 1.0.0
+     */
     static function sanitize_array( array $array ): array
     {
         foreach( $array as $key => &$value ) {
