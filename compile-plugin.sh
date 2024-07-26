@@ -16,4 +16,4 @@ wp i18n make-json languages --no-purge
 python3 tools/update_translation_files.py
 
 # Create a zip file for the plugin
-zip -r myclub-groups.zip . -x "tools/*" -x ".idea/*" -x "*.git*" -x "node_modules/*" -x "compile-plugin.sh" -x "lib/deliciousbrains/wp-background-processing/.phpcs.xml" -x "lib/deliciousbrains/wp-background-processing/.circleci/*" -x "lib/deliciousbrains/wp-background-processing/bin/*" -x "lib/deliciousbrains/wp-background-processing/tests/*"
+zip -r myclub-groups.zip . -x "tools/*" -x ".idea/*" -x "*.git*" -x "node_modules/*" -x "compile-plugin.sh"
