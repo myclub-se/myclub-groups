@@ -1,4 +1,3 @@
 .distignore
 compile-plugin.sh
 tools
-blocks/src
