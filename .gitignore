@@ -208,7 +208,6 @@ dist
 .pnp.*
 
 node_modules
-blocks/build
 
 *.zip
 build.sh
