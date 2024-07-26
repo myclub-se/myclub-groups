@@ -3,8 +3,8 @@ Contributors: myclubse
 Donate link: https://www.myclub.se
 Tags: myclub, groups, members, administration
 Requires at least: 6.4
-Tested up to: 6.5.5
-Stable tag: 1.0.0
+Tested up to: 6.6.1
+Stable tag: 1.0.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -31,9 +31,15 @@ Please ensure that your server is running on PHP 7.4 or higher and your WordPres
 6. Add your API key to the plugin settings.
 
 == Changelog ==
+= 1.0.1 =
+* Fixed Gutenberg block inclusion
+
 = 1.0.0 =
 * Initial release.
 
 == Upgrade Notice ==
+= 1.0.1 =
+* No issues.
+
 = 1.0.0 =
 * Initial release.
