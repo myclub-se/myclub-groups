@@ -1,6 +1,6 @@
 # Workflow for publishing plugin to WordPress repository
 
-name: Deploy to WordPress.org
+name: Deploy plugin to WordPress.org
 on:
   push:
     tags:
