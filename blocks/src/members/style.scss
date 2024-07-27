@@ -1,0 +1,101 @@
+/**
+ * The group members styles
+ */
+@import '../shared/modal';
+
+.myclub-groups-members-list {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .myclub-groups-members-container {
+    width: 100%;
+
+    .members-list {
+      display: flex;
+      flex-flow: row wrap;
+
+      .member {
+        box-sizing: border-box;
+        margin: 0.5rem;
+        flex: 0 1 calc(50% - 1rem);
+        padding: 0.5rem;
+        cursor: pointer;
+
+        .member-picture {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+
+        .member-name {
+          text-align: center;
+        }
+      }
+
+      .member-show-more, .member-show-less {
+        cursor: pointer;
+        text-align: center;
+        padding: 0.5rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .extended-list {
+        display: flex;
+        flex: 100%;
+        flex-flow: row wrap;
+      }
+
+      .hidden {
+        display: none;
+      }
+    }
+  }
+
+  .member-modal {
+    @extend %modal;
+  }
+}
+
+
+@media(min-width: 768px) {
+  .myclub-groups-members-list {
+    .myclub-groups-members-container {
+      .members-list {
+        .member {
+          flex: 0 1 calc(33% - 1rem);
+        }
+      }
+    }
+  }
+}
+
+@media(min-width: 996px) {
+  .myclub-groups-members-list {
+    .myclub-groups-members-container {
+      max-width: 996px;
+
+      .members-list {
+        .member {
+          flex: 0 1 calc(25% - 1rem);
+        }
+      }
+    }
+  }
+}
+
+@media(min-width: 1200px) {
+  .myclub-groups-members-list {
+    .myclub-groups-members-container {
+      max-width: 1200px;
+    }
+  }
+}
