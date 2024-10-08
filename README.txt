@@ -17,7 +17,7 @@ The MyClub Groups plugin is designed to retrieve group information from the MyCl
 
 The plugin automatically retrieves group information from the MyClub member administration platform and creates pages for all groups defined in your WordPress settings in MyClub. You can also use both Gutenberg blocks and shortcodes for adding data on other pages.
 
-For the calendar views the plugin uses the open source version of the FullCalendar (v.6.1.11) plugin, which can be seen [here](https://fullcalendar.io/). All source to the plugin is available [here](https://github.com/fullcalendar/fullcalendar). No data is being sent to the FullCalendar plugin website.
+For the calendar views the plugin uses the open source version of the FullCalendar (v.5.11.5) plugin, which can be seen [here](https://fullcalendar.io/). All source to the plugin is available [here](https://github.com/fullcalendar/fullcalendar). No data is being sent to the FullCalendar plugin website.
 
 Please ensure that your server is running on PHP 7.4 or higher and your WordPress version is at least 6.4 to utilize this plugin fully.
 
