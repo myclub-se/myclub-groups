@@ -22,8 +22,11 @@ function getColorClass( baseType ) {
 
 
 document.addEventListener('DOMContentLoaded', function() {
+    const smallScreen = document.documentElement.clientWidth < 960;
     const calendarEl = document.getElementById('calendar-div');
     const labels = JSON.parse(calendarEl.dataset.labels);
+    const rightToolbar = smallScreen ? 'timeGridDay,listMonth' : 'dayGridMonth,timeGridWeek,listMonth';
+    const initialView = smallScreen ? 'listMonth' : 'dayGridMonth';
     const calendar = new FullCalendar.Calendar(calendarEl, {
         allDaySlot: false,
         buttonText: {
@@ -36,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,listMonth'
+            right: rightToolbar
         },
         eventClick: (arg) => {
             const item = arg.event;
@@ -97,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         events: JSON.parse(calendarEl.dataset.events),
         firstDay: 1,
-        initialView: 'dayGridMonth',
+        initialView,
         locale: 'sv',
         timeZone: 'Europe/Stockholm',
         weekNumbers: true,

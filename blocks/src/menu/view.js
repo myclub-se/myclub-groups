@@ -1,5 +1,5 @@
 function menuButtonToggle () {
-    const menuElement = document.querySelector( '.myclub-groups-menu' );
+    const menuElement = document.querySelector( '.myclub-groups-menu-container' );
     if (menuElement) {
         menuElement.classList.toggle('show');
     }

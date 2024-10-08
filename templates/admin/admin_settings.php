@@ -68,10 +68,12 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
     <?php if ( in_array( $active_tab, $valid_action_tabs ) ) { ?>
         <div>
             <?php if( $active_tab === 'tab1' ) { ?>
-                <button type="button" id="myclub-reload-news-button"
-                        class="button"><?php esc_attr_e( 'Reload news', 'myclub-groups' ) ?></button>
-                <button type="button" id="myclub-reload-groups-button"
-                    class="button"><?php esc_attr_e( 'Reload groups', 'myclub-groups' ) ?></button>
+                <button type="button" id="myclub-reload-news-button" class="button">
+                    <?php esc_attr_e( 'Reload news', 'myclub-groups' ) ?>
+                </button>
+                <button type="button" id="myclub-reload-groups-button" class="button">
+                    <?php esc_attr_e( 'Reload groups', 'myclub-groups' ) ?>
+                </button>
             <?php }
             submit_button( esc_html__( 'Save Changes' ), 'primary', 'save', false ); ?>
         </div>

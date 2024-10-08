@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/myclub-groups\n"
-"POT-Creation-Date: 2024-07-26T16:17:22+00:00\n"
-"PO-Revision-Date: 2024-07-26 18:18+0200\n"
+"POT-Creation-Date: 2024-10-08T08:56:35+00:00\n"
+"PO-Revision-Date: 2024-10-08 10:57+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.3\n"
+"X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: src\n"
@@ -26,7 +26,7 @@ msgstr "MyClub Grupper"
 
 #. Plugin URI of the plugin
 msgid "https://github.com/myclub-se/myclub-groups"
-msgstr ""
+msgstr "https://github.com/myclub-se/myclub-groups"
 
 #. Description of the plugin
 msgid ""
@@ -38,11 +38,11 @@ msgstr ""
 
 #. Author of the plugin
 msgid "MyClub AB"
-msgstr ""
+msgstr "MyClub AB"
 
 #. Author URI of the plugin
 msgid "https://www.myclub.se"
-msgstr ""
+msgstr "https://www.myclub.se"
 
 #: blocks/build/calendar/render.php:19 blocks/build/coming-games/render.php:19
 #: blocks/build/leaders/render.php:21 blocks/build/members/render.php:20
@@ -52,7 +52,7 @@ msgstr ""
 #: blocks/src/members/render.php:20 blocks/src/navigation/render.php:18
 #: blocks/src/news/render.php:21 blocks/src/title/render.php:18
 msgid "No group page found. Invalid post_id or group_id."
-msgstr ""
+msgstr "Kunde inte hitta en gruppsida. Ogiltig post_id eller group_id."
 
 #: blocks/build/calendar/render.php:27 blocks/src/calendar/render.php:27
 #: src/Activation.php:51 src/Services/Admin.php:190 src/Services/Admin.php:619
@@ -136,7 +136,7 @@ msgstr "Vecka"
 #: src/Activation.php:71 src/Services/Admin.php:222 src/Services/Admin.php:229
 #: src/Services/Admin.php:638 src/Services/Admin.php:725
 #: src/Services/Admin.php:835 src/Services/Admin.php:911
-#: src/Services/NewsService.php:162 src/Services/NewsService.php:165
+#: src/Services/NewsService.php:176 src/Services/NewsService.php:179
 #: templates/admin/admin_settings.php:49
 msgid "News"
 msgstr "Nyheter"
@@ -444,7 +444,19 @@ msgstr "Du måste ange en rubrik för nyheter för föreningen"
 msgid "The selected template was not found."
 msgstr "Vald mall kunde inte hittas."
 
-#: src/Services/Admin.php:1299
+#: src/Services/Admin.php:1303
+msgid "news"
+msgstr "nyheter"
+
+#: src/Services/Admin.php:1308
+msgid "groups"
+msgstr "grupper"
+
+#: src/Services/Admin.php:1314
+msgid "The %1$s update task is currently running."
+msgstr "Uppdateringen av %1$s håller på att köras."
+
+#: src/Services/Admin.php:1319
 msgid "Not synchronized yet"
 msgstr "Ingen synkronisering än"
 
@@ -864,7 +876,7 @@ msgstr ""
 msgid "Reload news"
 msgstr "Ladda om nyheter"
 
-#: templates/admin/admin_settings.php:74
+#: templates/admin/admin_settings.php:75
 msgid "Reload groups"
 msgstr "Ladda om grupper"
 
@@ -906,15 +918,23 @@ msgstr "Ingen grupp med medlemmar vald"
 msgid "Reloading groups"
 msgstr "Laddar om grupper"
 
-#: resources/javascript/myclub_groups_settings.js:62
+#: resources/javascript/myclub_groups_settings.js:52
+msgid "The groups update task is currently running"
+msgstr "Uppdateringen av grupper håller på att köras"
+
+#: resources/javascript/myclub_groups_settings.js:63
 msgid "Unable to reload groups"
 msgstr "Kunde inte ladda om grupper"
 
-#: resources/javascript/myclub_groups_settings.js:69
+#: resources/javascript/myclub_groups_settings.js:70
 msgid "Reloading news"
 msgstr "Laddar om nyheter"
 
-#: resources/javascript/myclub_groups_settings.js:80
+#: resources/javascript/myclub_groups_settings.js:71
+msgid "The news update task is currently running"
+msgstr "Uppdateringen av nyheter håller på att köras"
+
+#: resources/javascript/myclub_groups_settings.js:82
 msgid "Unable to reload news"
 msgstr "Kunde inte ladda om nyheter"
 

@@ -1295,10 +1295,31 @@ class Admin extends Base
     private function render_date_time_field( string $field_name )
     {
         $last_sync = esc_attr( get_option( $field_name ) );
+        $cron_job_name = '';
+        $output = '';
+        
+        if ( $field_name === 'myclub_groups_last_news_sync' ) {
+            $cron_job_name = 'myclub_groups_refresh_news_task_cron';
+            $cron_job_type = __('news', 'myclub-groups' );
+        }
 
-        $output = empty( $last_sync ) ? __( 'Not synchronized yet', 'myclub-groups' ) : Utils::format_date_time( $last_sync );
+        if ( $field_name === 'myclub_groups_last_groups_sync' ) {
+            $cron_job_name = 'myclub_groups_refresh_groups_task_cron';
+            $cron_job_type = __( 'groups', 'myclub-groups' );
+        }
 
-        echo '<div>' . esc_attr( $output ) . '</div>';
+        if ( !empty( $cron_job_name ) && isset( $cron_job_type )) {
+            $next_scheduled = wp_next_scheduled( $cron_job_name );
+            if ( $next_scheduled ) {
+                $output = sprintf( __( 'The %1$s update task is currently running.', 'myclub-groups' ), esc_attr( $cron_job_type ) );
+            }
+        }
+
+        if ( empty ($output) ) {
+            $output = empty( $last_sync ) ? __( 'Not synchronized yet', 'myclub-groups' ) : Utils::format_date_time( $last_sync );
+        }
+
+        echo '<div id="' . $field_name . '">' . esc_attr( $output ) . '</div>';
     }
 
     /**

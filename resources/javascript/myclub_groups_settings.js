@@ -49,6 +49,7 @@ jQuery(document).ready(function($) {
 
     $("#myclub-reload-groups-button").on("click", function() {
         addNotice(wp.i18n.__('Reloading groups', 'myclub-groups'), 'success');
+        $("#myclub_groups_last_groups_sync").html(wp.i18n.__('The groups update task is currently running', 'myclub-groups'));
 
         $.ajax({
             url: ajaxurl,
@@ -67,6 +68,7 @@ jQuery(document).ready(function($) {
 
     $("#myclub-reload-news-button").on("click", function() {
         addNotice(wp.i18n.__('Reloading news', 'myclub-groups'), 'success');
+        $("#myclub_groups_last_news_sync").html(wp.i18n.__('The news update task is currently running', 'myclub-groups'));
 
         $.ajax({
             url: ajaxurl,

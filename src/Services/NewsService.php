@@ -65,6 +65,7 @@ class NewsService extends Groups
      */
     public function delete_all_news()
     {
+        $group_news_taxonomy = 'myclub-group-news';
         $args = array (
             'post_type'      => 'post',
             'meta_query'     => array (
@@ -85,6 +86,19 @@ class NewsService extends Groups
                 $post_id = $query->post->ID;
 
                 Utils::delete_post( $post_id );
+            }
+        }
+
+        // Delete custom news taxonomy
+        $terms = get_terms( [
+            'taxonomy'   => $group_news_taxonomy,
+            'hide_empty' => false,
+        ] );
+
+        // Delete all terms associated with the custom news taxonomy
+        if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+            foreach ( $terms as $term ) {
+                wp_delete_term( $term->term_id, $group_news_taxonomy );
             }
         }
     }
