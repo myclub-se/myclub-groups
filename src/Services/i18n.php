@@ -25,6 +25,14 @@ class i18n extends Base
      */
     public function load_plugin_text_domain()
     {
-        load_plugin_textdomain( 'myclub-groups', false,  plugin_basename( dirname( __FILE__, 3 ) ) . '/languages/' );
+        $result = load_plugin_textdomain(
+            'myclub-groups',
+            false,
+            plugin_basename( dirname( __FILE__, 3 ) ) . '/languages/'
+        );
+
+        if ( !$result ) {
+            error_log( 'Failed to load text domain for myclub-groups.' );
+        }
     }
 }

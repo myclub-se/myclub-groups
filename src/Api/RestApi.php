@@ -58,7 +58,7 @@ class RestApi
         $decoded = $this->get( $service_path );
 
         if ( is_wp_error( $decoded ) ) {
-            error_log( 'Error occurred in API call' );
+            error_log( 'Unable to load menu items: Error occurred in API call' );
             $return_value = new stdClass();
             $return_value->result = [];
             $return_value->status = 500;
@@ -90,7 +90,7 @@ class RestApi
         $decoded = $this->get( $service_path, [ 'limit' => "null" ] );
 
         if ( is_wp_error( $decoded ) ) {
-            error_log( 'Error occurred in API call' );
+            error_log( 'Unable to load other teams: Error occurred in API call' );
             $return_value = new stdClass();
             $return_value->result = [];
             $return_value->status = 500;
@@ -116,7 +116,7 @@ class RestApi
 
         $decoded = $this->get( "teams/$groupId/info/" );
         if ( is_wp_error( $decoded ) || $decoded->status !== 200 ) {
-            error_log( 'Error occurred in API call' );
+            error_log( 'Unable to load group: Error occurred in API call' );
             return $decoded;
         } else {
             // Load member info
@@ -171,7 +171,7 @@ class RestApi
 
         $decoded = $this->get( "news/", $args );
         if ( is_wp_error( $decoded ) || $decoded->status !== 200 ) {
-            error_log( 'Error occurred in API call' );
+            error_log( 'Unable to load news: Error occurred in API call' );
         }
 
         return $decoded;
