@@ -17,6 +17,8 @@ use WP_Query;
  */
 class GroupService extends Groups
 {
+    const MYCLUB_GROUPS = 'myclub-groups';
+
     private RestApi $api;
     private ImageTask $image_task;
 
@@ -114,7 +116,7 @@ class GroupService extends Groups
     public function delete_all_groups()
     {
         $args = array (
-            'post_type'      => 'myclub-groups',
+            'post_type'      => GroupService::MYCLUB_GROUPS,
             'posts_per_page' => -1,
         );
 
@@ -172,7 +174,7 @@ class GroupService extends Groups
             $existing_ids = $wpdb->get_col(
                 $wpdb->prepare(
                     "SELECT pm.meta_value FROM {$wpdb->postmeta} pm LEFT JOIN {$wpdb->posts} p ON (p.ID = pm.post_id) WHERE pm.meta_key= %s and p.post_type = %s",
-                    'myclub_groups_id', 'myclub-groups'
+                    'myclub_groups_id', GroupService::MYCLUB_GROUPS
                 )
             );
 
@@ -181,7 +183,7 @@ class GroupService extends Groups
             // Check so that there are any posts that should be deleted.
             if ( count( $old_ids ) ) {
                 $args = array (
-                    'post_type'      => 'myclub-groups',
+                    'post_type'      => GroupService::MYCLUB_GROUPS,
                     'meta_query'     => array (
                         array (
                             'key'     => 'myclub_groups_id',
@@ -367,7 +369,7 @@ class GroupService extends Groups
             'post_title'    => sanitize_text_field( $group->name ),
             'post_name'     => sanitize_title( $group->name ),
             'post_status'   => 'publish',
-            'post_type'     => 'myclub-groups',
+            'post_type'     => GroupService::MYCLUB_GROUPS,
             'post_content'  => $post_id ? $this->create_post_content( $post_id ) : '',
             'page_template' => wp_is_block_theme() ? $page_template : '',
             'meta_input'    => [

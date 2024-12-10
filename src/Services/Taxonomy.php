@@ -35,6 +35,11 @@ class Taxonomy extends Base
             'enqueue_scripts'
         ] );
 
+        add_action( 'template_redirect', [
+            $this,
+            'check_group_in_menus'
+        ] );
+
         add_filter( 'body_class', [
             $this,
             'add_body_class'
@@ -73,7 +78,7 @@ class Taxonomy extends Base
 
         // Add custom post type for groups in the plugin
         register_post_type(
-            'myclub-groups',
+            GroupService::MYCLUB_GROUPS,
             [
                 'public'               => true,
                 'labels'               => [
@@ -110,50 +115,50 @@ class Taxonomy extends Base
             ]
         );
 
-        register_post_meta( 'myclub-groups', 'myclub_groups_activities', [
+        register_post_meta( GroupService::MYCLUB_GROUPS, 'myclub_groups_activities', [
             'show_in_rest' => true,
             'single' => true,
             'type' => 'string'
         ] );
 
-        register_post_meta( 'myclub-groups', 'myclub_groups_members', [
+        register_post_meta( GroupService::MYCLUB_GROUPS, 'myclub_groups_members', [
             'show_in_rest' => true,
             'single' => true,
             'type' => 'string'
         ] );
 
-        register_post_meta( 'myclub-groups', 'myclub_groups_id', [
+        register_post_meta( GroupService::MYCLUB_GROUPS, 'myclub_groups_id', [
             'show_in_rest' => true,
             'single' => true,
             'type' => 'string'
         ] );
 
-        register_post_meta( 'myclub-groups', 'myclub_groups_contact_name', [
+        register_post_meta( GroupService::MYCLUB_GROUPS, 'myclub_groups_contact_name', [
             'show_in_rest' => true,
             'single' => true,
             'type' => 'string'
         ] );
 
-        register_post_meta( 'myclub-groups', 'myclub_groups_email', [
+        register_post_meta( GroupService::MYCLUB_GROUPS, 'myclub_groups_email', [
             'show_in_rest' => true,
             'single' => true,
             'type' => 'string'
         ] );
 
-        register_post_meta( 'myclub-groups', 'myclub_groups_info_text', [
+        register_post_meta( GroupService::MYCLUB_GROUPS, 'myclub_groups_info_text', [
             'show_in_rest' => true,
             'single' => true,
             'type' => 'string'
         ] );
 
-        register_post_meta( 'myclub-groups', 'myclub_groups_phone', [
+        register_post_meta( GroupService::MYCLUB_GROUPS, 'myclub_groups_phone', [
             'show_in_rest' => true,
             'single' => true,
             'type' => 'string'
         ] );
 
         // Add custom taxonomy for sorting news connected to the groups
-        register_taxonomy( 'myclub-group-news', 'post', [
+        register_taxonomy( NewsService::MYCLUB_GROUP_NEWS, 'post', [
             'capabilities' => [
                 'edit_terms'   => 'do_not_allow',
                 'delete_terms' => 'do_not_allow'
@@ -182,11 +187,45 @@ class Taxonomy extends Base
     {
         global $post;
 
-        if (isset($post) && 'myclub-groups' == $post->post_type) {
+        if (isset($post) && GroupService::MYCLUB_GROUPS == $post->post_type) {
             $classes[] = $post->post_name;
         }
 
         return $classes;
+    }
+
+    /**
+     * Checks if the current MyClub Group post is linked in any menu items.
+     * If not linked, it triggers a 404 redirect.
+     *
+     * @return void
+     * @since 1.0.5
+     */
+    public function check_group_in_menus()
+    {
+        if ( is_singular( GroupService::MYCLUB_GROUPS ) ) {
+            global $post;
+
+            // Directly query for menu items linked to the current post
+            $args = [
+                'post_type'   => 'nav_menu_item',
+                'meta_key'    => '_menu_item_object_id',
+                'meta_value'  => $post->ID,
+                'numberposts' => 1
+                // Only need to find one to verify presence
+            ];
+
+            $menu_items = get_posts( $args );
+
+            if ( empty( $menu_items ) ) {
+                // Redirect to 404 if not found in any menu
+                global $wp_query;
+                status_header( 404 );
+                $wp_query->set_404();
+                get_template_part( 404 );
+                exit;
+            }
+        }
     }
 
     /**
@@ -199,7 +238,7 @@ class Taxonomy extends Base
     {
         $current_page = get_current_screen();
 
-        if ( $current_page->post_type === 'myclub-groups' ) {
+        if ( $current_page->post_type === GroupService::MYCLUB_GROUPS ) {
             // Register admin scripts and styles
             wp_register_style( 'myclub_groups_tabs_css', $this->plugin_url . 'resources/css/myclub_groups.css', [], MYCLUB_GROUPS_PLUGIN_VERSION );
             wp_register_script( 'myclub_groups_tabs_ui', $this->plugin_url . 'resources/javascript/myclub_groups_tabs.js', [ 'jquery' ], MYCLUB_GROUPS_PLUGIN_VERSION, true );
@@ -272,7 +311,7 @@ class Taxonomy extends Base
         if ( !wp_is_block_theme() ) {
             $templateName = 'single-myclub-group.php';
 
-            if ( is_singular( 'myclub-groups' ) ) {
+            if ( is_singular( GroupService::MYCLUB_GROUPS ) ) {
                 if ( $template = locate_template( $templateName ) ) {
                     return $template;
                 } else {

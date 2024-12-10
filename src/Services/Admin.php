@@ -532,7 +532,7 @@ class Admin extends Base
     {
         // Count the number of group posts in WordPress
         $args = array (
-            'post_type'      => 'myclub-groups',
+            'post_type'      => GroupService::MYCLUB_GROUPS,
             'post_status'    => 'publish',
             'posts_per_page' => -1
         );

@@ -3,7 +3,7 @@ Contributors: myclubse
 Donate link: https://www.myclub.se
 Tags: groups, members, administration
 Requires at least: 6.4
-Tested up to: 6.7
+Tested up to: 6.7.1
 Stable tag: 1.0.5
 Requires PHP: 7.4
 License: GPLv2 or later
@@ -37,6 +37,7 @@ The plugin has no external plugin dependencies. All requirements are bundled in 
 == Changelog ==
 = 1.0.5 =
 * Check and update compatibility with WordPress 6.7
+* Update so that all news items are removed when uninstalling the plugin
 
 = 1.0.4 =
 * Fixed how synchronization progress is shown.

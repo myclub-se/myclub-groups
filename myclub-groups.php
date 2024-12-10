@@ -6,7 +6,7 @@ Plugin URI: https://github.com/myclub-se/myclub-groups
 Description: Retrieves group information from the MyClub member administration platform. Generates pages for groups defined in the MyClub platform.
 Version: 1.0.5
 Requires at least: 6.4
-Tested up to: 6.6.2
+Tested up to: 6.7.1
 Requires PHP: 7.4
 Author: MyClub AB
 Author URI: https://www.myclub.se

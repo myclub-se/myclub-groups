@@ -101,7 +101,7 @@ class Api
     {
         $post = get_post( $request[ 'id' ] );
 
-        if ( empty( $post ) || $post->post_status !== 'publish' || $post->post_type !== 'myclub-groups' ) {
+        if ( empty( $post ) || $post->post_status !== 'publish' || $post->post_type !== GroupService::MYCLUB_GROUPS ) {
             return new WP_REST_Response(
                 [
                     'message' => __( 'There is no MyClub Group post with that ID', 'myclub-groups' )
@@ -135,7 +135,7 @@ class Api
     public function return_groups(): WP_REST_Response
     {
         $args = array (
-            'post_type'      => 'myclub-groups',
+            'post_type'      => GroupService::MYCLUB_GROUPS,
             'post_status'    => 'publish',
             'posts_per_page' => -1,
             'fields'         => 'ids',

@@ -90,7 +90,7 @@ class Groups
     protected function get_group_post_id( string $myclub_groups_id )
     {
         $args = array (
-            'post_type'      => 'myclub-groups',
+            'post_type'      => GroupService::MYCLUB_GROUPS,
             'meta_query'     => array (
                 array (
                     'key'     => 'myclub_groups_id',

@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 use DateTime;
 use DateTimeZone;
 use Exception;
-use MyClub\MyClubGroups\Services\Groups;
+use MyClub\MyClubGroups\Services\GroupService;
 use WP_Query;
 
 /**
@@ -216,7 +216,7 @@ class Utils
             $post_id = (int) $attributes[ 'post_id' ];
         } else if ( !empty( $attributes[ 'group_id' ] ) ) {
             $args = array(
-                'post_type' => 'myclub-groups',
+                'post_type' => GroupService::MYCLUB_GROUPS,
                 'meta_key' => 'myclub_groups_id',
                 'meta_value' => $attributes[ 'group_id' ]
             );

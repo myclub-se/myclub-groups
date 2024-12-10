@@ -2,7 +2,7 @@
 
 namespace MyClub\MyClubGroups\Services;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 use DateTime;
 use DateTimeZone;
@@ -65,7 +65,6 @@ class NewsService extends Groups
      */
     public function delete_all_news()
     {
-        $group_news_taxonomy = 'myclub-group-news';
         $args = array (
             'post_type'      => 'post',
             'meta_query'     => array (
@@ -89,16 +88,31 @@ class NewsService extends Groups
             }
         }
 
-        // Delete custom news taxonomy
-        $terms = get_terms( [
-            'taxonomy'   => $group_news_taxonomy,
-            'hide_empty' => false,
+        // Temporarily add the myclub-group-news taxonomy to be able to delete it
+        register_taxonomy( NewsService::MYCLUB_GROUP_NEWS, 'post', [
+            'label'        => __( 'Group news', 'myclub-groups' ),
+            'show_in_rest' => true,
         ] );
 
-        // Delete all terms associated with the custom news taxonomy
-        if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-            foreach ( $terms as $term ) {
-                wp_delete_term( $term->term_id, $group_news_taxonomy );
+        // Get all terms in the custom taxonomy
+        $terms = get_terms([
+            'taxonomy'   => NewsService::MYCLUB_GROUP_NEWS,
+            'hide_empty' => false,
+        ]);
+
+        if (!empty($terms) && !is_wp_error($terms)) {
+            global $wpdb; // Access the WordPress database
+
+            foreach ($terms as $term) {
+                // Manually update the count to zero
+                $wpdb->update(
+                    $wpdb->term_taxonomy,
+                    ['count' => 0],
+                    ['term_id' => $term->term_id]
+                );
+
+                // Delete the term
+                wp_delete_term($term->term_id, NewsService::MYCLUB_GROUP_NEWS);
             }
         }
     }
@@ -366,7 +380,7 @@ class NewsService extends Groups
     private function get_group_name( string $group_id )
     {
         $args = array (
-            'post_type'      => 'myclub-groups',
+            'post_type'      => GroupService::MYCLUB_GROUPS,
             'meta_query'     => array (
                 array (
                     'key'     => 'myclub_groups_id',
