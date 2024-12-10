@@ -222,7 +222,7 @@ class Taxonomy extends Base
                 global $wp_query;
                 status_header( 404 );
                 $wp_query->set_404();
-                exit;
+                return;
             }
         }
     }
