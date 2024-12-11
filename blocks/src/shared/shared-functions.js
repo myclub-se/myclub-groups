@@ -26,7 +26,7 @@ function showModal ( modalClassName, labels, data ) {
     }
     let output = '<div class="name">' + data.name.replaceAll('u0022', '\"') + '</div>';
 
-    if ( data.role || data.phone || data.email || data.age ) {
+    if ( data.role || data.phone || data.email || data.age || (data.dynamic_fields && data.dynamic_fields.length ) ) {
         output += '<table>';
 
         if ( data.role ) {
@@ -43,6 +43,12 @@ function showModal ( modalClassName, labels, data ) {
 
         if ( data.phone ) {
             output += `<tr><th>${labels.phone}</th><td><a href="tel:${data.phone}">${data.phone}</a></td></tr>`;
+        }
+
+        if ( data.dynamic_fields && data.dynamic_fields.length ) {
+            data.dynamic_fields.forEach( ( field ) => {
+                output += `<tr><th>${field.name}</th><td>${field.value.replaceAll('u0022', '\"')}</td></tr>`;
+            });
         }
 
         output += '</table>';
