@@ -14,6 +14,18 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  */
 class ShortCodes extends Base
 {
+    const SHORT_CODES = [
+        'myclub-groups-calendar',
+        'myclub-groups-club-news',
+        'myclub-groups-coming-games',
+        'myclub-groups-leaders',
+        'myclub-groups-members',
+        'myclub-groups-menu',
+        'myclub-groups-navigation',
+        'myclub-groups-news',
+        'myclub-groups-title'
+    ];
+
     /**
      * Registers the shortcode for the plugin.
      *
@@ -39,17 +51,7 @@ class ShortCodes extends Base
      */
     public function register_short_codes()
     {
-        $available_blocks = array(
-            'calendar',
-            'club-news',
-            'coming-games',
-            'leaders',
-            'members',
-            'menu',
-            'navigation',
-            'news',
-            'title'
-        );
+        $available_blocks = Blocks::BLOCKS;
 
         add_shortcode( 'myclub-groups-calendar', [
             $this,

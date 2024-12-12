@@ -12,7 +12,7 @@ class RefreshNewsTask extends Background_Process {
     protected $prefix = 'myclub_groups';
     protected $action = 'refresh_news_task';
 
-    private static $instance = null;
+    private static ?RefreshNewsTask $instance = null;
 
     /**
      * Initializes the class if it hasn't been initialized already.

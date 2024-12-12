@@ -18,7 +18,7 @@ class RefreshMenusTask extends Background_Process
 {
     protected $prefix = 'myclub_groups';
     protected $action = 'refresh_menus_task';
-    private static $instance = null;
+    private static ?RefreshMenusTask $instance = null;
 
     /**
      * Initializes the class if it hasn't been initialized already.

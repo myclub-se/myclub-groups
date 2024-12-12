@@ -22,6 +22,8 @@ class GroupService extends Groups
     private RestApi $api;
     private ImageTask $image_task;
 
+    private bool $content_or_metadata_updated = false;
+
     public function __construct()
     {
         $this->api = new RestApi();
@@ -85,9 +87,10 @@ class GroupService extends Groups
      *
      * @param int $post_id The post ID of the group page.
      * @param mixed $page_contents The new content for the group page.
+     * @param bool $clear_cache Clear cache if set
      * @return void
      */
-    public static function update_group_page_contents( int $post_id, $page_contents )
+    public static function update_group_page_contents( int $post_id, $page_contents, bool $clear_cache = true )
     {
         $post_content = array (
             'ID'           => $post_id,
@@ -100,6 +103,10 @@ class GroupService extends Groups
         if ( is_wp_error( $result ) ) {
             error_log( "Unable to update post $post_id" );
             error_log( $result->get_error_message() );
+        }
+
+        if ( $clear_cache ) {
+            Utils::clear_cache_for_page( $post_id );
         }
     }
 
@@ -224,6 +231,7 @@ class GroupService extends Groups
      */
     public function update_group_page( string $id )
     {
+        $this->content_or_metadata_updated = false;
         $this->image_task = ImageTask::init();
 
         $page_template = get_option( 'myclub_groups_page_template' );
@@ -237,7 +245,7 @@ class GroupService extends Groups
                 $post_id = wp_insert_post( $this->create_post_args( $group, 0, $page_template ) );
 
                 if ( $post_id && !is_wp_error( $post_id ) ) {
-                    $this::update_group_page_contents( $post_id, null );
+                    $this::update_group_page_contents( $post_id, null, false );
                 }
             } else {
                 $post_id = wp_update_post( $this->create_post_args( $group, $post_id, $page_template ) );
@@ -259,6 +267,16 @@ class GroupService extends Groups
                 update_post_meta( $post_id, 'myclub_groups_last_updated', gmdate( "c" ) );
                 update_post_meta( $post_id, '_wp_page_template', $page_template );
 
+                if ($this->content_or_metadata_updated) {
+                    $other_cached_post_ids = Utils::get_other_cached_posts( $post_id, $group->id );
+
+                    foreach ($other_cached_post_ids as $other_post_id) {
+                        Utils::clear_cache_for_page( $other_post_id );
+                    }
+
+                    Utils::clear_cache_for_page( $post_id );
+                }
+
                 $this->image_task->save()->dispatch();
             }
         }
@@ -278,17 +296,8 @@ class GroupService extends Groups
      */
     private function add_activities( int $post_id, object $group )
     {
-        foreach ( $group->activities as $activity ) {
-            $activity->description = str_replace( '<br /> <br />', '<br />', $activity->description );
-            $activity->description = str_replace( '<br /><br />', '<br />', $activity->description );
-            $activity->description = addslashes( str_replace( '<br /><br /><br />', '<br /><br />', $activity->description ) );
-            if ( empty( trim( wp_strip_all_tags( $activity->description ) ) ) ) {
-                $activity->description = '';
-            }
-        }
-
-        $activities_json = json_encode( $group->activities, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT );
-        update_post_meta( $post_id, 'myclub_groups_activities', $activities_json );
+        $activities_json = $this->prepare_activities_json( $group->activities );
+        $this->update_metadata_if_changed( $post_id, 'myclub_groups_activities', $activities_json );
     }
 
     /**
@@ -383,6 +392,34 @@ class GroupService extends Groups
 
         if ( $post_id ) {
             $args[ 'ID' ] = $post_id;
+            $existing_post = get_post( $post_id );
+            $existing_meta = get_post_meta( $post_id );
+
+            // Compare title
+            if ( $existing_post && $existing_post->post_title !== $args[ 'post_title' ] ) {
+                $this->content_or_metadata_updated = true;
+            }
+
+            // Compare content
+            if ( $existing_post && $existing_post->post_content !== $args[ 'post_content' ] ) {
+                $this->content_or_metadata_updated = true;
+            }
+
+            if ( $existing_meta ) {
+                if ( isset( $existing_meta[ '_wp_page_template' ][ 0 ] ) &&
+                    $existing_meta[ '_wp_page_template' ][ 0 ] !== $args[ 'page_template' ] ) {
+                    $this->content_or_metadata_updated = true;
+                }
+
+                // Compare meta fields
+                foreach ( $args[ 'meta_input' ] as $key => $value ) {
+                    if ( !isset( $existing_meta[ $key ][ 0 ] ) || $existing_meta[ $key ][ 0 ] !== $value ) {
+                        $this->content_or_metadata_updated = true;
+                    }
+                }
+            } else {
+                $this->content_or_metadata_updated = true;
+            }
         }
 
         return $args;
@@ -429,7 +466,8 @@ class GroupService extends Groups
             ];
         }
 
-        update_post_meta( $post_id, 'myclub_groups_members', wp_json_encode( $updated_metadata, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT ) );
+        $members_json = $this->prepare_members_json( $updated_metadata );
+        $this->update_metadata_if_changed( $post_id, 'myclub_groups_members', $members_json );
     }
 
     /**
@@ -456,5 +494,56 @@ class GroupService extends Groups
         }
 
         return $entities;
+    }
+
+    /**
+     * Determines if the metadata value has changed and updates it if necessary.
+     *
+     * @param int $post_id The post ID to update the metadata for.
+     * @param string $meta_key The meta key.
+     * @param mixed $new_value The new value.
+     * @return void
+     * @since 1.2.0
+     */
+    private function update_metadata_if_changed( int $post_id, string $meta_key, $new_value ): void
+    {
+        $existing_value = get_post_meta( $post_id, $meta_key, true );
+        if ( $existing_value !== $new_value ) {
+            update_post_meta( $post_id, $meta_key, $new_value );
+            $this->content_or_metadata_updated = true;
+        }
+    }
+
+    /**
+     * Converts activities array to JSON and ensures changes are tracked.
+     *
+     * @param array $activities The activities array.
+     * @return string JSON representation of activities.
+     * @since 1.2.0
+     */
+    private function prepare_activities_json( array $activities ): string
+    {
+        foreach ( $activities as $activity ) {
+            $activity->description = str_replace( '<br /> <br />', '<br />', $activity->description );
+            $activity->description = str_replace( '<br /><br />', '<br />', $activity->description );
+            $activity->description = addslashes( str_replace( '<br /><br /><br />', '<br /><br />', $activity->description ) );
+            if ( empty( trim( wp_strip_all_tags( $activity->description ) ) ) ) {
+                $activity->description = '';
+            }
+        }
+
+        return wp_json_encode( $activities, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT );
+    }
+
+    /**
+     * Converts members and leaders to JSON and ensures changes are tracked.
+     *
+     * @param array $metadata The metadata array with members and leaders.
+     * @return string JSON representation of members and leaders.
+     * @since 1.2.0
+     */
+    private function prepare_members_json( array $metadata ): string
+    {
+        return wp_json_encode( $metadata, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT );
     }
 }

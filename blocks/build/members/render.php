@@ -54,7 +54,10 @@ if ( empty ( $post_id ) || $post_id == 0 ) {
                                 echo '<div class="member-picture"></div>';
                             }
                         ?>
-                        <div class="member-name"><?php echo esc_attr( $member->name ); ?></div>
+                        <div class="member-name">
+                            <?php echo esc_attr( $member->name ); ?>
+                            <div class="member-role"><?php echo esc_attr( $member->role ); ?></div>
+                        </div>
                     </div>
                 <?php
                 if ( $key  === 7) {

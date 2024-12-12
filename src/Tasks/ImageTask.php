@@ -16,7 +16,7 @@ class ImageTask extends Background_Process {
     protected $prefix = 'myclub_groups';
     protected $action = 'image_task';
 
-    private static $instance = null;
+    private static ?ImageTask $instance = null;
 
     /**
      * Initializes the ImageTask class and returns an instance of it.

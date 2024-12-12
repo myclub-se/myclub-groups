@@ -1241,6 +1241,7 @@ class Admin extends Base
             while ( $query->have_posts() ) {
                 $query->next_post();
                 GroupService::update_group_page_contents( $query->post->ID, Utils::sanitize_array( $new_value ) );
+                Utils::clear_cache_for_page( $query->post->ID );
             }
         }
     }

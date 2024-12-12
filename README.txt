@@ -4,7 +4,7 @@ Donate link: https://www.myclub.se
 Tags: groups, members, administration
 Requires at least: 6.4
 Tested up to: 6.7.1
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -21,6 +21,22 @@ For the calendar views the plugin uses the open source version of the FullCalend
 
 Please ensure that your server is running on PHP 7.4 or higher and your WordPress version is at least 6.4 to utilize this plugin fully.
 
+The plugin will try to clear cache on the following cache plugins for MyClub groups:
+* Breeze
+* Cache Enabler
+* Hummingbird performance
+* Hyper Cache
+* LiteSpeed Cache
+* SiteGround Optimizer
+* Swift Performance
+* WP Fastest Cache
+* WP Rocket
+* WP Super Cache
+* W3 Total Cache
+* Redis or Memcache cache
+
+If you have any other cache solution, please reach out and we can try to add support for that as well.
+
 == Dependencies ==
 
 The plugin has no external plugin dependencies. All requirements are bundled in the plugin itself.
@@ -35,6 +51,10 @@ The plugin has no external plugin dependencies. All requirements are bundled in 
 6. Add your API key to the plugin settings.
 
 == Changelog ==
+= 1.2.0 =
+* Add code to clear cache on pages.
+* Show role on member blocks
+
 = 1.1.0 =
 * Add dynamic fields to member and leader popups
 
