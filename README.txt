@@ -4,12 +4,12 @@ Donate link: https://www.myclub.se
 Tags: groups, members, administration
 Requires at least: 6.4
 Tested up to: 6.7.1
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin retrieves group information from the MyClub member administration platform (https://member.myclub.se) and generates pages for groups defined in the platform.
+Retrieves group information from the MyClub member administration platform. Generates pages for groups defined in the MyClub platform.
 
 == Description ==
 
@@ -72,6 +72,9 @@ The plugin will try to clear cache on the following cache plugins for MyClub gro
 For unsupported cache systems, please contact us to request integration.
 
 == Changelog ==
+= 1.2.2 =
+* Updated readme
+
 = 1.2.1 =
 * Updated readme
 
