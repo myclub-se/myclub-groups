@@ -59,6 +59,7 @@ if ( empty ( $post_id ) || $post_id == 0 ) {
                 } else {
                 ?>
                 <div class="myclub-groups-no-coming-games"><?php echo esc_attr__( 'No upcoming games', 'myclub-groups' ); ?></div>
+                </div>
                 <?php
                 }
     }
