@@ -15,7 +15,11 @@ class RestApi
 {
     const MYCLUB_SERVER_API_PATH = 'https://member.myclub.se/api/v3/external/';
 
-    private $apiKey;
+    private string $apiKey;
+
+    private bool $multiSite;
+
+    private string $site;
 
     /**
      * Constructor for the class.
@@ -34,6 +38,9 @@ class RestApi
         } else {
             $this->apiKey = get_option( 'myclub_groups_api_key' );
         }
+
+        $this->multiSite = is_multisite();
+        $this->site = get_bloginfo( 'url' );
     }
 
     /**
@@ -220,9 +227,12 @@ class RestApi
     private function create_request_headers(): array
     {
         return [
-            'Accept'           => 'application/json',
-            'Authorization'    => "Api-Key $this->apiKey",
-            'X-MyClub-Request' => 'MyClub Groups WordPress'
+            'Accept'             => 'application/json',
+            'Authorization'      => "Api-Key $this->apiKey",
+            'X-MyClub-Request'   => 'MyClub Groups WordPress',
+            'X-MyClub-MultiSite' => $this->multiSite ? 'true' : 'false',
+            'X-MyClub-Site'      => $this->site,
+            'X-MyClub-Version'   => MYCLUB_GROUPS_PLUGIN_VERSION,
         ];
     }
 
