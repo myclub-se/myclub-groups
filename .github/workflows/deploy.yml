@@ -44,6 +44,11 @@ jobs:
           php-version: '7.4'
           tools: composer, cs2pr
 
+      - name: Install subversion
+        run: |
+          sudo apt update -y
+          sudo apt install -y subversion
+
       - name: WordPress Plugin Deploy
         uses: 10up/action-wordpress-plugin-deploy@stable
         env:
