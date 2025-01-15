@@ -1,7 +1,7 @@
 /**
  * The following CSS is the default to display MyClub groups members.
  */
-@import '../shared/modal';
+@use '../shared/modal';
 
 .myclub-groups-members-list {
   margin-bottom: 2rem;

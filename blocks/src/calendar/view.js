@@ -1,6 +1,6 @@
 function closeButtonListener() {
-    const modal = document.getElementsByClassName('modal-open')[0];
-    const close = modal.getElementsByClassName('close')[0];
+    const modal = document.querySelector('.modal-open');
+    const close = modal.querySelector('.close');
 
     modal.classList.remove('modal-open');
     close.removeEventListener('click', closeButtonListener);
@@ -21,7 +21,7 @@ function getColorClass( baseType ) {
 }
 
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     const smallScreen = document.documentElement.clientWidth < 960;
     const calendarEl = document.getElementById('calendar-div');
     const labels = JSON.parse(calendarEl.dataset.labels);
@@ -44,27 +44,27 @@ document.addEventListener('DOMContentLoaded', function() {
         eventClick: (arg) => {
             const item = arg.event;
 
-            const modal = document.getElementsByClassName('calendar-modal')[0];
-            const content = modal.getElementsByClassName('modal-body')[0];
-            const close = modal.getElementsByClassName('close')[0];
+            const modal = document.querySelector('.calendar-modal');
+            const content = modal.querySelector('.modal-body');
+            const close = modal.querySelector('.close');
 
-            let output = '<div class="name">' + item.extendedProps.type + '</div>';
+            const { type, calendar_name, startTime, endTime, location, meetUpTime, meetUpPlace, description } = item.extendedProps;
+            let output = `<div class="name">${type}</div>`;
             output += '<table>';
-
-            output += `<tr><th>${labels.calendar}</th><td>${item.extendedProps.calendar_name}</td></tr>`;
+            output += `<tr><th>${labels.calendar}</th><td>${calendar_name}</td></tr>`;
             output += `<tr><th>${labels.name}</th><td>${item.title.replaceAll('u0022', '\"')}</td></tr>`;
-            output += `<tr><th>${labels.when}</th><td>${item.extendedProps.startTime.substring(0, 5)} - ${item.extendedProps.endTime.substring(0, 5)}</td></tr>`;
-            output += `<tr><th>${labels.location}</th><td>${item.extendedProps.location}</td></tr>`;
-            if ( item.extendedProps.meetUpTime && item.extendedProps.meetUpTime !== item.extendedProps.startTime ) {
-                output += `<tr><th>${labels.meetUpTime}</th><td>${item.extendedProps.meetUpTime.substring(0, 5)}</td></tr>`;
+            output += `<tr><th>${labels.when}</th><td>${startTime.substring(0, 5)} - ${endTime.substring(0, 5)}</td></tr>`;
+            output += `<tr><th>${labels.location}</th><td>${location}</td></tr>`;
+            if ( meetUpTime && meetUpTime !== startTime ) {
+                output += `<tr><th>${labels.meetUpTime}</th><td>${meetUpTime.substring(0, 5)}</td></tr>`;
             }
-            if ( item.extendedProps.meetUpPlace ) {
-                output += `<tr><th>${labels.meetUpLocation}</th><td>${item.extendedProps.meetUpPlace}</td></tr>`;
+            if ( meetUpPlace ) {
+                output += `<tr><th>${labels.meetUpLocation}</th><td>${meetUpPlace}</td></tr>`;
             }
-            if ( item.extendedProps.description ) {
-                output += `<tr><th>${labels.description}</th><td>${item.extendedProps.description.replaceAll('u0022', '\"')}</td></tr>`;
+            if ( description ) {
+                output += `<tr><th>${labels.description}</th><td>${description.replaceAll('u0022', '\"')}</td></tr>`;
             }
-            output += '</table>'
+            output += '</table>';
 
             content.innerHTML = output;
 
@@ -77,11 +77,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const element = document.createElement('div');
             let timeText = arg.timeText;
             element.classList.add('fc-event-title');
-            element.classList.add( getColorClass ( item.extendedProps.base_type ) );
+            element.classList.add(getColorClass(item.extendedProps.base_type));
 
             if ( item.extendedProps.meetUpTime && item.extendedProps.meetUpTime !== item.extendedProps.startTime ) {
                 if ( !timeText ) {
-                    timeText = item.extendedProps.startTime.substring(0, 5);
+                    timeText = startTime.substring(0, 5);
                 }
 
                 timeText += ` (${item.extendedProps.meetUpTime.substring(0, 5)})`;
