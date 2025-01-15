@@ -1,0 +1,1072 @@
+/**
+ * MyClub groups calendar
+ */
+
+.myclub-groups-calendar {
+  position: relative;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .myclub-groups-calendar-container {
+    width: 100%;
+  }
+
+  .calendar-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0, 0.3);
+    justify-content: center;
+    align-items: center;
+
+    &.modal-open {
+      display: flex;
+    }
+
+    .modal-content {
+      width: 500px;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+
+      .close {
+        font-size: 28px;
+        font-weight: bold;
+        float: right;
+        cursor: pointer;
+      }
+
+      .modal-body {
+        .name {
+          font-size: larger;
+          font-weight: bold;
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+
+          tr {
+            border-bottom: 1px solid #ccc;
+
+            th, td {
+              font-size: smaller;
+              padding: 1rem 0;
+              text-align: left;
+            }
+
+            th {
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .fc {
+    .fc-list-event-graphic {
+      display: none;
+    }
+
+    .fc-list-event-title {
+      .fc-event-title {
+        border-radius: 6px;
+        padding: 4px 0;
+      }
+    }
+
+    .fc-event-title {
+      white-space: normal !important;
+      word-wrap: normal !important;
+      display: block !important;
+      cursor: pointer;
+      font-size: 0.8rem;
+      color: #fff;
+
+      &.yellow {
+        background-color: #9e8c39;
+        border-color: #9e8c39;
+      }
+
+      &.red {
+        background-color: #c1272d;
+        border-color: #c1272d;
+      }
+
+      &.green {
+        background-color: #009245;
+        border-color: #009245;
+      }
+
+      &.blue {
+        background-color: #396b9e;
+        border-color: #396b9e;
+      }
+    }
+
+    .fc-button-primary {
+      background-color: transparent!important;
+      border-color: transparent!important;
+      border-width: 1px!important;
+      color: rgb(33, 32, 46)!important;
+
+      &:not(:disabled).fc-button-active, &:not(:disabled):active {
+        background-color: #1a252f!important;
+        border-color: #151e27!important;
+        color: #fff!important;
+      }
+    }
+  }
+
+  .myclub-groups-event-time {
+    text-align: center;
+    width: 100%;
+  }
+
+  .myclub-groups-event-title {
+    font-weight: bold;
+    word-wrap: normal;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+@media (min-width: 996px) {
+  .myclub-groups-calendar {
+    .myclub-groups-calendar-container {
+      max-width: 996px;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .myclub-groups-calendar {
+    .myclub-groups-calendar-container {
+      max-width: 1200px;
+    }
+  }
+}
+
+/**
+ * MyClub Group Club News
+ */
+
+.myclub-groups-club-news {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .myclub-groups-club-news-container {
+    width: 100%;
+
+    .myclub-groups-club-news-list {
+      display: flex;
+      flex-flow: row wrap;
+
+      .myclub-club-news-item {
+        box-sizing: border-box;
+        margin: 0.5rem;
+        flex: 0 1 calc(100% - 1rem);
+        padding: 0.5rem;
+
+        .myclub-club-news-image {
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+      }
+
+      .myclub-more-club-news {
+        padding: 1rem;
+        text-align: center;
+        width: 100%;
+      }
+    }
+
+    .no-news-found {
+      padding: 1rem;
+      text-align: center;
+    }
+  }
+}
+
+@media(min-width: 996px) {
+  .myclub-groups-club-news {
+    .myclub-groups-club-news-container {
+      max-width: 996px;
+
+      .myclub-groups-club-news-list {
+        .myclub-club-news-item {
+          flex: 0 1 calc(33% - 1rem);
+        }
+      }
+    }
+  }
+}
+
+@media(min-width: 1200px) {
+  .myclub-groups-club-news {
+    .myclub-groups-club-news-container {
+      max-width: 1200px;
+    }
+  }
+}
+
+/**
+ * MyClub Groups coming games
+ */
+
+.myclub-groups-coming-games {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .myclub-groups-coming-games-container {
+    width: 100%;
+
+    .coming-games-list {
+      .myclub-groups-coming-game {
+        padding: 1rem;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+
+        .title {
+          .group-name {
+            font-size: smaller;
+          }
+        }
+
+        .venue {
+          display: flex;
+          align-items: center;
+          text-align: left;
+        }
+
+        .date {
+          .time {
+            font-size: smaller;
+          }
+        }
+      }
+
+      .myclub-groups-coming-game:nth-child(odd) {
+        background-color: rgb(83, 86, 90);
+      }
+
+      .myclub-groups-coming-game:nth-child(even) {
+        background-color: rgb(156, 158, 160);
+      }
+
+      .coming-game-show-more, .coming-game-show-less {
+        cursor: pointer;
+        text-align: center;
+        padding: 0.5rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .extended-list {
+        display: flex;
+        flex: 100%;
+        flex-flow: column;
+      }
+
+      .hidden {
+        display: none;
+      }
+    }
+  }
+}
+
+@media(min-width: 996px) {
+  .myclub-groups-coming-games {
+    .myclub-groups-coming-games-container {
+      max-width: 996px;
+
+      .coming-games-list {
+        .myclub-groups-coming-game {
+          flex-direction: row;
+
+          .title {
+            flex: 60%;
+          }
+
+          .venue, .date {
+            flex: 20%;
+          }
+
+          .date {
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media(min-width: 1200px) {
+  .myclub-groups-coming-games {
+    .myclub-groups-coming-games-container {
+      max-width: 1200px;
+    }
+  }
+}
+
+/**
+ * MyClub Groups Leaders
+ */
+.myclub-groups-leaders-list {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .myclub-groups-leaders-container {
+    width: 100%;
+
+    .leaders-list {
+      display: flex;
+      flex-flow: row wrap;
+
+      .leader {
+        box-sizing: border-box;
+        margin: 0.5rem;
+        flex: 0 1 calc(50% - 1rem);
+        padding: 0.5rem;
+        cursor: pointer;
+
+        .leader-picture {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+
+        .leader-name {
+          text-align: center;
+        }
+
+        .leader-role {
+          font-size: smaller;
+        }
+      }
+
+      .leader-show-more, .leader-show-less {
+        cursor: pointer;
+        text-align: center;
+        padding: 0.5rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .extended-list {
+        display: flex;
+        flex: 100%;
+        flex-flow: row wrap;
+      }
+
+      .hidden {
+        display: none;
+      }
+    }
+  }
+
+  .leader-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0, 0.3);
+    justify-content: center;
+    align-items: center;
+
+    &.modal-open {
+      display: flex;
+    }
+
+    .modal-content {
+      width: 500px;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      z-index: 1100;
+
+      .close {
+        font-size: 28px;
+        font-weight: bold;
+        float: right;
+        cursor: pointer;
+      }
+
+      .modal-body {
+        display: flex;
+
+        .image {
+          flex: 50%;
+          padding: 1rem;
+
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+
+        .information {
+          flex: 50%;
+
+          .name {
+            font-size: larger;
+            font-weight: bold;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+          }
+
+          table {
+            width: 100%;
+            border-collapse: collapse;
+
+            tr {
+              border-bottom: 1px solid #ccc;
+
+              th, td {
+                font-size: smaller;
+                padding: 4px 0;
+                text-align: left;
+              }
+
+              th {
+                font-weight: bold;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+@media(min-width: 768px) {
+  .myclub-groups-leaders-list {
+    .myclub-groups-leaders-container {
+      .leaders-list {
+        .leader {
+          flex: 0 1 calc(33% - 1rem);
+        }
+      }
+    }
+  }
+}
+
+@media(min-width: 996px) {
+  .myclub-groups-leaders-list {
+    .myclub-groups-leaders-container {
+      max-width: 996px;
+
+      .leaders-list {
+        .leader {
+          flex: 0 1 calc(25% - 1rem);
+        }
+      }
+    }
+  }
+}
+
+@media(min-width: 1200px) {
+  .myclub-groups-leaders-list {
+    .myclub-groups-leaders-container {
+      max-width: 1200px;
+    }
+  }
+}
+
+/**
+ * MyClub Groups members.
+ */
+.myclub-groups-members-list {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .myclub-groups-members-container {
+    width: 100%;
+
+    .members-list {
+      display: flex;
+      flex-flow: row wrap;
+
+      .member {
+        box-sizing: border-box;
+        margin: 0.5rem;
+        flex: 0 1 calc(50% - 1rem);
+        padding: 0.5rem;
+        cursor: pointer;
+
+        .member-picture {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+
+        .member-name {
+          text-align: center;
+        }
+
+        .member-role {
+          font-size: smaller;
+        }
+      }
+
+      .member-show-more, .member-show-less {
+        cursor: pointer;
+        text-align: center;
+        padding: 0.5rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .extended-list {
+        display: flex;
+        flex: 100%;
+        flex-flow: row wrap;
+      }
+
+      .hidden {
+        display: none;
+      }
+    }
+  }
+
+  .member-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0, 0.3);
+    justify-content: center;
+    align-items: center;
+
+    &.modal-open {
+      display: flex;
+    }
+
+    .modal-content {
+      width: 500px;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      z-index: 1100;
+
+      .close {
+        font-size: 28px;
+        font-weight: bold;
+        float: right;
+        cursor: pointer;
+      }
+
+      .modal-body {
+        display: flex;
+
+        .image {
+          flex: 50%;
+          padding: 1rem;
+
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+
+        .information {
+          flex: 50%;
+
+          .name {
+            font-size: larger;
+            font-weight: bold;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+          }
+
+          table {
+            width: 100%;
+            border-collapse: collapse;
+
+            tr {
+              border-bottom: 1px solid #ccc;
+
+              th, td {
+                font-size: smaller;
+                padding: 4px 0;
+                text-align: left;
+              }
+
+              th {
+                font-weight: bold;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media(min-width: 768px) {
+  .myclub-groups-members-list {
+    .myclub-groups-members-container {
+      .members-list {
+        .member {
+          flex: 0 1 calc(33% - 1rem);
+        }
+      }
+    }
+  }
+}
+
+@media(min-width: 996px) {
+  .myclub-groups-members-list {
+    .myclub-groups-members-container {
+      max-width: 996px;
+
+      .members-list {
+        .member {
+          flex: 0 1 calc(25% - 1rem);
+        }
+      }
+    }
+  }
+}
+
+@media(min-width: 1200px) {
+  .myclub-groups-members-list {
+    .myclub-groups-members-container {
+      max-width: 1200px;
+    }
+  }
+}
+
+/**
+ * MyClub Groups menu
+ */
+
+.myclub-groups-menu {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .myclub-groups-menu-container {
+    width: 100%;
+
+    a {
+      text-decoration: none;
+      display: block;
+      height: 100%;
+      padding: 0.5rem 1rem;
+    }
+
+    ul.menu {
+      display: flex;
+      flex-direction: column;
+
+      > li {
+        display: inline;
+        position: relative;
+      }
+    }
+
+    ul {
+      list-style: inside none;
+      margin-block-start: 0;
+      margin-block-end: 0;
+
+      li {
+        cursor: pointer;
+      }
+
+      &.sub-menu {
+        padding: 0.5rem 1rem;
+        display: none;
+        z-index: 999;
+        background-color: #fff;
+
+        li {
+          position: relative;
+          width: 100%;
+
+          a {
+            position: relative;
+            width: auto;
+            min-width: 200px;
+          }
+        }
+      }
+    }
+
+    .mobile-menu-button {
+      display: block;
+      cursor: pointer;
+
+      span {
+        display: block;
+        width: 33px;
+        height: 4px;
+        margin-bottom: 7px;
+        background-color: #333;
+      }
+    }
+  }
+}
+
+@media (max-width: 995px) {
+  .myclub-groups-menu {
+    .myclub-groups-menu-container {
+      > ul.menu {
+        max-height: 0;
+        overflow: hidden;
+      }
+
+      &.show {
+        > ul.menu {
+          max-height: 2000px;
+          overflow-y: auto;
+        }
+      }
+
+      ul.sub-menu {
+        padding: 0;
+        display: block;
+        max-height: 0;
+        overflow: hidden;
+
+        &.show {
+          border: 1px solid;
+          max-height: 2000px;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 996px) {
+  .myclub-groups-menu {
+    .myclub-groups-menu-container {
+      max-width: 996px;
+
+      ul.menu {
+        flex-wrap: wrap;
+        flex-direction: row;
+        overflow: unset;
+
+        > li {
+          &.menu-item-has-children:hover {
+            background-color: #dcdcdc;
+
+            .sub-menu {
+              display: block;
+              position: absolute;
+              margin-top: -1rem;
+
+              &:hover {
+                display: block;
+              }
+            }
+          }
+        }
+      }
+
+      ul {
+        &.sub-menu {
+          border: 1px solid;
+
+          &:hover {
+            display: block;
+          }
+
+          li {
+            &:hover {
+              background-color: #dcdcdc;
+            }
+          }
+        }
+      }
+
+      .mobile-menu-button {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .myclub-groups-menu {
+    .myclub-groups-menu-container {
+      max-width: 1200px;
+    }
+  }
+}
+
+/**
+ * MyClub Groups navigation
+ */
+.myclub-groups-navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .myclub-groups-navigation-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    .myclub-groups-navigation-icons {
+      display: flex;
+      max-width: 840px;
+      flex-direction: row;
+      justify-content: space-evenly;
+
+      a {
+        margin-right: 1rem;
+        margin-left: 1rem;
+        text-align: center;
+
+        img {
+          width: auto;
+          height: 1rem;
+        }
+
+        div {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 996px) {
+  .myclub-groups-navigation {
+    .myclub-groups-navigation-container {
+      max-width: 996px;
+
+      .myclub-groups-navigation-icons {
+        a {
+          div {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .myclub-groups-navigation {
+    .myclub-groups-navigation-container {
+      max-width: 1200px;
+    }
+  }
+}
+
+/**
+ * MyClub Groups News
+ */
+.myclub-groups-news {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  .myclub-groups-news-container {
+    width: 100%;
+
+    .myclub-groups-news-list {
+      display: flex;
+      flex-flow: row wrap;
+
+      .myclub-news-item {
+        box-sizing: border-box;
+        margin: 0.5rem;
+        flex: 0 1 calc(100% - 1rem);
+        padding: 0.5rem;
+
+        .myclub-news-image {
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+      }
+
+      .myclub-more-news {
+        padding: 1rem;
+        text-align: center;
+        width: 100%;
+      }
+    }
+
+    .no-news-found {
+      padding: 1rem;
+      text-align: center;
+    }
+  }
+}
+
+@media(min-width: 996px) {
+  .myclub-groups-news {
+    .myclub-groups-news-container {
+      max-width: 996px;
+
+      .myclub-groups-news-list {
+        .myclub-news-item {
+          flex: 0 1 calc(33% - 1rem);
+        }
+      }
+    }
+  }
+}
+
+@media(min-width: 1200px) {
+  .myclub-groups-news {
+    .myclub-groups-news-container {
+      max-width: 1200px;
+    }
+  }
+}
+
+/**
+ * MyClub Groups Title
+ */
+
+.myclub-groups-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  .myclub-groups-title-container {
+    max-width: 820px;
+    width: 100%;
+
+    .myclub-groups-title-box {
+      background-color: #fff;
+      width: 100%;
+      display: flex;
+      padding: 0.5rem;
+      flex-direction: column;
+      box-sizing: border-box;
+
+      .myclub-groups-title-image {
+        box-sizing: border-box;
+        position: relative;
+        padding: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      .myclub-groups-title-information {
+        box-sizing: border-box;
+        padding: 0.5rem;
+        width: 100%;
+
+        .myclub-groups-title-name {
+          font-size: 2.5rem;
+          margin-bottom: 1rem;
+
+          &.with-info-text {
+            margin-bottom: 0.5rem;
+          }
+        }
+
+        .myclub-groups-info-text {
+          font-size: smaller;
+          margin-bottom: 1rem;
+        }
+
+        .label {
+          font-size: small;
+          text-transform: uppercase;
+        }
+
+        .value {
+          font-size: 1.25rem;
+        }
+
+        .myclub-groups-information {
+          margin-bottom: 0.5rem;
+        }
+      }
+    }
+  }
+}
+
+@media(min-width: 996px) {
+  .myclub-groups-title {
+    .myclub-groups-title-container {
+      max-width: 996px;
+
+      .myclub-groups-title-box {
+        flex-direction: row;
+
+        .myclub-groups-title-image {
+          flex: 50%;
+        }
+
+        .myclub-groups-title-information {
+          flex: 50%;
+        }
+      }
+    }
+  }
+}
+
+@media(min-width: 1200px) {
+  .myclub-groups-title {
+    .myclub-groups-title-container {
+      max-width: 1200px;
+    }
+  }
+}

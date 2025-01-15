@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 $header = get_option( 'myclub_groups_calendar_title' );
 
 ?>
-    <div class="myclub-groups-calendar" id="calendar">
+    <div class="myclub-groups-calendar">
         <div class="myclub-groups-calendar-container">
             <h3 class="myclub-groups-header"><?php echo esc_attr( $header ) ?></h3>
 <?php

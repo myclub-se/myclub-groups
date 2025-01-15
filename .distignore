@@ -4,3 +4,4 @@
 .gitignore
 compile-plugin.sh
 tools
+myclub-groups.scss
