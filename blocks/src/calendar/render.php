@@ -92,7 +92,9 @@ if ( empty ( $post_id ) || $post_id == 0 ) {
 
         <div id="calendar-div"
              data-events="<?php echo esc_attr( wp_json_encode( $events, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT ) ); ?>"
-             data-labels="<?php echo esc_attr( wp_json_encode( $labels, JSON_UNESCAPED_UNICODE ) ); ?>"></div>
+             data-labels="<?php echo esc_attr( wp_json_encode( $labels, JSON_UNESCAPED_UNICODE ) ); ?>"
+             data-locale="<?php echo esc_attr( get_locale() ); ?>"
+        ></div>
     <?php
     endif;
 }

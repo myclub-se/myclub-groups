@@ -1,3 +1,6 @@
+import svLocale from '@fullcalendar/core/locales/sv';
+import enLocale from '@fullcalendar/core/locales/en-gb';
+
 function closeButtonListener() {
     const modal = document.querySelector('.modal-open');
     const close = modal.querySelector('.close');
@@ -25,8 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const smallScreen = document.documentElement.clientWidth < 960;
     const calendarEl = document.getElementById('calendar-div');
     const labels = JSON.parse(calendarEl.dataset.labels);
+    const calendarLocale = calendarEl.dataset.locale === 'sv_SE' ? svLocale : enLocale;
     const rightToolbar = smallScreen ? 'timeGridDay,listMonth' : 'dayGridMonth,timeGridWeek,listMonth';
     const initialView = smallScreen ? 'listMonth' : 'dayGridMonth';
+
     const calendar = new FullCalendar.Calendar(calendarEl, {
         allDaySlot: false,
         buttonText: {
@@ -81,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if ( item.extendedProps.meetUpTime && item.extendedProps.meetUpTime !== item.extendedProps.startTime ) {
                 if ( !timeText ) {
-                    timeText = startTime.substring(0, 5);
+                    timeText = item.extendedProps.startTime.substring(0, 5);
                 }
 
                 timeText += ` (${item.extendedProps.meetUpTime.substring(0, 5)})`;
@@ -101,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         events: JSON.parse(calendarEl.dataset.events),
         firstDay: 1,
         initialView,
-        locale: 'sv',
+        locale: calendarLocale,
         timeZone: 'Europe/Stockholm',
         weekNumbers: true,
         weekText: labels.weekText,
