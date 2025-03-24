@@ -15,9 +15,9 @@
 		"plugin-zip": "wp-scripts plugin-zip --webpack-src-dir=blocks/src/ --output-path=blocks/build/"
 	},
 	"devDependencies": {
-		"@wordpress/blocks": "^14.5.0",
-		"@wordpress/i18n": "^5.16.0",
-		"@wordpress/scripts": "^30.9.0"
+		"@wordpress/blocks": "^14.9.0",
+		"@wordpress/i18n": "^5.20.0",
+		"@wordpress/scripts": "^30.13.0"
 	},
 	"dependencies": {
 		"@fullcalendar/core": "5.11.5",
