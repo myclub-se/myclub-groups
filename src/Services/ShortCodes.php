@@ -16,6 +16,7 @@ class ShortCodes extends Base
 {
     const SHORT_CODES = [
         'myclub-groups-calendar',
+        'myclub-groups-club-calendar',
         'myclub-groups-club-news',
         'myclub-groups-coming-games',
         'myclub-groups-leaders',
@@ -56,6 +57,11 @@ class ShortCodes extends Base
         add_shortcode( 'myclub-groups-calendar', [
             $this,
             'render_myclub_groups_calendar'
+        ] );
+
+        add_shortcode( 'myclub-groups-club-calendar', [
+            $this,
+            'render_myclub_groups_club_calendar'
         ] );
 
         add_shortcode( 'myclub-groups-club-news', [
@@ -126,6 +132,26 @@ class ShortCodes extends Base
         wp_enqueue_style( 'myclub-groups-calendar-css' );
 
         return $service->render_calendar( $this->get_shortcode_attrs( $attrs, 'myclub-groups-calendar' ), $content );
+    }
+
+    /**
+     * Renders the MyClub groups calendar.
+     *
+     * @param array $attrs Optional. An array of attributes for the block. Default is an empty array.
+     * @param string|null $content Optional. The block content. Default is null.
+     *
+     * @return string The rendered calendar HTML.
+     *
+     * @since 1.3.0
+     */
+    public function render_myclub_groups_club_calendar( array $attrs = [], string $content = null ): string
+    {
+        $service = new Blocks();
+
+        wp_enqueue_script( 'myclub-groups-club-calendar-js' );
+        wp_enqueue_style( 'myclub-groups-club-calendar-css' );
+
+        return $service->render_club_calendar( $this->get_shortcode_attrs( $attrs, 'myclub-groups-club-calendar' ), $content );
     }
 
     /**

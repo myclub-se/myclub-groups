@@ -13,6 +13,7 @@ class Blocks extends Base
 {
     const BLOCKS = [
         'calendar',
+        'club-calendar',
         'club-news',
         'coming-games',
         'leaders',
@@ -55,6 +56,24 @@ class Blocks extends Base
 
         ob_start();
         require( $this->plugin_path . 'blocks/build/calendar/render.php' );
+        return ob_get_clean();
+    }
+
+    /**
+     * Renders the club calendar block.
+     *
+     * @param array $attributes The attributes for the club calendar block.
+     * @param string $content The content within the club calendar block.
+     *
+     * @return string The rendered HTML content of the club calendar block.
+     * @since 1.3.0
+     */
+    public function render_club_calendar( array $attributes, string $content = '' ): string
+    {
+        wp_enqueue_script( 'fullcalendar-js' );
+
+        ob_start();
+        require( $this->plugin_path . 'blocks/build/club-calendar/render.php' );
         return ob_get_clean();
     }
 
@@ -107,6 +126,14 @@ class Blocks extends Base
                     'render_calendar'
                 ],
                 'title' => __( 'MyClub Group Calendar', 'myclub-groups' )
+            ],
+            'club-calendar' => [
+                'description' => __( 'Display calendar for the entire Club', 'myclub-groups' ),
+                'render_callback' => [
+                    $this,
+                    'render_club_calendar'
+                ],
+                'title' => __( 'MyClub Club Calendar', 'myclub-groups')
             ],
             'club-news' => [
                 'description' => __( 'Display news for the entire Club', 'myclub-groups' ),

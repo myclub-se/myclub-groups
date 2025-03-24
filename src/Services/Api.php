@@ -42,6 +42,17 @@ class Api
      */
     public function register_routes()
     {
+        register_rest_route( 'myclub/v1', '/club-activities', [
+            'methods'             => 'GET',
+            'callback'            => [
+                $this,
+                'return_club_activities'
+            ],
+            'permission_callback' => function () {
+                return current_user_can( 'manage_options' );
+            }
+        ]);
+
         register_rest_route( 'myclub/v1', '/options', [
             'methods'             => 'GET',
             'callback'            => [
@@ -81,6 +92,18 @@ class Api
                 ),
             )
         ] );
+    }
+
+    /**
+     * Get the list of club activities.
+     *
+     * Retrieves the list of club activities using the CalendarService. The activities data is fetched and returned as a response.
+     *
+     * @return WP_REST_Response The response containing the list of club activities.
+     */
+    public function return_club_activities(): WP_REST_Response
+    {
+        return new WP_REST_Response( CalendarService::ListActivities(), 200 );
     }
 
     /**
@@ -174,11 +197,12 @@ class Api
     public function return_options(): WP_REST_Response
     {
         return new WP_REST_Response( [
-            'myclub_groups_calendar_title'     => esc_attr( get_option( 'myclub_groups_calendar_title' ) ),
-            'myclub_groups_coming_games_title' => esc_attr( get_option( 'myclub_groups_coming_games_title' ) ),
-            'myclub_groups_leaders_title'      => esc_attr( get_option( 'myclub_groups_leaders_title' ) ),
-            'myclub_groups_members_title'      => esc_attr( get_option( 'myclub_groups_members_title' ) ),
-            'myclub_groups_page_picture'       => esc_attr( get_option( 'myclub_groups_page_picture' ) )
+            'myclub_groups_calendar_title'      => esc_attr( get_option( 'myclub_groups_calendar_title' ) ),
+            'myclub_groups_club_calendar_title' => esc_attr( get_option( 'myclub_groups_club_calendar_title' ) ),
+            'myclub_groups_coming_games_title'  => esc_attr( get_option( 'myclub_groups_coming_games_title' ) ),
+            'myclub_groups_leaders_title'       => esc_attr( get_option( 'myclub_groups_leaders_title' ) ),
+            'myclub_groups_members_title'       => esc_attr( get_option( 'myclub_groups_members_title' ) ),
+            'myclub_groups_page_picture'        => esc_attr( get_option( 'myclub_groups_page_picture' ) )
         ], 200 );
     }
 }

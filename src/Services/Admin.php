@@ -54,6 +54,10 @@ class Admin extends Base
             $this,
             'ajax_reload_news'
         ] );
+        add_action( 'wp_ajax_myclub_sync_club_calendar', [
+            $this,
+            'sync_club_calendar'
+        ] );
         add_action( 'admin_enqueue_scripts', [
             $this,
             'enqueue_admin_JS'
@@ -186,6 +190,14 @@ class Admin extends Base
             'sanitize_callback' => [
                 $this,
                 'sanitize_calendar_title'
+            ],
+            'default'           => __( 'Calendar', 'myclub-groups' ),
+            'show_in_rest'      => true
+        ] );
+        register_setting( 'myclub_groups_settings_tab2', 'myclub_groups_club_calendar_title', [
+            'sanitize_callback' => [
+                $this,
+                'sanitize_club_calendar_title'
             ],
             'default'           => __( 'Calendar', 'myclub-groups' ),
             'show_in_rest'      => true
@@ -336,10 +348,18 @@ class Admin extends Base
             $this,
             'render_groups_last_sync'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_sync' );
+        add_settings_field( 'myclub_groups_last_club_calendar_sync', __( 'Club calendar last synchronized', 'myclub-groups' ), [
+            $this,
+            'render_groups_last_sync'
+        ], 'myclub_groups_settings_tab1', 'myclub_groups_sync' );
         add_settings_field( 'myclub_groups_calendar_title', __( 'Title for calendar field', 'myclub-groups' ), [
             $this,
             'render_calendar_title'
         ], 'myclub_groups_settings_tab2', 'myclub_groups_title_settings', [ 'label_for' => 'myclub_groups_calendar_title' ] );
+        add_settings_field( 'myclub_groups_club_calendar_title', __( 'Title for club calendar field', 'myclub-groups' ), [
+            $this,
+            'render_club_calendar_title'
+        ], 'myclub_groups_settings_tab2', 'myclub_groups_title_settings', [ 'label_for' => 'myclub_groups_club_calendar_title' ] );
         add_settings_field( 'myclub_groups_coming_games_title', __( 'Title for upcoming games field', 'myclub-groups' ), [
             $this,
             'render_coming_games_title'
@@ -505,6 +525,28 @@ class Admin extends Base
     }
 
     /**
+     * Synchronizes the club calendar by reloading events from the calendar service.
+     *
+     * @return void
+     * @since 1.3.0
+     */
+    public function sync_club_calendar()
+    {
+        if ( !current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( [
+                'message' => __( 'Permission denied', 'myclub-groups' )
+            ] );
+        }
+
+        $service = new CalendarService();
+        $service->reload_club_events();
+
+        wp_send_json_success( [
+            'message' => __( 'Successfully reloaded club calendar', 'myclub-groups' )
+        ] );
+    }
+
+    /**
      * Renders the input field for the API key in the plugin settings page.
      *
      * @param array $args The arguments for rendering the input field.
@@ -620,6 +662,25 @@ class Admin extends Base
         }
 
         echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_calendar_title" value="' . esc_attr( $calendar_title ) . '" />';
+    }
+
+    /**
+     * Renders the input field for the clubcalendar title setting in the admin page.
+     *
+     * @param array $args The arguments for rendering the input field.
+     *                    - 'label_for' (string) The ID of the input field.
+     *
+     * @return void
+     * @since 1.3.0
+     */
+    public function render_club_calendar_title( array $args )
+    {
+        $calendar_title = get_option( 'myclub_groups_club_calendar_title' );
+        if ( empty( $calendar_title ) ) {
+            $calendar_title = __( 'Calendar', 'myclub-groups' );
+        }
+
+        echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_club_calendar_title" value="' . esc_attr( $calendar_title ) . '" />';
     }
 
     /**
@@ -1005,6 +1066,24 @@ class Admin extends Base
         if ( empty ( $input ) ) {
             add_settings_error( 'myclub_groups_calendar_title', 'empty-value', __( 'You have to enter title for the calendar field', 'myclub-groups' ) );
             return get_option( 'myclub_groups_calendar_title' );
+        } else {
+            return sanitize_text_field( $input );
+        }
+    }
+
+    /**
+     * Sanitizes the input title for the club calendar field.
+     *
+     * @param string $input The input title to be sanitized.
+     *
+     * @return string The sanitized title.
+     * @since 1.3.0
+     */
+    public function sanitize_club_calendar_title( string $input ): string
+    {
+        if ( empty ( $input ) ) {
+            add_settings_error( 'myclub_groups_club_calendar_title', 'empty-value', __( 'You have to enter title for the club calendar field', 'myclub-groups' ) );
+            return get_option( 'myclub_groups_club_calendar_title' );
         } else {
             return sanitize_text_field( $input );
         }

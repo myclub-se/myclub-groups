@@ -11,8 +11,7 @@ use MyClub\MyClubGroups\Services\GroupService;
 use WP_Query;
 
 /**
- * Utility class that provides various helper methods.
- *
+ * A utility class for managing images, URLs, cache, and posts in a WordPress environment.
  */
 class Utils
 {
@@ -26,7 +25,7 @@ class Utils
      * @return void
      * @since 1.0.0
      */
-    static function add_featured_image( int $post_id, $image, string $prefix = '' )
+    static function add_featured_image( int $post_id, ?object $image, string $prefix = '' )
     {
         $attachment_id = null;
 
@@ -35,10 +34,17 @@ class Utils
             if ( isset( $attachment ) ) {
                 $attachment_id = $attachment[ 'id' ];
             }
-        }
 
-        if ( $attachment_id !== null && ( (int)get_post_meta( $post_id, '_thumbnail_id', true ) ) !== $attachment_id ) {
-            set_post_thumbnail( $post_id, $attachment_id );
+            $old_attachment_id = get_post_thumbnail_id( $post_id );
+
+            if ( $attachment_id !== null && $old_attachment_id !== $attachment_id ) {
+                if ( $old_attachment_id ) {
+                    delete_post_thumbnail( $post_id );
+                    wp_delete_attachment( $old_attachment_id, true );
+                }
+
+                set_post_thumbnail( $post_id, $attachment_id );
+            }
         }
     }
 
@@ -57,38 +63,65 @@ class Utils
         $attachment_id = null;
         $image = pathinfo( $image_url );
 
-        $name = sanitize_title( $prefix . urldecode( $image[ 'filename' ] ) );
+        // Construct sanitized filename
+        $name = sanitize_title( $prefix . urldecode( $image['filename'] ) );
         $filename = $name;
         if ( array_key_exists( 'extension', $image ) ) {
-            $filename .= '.' . $image[ 'extension' ];
+            $filename .= '.' . $image['extension'];
         }
 
-        $args = array (
+        // Sanitize the value for _source_image_url meta query comparison
+        $meta_value = sanitize_text_field( $prefix . $image_url );
+
+        // *** Step 1: Query for an existing attachment using _source_image_url ***
+        $args = array(
             'posts_per_page' => 1,
             'post_type'      => 'attachment',
-            'name'           => $name
+            'meta_query'     => [
+                [
+                    'key'     => '_source_image_url',
+                    'value'   => $meta_value,
+                    'compare' => '='
+                ]
+            ]
         );
 
         $query_results = new WP_Query( $args );
+        if ( isset( $query_results->posts, $query_results->posts[0] ) ) {
+            $attachment_id = $query_results->posts[0]->ID;
+        } else {
+            $args_fallback = array(
+                'posts_per_page' => 1,
+                'post_type'      => 'attachment',
+                'name'           => $name
+            );
 
-        if ( !isset( $query_results->posts, $query_results->posts[ 0 ] ) ) {
-            require_once( ABSPATH . 'wp-admin/includes/file.php' );
+            $fallback_query = new WP_Query( $args_fallback );
+            if ( isset( $fallback_query->posts, $fallback_query->posts[0] ) ) {
+                $attachment_id = $fallback_query->posts[0]->ID;
 
-            $file = [
-                'name'     => $filename,
-                'tmp_name' => download_url( $image_url )
-            ];
+                if ( !get_post_meta( $attachment_id, '_source_image_url', true ) ) {
+                    update_post_meta( $attachment_id, '_source_image_url', $meta_value );
+                }
+            } else {
+                require_once( ABSPATH . 'wp-admin/includes/file.php' );
 
-            if ( !is_wp_error( $file[ 'tmp_name' ] ) ) {
-                $attachment_id = media_handle_sideload( $file );
+                $file = [
+                    'name'     => $filename,
+                    'tmp_name' => download_url( $image_url )
+                ];
 
-                if ( is_wp_error( $attachment_id ) ) {
-                    wp_delete_file( $file[ 'tmp_name' ] );
-                    $attachment_id = null;
+                if ( !is_wp_error( $file['tmp_name'] ) ) {
+                    $attachment_id = media_handle_sideload( $file );
+
+                    if ( is_wp_error( $attachment_id ) ) {
+                        wp_delete_file( $file['tmp_name'] );
+                        $attachment_id = null;
+                    } else {
+                        update_post_meta( $attachment_id, '_source_image_url', $meta_value );
+                    }
                 }
             }
-        } else {
-            $attachment_id = $query_results->posts[ 0 ]->ID;
         }
 
         if ( $attachment_id !== null ) {
@@ -381,16 +414,45 @@ class Utils
         return empty( $post_id ) ? 0 : $post_id;
     }
 
+    /**
+     * Retrieves a list of post IDs that contain specific club calendar content within their post content.
+     *
+     * The method searches for posts where the content matches specified strings and applies a filter for published status.
+     *
+     * @return array An array of post IDs that match the specified conditions.
+     * @since 1.3.0
+     */
+    static function get_club_calendar_posts(): array
+    {
+        global $wpdb;
+
+        $like_clauses = [
+            "post_content LIKE 'wp:myclub-groups/club-calendar'",
+            "post_content LIKE '[myclub-groups-club-calendar]'"
+        ];
+
+        // Combine conditions with 'OR' and prepare query
+        $where_clause = implode( ' OR ', $like_clauses );
+        $post_status = 'publish';
+
+        $query = $wpdb->prepare(
+            "SELECT ID FROM {$wpdb->posts} WHERE ($where_clause) AND post_status = %s",
+            $post_status
+        );
+
+        return $wpdb->get_col( $query );
+    }
+
     /*
      * Retrieves a list of post IDs matching specific content (shortcodes, blocks, or both).
      *
      * @param int|null $post_id The post ID to match in content (optional).
      * @param string|null $group_id The group ID to match in content (optional).
-     * @param string $mode The mode of search: 'shortcode', 'block', or 'both' (default 'both').
      *
      * @return array An array of matching post IDs, or an empty array if no matches are found.
+     * @since 1.2.0
      */
-    static function get_other_cached_posts( ?int $post_id = null, ?string $group_id = null, string $mode = 'both' ): array
+    static function get_other_cached_posts( ?int $post_id = null, ?string $group_id = null ): array
     {
         global $wpdb;
 
@@ -437,6 +499,27 @@ class Utils
     }
 
     /**
+     * Processes a list of activities by modifying their descriptions and returns the data in JSON format.
+     *
+     * @param array $activities An array of activity objects, each containing a description property to clean and format.
+     * @return string A JSON-encoded string representation of the processed activities.
+     * @since 1.3.0
+     */
+    static function prepare_activities_json( array $activities ): string
+    {
+        foreach ( $activities as $activity ) {
+            $activity->description = str_replace( '<br /> <br />', '<br />', $activity->description );
+            $activity->description = str_replace( '<br /><br />', '<br />', $activity->description );
+            $activity->description = addslashes( str_replace( '<br /><br /><br />', '<br /><br />', $activity->description ) );
+            if ( empty( trim( wp_strip_all_tags( $activity->description ) ) ) ) {
+                $activity->description = '';
+            }
+        }
+
+        return wp_json_encode( $activities, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT );
+    }
+
+    /**
      * Sanitize an array by recursively sanitizing text fields.
      *
      * @param array $array The array to be sanitized.
@@ -459,21 +542,46 @@ class Utils
     }
 
     /**
-     * Update or create an option in the WordPress database.
+     * Sets and saves the current date and time into a specified option after formatting based on the local timezone.
+     *
+     * @param string $option_name The name of the option to update or create with the formatted current date and time.
+     * @return void This method does not return any value.
+     * @since 1.3.0
+     */
+    static function set_current_date_time_option( string $option_name )
+    {
+        $gmt_time = gmdate( "Y-m-d H:i:s" );
+        $local_time = get_date_from_gmt( $gmt_time );
+        $formatted_time = date_i18n( 'j F Y H:i', strtotime( $local_time ) );
+        Utils::update_or_create_option( $option_name, $formatted_time, 'no' );
+    }
+
+    /**
+     * Updates an existing option or creates a new one in the WordPress database.
      *
      * @param string $option_name The name of the option to update or create.
-     * @param mixed $value The value to update or create the option with.
-     * @param string $autoload Optional. Whether to autoload the option. Default is 'yes'.
+     * @param mixed $value The value to store for the option.
+     * @param string $autoload Optional. Whether to autoload this option. Default 'yes'.
+     * @param bool $check_same Optional. Whether to check if the current value matches the new value before updating. Default false.
      *
-     * @return void
+     * @return bool True if the option was added or updated, false if $check_same is true and the current value matches the new value.
+     *
      * @since 1.0.0
      */
-    static function update_or_create_option( string $option_name, $value, string $autoload = 'yes' )
+    static function update_or_create_option( string $option_name, $value, string $autoload = 'yes', bool $check_same = false ): bool
     {
+        $current_value = get_option( $option_name, 'non-existent' );
+
+        if ( $check_same && $current_value === $value ) {
+            return true;
+        }
+
         if ( get_option( $option_name, 'non-existent' ) === 'non-existent' ) {
             add_option( $option_name, $value, '', $autoload );
         } else {
             update_option( $option_name, $value, $autoload );
         }
+
+        return false;
     }
 }

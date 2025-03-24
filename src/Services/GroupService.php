@@ -296,7 +296,7 @@ class GroupService extends Groups
      */
     private function add_activities( int $post_id, object $group )
     {
-        $activities_json = $this->prepare_activities_json( $group->activities );
+        $activities_json = Utils::prepare_activities_json( $group->activities );
         $this->update_metadata_if_changed( $post_id, 'myclub_groups_activities', $activities_json );
     }
 
@@ -512,27 +512,6 @@ class GroupService extends Groups
             update_post_meta( $post_id, $meta_key, $new_value );
             $this->content_or_metadata_updated = true;
         }
-    }
-
-    /**
-     * Converts activities array to JSON and ensures changes are tracked.
-     *
-     * @param array $activities The activities array.
-     * @return string JSON representation of activities.
-     * @since 1.2.0
-     */
-    private function prepare_activities_json( array $activities ): string
-    {
-        foreach ( $activities as $activity ) {
-            $activity->description = str_replace( '<br /> <br />', '<br />', $activity->description );
-            $activity->description = str_replace( '<br /><br />', '<br />', $activity->description );
-            $activity->description = addslashes( str_replace( '<br /><br /><br />', '<br /><br />', $activity->description ) );
-            if ( empty( trim( wp_strip_all_tags( $activity->description ) ) ) ) {
-                $activity->description = '';
-            }
-        }
-
-        return wp_json_encode( $activities, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT );
     }
 
     /**

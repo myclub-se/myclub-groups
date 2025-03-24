@@ -48,6 +48,6 @@ class RefreshNewsTask extends Background_Process {
     protected function complete()
     {
         parent::complete();
-        Utils::update_or_create_option( 'myclub_groups_last_news_sync', gmdate( "c" ), 'no' );
+        Utils::set_current_date_time_option( 'myclub_groups_last_news_sync' );
     }
 }

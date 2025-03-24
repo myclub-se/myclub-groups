@@ -83,7 +83,26 @@ jQuery(document).ready(function($) {
                 console.log(errorThrown);
             }
         });
-    })
+    });
+
+    $("#myclub-sync-club-calendar-button").on("click", function() {
+        addNotice(wp.i18n.__('Synchronizing club calendar', 'myclub-groups'), 'success');
+        $("#myclub_groups_last_club_calendar_sync").html(wp.i18n.__('Calendar synchronization is currently running', 'myclub-groups'));
+
+        $.ajax({
+            url: ajaxurl,
+            data: {
+                "action": "myclub_sync_club_calendar"
+            },
+            success: function(returned_data) {
+                addNotice(returned_data.data.message, returned_data.success ? 'success' : 'error');
+            },
+            error: function(errorThrown) {
+                addNotice(wp.i18n.__('Unable to synchronize club calendar', 'myclub-groups'), 'error');
+                console.log(errorThrown);
+            }
+        })
+    });
 
     $("#myclub-settings-form").on("click", ".myclub-dismiss", function() {
         $(this).parent().hide();

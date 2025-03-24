@@ -1,22 +1,22 @@
-# Copyright (C) 2024 MyClub AB
+# Copyright (C) 2025 MyClub AB
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MyClub Groups 1.0.4\n"
+"Project-Id-Version: MyClub Groups 1.3.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/myclub-groups\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-08T08:56:35+00:00\n"
+"POT-Creation-Date: 2025-03-24T14:14:25+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: myclub-groups\n"
 
 #. Plugin Name of the plugin
-#: src/Services/Admin.php:98
-#: src/Services/Admin.php:1176
+#: src/Services/Admin.php:102
+#: src/Services/Admin.php:1255
 msgid "MyClub Groups"
 msgstr ""
 
@@ -53,110 +53,145 @@ msgstr ""
 msgid "No group page found. Invalid post_id or group_id."
 msgstr ""
 
-#: blocks/build/calendar/render.php:27
-#: blocks/src/calendar/render.php:27
-#: src/Activation.php:51
-#: src/Services/Admin.php:190
-#: src/Services/Admin.php:619
-#: src/Services/Admin.php:779
-#: src/Services/Admin.php:905
+#: blocks/build/calendar/render.php:26
+#: blocks/build/club-calendar/render.php:18
+#: blocks/src/calendar/render.php:26
+#: blocks/src/club-calendar/render.php:18
+#: src/Activation.php:56
+#: src/Activation.php:61
+#: src/Services/Admin.php:194
+#: src/Services/Admin.php:202
+#: src/Services/Admin.php:661
+#: src/Services/Admin.php:680
+#: src/Services/Admin.php:840
+#: src/Services/Admin.php:966
 #: templates/admin/admin_settings.php:42
 #: blocks/build/calendar/index.js:1
-#: blocks/src/calendar/edit.js:88
+#: blocks/build/club-calendar/index.js:1
+#: blocks/src/calendar/edit.js:15
+#: blocks/src/club-calendar/edit.js:12
 msgid "Calendar"
 msgstr ""
 
-#: blocks/build/calendar/render.php:28
-#: blocks/src/calendar/render.php:28
-#: blocks/build/calendar/index.js:1
-#: blocks/src/calendar/edit.js:99
+#: blocks/build/calendar/render.php:27
+#: blocks/build/club-calendar/render.php:19
+#: blocks/src/calendar/render.php:27
+#: blocks/src/club-calendar/render.php:19
 msgid "Information"
 msgstr ""
 
-#: blocks/build/calendar/render.php:29
-#: blocks/src/calendar/render.php:29
+#: blocks/build/calendar/render.php:28
+#: blocks/build/club-calendar/render.php:20
+#: blocks/src/calendar/render.php:28
+#: blocks/src/club-calendar/render.php:20
 #: templates/admin/admin_myclub_groups_activities.php:10
 #: templates/admin/admin_myclub_groups_members.php:9
 #: blocks/build/calendar/index.js:1
-#: blocks/src/calendar/edit.js:89
+#: blocks/build/club-calendar/index.js:1
+#: blocks/src/calendar/edit.js:16
+#: blocks/src/club-calendar/edit.js:13
 msgid "Name"
 msgstr ""
 
-#: blocks/build/calendar/render.php:30
-#: blocks/src/calendar/render.php:30
+#: blocks/build/calendar/render.php:29
+#: blocks/build/club-calendar/render.php:21
+#: blocks/src/calendar/render.php:29
+#: blocks/src/club-calendar/render.php:21
 #: blocks/build/calendar/index.js:1
-#: blocks/src/calendar/edit.js:90
+#: blocks/build/club-calendar/index.js:1
+#: blocks/src/calendar/edit.js:17
+#: blocks/src/club-calendar/edit.js:14
 msgid "When"
 msgstr ""
 
-#: blocks/build/calendar/render.php:31
-#: blocks/src/calendar/render.php:31
+#: blocks/build/calendar/render.php:30
+#: blocks/build/club-calendar/render.php:22
+#: blocks/src/calendar/render.php:30
+#: blocks/src/club-calendar/render.php:22
 #: templates/admin/admin_myclub_groups_activities.php:14
 #: blocks/build/calendar/index.js:1
-#: blocks/src/calendar/edit.js:91
+#: blocks/build/club-calendar/index.js:1
+#: blocks/src/calendar/edit.js:18
+#: blocks/src/club-calendar/edit.js:15
 msgid "Location"
 msgstr ""
 
-#: blocks/build/calendar/render.php:32
-#: blocks/src/calendar/render.php:32
+#: blocks/build/calendar/render.php:31
+#: blocks/build/club-calendar/render.php:23
+#: blocks/src/calendar/render.php:31
+#: blocks/src/club-calendar/render.php:23
 #: blocks/build/calendar/index.js:1
-#: blocks/src/calendar/edit.js:96
+#: blocks/build/club-calendar/index.js:1
+#: blocks/src/calendar/edit.js:20
+#: blocks/src/club-calendar/edit.js:17
 msgid "Gathering location"
 msgstr ""
 
-#: blocks/build/calendar/render.php:33
-#: blocks/src/calendar/render.php:33
+#: blocks/build/calendar/render.php:32
+#: blocks/build/club-calendar/render.php:24
+#: blocks/src/calendar/render.php:32
+#: blocks/src/club-calendar/render.php:24
 #: blocks/build/calendar/index.js:1
-#: blocks/src/calendar/edit.js:93
+#: blocks/build/club-calendar/index.js:1
+#: blocks/src/calendar/edit.js:19
+#: blocks/src/club-calendar/edit.js:16
 msgid "Gathering time"
 msgstr ""
 
-#: blocks/build/calendar/render.php:34
-#: blocks/src/calendar/render.php:34
-#: blocks/build/calendar/index.js:1
-#: blocks/src/calendar/edit.js:62
+#: blocks/build/calendar/render.php:33
+#: blocks/build/club-calendar/render.php:25
+#: blocks/src/calendar/render.php:33
+#: blocks/src/club-calendar/render.php:25
 msgid "today"
 msgstr ""
 
-#: blocks/build/calendar/render.php:35
-#: blocks/src/calendar/render.php:35
-#: blocks/build/calendar/index.js:1
-#: blocks/src/calendar/edit.js:65
+#: blocks/build/calendar/render.php:34
+#: blocks/build/club-calendar/render.php:26
+#: blocks/src/calendar/render.php:34
+#: blocks/src/club-calendar/render.php:26
 msgid "day"
 msgstr ""
 
-#: blocks/build/calendar/render.php:36
-#: blocks/src/calendar/render.php:36
-#: blocks/build/calendar/index.js:1
-#: blocks/src/calendar/edit.js:63
+#: blocks/build/calendar/render.php:35
+#: blocks/build/club-calendar/render.php:27
+#: blocks/src/calendar/render.php:35
+#: blocks/src/club-calendar/render.php:27
 msgid "month"
 msgstr ""
 
-#: blocks/build/calendar/render.php:37
-#: blocks/src/calendar/render.php:37
-#: blocks/build/calendar/index.js:1
-#: blocks/src/calendar/edit.js:64
+#: blocks/build/calendar/render.php:36
+#: blocks/build/club-calendar/render.php:28
+#: blocks/src/calendar/render.php:36
+#: blocks/src/club-calendar/render.php:28
 msgid "week"
 msgstr ""
 
-#: blocks/build/calendar/render.php:38
-#: blocks/src/calendar/render.php:38
-#: blocks/build/calendar/index.js:1
-#: blocks/src/calendar/edit.js:66
+#: blocks/build/calendar/render.php:37
+#: blocks/build/club-calendar/render.php:29
+#: blocks/src/calendar/render.php:37
+#: blocks/src/club-calendar/render.php:29
 msgid "list"
 msgstr ""
 
-#: blocks/build/calendar/render.php:39
-#: blocks/src/calendar/render.php:39
+#: blocks/build/calendar/render.php:38
+#: blocks/build/club-calendar/render.php:30
+#: blocks/src/calendar/render.php:38
+#: blocks/src/club-calendar/render.php:30
 #: blocks/build/calendar/index.js:1
-#: blocks/src/calendar/edit.js:137
+#: blocks/build/club-calendar/index.js:1
+#: blocks/src/calendar/edit.js:22
+#: blocks/src/club-calendar/edit.js:19
 msgid "W"
 msgstr ""
 
-#: blocks/build/calendar/render.php:40
-#: blocks/src/calendar/render.php:40
+#: blocks/build/calendar/render.php:39
+#: blocks/build/club-calendar/render.php:31
+#: blocks/src/calendar/render.php:39
+#: blocks/src/club-calendar/render.php:31
 #: blocks/build/calendar/index.js:1
-#: blocks/src/calendar/edit.js:138
+#: blocks/build/club-calendar/index.js:1
+#: blocks/src/calendar/edit.js:23
+#: blocks/src/club-calendar/edit.js:20
 msgid "Week"
 msgstr ""
 
@@ -166,16 +201,16 @@ msgstr ""
 #: blocks/src/club-news/render.php:5
 #: blocks/src/club-news/render.php:49
 #: blocks/src/news/render.php:8
-#: src/Activation.php:71
-#: src/Services/Admin.php:222
-#: src/Services/Admin.php:229
-#: src/Services/Admin.php:638
-#: src/Services/Admin.php:725
-#: src/Services/Admin.php:835
-#: src/Services/Admin.php:911
-#: src/Services/NewsService.php:176
-#: src/Services/NewsService.php:179
-#: templates/admin/admin_settings.php:49
+#: src/Activation.php:81
+#: src/Services/Admin.php:234
+#: src/Services/Admin.php:241
+#: src/Services/Admin.php:699
+#: src/Services/Admin.php:786
+#: src/Services/Admin.php:896
+#: src/Services/Admin.php:972
+#: src/Services/NewsService.php:190
+#: src/Services/NewsService.php:193
+#: templates/admin/admin_settings.php:50
 msgid "News"
 msgstr ""
 
@@ -197,26 +232,26 @@ msgstr ""
 msgid "No news found"
 msgstr ""
 
-#: blocks/build/coming-games/render.php:56
+#: blocks/build/coming-games/render.php:58
 #: blocks/build/leaders/render.php:75
-#: blocks/build/members/render.php:69
-#: blocks/src/coming-games/render.php:56
+#: blocks/build/members/render.php:72
+#: blocks/src/coming-games/render.php:58
 #: blocks/src/leaders/render.php:75
-#: blocks/src/members/render.php:69
+#: blocks/src/members/render.php:72
 msgid "Show more"
 msgstr ""
 
-#: blocks/build/coming-games/render.php:57
+#: blocks/build/coming-games/render.php:59
 #: blocks/build/leaders/render.php:76
-#: blocks/build/members/render.php:70
-#: blocks/src/coming-games/render.php:57
+#: blocks/build/members/render.php:73
+#: blocks/src/coming-games/render.php:59
 #: blocks/src/leaders/render.php:76
-#: blocks/src/members/render.php:70
+#: blocks/src/members/render.php:73
 msgid "Show less"
 msgstr ""
 
-#: blocks/build/coming-games/render.php:61
-#: blocks/src/coming-games/render.php:61
+#: blocks/build/coming-games/render.php:64
+#: blocks/src/coming-games/render.php:64
 msgid "No upcoming games"
 msgstr ""
 
@@ -288,35 +323,35 @@ msgstr ""
 msgid "Telephone"
 msgstr ""
 
-#: src/Activation.php:56
-#: src/Services/Admin.php:198
-#: src/Services/Admin.php:657
-#: src/Services/Admin.php:877
-#: src/Services/Admin.php:906
-#: templates/admin/admin_settings.php:44
+#: src/Activation.php:66
+#: src/Services/Admin.php:210
+#: src/Services/Admin.php:718
+#: src/Services/Admin.php:938
+#: src/Services/Admin.php:967
+#: templates/admin/admin_settings.php:45
 msgid "Upcoming games"
 msgstr ""
 
-#: src/Activation.php:61
-#: src/Services/Admin.php:206
-#: src/Services/Admin.php:676
-#: src/Services/Admin.php:765
-#: src/Services/Admin.php:907
+#: src/Activation.php:71
+#: src/Services/Admin.php:218
+#: src/Services/Admin.php:737
+#: src/Services/Admin.php:826
+#: src/Services/Admin.php:968
 #: templates/admin/admin_myclub_groups_members.php:36
-#: templates/admin/admin_settings.php:45
+#: templates/admin/admin_settings.php:46
 #: blocks/build/leaders/index.js:1
 #: blocks/src/leaders/edit.js:16
 msgid "Leaders"
 msgstr ""
 
-#: src/Activation.php:66
-#: src/Services/Admin.php:214
-#: src/Services/Admin.php:695
-#: src/Services/Admin.php:793
-#: src/Services/Admin.php:908
+#: src/Activation.php:76
+#: src/Services/Admin.php:226
+#: src/Services/Admin.php:756
+#: src/Services/Admin.php:854
+#: src/Services/Admin.php:969
 #: templates/admin/admin_myclub_groups_members.php:19
 #: templates/admin/admin_myclub_groups_metabox_tabs.php:60
-#: templates/admin/admin_settings.php:46
+#: templates/admin/admin_settings.php:47
 #: blocks/build/members/index.js:1
 #: blocks/src/members/edit.js:16
 msgid "Members"
@@ -330,328 +365,354 @@ msgstr ""
 msgid "Every %d Minutes"
 msgstr ""
 
-#: src/Services/Admin.php:97
+#: src/Services/Admin.php:101
 msgid "MyClub Groups plugin settings"
 msgstr ""
 
-#: src/Services/Admin.php:122
 #: src/Services/Admin.php:126
-#: src/Services/Taxonomy.php:161
+#: src/Services/Admin.php:130
+#: src/Services/NewsService.php:93
+#: src/Services/Taxonomy.php:166
 msgid "Group news"
 msgstr ""
 
-#: src/Services/Admin.php:311
+#: src/Services/Admin.php:323
 msgid "MyClub Groups Main Settings"
 msgstr ""
 
-#: src/Services/Admin.php:313
+#: src/Services/Admin.php:325
 msgid "Synchronization information"
 msgstr ""
 
-#: src/Services/Admin.php:315
+#: src/Services/Admin.php:327
 #: templates/admin/admin_settings.php:21
 msgid "Title settings"
 msgstr ""
 
-#: src/Services/Admin.php:317
+#: src/Services/Admin.php:329
 #: templates/admin/admin_settings.php:22
 msgid "Display settings"
 msgstr ""
 
-#: src/Services/Admin.php:319
+#: src/Services/Admin.php:331
 msgid "MyClub API Key"
 msgstr ""
 
-#: src/Services/Admin.php:323
+#: src/Services/Admin.php:335
 msgid "Slug for group pages"
 msgstr ""
 
-#: src/Services/Admin.php:327
+#: src/Services/Admin.php:339
 msgid "Slug for group news posts"
 msgstr ""
 
-#: src/Services/Admin.php:331
+#: src/Services/Admin.php:343
 msgid "News last synchronized"
 msgstr ""
 
-#: src/Services/Admin.php:335
+#: src/Services/Admin.php:347
 msgid "Groups last synchronized"
 msgstr ""
 
-#: src/Services/Admin.php:339
-msgid "Title for calendar field"
-msgstr ""
-
-#: src/Services/Admin.php:343
-msgid "Title for upcoming games field"
-msgstr ""
-
-#: src/Services/Admin.php:347
-msgid "Title for leaders field"
-msgstr ""
-
 #: src/Services/Admin.php:351
-msgid "Title for members field"
+msgid "Club calendar last synchronized"
 msgstr ""
 
 #: src/Services/Admin.php:355
-msgid "Title for news field"
+msgid "Title for calendar field"
 msgstr ""
 
 #: src/Services/Admin.php:359
+msgid "Title for club calendar field"
+msgstr ""
+
+#: src/Services/Admin.php:363
+msgid "Title for upcoming games field"
+msgstr ""
+
+#: src/Services/Admin.php:367
+msgid "Title for leaders field"
+msgstr ""
+
+#: src/Services/Admin.php:371
+msgid "Title for members field"
+msgstr ""
+
+#: src/Services/Admin.php:375
+msgid "Title for news field"
+msgstr ""
+
+#: src/Services/Admin.php:379
 msgid "Title for club news field"
 msgstr ""
 
-#: src/Services/Admin.php:364
+#: src/Services/Admin.php:384
 msgid "Template for group pages"
 msgstr ""
 
-#: src/Services/Admin.php:369
+#: src/Services/Admin.php:389
 msgid "Show group title"
 msgstr ""
 
-#: src/Services/Admin.php:373
+#: src/Services/Admin.php:393
 msgid "Show group picture"
 msgstr ""
 
-#: src/Services/Admin.php:377
+#: src/Services/Admin.php:397
 msgid "Show groups menu"
 msgstr ""
 
-#: src/Services/Admin.php:381
+#: src/Services/Admin.php:401
 msgid "Show group page navigation"
 msgstr ""
 
-#: src/Services/Admin.php:385
+#: src/Services/Admin.php:405
 msgid "Show group calendar"
 msgstr ""
 
-#: src/Services/Admin.php:389
+#: src/Services/Admin.php:409
 msgid "Show group members"
 msgstr ""
 
-#: src/Services/Admin.php:393
+#: src/Services/Admin.php:413
 msgid "Show group leaders"
 msgstr ""
 
-#: src/Services/Admin.php:397
+#: src/Services/Admin.php:417
 msgid "Show group news"
 msgstr ""
 
-#: src/Services/Admin.php:401
+#: src/Services/Admin.php:421
 msgid "Show group upcoming games"
 msgstr ""
 
-#: src/Services/Admin.php:405
+#: src/Services/Admin.php:425
 msgid "Shown items order"
 msgstr ""
 
-#: src/Services/Admin.php:471
-#: src/Services/Admin.php:495
+#: src/Services/Admin.php:491
+#: src/Services/Admin.php:515
+#: src/Services/Admin.php:537
 msgid "Permission denied"
 msgstr ""
 
-#: src/Services/Admin.php:479
+#: src/Services/Admin.php:499
 msgid "Successfully queued groups reloading"
 msgstr ""
 
-#: src/Services/Admin.php:503
+#: src/Services/Admin.php:523
 msgid "Successfully queued news reloading"
 msgstr ""
 
+#: src/Services/Admin.php:545
+msgid "Successfully reloaded club calendar"
+msgstr ""
+
 #. translators: 1: number of groups
-#: src/Services/Admin.php:558
+#: src/Services/Admin.php:600
 msgid "There is currently <strong>%1$s groups</strong> loaded from the MyClub member system."
 msgstr ""
 
 #. translators: 1: number of news items
-#: src/Services/Admin.php:561
+#: src/Services/Admin.php:603
 msgid "There is currently <strong>%1$s group news items</strong> loaded from the MyClub member system."
 msgstr ""
 
-#: src/Services/Admin.php:564
-#: src/Services/Admin.php:1281
+#: src/Services/Admin.php:606
+#: src/Services/Admin.php:1361
 msgid "WP Cron is not running. This is required for running the MyClub groups plugin."
 msgstr ""
 
-#: src/Services/Admin.php:807
-#: src/Services/Admin.php:909
-#: templates/admin/admin_settings.php:47
+#: src/Services/Admin.php:868
+#: src/Services/Admin.php:970
+#: templates/admin/admin_settings.php:48
 msgid "Menu"
 msgstr ""
 
-#: src/Services/Admin.php:821
-#: src/Services/Admin.php:910
-#: templates/admin/admin_settings.php:48
+#: src/Services/Admin.php:882
+#: src/Services/Admin.php:971
+#: templates/admin/admin_settings.php:49
 msgid "Navigation"
 msgstr ""
 
-#: src/Services/Admin.php:948
+#: src/Services/Admin.php:1009
 msgid "Invalid API key entered"
 msgstr ""
 
-#: src/Services/Admin.php:968
-#: src/Services/Admin.php:988
+#: src/Services/Admin.php:1029
+#: src/Services/Admin.php:1049
 msgid "You have to enter a valid slug"
 msgstr ""
 
-#: src/Services/Admin.php:1006
+#: src/Services/Admin.php:1067
 msgid "You have to enter title for the calendar field"
 msgstr ""
 
-#: src/Services/Admin.php:1024
+#: src/Services/Admin.php:1085
+msgid "You have to enter title for the club calendar field"
+msgstr ""
+
+#: src/Services/Admin.php:1103
 msgid "You have to enter title for the upcoming games field"
 msgstr ""
 
-#: src/Services/Admin.php:1042
+#: src/Services/Admin.php:1121
 msgid "You have to enter title for the members field"
 msgstr ""
 
-#: src/Services/Admin.php:1060
+#: src/Services/Admin.php:1139
 msgid "You have to enter title for the leaders field"
 msgstr ""
 
-#: src/Services/Admin.php:1078
+#: src/Services/Admin.php:1157
 msgid "You must enter a title for the news field"
 msgstr ""
 
-#: src/Services/Admin.php:1096
+#: src/Services/Admin.php:1175
 msgid "You must enter a title for the club news field"
 msgstr ""
 
-#: src/Services/Admin.php:1143
+#: src/Services/Admin.php:1222
 msgid "The selected template was not found."
 msgstr ""
 
-#: src/Services/Admin.php:1303
+#: src/Services/Admin.php:1383
 msgid "news"
 msgstr ""
 
-#: src/Services/Admin.php:1308
+#: src/Services/Admin.php:1388
 msgid "groups"
 msgstr ""
 
-#: src/Services/Admin.php:1314
+#: src/Services/Admin.php:1394
 msgid "The %1$s update task is currently running."
 msgstr ""
 
-#: src/Services/Admin.php:1319
+#: src/Services/Admin.php:1399
 msgid "Not synchronized yet"
 msgstr ""
 
-#: src/Services/Api.php:107
+#: src/Services/Api.php:130
 msgid "There is no MyClub Group post with that ID"
 msgstr ""
 
-#: src/Services/Blocks.php:104
+#: src/Services/Blocks.php:123
 msgid "Display calendar for a selected group"
 msgstr ""
 
-#: src/Services/Blocks.php:109
+#: src/Services/Blocks.php:128
 msgid "MyClub Group Calendar"
 msgstr ""
 
-#: src/Services/Blocks.php:112
-msgid "Display news for the entire Club"
-msgstr ""
-
-#: src/Services/Blocks.php:113
-msgid "MyClub Club News"
-msgstr ""
-
-#: src/Services/Blocks.php:116
-msgid "Display upcoming games for a selected group"
-msgstr ""
-
-#: src/Services/Blocks.php:117
-msgid "MyClub Group Upcoming games"
-msgstr ""
-
-#: src/Services/Blocks.php:120
-msgid "Display leaders for a selected group"
-msgstr ""
-
-#: src/Services/Blocks.php:121
-msgid "MyClub Group Leaders"
-msgstr ""
-
-#: src/Services/Blocks.php:124
-msgid "Display members for a selected group"
-msgstr ""
-
-#: src/Services/Blocks.php:125
-msgid "MyClub Group Members"
-msgstr ""
-
-#: src/Services/Blocks.php:128
-msgid "Display the MyClub Group menu items"
-msgstr ""
-
-#: src/Services/Blocks.php:129
-msgid "MyClub Groups Menu"
-msgstr ""
-
-#: src/Services/Blocks.php:132
-msgid "Display the MyClub group page navigation"
-msgstr ""
-
-#: src/Services/Blocks.php:133
-msgid "MyClub Group Navigation"
+#: src/Services/Blocks.php:131
+msgid "Display calendar for the entire Club"
 msgstr ""
 
 #: src/Services/Blocks.php:136
-msgid "Display news for a selected group"
+msgid "MyClub Club Calendar"
 msgstr ""
 
-#: src/Services/Blocks.php:137
-msgid "MyClub Group News"
+#: src/Services/Blocks.php:139
+msgid "Display news for the entire Club"
 msgstr ""
 
 #: src/Services/Blocks.php:140
+msgid "MyClub Club News"
+msgstr ""
+
+#: src/Services/Blocks.php:143
+msgid "Display upcoming games for a selected group"
+msgstr ""
+
+#: src/Services/Blocks.php:144
+msgid "MyClub Group Upcoming games"
+msgstr ""
+
+#: src/Services/Blocks.php:147
+msgid "Display leaders for a selected group"
+msgstr ""
+
+#: src/Services/Blocks.php:148
+msgid "MyClub Group Leaders"
+msgstr ""
+
+#: src/Services/Blocks.php:151
+msgid "Display members for a selected group"
+msgstr ""
+
+#: src/Services/Blocks.php:152
+msgid "MyClub Group Members"
+msgstr ""
+
+#: src/Services/Blocks.php:155
+msgid "Display the MyClub Group menu items"
+msgstr ""
+
+#: src/Services/Blocks.php:156
+msgid "MyClub Groups Menu"
+msgstr ""
+
+#: src/Services/Blocks.php:159
+msgid "Display the MyClub group page navigation"
+msgstr ""
+
+#: src/Services/Blocks.php:160
+msgid "MyClub Group Navigation"
+msgstr ""
+
+#: src/Services/Blocks.php:163
+msgid "Display news for a selected group"
+msgstr ""
+
+#: src/Services/Blocks.php:164
+msgid "MyClub Group News"
+msgstr ""
+
+#: src/Services/Blocks.php:167
 msgid "Display title for a selected group"
 msgstr ""
 
-#: src/Services/Blocks.php:141
+#: src/Services/Blocks.php:168
 msgid "MyClub Group Title"
 msgstr ""
 
-#: src/Services/ShortCodes.php:141
+#: src/Services/ShortCodes.php:169
 msgid "The MyClub club news block couldn't be found"
 msgstr ""
 
-#: src/Services/ShortCodes.php:156
+#: src/Services/ShortCodes.php:184
 msgid "The MyClub coming games block couldn't be found"
 msgstr ""
 
-#: src/Services/ShortCodes.php:171
+#: src/Services/ShortCodes.php:199
 msgid "The MyClub leaders block couldn't be found"
 msgstr ""
 
-#: src/Services/ShortCodes.php:186
+#: src/Services/ShortCodes.php:214
 msgid "The MyClub members block couldn't be found"
 msgstr ""
 
-#: src/Services/ShortCodes.php:201
+#: src/Services/ShortCodes.php:229
 msgid "The MyClub menu block couldn't be found"
 msgstr ""
 
-#: src/Services/ShortCodes.php:216
+#: src/Services/ShortCodes.php:244
 msgid "The MyClub navigation block couldn't be found"
 msgstr ""
 
-#: src/Services/ShortCodes.php:231
+#: src/Services/ShortCodes.php:259
 msgid "The MyClub news block couldn't be found"
 msgstr ""
 
-#: src/Services/ShortCodes.php:246
+#: src/Services/ShortCodes.php:274
 msgid "The MyClub title block couldn't be found"
 msgstr ""
 
-#: src/Services/Taxonomy.php:80
+#: src/Services/Taxonomy.php:85
 msgid "Groups"
 msgstr ""
 
-#: src/Services/Taxonomy.php:81
+#: src/Services/Taxonomy.php:86
 #: blocks/build/calendar/index.js:1
 #: blocks/build/coming-games/index.js:1
 #: blocks/build/leaders/index.js:1
@@ -659,7 +720,7 @@ msgstr ""
 #: blocks/build/navigation/index.js:1
 #: blocks/build/news/index.js:1
 #: blocks/build/title/index.js:1
-#: blocks/src/calendar/edit.js:268
+#: blocks/src/calendar/edit.js:153
 #: blocks/src/coming-games/edit.js:34
 #: blocks/src/leaders/edit.js:125
 #: blocks/src/members/edit.js:122
@@ -669,7 +730,7 @@ msgstr ""
 msgid "Group"
 msgstr ""
 
-#: src/Services/Taxonomy.php:221
+#: src/Services/Taxonomy.php:259
 msgid "MyClub group information"
 msgstr ""
 
@@ -724,7 +785,7 @@ msgid "Gutenberg blocks"
 msgstr ""
 
 #: templates/admin/admin_settings.php:24
-#: templates/admin/admin_settings.php:54
+#: templates/admin/admin_settings.php:55
 msgid "Shortcodes"
 msgstr ""
 
@@ -737,91 +798,114 @@ msgid "The calendar block will display a group calendar. The available attribute
 msgstr ""
 
 #: templates/admin/admin_settings.php:43
-msgid "Club news"
+msgid "Club calendar"
 msgstr ""
 
 #: templates/admin/admin_settings.php:43
-msgid "The club news block will display all club news. This block doesn't require any attributes."
+msgid "The club calendar block will display the club calendar. This block doesn't require any attributes."
 msgstr ""
 
 #: templates/admin/admin_settings.php:44
-msgid "The coming-games block will display the upcoming games for a group. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the activities from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
+msgid "Club news"
+msgstr ""
+
+#: templates/admin/admin_settings.php:44
+msgid "The club news block will display all club news. This block doesn't require any attributes."
 msgstr ""
 
 #: templates/admin/admin_settings.php:45
-msgid "The leaders block will display the leaders for a group. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the leaders from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
+msgid "The coming-games block will display the upcoming games for a group. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the activities from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
 msgstr ""
 
 #: templates/admin/admin_settings.php:46
-msgid "The members block will display the members for a group. The available attributes are <code>post_id</code> which can be set to the group page that you want to get the members from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
+msgid "The leaders block will display the leaders for a group. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the leaders from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
 msgstr ""
 
 #: templates/admin/admin_settings.php:47
-msgid "The menu block will display the group menu. This block doesn't require any attributes."
+msgid "The members block will display the members for a group. The available attributes are <code>post_id</code> which can be set to the group page that you want to get the members from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
 msgstr ""
 
 #: templates/admin/admin_settings.php:48
-msgid "The navigation block will display the group page navigation. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the navigation from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
+msgid "The menu block will display the group menu. This block doesn't require any attributes."
 msgstr ""
 
 #: templates/admin/admin_settings.php:49
+msgid "The navigation block will display the group page navigation. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the navigation from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
+msgstr ""
+
+#: templates/admin/admin_settings.php:50
 msgid "The news block will display the group page news. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the news for or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
 msgstr ""
 
-#: templates/admin/admin_settings.php:50
+#: templates/admin/admin_settings.php:51
 msgid "Title"
 msgstr ""
 
-#: templates/admin/admin_settings.php:50
+#: templates/admin/admin_settings.php:51
 msgid "The title block will display the group page title. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the title from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
 msgstr ""
 
-#: templates/admin/admin_settings.php:55
+#: templates/admin/admin_settings.php:56
 msgid "Here are the shortcodes available from the MyClub groups plugin"
 msgstr ""
 
-#: templates/admin/admin_settings.php:57
+#: templates/admin/admin_settings.php:58
 msgid "The calendar shortcode will display a group calendar. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the calendar from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
 msgstr ""
 
-#: templates/admin/admin_settings.php:58
-msgid "The club news shortcode will display all club news. This block doesn't require any attributes."
-msgstr ""
-
 #: templates/admin/admin_settings.php:59
-msgid "The coming-games shortcode will display the upcoming games for a group. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the activities from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
+msgid "The club calendar shortcode will display the club calendar. This block doesn't require any attributes."
 msgstr ""
 
 #: templates/admin/admin_settings.php:60
-msgid "The leaders shortcode will display the leaders for a group. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the leaders from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
+msgid "The club news shortcode will display all club news. This block doesn't require any attributes."
 msgstr ""
 
 #: templates/admin/admin_settings.php:61
-msgid "The members shortcode will display the members for a group. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the members from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
+msgid "The coming-games shortcode will display the upcoming games for a group. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the activities from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
 msgstr ""
 
 #: templates/admin/admin_settings.php:62
-msgid "The menu shortcode will display the group menu. This block doesn't require any attributes."
+msgid "The leaders shortcode will display the leaders for a group. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the leaders from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
 msgstr ""
 
 #: templates/admin/admin_settings.php:63
-msgid "The navigation shortcode will display the group page navigation. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the navigation from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
+msgid "The members shortcode will display the members for a group. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the members from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
 msgstr ""
 
 #: templates/admin/admin_settings.php:64
-msgid "The news shortcode will display the group page news. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the news for or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
+msgid "The menu shortcode will display the group menu. This block doesn't require any attributes."
 msgstr ""
 
 #: templates/admin/admin_settings.php:65
+msgid "The navigation shortcode will display the group page navigation. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the navigation from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
+msgstr ""
+
+#: templates/admin/admin_settings.php:66
+msgid "The news shortcode will display the group page news. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the news for or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
+msgstr ""
+
+#: templates/admin/admin_settings.php:67
 msgid "The title shortcode will display the group page title. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the title from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
 msgstr ""
 
-#: templates/admin/admin_settings.php:72
+#: templates/admin/admin_settings.php:74
 msgid "Reload news"
 msgstr ""
 
-#: templates/admin/admin_settings.php:75
+#: templates/admin/admin_settings.php:77
 msgid "Reload groups"
+msgstr ""
+
+#: templates/admin/admin_settings.php:80
+msgid "Resync club calendar"
+msgstr ""
+
+#: blocks/build/calendar/index.js:1
+#: blocks/build/club-calendar/index.js:1
+#: blocks/src/calendar/edit.js:21
+#: blocks/src/club-calendar/edit.js:18
+msgid "Description"
 msgstr ""
 
 #: blocks/build/calendar/index.js:1
@@ -831,7 +915,7 @@ msgstr ""
 #: blocks/build/navigation/index.js:1
 #: blocks/build/news/index.js:1
 #: blocks/build/title/index.js:1
-#: blocks/src/calendar/edit.js:55
+#: blocks/src/calendar/edit.js:63
 #: blocks/src/coming-games/edit.js:19
 #: blocks/src/leaders/edit.js:22
 #: blocks/src/members/edit.js:22
@@ -848,7 +932,7 @@ msgstr ""
 #: blocks/build/navigation/index.js:1
 #: blocks/build/news/index.js:1
 #: blocks/build/title/index.js:1
-#: blocks/src/calendar/edit.js:265
+#: blocks/src/calendar/edit.js:150
 #: blocks/src/coming-games/edit.js:30
 #: blocks/src/leaders/edit.js:121
 #: blocks/src/members/edit.js:118
@@ -901,6 +985,18 @@ msgstr ""
 msgid "Unable to reload news"
 msgstr ""
 
+#: resources/javascript/myclub_groups_settings.js:89
+msgid "Synchronizing club calendar"
+msgstr ""
+
+#: resources/javascript/myclub_groups_settings.js:90
+msgid "Calendar synchronization is currently running"
+msgstr ""
+
+#: resources/javascript/myclub_groups_settings.js:101
+msgid "Unable to synchronize club calendar"
+msgstr ""
+
 #: blocks/build/calendar/block.json
 #: blocks/src/calendar/block.json
 msgctxt "block title"
@@ -911,6 +1007,18 @@ msgstr ""
 #: blocks/src/calendar/block.json
 msgctxt "block description"
 msgid "Display calendar for a selected group"
+msgstr ""
+
+#: blocks/build/club-calendar/block.json
+#: blocks/src/club-calendar/block.json
+msgctxt "block title"
+msgid "MyClub Club Calendar"
+msgstr ""
+
+#: blocks/build/club-calendar/block.json
+#: blocks/src/club-calendar/block.json
+msgctxt "block description"
+msgid "Display calendar for the entire Club"
 msgstr ""
 
 #: blocks/build/club-news/block.json

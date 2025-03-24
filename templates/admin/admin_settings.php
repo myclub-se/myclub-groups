@@ -40,6 +40,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
             <div><?php esc_attr_e( 'Here are the Gutenberg blocks available from the MyClub groups plugin', 'myclub-groups' )?></div>
             <ul>
                 <li><strong><?php esc_attr_e( 'Calendar', 'myclub-groups' ) ?></strong> - <?php myclub_groups_allow_code_html( __( 'The calendar block will display a group calendar. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the calendar from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page.', 'myclub-groups' ) ) ?></li>
+                <li><strong><?php esc_attr_e( 'Club calendar', 'myclub-groups' ) ?></strong> - <?php esc_html_e( "The club calendar block will display the club calendar. This block doesn't require any attributes.", 'myclub-groups' ) ?></li>
                 <li><strong><?php esc_attr_e( 'Club news', 'myclub-groups' ) ?></strong> - <?php esc_html_e( "The club news block will display all club news. This block doesn't require any attributes.", 'myclub-groups' ) ?></li>
                 <li><strong><?php esc_attr_e( 'Upcoming games', 'myclub-groups' ) ?></strong> - <?php myclub_groups_allow_code_html( __( 'The coming-games block will display the upcoming games for a group. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the activities from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page.', 'myclub-groups' ) ) ?></li>
                 <li><strong><?php esc_attr_e( 'Leaders', 'myclub-groups' ) ?></strong> - <?php myclub_groups_allow_code_html( __( 'The leaders block will display the leaders for a group. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the leaders from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page.', 'myclub-groups' ) ) ?></li>
@@ -55,6 +56,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
             <div><?php esc_attr_e( 'Here are the shortcodes available from the MyClub groups plugin', 'myclub-groups' ) ?></div>
             <ul>
                 <li><code>[myclub-groups-calendar]</code> - <?php myclub_groups_allow_code_html( __( 'The calendar shortcode will display a group calendar. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the calendar from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page.', 'myclub-groups' ) ) ?></li>
+                <li><code>[myclub-groups-club-calendar]</code> - <?php esc_html_e( "The club calendar shortcode will display the club calendar. This block doesn't require any attributes.", 'myclub-groups' ) ?></li>
                 <li><code>[myclub-groups-club-news]</code> - <?php esc_html_e( "The club news shortcode will display all club news. This block doesn't require any attributes.", 'myclub-groups' ) ?></li>
                 <li><code>[myclub-groups-coming-games]</code> - <?php myclub_groups_allow_code_html( __( 'The coming-games shortcode will display the upcoming games for a group. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the activities from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page.', 'myclub-groups' ) ) ?></li>
                 <li><code>[myclub-groups-leaders]</code> - <?php myclub_groups_allow_code_html( __( 'The leaders shortcode will display the leaders for a group. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the leaders from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page.', 'myclub-groups' ) ) ?></li>
@@ -73,6 +75,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                 </button>
                 <button type="button" id="myclub-reload-groups-button" class="button">
                     <?php esc_attr_e( 'Reload groups', 'myclub-groups' ) ?>
+                </button>
+                <button type="button" id="myclub-sync-club-calendar-button" class="button">
+                    <?php esc_attr_e( 'Resync club calendar', 'myclub-groups' ) ?>
                 </button>
             <?php }
             submit_button( esc_html__( 'Save Changes' ), 'primary', 'save', false ); ?>

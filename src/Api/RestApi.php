@@ -9,7 +9,10 @@ use stdClass;
 use WP_Error;
 
 /**
- * Represents a REST API client for interacting with the MyClub backend API.
+ * Class RestApi
+ *
+ * Provides methods to interact with the MyClub backend API, including retrieving club calendar,
+ * menu items, other teams, group details, news, and executing GET requests.
  */
 class RestApi
 {
@@ -41,6 +44,42 @@ class RestApi
 
         $this->multiSite = is_multisite();
         $this->site = get_bloginfo( 'url' );
+    }
+
+
+    /**
+     * Loads the club calendar by making an API call to the calendar service.
+     *
+     * If the API key is not set, the method returns a response with an empty result array and a 401 status code.
+     * If an error occurs during the API call, it logs the error, and returns a response with an empty result array and a 500 status code.
+     * Otherwise, it returns the decoded response from the API call.
+     *
+     * @return stdClass|WP_Error The response containing the calendar data. Returns a stdClass object with the result and status code if successful.
+     *                           Returns a WP_Error object or a stdClass object with an error status if any issue arises.
+     * @since 1.3.0
+     */
+    public function load_club_calendar()
+    {
+        $service_path = 'calendar/';
+
+        if ( empty( $this->apiKey ) ) {
+            $return_value = new stdClass();
+            $return_value->result = [];
+            $return_value->status = 401;
+            return $return_value;
+        }
+
+        $decoded = $this->get( $service_path, [ 'limit' => "null" ] );
+
+        if ( is_wp_error( $decoded ) ) {
+            error_log( 'Unable to load club calendar: Error occurred in API call' );
+            $return_value = new stdClass();
+            $return_value->result = [];
+            $return_value->status = 500;
+            return $return_value;
+        }
+
+        return $decoded;
     }
 
     /**

@@ -37,17 +37,27 @@ class Activation
                 'autoload' => 'no',
             ],
             [
+                'name'  => 'myclub_groups_last_club_calendar_sync',
+                'value' => null,
+                'autoload' => 'no',
+            ],
+            [
                 'name'  => 'myclub_groups_last_news_sync',
                 'value' => null,
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_last_groups_sync',
+                'name'  => 'myclub_groups_last_news_sync',
                 'value' => null,
                 'autoload' => 'no',
             ],
             [
                 'name'  => 'myclub_groups_calendar_title',
+                'value' => __( 'Calendar', 'myclub-groups' ),
+                'autoload' => 'yes',
+            ],
+            [
+                'name'  => 'myclub_groups_club_calendar_title',
                 'value' => __( 'Calendar', 'myclub-groups' ),
                 'autoload' => 'yes',
             ],
@@ -122,6 +132,11 @@ class Activation
                     'default',
                 ),
                 'autoload' => 'no',
+            ],
+            [
+                'name' => 'myclub_groups_club_activities',
+                'value' => '[]',
+                'autoload' => 'no',
             ]
         ];
     }
@@ -183,7 +198,6 @@ class Activation
         $groupsService->delete_all_groups();
     }
 
-
     /**
      * Adds an option to the WordPress database if it doesn't already exist.
      *
@@ -192,6 +206,7 @@ class Activation
      * @param string|null $autoload Sets if the option should be loaded.
      *
      * @return void
+     * @since 1.0.0
      */
     private function addOption( string $optionName, $default, string $autoload ) {
         if ( get_option( $optionName ) === false ) {
