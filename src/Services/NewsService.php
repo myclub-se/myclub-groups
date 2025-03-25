@@ -205,6 +205,47 @@ class NewsService extends Groups
     }
 
     /**
+     * Adds a team news category to a specified post.
+     *
+     * This method checks if the option to add news categories is enabled. If enabled, it ensures that
+     * the corresponding category for the provided team group exists. If the category does not exist, it
+     * creates a new one. Finally, it assigns the category to the given post if it is not already assigned.
+     *
+     * @param int $post_id The ID of the post to which the team news category will be added.
+     * @param array $myclub_group An optional associative array containing group data, including the 'name' key.
+     *                            The 'name' key is used to match or create the category.
+     *
+     * @return void
+     * @since 1.3.1
+     */
+    public function add_team_news_category( int $post_id, array $myclub_group )
+    {
+        $add_news_category = get_option( 'myclub_groups_add_news_categories' );
+
+        if ( $add_news_category === '1' ) {
+            $category = get_term_by( 'name', $myclub_group[ 'name' ], 'category' );
+
+            if ( $category === false ) {
+                $category_id = wp_insert_term( $myclub_group[ 'name' ], 'category' );
+                if ( $category_id == 0 || is_wp_error( $category_id ) ) {
+                    error_log( 'Unable to add team category' );
+                    $category_id = null;
+                }
+            } else {
+                $category_id = $category->term_id;
+            }
+
+            if ( $category_id !== null ) {
+                $categories = wp_get_post_categories( $post_id );
+
+                if ( !in_array( $category_id, $categories ) ) {
+                    wp_set_post_categories( $post_id, array_merge( $categories, [ $category_id ] ) );
+                }
+            }
+        }
+    }
+
+    /**
      * Adds a news item to the database.
      *
      * Retrieves an existing news item from the database if it already exists based on the 'myclub_news_id' meta value.
@@ -259,6 +300,8 @@ class NewsService extends Groups
         $this->add_default_category( $post_id );
 
         if ( $myclub_group ) {
+            $this->add_team_news_category( $post_id, $myclub_group );
+
             $query_args = array (
                 'taxonomy'   => NewsService::MYCLUB_GROUP_NEWS,
                 'meta_query' => [

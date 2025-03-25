@@ -2,7 +2,7 @@
 
 namespace MyClub\MyClubGroups\Services;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 use MyClub\MyClubGroups\Api\RestApi;
 use MyClub\MyClubGroups\Utils;
@@ -180,10 +180,20 @@ class Admin extends Base
             ],
             'default'           => 'group-news'
         ] );
+        register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_add_news_categories', [
+            'sanitize_callback' => [
+                $this,
+                'sanitize_checkbox'
+            ],
+            'default'           => '0'
+        ] );
         register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_last_news_sync', [
             'default' => NULL
         ] );
         register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_last_groups_sync', [
+            'default' => NULL
+        ] );
+        register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_last_club_calendar_sync', [
             'default' => NULL
         ] );
         register_setting( 'myclub_groups_settings_tab2', 'myclub_groups_calendar_title', [
@@ -340,6 +350,10 @@ class Admin extends Base
             $this,
             'render_group_news_slug'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_main', [ 'label_for' => 'myclub_groups_group_news_slug' ] );
+        add_settings_field( 'myclub_groups_add_news_categories', __( 'Add news categories for group news', 'myclub-groups' ), [
+            $this,
+            'render_add_news_categories'
+        ], 'myclub_groups_settings_tab1', 'myclub_groups_main', [ 'label_for' => 'myclub_groups_add_news_categories' ] );
         add_settings_field( 'myclub_groups_last_news_sync', __( 'News last synchronized', 'myclub-groups' ), [
             $this,
             'render_news_last_sync'
@@ -350,7 +364,7 @@ class Admin extends Base
         ], 'myclub_groups_settings_tab1', 'myclub_groups_sync' );
         add_settings_field( 'myclub_groups_last_club_calendar_sync', __( 'Club calendar last synchronized', 'myclub-groups' ), [
             $this,
-            'render_groups_last_sync'
+            'render_club_calendar_last_sync'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_sync' );
         add_settings_field( 'myclub_groups_calendar_title', __( 'Title for calendar field', 'myclub-groups' ), [
             $this,
@@ -594,7 +608,7 @@ class Admin extends Base
         );
         $query = new WP_Query( $args );
         $news_count = $query->found_posts;
-        $allow_strong = array( "strong" => array() );
+        $allow_strong = array ( "strong" => array () );
 
         /* translators: 1: number of groups */
         echo wp_kses( sprintf( __( 'There is currently <strong>%1$s groups</strong> loaded from the MyClub member system.', 'myclub-groups' ), esc_attr( $groups_count ) ), $allow_strong );
@@ -603,7 +617,7 @@ class Admin extends Base
         echo wp_kses( sprintf( __( 'There is currently <strong>%1$s group news items</strong> loaded from the MyClub member system.', 'myclub-groups' ), esc_attr( $news_count ) ), $allow_strong );
         if ( !wp_next_scheduled( 'wp_version_check' ) ) {
             echo '<br><br>';
-            esc_html_e('WP Cron is not running. This is required for running the MyClub groups plugin.', 'myclub-groups' );
+            esc_html_e( 'WP Cron is not running. This is required for running the MyClub groups plugin.', 'myclub-groups' );
         }
     }
 
@@ -646,6 +660,18 @@ class Admin extends Base
     }
 
     /**
+     * Renders a checkbox for adding news categories in group news settings.
+     *
+     * @param array $args Arguments passed for rendering the checkbox.
+     * @return void
+     * @since 1.3.1
+     */
+    public function render_add_news_categories( array $args )
+    {
+        $this->render_checkbox( $args, 'myclub_groups_add_news_categories', 'news_categories', __( 'Add news categories for group news', 'myclub-groups' ) );
+    }
+
+    /**
      * Renders the input field for the group calendar title setting in the admin page.
      *
      * @param array $args The arguments for rendering the input field.
@@ -662,6 +688,17 @@ class Admin extends Base
         }
 
         echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_calendar_title" value="' . esc_attr( $calendar_title ) . '" />';
+    }
+
+    /**
+     * Renders the date and time field for the last sync of the club calendar.
+     *
+     * @return void
+     * @since 1.3.1
+     */
+    public function render_club_calendar_last_sync()
+    {
+        $this->render_date_time_field( 'myclub_groups_last_club_calendar_sync' );
     }
 
     /**
@@ -1224,7 +1261,7 @@ class Admin extends Base
             }
         }
 
-        return !empty( $input ) ? sanitize_text_field ( $input ) : '';
+        return !empty( $input ) ? sanitize_text_field( $input ) : '';
     }
 
     /**
@@ -1358,7 +1395,7 @@ class Admin extends Base
         if ( !wp_next_scheduled( 'wp_version_check' ) ) {
             ?>
             <div class="notice notice-warning is-dismissible">
-                <p><?php esc_html_e('WP Cron is not running. This is required for running the MyClub groups plugin.', 'myclub-groups' ); ?></p>
+                <p><?php esc_html_e( 'WP Cron is not running. This is required for running the MyClub groups plugin.', 'myclub-groups' ); ?></p>
             </div>
             <?php
         }
@@ -1377,10 +1414,10 @@ class Admin extends Base
         $last_sync = esc_attr( get_option( $field_name ) );
         $cron_job_name = '';
         $output = '';
-        
+
         if ( $field_name === 'myclub_groups_last_news_sync' ) {
             $cron_job_name = 'myclub_groups_refresh_news_task_cron';
-            $cron_job_type = __('news', 'myclub-groups' );
+            $cron_job_type = __( 'news', 'myclub-groups' );
         }
 
         if ( $field_name === 'myclub_groups_last_groups_sync' ) {
@@ -1388,14 +1425,14 @@ class Admin extends Base
             $cron_job_type = __( 'groups', 'myclub-groups' );
         }
 
-        if ( !empty( $cron_job_name ) && isset( $cron_job_type )) {
+        if ( !empty( $cron_job_name ) && isset( $cron_job_type ) ) {
             $next_scheduled = wp_next_scheduled( $cron_job_name );
             if ( $next_scheduled ) {
                 $output = sprintf( __( 'The %1$s update task is currently running.', 'myclub-groups' ), esc_attr( $cron_job_type ) );
             }
         }
 
-        if ( empty ($output) ) {
+        if ( empty ( $output ) ) {
             $output = empty( $last_sync ) ? __( 'Not synchronized yet', 'myclub-groups' ) : Utils::format_date_time( $last_sync );
         }
 

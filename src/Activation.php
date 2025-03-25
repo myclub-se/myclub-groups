@@ -127,6 +127,11 @@ class Activation
                 'autoload' => 'no',
             ],
             [
+                'name'  => 'myclub_groups_add_news_categories',
+                'value' => '0',
+                'autoload' => 'no',
+            ],
+            [
                 'name'  => 'myclub_groups_show_items_order',
                 'value' => array (
                     'default',
