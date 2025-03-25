@@ -22,7 +22,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "Release - build starting - ${{ github.ref_name }}"
+                    "text": "Release - MyClub Groups build starting - ${{ github.ref_name }}"
                   }
                 }
               ]
@@ -73,7 +73,7 @@ jobs:
               "attachments": [
                 {
                   "color": "${{ needs.build.result == 'success' && 'good' || 'danger' }}",
-                  "title": "WordPress deployment results (${{ github.ref_name }}) - ${{ needs.build.result }}",
+                  "title": "MyClub Groups deployment results (${{ github.ref_name }}) - ${{ needs.build.result }}",
                   "fields": [
                     {
                       "value": "Deploy results (${{ github.ref_name }})\nGitHub Action build result: ${{ needs.build.result }}",
