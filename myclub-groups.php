@@ -32,7 +32,7 @@ if ( file_exists( plugin_dir_path( __FILE__ ) . '/lib/autoload.php' ) ) {
     require_once( plugin_dir_path( __FILE__ ) . '/lib/autoload.php' );
 }
 
-define( 'MYCLUB_GROUPS_PLUGIN_VERSION', '1.3.0' );
+define( 'MYCLUB_GROUPS_PLUGIN_VERSION', '1.3.1' );
 
 ImageTask::init();
 RefreshGroupsTask::init();
