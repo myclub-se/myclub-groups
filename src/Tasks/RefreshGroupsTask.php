@@ -65,6 +65,6 @@ class RefreshGroupsTask extends Background_Process {
 
         $process = RefreshMenusTask::init();
         $process->push_to_queue([])->save()->dispatch();
-        Utils::set_current_date_time_option( 'myclub_groups_last_groups_sync' );
+        Utils::update_or_create_option( 'myclub_groups_last_groups_sync', gmdate( "c" ), 'no' );
     }
 }

@@ -369,14 +369,14 @@ class Utils
             $timezone = new DateTimeZone( $timezone_string );
 
             // Create DateTime object for last sync, correct it to WordPress timezone
-            $date_time_utc = new DateTime( $utc_time, new DateTimeZone( 'UTC' ) );
-            $date_time_utc->setTimezone( $timezone );
+            $date_time = new DateTime( $utc_time, new DateTimeZone( 'UTC' ) );
+            $date_time->setTimezone( $timezone );
 
             // Format the date/time string according to your requirements
-            $formatted_time = $date_time_utc->format( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
+            $formatted_time = wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $date_time->getTimestamp() );
 
         } catch ( Exception $e ) {
-            $formatted_time = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $utc_time );
+            $formatted_time = wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $utc_time );
         }
 
         return $formatted_time;
@@ -539,21 +539,6 @@ class Utils
         }
 
         return $array;
-    }
-
-    /**
-     * Sets and saves the current date and time into a specified option after formatting based on the local timezone.
-     *
-     * @param string $option_name The name of the option to update or create with the formatted current date and time.
-     * @return void This method does not return any value.
-     * @since 1.3.0
-     */
-    static function set_current_date_time_option( string $option_name )
-    {
-        $gmt_time = gmdate( "Y-m-d H:i:s" );
-        $local_time = get_date_from_gmt( $gmt_time );
-        $formatted_time = date_i18n( 'j F Y H:i', strtotime( $local_time ) );
-        Utils::update_or_create_option( $option_name, $formatted_time, 'no' );
     }
 
     /**

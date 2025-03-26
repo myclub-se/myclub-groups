@@ -41,6 +41,10 @@ class CalendarService
         $response = $this->api->load_club_calendar();
 
         if ( !is_wp_error( $response ) && $response->status === 200 ) {
+            foreach ( $response->result->results as $activity ) {
+                $activity->description = str_replace( "\n", '<br />', htmlspecialchars( $activity->description, ENT_QUOTES, 'UTF-8' ) );
+            }
+
             $club_events_json = Utils::prepare_activities_json( $response->result->results );
             if ( Utils::update_or_create_option( 'myclub_groups_club_activities', $club_events_json, 'no', true ) === false) {
                 $post_ids = Utils::get_club_calendar_posts();
@@ -50,6 +54,6 @@ class CalendarService
                 }
             }
         }
-        Utils::set_current_date_time_option( 'myclub_groups_last_club_calendar_sync' );
+        Utils::update_or_create_option( 'myclub_groups_last_club_calendar_sync', gmdate( "c" ), 'no' );
     }
 }

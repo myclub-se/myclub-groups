@@ -16,7 +16,8 @@ use WP_Error;
  */
 class RestApi
 {
-    const MYCLUB_SERVER_API_PATH = 'https://member.myclub.se/api/v3/external/';
+    # const MYCLUB_SERVER_API_PATH = 'https://member.myclub.se/api/v3/external/';
+    const MYCLUB_SERVER_API_PATH = 'http://myclub.test:8000/api/v3/external/';
 
     private string $apiKey;
 
@@ -69,7 +70,7 @@ class RestApi
             return $return_value;
         }
 
-        $decoded = $this->get( $service_path, [ 'limit' => "null" ] );
+        $decoded = $this->get( $service_path, [ 'limit' => "null", "version" => "2" ] );
 
         if ( is_wp_error( $decoded ) ) {
             error_log( 'Unable to load club calendar: Error occurred in API call' );
@@ -170,7 +171,7 @@ class RestApi
             if ( $members->status === 200 ) {
                 $decoded->result->members = $members->result->results;
 
-                $activities = $this->get( "teams/$groupId/calendar/", [ "limit" => "null" ] );
+                $activities = $this->get( "teams/$groupId/calendar/", [ "limit" => "null", "version" => "2" ] );
                 if ( $activities->status === 200 ) {
                     foreach ($activities->result->results as $activity) {
                         $activity->description = str_replace("\n", '<br />', htmlspecialchars( $activity->description, ENT_QUOTES, 'UTF-8' ) );
