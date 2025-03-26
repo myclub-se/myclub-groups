@@ -16,8 +16,7 @@ use WP_Error;
  */
 class RestApi
 {
-    # const MYCLUB_SERVER_API_PATH = 'https://member.myclub.se/api/v3/external/';
-    const MYCLUB_SERVER_API_PATH = 'http://myclub.test:8000/api/v3/external/';
+    const MYCLUB_SERVER_API_PATH = 'https://member.myclub.se/api/v3/external/';
 
     private string $apiKey;
 
