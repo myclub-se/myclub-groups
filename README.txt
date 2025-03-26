@@ -74,6 +74,7 @@ For unsupported cache systems, please contact us to request integration.
 == Changelog ==
 = 1.3.2 =
 * Add handling for HTML on calendar events
+* Fix bug in last sync dates
 
 = 1.3.1 =
 * Add setting for creating news categories for group news
