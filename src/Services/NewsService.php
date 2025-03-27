@@ -26,6 +26,7 @@ class NewsService extends Groups
     private DateTimeZone $myclub_timezone;
     private DateTimeZone $timezone;
     private DateTimeZone $utc_timezone;
+    private RestApi $api;
 
     /**
      * Constructor method for the class.
@@ -51,124 +52,8 @@ class NewsService extends Groups
         } catch ( Exception $e ) {
             error_log( 'Unable to get timezones' );
         }
-    }
 
-    /**
-     * Deletes all news posts that have a 'myclub_news_id' meta field.
-     *
-     * This method queries the WordPress database for all posts of type 'post' that have a 'myclub_news_id' meta field.
-     * It then loops through the query results and deletes each post using the `Utils::deletePost` method. This
-     * is a very destructive method and cannot be undone.
-     *
-     * @return void
-     * @since 1.0.0
-     */
-    public function delete_all_news()
-    {
-        $args = array (
-            'post_type'      => 'post',
-            'meta_query'     => array (
-                array (
-                    'key'     => 'myclub_news_id',
-                    'compare' => 'EXISTS',
-                ),
-            ),
-            'posts_per_page' => -1,
-        );
-
-        $query = new WP_Query( $args );
-
-        if ( $query->have_posts() ) {
-            while ( $query->have_posts() ) {
-                $query->next_post();
-
-                $post_id = $query->post->ID;
-
-                Utils::delete_post( $post_id );
-            }
-        }
-
-        // Temporarily add the myclub-group-news taxonomy to be able to delete it
-        register_taxonomy( NewsService::MYCLUB_GROUP_NEWS, 'post', [
-            'label'        => __( 'Group news', 'myclub-groups' ),
-            'show_in_rest' => true,
-        ] );
-
-        // Get all terms in the custom taxonomy
-        $terms = get_terms([
-            'taxonomy'   => NewsService::MYCLUB_GROUP_NEWS,
-            'hide_empty' => false,
-        ]);
-
-        if (!empty($terms) && !is_wp_error($terms)) {
-            global $wpdb; // Access the WordPress database
-
-            foreach ($terms as $term) {
-                // Manually update the count to zero
-                $wpdb->update(
-                    $wpdb->term_taxonomy,
-                    ['count' => 0],
-                    ['term_id' => $term->term_id]
-                );
-
-                // Delete the term
-                wp_delete_term($term->term_id, NewsService::MYCLUB_GROUP_NEWS);
-            }
-        }
-    }
-
-    /**
-     * Reloads the news by initiating a background task to refresh the news data.
-     *
-     * It creates a new instance of the `RestApi` class and loads the menu items
-     * using the `loadMenuItems()` method. If the `menuItemsExist()` method returns
-     * true for the loaded menu items, it retrieves the group ids using the `getGroupIds()`
-     * method. It then initializes the `RefreshNewsTask` and pushes null to the task queue.
-     * Next, it iterates through the group ids and pushes each id to the task queue.
-     * Finally, it saves and dispatches the task to start the background execution.
-     *
-     * @return void
-     */
-    public function reload_news()
-    {
-        // Load menu items from member backend
-        $groups = $this->get_all_group_ids();
-
-        if ( $groups->success ) {
-            $process = RefreshNewsTask::init();
-            $process->push_to_queue( null );
-
-            foreach ( $groups->ids as $id ) {
-                $process->push_to_queue( $id );
-            }
-
-            // Enqueue and start the background task
-            $process->save()->dispatch();
-        }
-    }
-
-    public function load_news( string $group_id = null )
-    {
-        $api = new RestApi();
-        $response = $api->load_news( $group_id );
-        $group = null;
-
-        if ( $group_id !== null ) {
-            $groupName = $this->get_group_name( $group_id );
-
-            if ( $groupName !== null ) {
-                $group = array (
-                    'id'   => $group_id,
-                    'name' => $groupName
-                );
-            }
-        }
-
-        if ( !is_wp_error( $response ) && $response->status === 200 ) {
-            foreach ( $response->result->results as $newsItem ) {
-                $this->add_news( $newsItem, $group );
-            }
-        }
+        $this->api = new RestApi();
     }
 
     /**
@@ -246,6 +131,185 @@ class NewsService extends Groups
     }
 
     /**
+     * Deletes all news posts that have a 'myclub_news_id' meta field.
+     *
+     * This method queries the WordPress database for all posts of type 'post' that have a 'myclub_news_id' meta field.
+     * It then loops through the query results and deletes each post using the `Utils::deletePost` method. This
+     * is a very destructive method and cannot be undone.
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function delete_all_news()
+    {
+        $args = array (
+            'post_type'      => 'post',
+            'meta_query'     => array (
+                array (
+                    'key'     => 'myclub_news_id',
+                    'compare' => 'EXISTS',
+                ),
+            ),
+            'posts_per_page' => -1,
+        );
+
+        $query = new WP_Query( $args );
+
+        if ( $query->have_posts() ) {
+            while ( $query->have_posts() ) {
+                $query->next_post();
+
+                $post_id = $query->post->ID;
+
+                Utils::delete_post( $post_id );
+            }
+        }
+
+        // Temporarily add the myclub-group-news taxonomy to be able to delete it
+        register_taxonomy( NewsService::MYCLUB_GROUP_NEWS, 'post', [
+            'label'        => __( 'Group news', 'myclub-groups' ),
+            'show_in_rest' => true,
+        ] );
+
+        // Get all terms in the custom taxonomy
+        $terms = get_terms( [
+            'taxonomy'   => NewsService::MYCLUB_GROUP_NEWS,
+            'hide_empty' => false,
+        ] );
+
+        if ( !empty( $terms ) && !is_wp_error( $terms ) ) {
+            global $wpdb; // Access the WordPress database
+
+            foreach ( $terms as $term ) {
+                // Manually update the count to zero
+                $wpdb->update(
+                    $wpdb->term_taxonomy,
+                    [ 'count' => 0 ],
+                    [ 'term_id' => $term->term_id ]
+                );
+
+                // Delete the term
+                wp_delete_term( $term->term_id, NewsService::MYCLUB_GROUP_NEWS );
+            }
+        }
+    }
+
+    /**
+     * Loads news items from an external API and optionally associates them with a group.
+     *
+     * This method uses a REST API to fetch news items. If a group ID is supplied, it attempts to retrieve
+     * the group name and associate the news items with the group. The fetched news items are processed
+     * and added using the `add_news` method.
+     *
+     * @param string|null $group_id The ID of the group to associate with the news, or null if no group is specified.
+     * @return void
+     * @since 1.0.0
+     */
+    public function load_news( string $group_id = null )
+    {
+        $response = $this->api->load_news( $group_id );
+        $group = null;
+
+        if ( $group_id !== null ) {
+            $groupName = $this->get_group_name( $group_id );
+
+            if ( $groupName !== null ) {
+                $group = array (
+                    'id'   => $group_id,
+                    'name' => $groupName
+                );
+            }
+        }
+
+        if ( !is_wp_error( $response ) && $response->status === 200 ) {
+            foreach ( $response->result->results as $newsItem ) {
+                $this->add_news( $newsItem, $group );
+            }
+        }
+    }
+
+    /**
+     * Reloads news for all groups by initiating a background task.
+     *
+     * This method retrieves all group IDs from the backend and uses a background task process
+     * to refresh the news for each group. It queues the tasks for processing and dispatches the task
+     * to be executed asynchronously.
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function reload_news()
+    {
+        // Load menu items from member backend
+        $groups = $this->get_all_group_ids();
+
+        if ( $groups->success ) {
+            $process = RefreshNewsTask::init();
+            $process->push_to_queue( null );
+
+            foreach ( $groups->ids as $id ) {
+                $process->push_to_queue( $id );
+            }
+
+            // Enqueue and start the background task
+            $process->save()->dispatch();
+        }
+    }
+
+    /**
+     * Removes unused news posts that are not associated with any remote group or global news IDs.
+     *
+     * This method retrieves all group IDs and their corresponding news post IDs, then compares
+     * these IDs against the local WordPress posts that have a 'myclub_news_id' meta field. Any
+     * posts with meta IDs not found in the remote data are considered unused and are deleted
+     * using the `Utils::deletePost` method. This ensures that the local database is
+     * synchronized with the remote data and clears out obsolete news posts.
+     *
+     * @return void
+     * @since 1.3.3
+     */
+    public function remove_unused_news_items(): void
+    {
+        if ( get_option( 'myclub_groups_remove_unused_news_items' ) !== '1' ) {
+            $group_ids = $this->get_all_group_ids();
+            $remote_news_ids = [];
+
+            if ( $group_ids->success ) {
+                foreach ( $group_ids->ids as $group_id ) {
+                    $remote_news_ids = array_merge( $remote_news_ids, $this->get_news_ids( $group_id ) );
+                }
+
+                $remote_news_ids = array_merge( $remote_news_ids, $this->get_news_ids( null ) );
+
+                $remote_news_ids = array_unique( $remote_news_ids );
+
+                if ( !empty( $remote_news_ids ) ) {
+                    $args = array (
+                        'post_type'      => 'post',
+                        'meta_query'     => array (
+                            array (
+                                'key'     => 'myclub_news_id',
+                                'compare' => 'NOT IN',
+                                'value'   => $remote_news_ids,
+                            ),
+                        ),
+                        'posts_per_page' => -1,
+                        'fields'         => 'ids'
+                    );
+
+                    $query = new WP_Query( $args );
+
+                    if ( $query->have_posts() ) {
+                        foreach ( $query->posts as $post_id ) {
+                            Utils::delete_post( $post_id );
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Adds a news item to the database.
      *
      * Retrieves an existing news item from the database if it already exists based on the 'myclub_news_id' meta value.
@@ -291,7 +355,8 @@ class NewsService extends Groups
                     'post_id' => $post_id,
                     'type'    => 'news',
                     'image'   => $news_item->news_image,
-                    'news_id' => $news_item->id
+                    'news_id' => $news_item->id,
+                    'caption' => $news_item->news_image_text,
                 ), JSON_UNESCAPED_UNICODE )
             );
             $image_task->save()->dispatch();
@@ -420,7 +485,7 @@ class NewsService extends Groups
      * @return string|null The name of the group, or null if no matching group is found.
      * @since 1.0.0
      */
-    private function get_group_name( string $group_id )
+    private function get_group_name( string $group_id ): ?string
     {
         $args = array (
             'post_type'      => GroupService::MYCLUB_GROUPS,
@@ -441,5 +506,30 @@ class NewsService extends Groups
         } else {
             return null;
         }
+    }
+
+    /**
+     * Retrieves a list of news IDs from an external source.
+     *
+     * This method utilizes the API to fetch news data for a specific group and extracts
+     * the IDs of the news items if the API response is successful.
+     *
+     * @param string|null $group_id The ID of the group for which to load news. Can be null.
+     * @return array An array of news IDs retrieved from the API. Returns an empty array if the API response is not successful.
+     * @since 1.3.3
+     */
+    private function get_news_ids( ?string $group_id ): array
+    {
+        $ids = [];
+
+        $response = $this->api->load_news( $group_id );
+
+        if ( !is_wp_error( $response ) && $response->status === 200 ) {
+            foreach ( $response->result->results as $newsItem ) {
+                $ids[] = $newsItem->id;
+            }
+        }
+
+        return $ids;
     }
 }

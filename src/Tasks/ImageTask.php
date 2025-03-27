@@ -137,7 +137,7 @@ class ImageTask extends Background_Process {
     private function addNewsImage( object $item )
     {
         if ( property_exists( $item, 'news_id' ) ) {
-            Utils::add_featured_image( $item->post_id, $item->image, 'news_' . $item->news_id . '_' );
+            Utils::add_featured_image( $item->post_id, $item->image, 'news_' . $item->news_id . '_', $item->caption );
         }
     }
 }

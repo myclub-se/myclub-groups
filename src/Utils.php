@@ -25,12 +25,12 @@ class Utils
      * @return void
      * @since 1.0.0
      */
-    static function add_featured_image( int $post_id, ?object $image, string $prefix = '' )
+    static function add_featured_image( int $post_id, ?object $image, string $prefix = '', string $caption = '' ): void
     {
         $attachment_id = null;
 
         if ( isset( $image ) ) {
-            $attachment = Utils::add_image( $image->raw->url, $prefix );
+            $attachment = Utils::add_image( $image->raw->url, $prefix, $caption );
             if ( isset( $attachment ) ) {
                 $attachment_id = $attachment[ 'id' ];
             }
@@ -58,7 +58,7 @@ class Utils
      *
      * @since 1.0.0
      */
-    static function add_image( string $image_url, string $prefix = '' ): ?array
+    static function add_image( string $image_url, string $prefix = '', string $caption = '' ): ?array
     {
         $attachment_id = null;
         $image = pathinfo( $image_url );
@@ -131,6 +131,11 @@ class Utils
             if ( $image_src_array ) {
                 $image_url = $image_src_array[ 0 ];
             }
+
+            wp_update_post( array(
+                'ID'           => $attachment_id,
+                'post_excerpt' => $caption
+            ) );
 
             return [
                 'id'  => $attachment_id,

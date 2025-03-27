@@ -28,13 +28,17 @@ if ( !empty( $posts ) ) {
 
         <?php
         foreach ( $posts as $post ) {
-        $image_url = get_the_post_thumbnail_url( $post->ID, 'thumbnail' );
+            $image_url = get_the_post_thumbnail_url( $post->ID, 'thumbnail' );
+            $image_caption = get_the_post_thumbnail_caption( $post->ID );
         ?>
         <div class="myclub-club-news-item">
             <h4><a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>"><?php echo esc_attr( $post->post_title ); ?></a></h4>
             <?php if ( $image_url ) {?>
                 <div class="myclub-club-news-image">
                     <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $post->post_title ); ?>" />
+                    <?php if ( $image_caption ) { ?>
+                        <div class="myclub-club-news-image-caption"><?php echo esc_attr( $image_caption ); ?></div>
+                    <?php } ?>
                 </div>
             <?php }
             if ( $post->post_excerpt ) {

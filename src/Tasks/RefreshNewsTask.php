@@ -48,6 +48,10 @@ class RefreshNewsTask extends Background_Process {
     protected function complete()
     {
         parent::complete();
+
+        $service = new NewsService();
+        $service->remove_unused_news_items();
+
         Utils::update_or_create_option( 'myclub_groups_last_news_sync', gmdate( "c" ), 'no' );
     }
 }

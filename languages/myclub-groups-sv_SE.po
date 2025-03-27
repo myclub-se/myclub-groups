@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/myclub-groups\n"
-"POT-Creation-Date: 2025-03-25T08:13:52+00:00\n"
-"PO-Revision-Date: 2025-03-25 09:16+0100\n"
+"POT-Creation-Date: 2025-03-27T12:17:27+00:00\n"
+"PO-Revision-Date: 2025-03-27 13:18+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Poedit-SearchPath-4: blocks/src\n"
 
 #. Plugin Name of the plugin
-#: src/Services/Admin.php:102 src/Services/Admin.php:1278
+#: src/Services/Admin.php:102 src/Services/Admin.php:1315
 msgid "MyClub Groups"
 msgstr "MyClub Grupper"
 
@@ -56,10 +56,10 @@ msgstr "Kunde inte hitta en gruppsida. Ogiltig post_id eller group_id."
 
 #: blocks/build/calendar/render.php:26 blocks/build/club-calendar/render.php:18
 #: blocks/src/calendar/render.php:26 blocks/src/club-calendar/render.php:18
-#: src/Activation.php:56 src/Activation.php:61 src/Services/Admin.php:201
-#: src/Services/Admin.php:209 src/Services/Admin.php:684
-#: src/Services/Admin.php:703 src/Services/Admin.php:863
-#: src/Services/Admin.php:989 templates/admin/admin_settings.php:42
+#: src/Activation.php:56 src/Activation.php:61 src/Services/Admin.php:211
+#: src/Services/Admin.php:219 src/Services/Admin.php:710
+#: src/Services/Admin.php:740 src/Services/Admin.php:900
+#: src/Services/Admin.php:1026 templates/admin/admin_settings.php:42
 #: blocks/build/calendar/index.js:1 blocks/build/club-calendar/index.js:1
 #: blocks/src/calendar/edit.js:15 blocks/src/club-calendar/edit.js:12
 msgid "Calendar"
@@ -149,24 +149,24 @@ msgstr "Vecka"
 
 #: blocks/build/club-news/render.php:5 blocks/build/club-news/render.php:49
 #: blocks/build/news/render.php:8 blocks/src/club-news/render.php:5
-#: blocks/src/club-news/render.php:49 blocks/src/news/render.php:8
-#: src/Activation.php:81 src/Services/Admin.php:241 src/Services/Admin.php:248
-#: src/Services/Admin.php:722 src/Services/Admin.php:809
-#: src/Services/Admin.php:919 src/Services/Admin.php:995
-#: src/Services/NewsService.php:190 src/Services/NewsService.php:193
+#: blocks/src/club-news/render.php:53 blocks/src/news/render.php:8
+#: src/Activation.php:81 src/Services/Admin.php:251 src/Services/Admin.php:258
+#: src/Services/Admin.php:759 src/Services/Admin.php:846
+#: src/Services/Admin.php:956 src/Services/Admin.php:1032
+#: src/Services/NewsService.php:75 src/Services/NewsService.php:78
 #: templates/admin/admin_settings.php:50
 msgid "News"
 msgstr "Nyheter"
 
 #: blocks/build/club-news/render.php:71 blocks/build/news/render.php:100
-#: blocks/src/club-news/render.php:71 blocks/src/news/render.php:100
+#: blocks/src/club-news/render.php:75 blocks/src/news/render.php:104
 msgid "Show more news"
 msgstr "Visa fler nyheter"
 
 #: blocks/build/club-news/render.php:76 blocks/build/news/render.php:104
 #: blocks/build/news/render.php:107 blocks/build/news/render.php:110
-#: blocks/src/club-news/render.php:76 blocks/src/news/render.php:104
-#: blocks/src/news/render.php:107 blocks/src/news/render.php:110
+#: blocks/src/club-news/render.php:80 blocks/src/news/render.php:108
+#: blocks/src/news/render.php:111 blocks/src/news/render.php:114
 msgid "No news found"
 msgstr "Finns inga nyheter"
 
@@ -233,22 +233,22 @@ msgstr "Kontaktperson"
 msgid "Telephone"
 msgstr "Telefon"
 
-#: src/Activation.php:66 src/Services/Admin.php:217 src/Services/Admin.php:741
-#: src/Services/Admin.php:961 src/Services/Admin.php:990
+#: src/Activation.php:66 src/Services/Admin.php:227 src/Services/Admin.php:778
+#: src/Services/Admin.php:998 src/Services/Admin.php:1027
 #: templates/admin/admin_settings.php:45
 msgid "Upcoming games"
 msgstr "Kommande matcher"
 
-#: src/Activation.php:71 src/Services/Admin.php:225 src/Services/Admin.php:760
-#: src/Services/Admin.php:849 src/Services/Admin.php:991
+#: src/Activation.php:71 src/Services/Admin.php:235 src/Services/Admin.php:797
+#: src/Services/Admin.php:886 src/Services/Admin.php:1028
 #: templates/admin/admin_myclub_groups_members.php:36
 #: templates/admin/admin_settings.php:46 blocks/build/leaders/index.js:1
 #: blocks/src/leaders/edit.js:16
 msgid "Leaders"
 msgstr "Ledare"
 
-#: src/Activation.php:76 src/Services/Admin.php:233 src/Services/Admin.php:779
-#: src/Services/Admin.php:877 src/Services/Admin.php:992
+#: src/Activation.php:76 src/Services/Admin.php:243 src/Services/Admin.php:816
+#: src/Services/Admin.php:914 src/Services/Admin.php:1029
 #: templates/admin/admin_myclub_groups_members.php:19
 #: templates/admin/admin_myclub_groups_metabox_tabs.php:60
 #: templates/admin/admin_settings.php:47 blocks/build/members/index.js:1
@@ -269,145 +269,149 @@ msgid "MyClub Groups plugin settings"
 msgstr "MyClub Grupper plugin inställningar"
 
 #: src/Services/Admin.php:126 src/Services/Admin.php:130
-#: src/Services/NewsService.php:93 src/Services/Taxonomy.php:166
+#: src/Services/NewsService.php:170 src/Services/Taxonomy.php:166
 msgid "Group news"
 msgstr "Gruppnyheter"
 
-#: src/Services/Admin.php:330
+#: src/Services/Admin.php:340
 msgid "MyClub Groups Main Settings"
 msgstr "MyClub Grupper huvudinställningar"
 
-#: src/Services/Admin.php:332
+#: src/Services/Admin.php:342
 msgid "Synchronization information"
 msgstr "Synkroniseringsinställningar"
 
-#: src/Services/Admin.php:334 templates/admin/admin_settings.php:21
+#: src/Services/Admin.php:344 templates/admin/admin_settings.php:21
 msgid "Title settings"
 msgstr "Rubrikinställningar"
 
-#: src/Services/Admin.php:336 templates/admin/admin_settings.php:22
+#: src/Services/Admin.php:346 templates/admin/admin_settings.php:22
 msgid "Display settings"
 msgstr "Visningsinställningar"
 
-#: src/Services/Admin.php:338
+#: src/Services/Admin.php:348
 msgid "MyClub API Key"
 msgstr "MyClub API nyckel"
 
-#: src/Services/Admin.php:342
+#: src/Services/Admin.php:352
 msgid "Slug for group pages"
 msgstr "Slug för gruppsidor"
 
-#: src/Services/Admin.php:346
+#: src/Services/Admin.php:356
 msgid "Slug for group news posts"
 msgstr "Slug för gruppnyheter"
 
-#: src/Services/Admin.php:350 src/Services/Admin.php:668
+#: src/Services/Admin.php:360 src/Services/Admin.php:682
 msgid "Add news categories for group news"
 msgstr "Skapa kategorier för gruppnyheter"
 
-#: src/Services/Admin.php:354
+#: src/Services/Admin.php:364 src/Services/Admin.php:694
+msgid "Delete posts for news deleted from MyClub"
+msgstr "Radera nyhetsinlägg som raderats i MyClub"
+
+#: src/Services/Admin.php:368
 msgid "News last synchronized"
 msgstr "Nyheter synkroniserades senast"
 
-#: src/Services/Admin.php:358
+#: src/Services/Admin.php:372
 msgid "Groups last synchronized"
 msgstr "Grupper synkroniserades senast"
 
-#: src/Services/Admin.php:362
+#: src/Services/Admin.php:376
 msgid "Club calendar last synchronized"
 msgstr "Föreningskalendern synkroniserades senast"
 
-#: src/Services/Admin.php:366
+#: src/Services/Admin.php:380
 msgid "Title for calendar field"
 msgstr "Rubrik för kalendern"
 
-#: src/Services/Admin.php:370
+#: src/Services/Admin.php:384
 msgid "Title for club calendar field"
 msgstr "Rubrik för föreningskalendern"
 
-#: src/Services/Admin.php:374
+#: src/Services/Admin.php:388
 msgid "Title for upcoming games field"
 msgstr "Rubrik för kommande matcher"
 
-#: src/Services/Admin.php:378
+#: src/Services/Admin.php:392
 msgid "Title for leaders field"
 msgstr "Rubrik för ledare"
 
-#: src/Services/Admin.php:382
+#: src/Services/Admin.php:396
 msgid "Title for members field"
 msgstr "Rurik för medlemmar"
 
-#: src/Services/Admin.php:386
+#: src/Services/Admin.php:400
 msgid "Title for news field"
 msgstr "Rubrik för nyheter"
 
-#: src/Services/Admin.php:390
+#: src/Services/Admin.php:404
 msgid "Title for club news field"
 msgstr "Rubrik för föreningens nyheter"
 
-#: src/Services/Admin.php:395
+#: src/Services/Admin.php:409
 msgid "Template for group pages"
 msgstr "Mall för gruppsidor"
 
-#: src/Services/Admin.php:400
+#: src/Services/Admin.php:414
 msgid "Show group title"
 msgstr "Visa rubrikfält på gruppsidor"
 
-#: src/Services/Admin.php:404
+#: src/Services/Admin.php:418
 msgid "Show group picture"
 msgstr "Visa grupp bilder"
 
-#: src/Services/Admin.php:408
+#: src/Services/Admin.php:422
 msgid "Show groups menu"
 msgstr "Visa meny på gruppsidor"
 
-#: src/Services/Admin.php:412
+#: src/Services/Admin.php:426
 msgid "Show group page navigation"
 msgstr "Visa navigation på gruppsidor"
 
-#: src/Services/Admin.php:416
+#: src/Services/Admin.php:430
 msgid "Show group calendar"
 msgstr "Visa kalender på gruppsidor"
 
-#: src/Services/Admin.php:420
+#: src/Services/Admin.php:434
 msgid "Show group members"
 msgstr "Visa medlemmar på gruppsidor"
 
-#: src/Services/Admin.php:424
+#: src/Services/Admin.php:438
 msgid "Show group leaders"
 msgstr "Visa ledare på gruppsidor"
 
-#: src/Services/Admin.php:428
+#: src/Services/Admin.php:442
 msgid "Show group news"
 msgstr "Visa nyheter på gruppsidor"
 
-#: src/Services/Admin.php:432
+#: src/Services/Admin.php:446
 msgid "Show group upcoming games"
 msgstr "Visa kommande matcher på gruppsidor"
 
-#: src/Services/Admin.php:436
+#: src/Services/Admin.php:450
 msgid "Shown items order"
 msgstr "Visningsordning på gruppsidor"
 
-#: src/Services/Admin.php:502 src/Services/Admin.php:526
-#: src/Services/Admin.php:548
+#: src/Services/Admin.php:516 src/Services/Admin.php:540
+#: src/Services/Admin.php:562
 msgid "Permission denied"
 msgstr "Åtkomst nekad"
 
-#: src/Services/Admin.php:510
+#: src/Services/Admin.php:524
 msgid "Successfully queued groups reloading"
 msgstr "Gruppuppdatering har schemalagts"
 
-#: src/Services/Admin.php:534
+#: src/Services/Admin.php:548
 msgid "Successfully queued news reloading"
 msgstr "Nyhetsuppdatering har schemalagts"
 
-#: src/Services/Admin.php:556
+#: src/Services/Admin.php:570
 msgid "Successfully reloaded club calendar"
 msgstr "Laddade om föreningskalendern"
 
 #. translators: 1: number of groups
-#: src/Services/Admin.php:611
+#: src/Services/Admin.php:625
 msgid ""
 "There is currently <strong>%1$s groups</strong> loaded from the MyClub "
 "member system."
@@ -416,7 +420,7 @@ msgstr ""
 "medlemssystem."
 
 #. translators: 1: number of news items
-#: src/Services/Admin.php:614
+#: src/Services/Admin.php:628
 msgid ""
 "There is currently <strong>%1$s group news items</strong> loaded from the "
 "MyClub member system."
@@ -424,7 +428,7 @@ msgstr ""
 "Det finns för närvarande <strong>%1$s gruppnyheter</strong> laddade från "
 "MyClub medlemssystem."
 
-#: src/Services/Admin.php:617 src/Services/Admin.php:1384
+#: src/Services/Admin.php:631 src/Services/Admin.php:1421
 msgid ""
 "WP Cron is not running. This is required for running the MyClub groups "
 "plugin."
@@ -432,69 +436,69 @@ msgstr ""
 "WP Cron kör inte på denna WordPress. Detta krävs för att MyClub grupper "
 "pluginet ska fungera."
 
-#: src/Services/Admin.php:891 src/Services/Admin.php:993
+#: src/Services/Admin.php:928 src/Services/Admin.php:1030
 #: templates/admin/admin_settings.php:48
 msgid "Menu"
 msgstr "Meny"
 
-#: src/Services/Admin.php:905 src/Services/Admin.php:994
+#: src/Services/Admin.php:942 src/Services/Admin.php:1031
 #: templates/admin/admin_settings.php:49
 msgid "Navigation"
 msgstr "Navigation"
 
-#: src/Services/Admin.php:1032
+#: src/Services/Admin.php:1069
 msgid "Invalid API key entered"
 msgstr "Ogiltig API nyckel"
 
-#: src/Services/Admin.php:1052 src/Services/Admin.php:1072
+#: src/Services/Admin.php:1089 src/Services/Admin.php:1109
 msgid "You have to enter a valid slug"
 msgstr "Du måste ange en giltig slug"
 
-#: src/Services/Admin.php:1090
+#: src/Services/Admin.php:1127
 msgid "You have to enter title for the calendar field"
 msgstr "Du måste ange en rubrik för kalenderdelen på gruppsidor"
 
-#: src/Services/Admin.php:1108
+#: src/Services/Admin.php:1145
 msgid "You have to enter title for the club calendar field"
 msgstr "Du måste ange en rubrik för föreningskalendern"
 
-#: src/Services/Admin.php:1126
+#: src/Services/Admin.php:1163
 msgid "You have to enter title for the upcoming games field"
 msgstr "Du måste ange en rubrik för kommande matcher på gruppsidor"
 
-#: src/Services/Admin.php:1144
+#: src/Services/Admin.php:1181
 msgid "You have to enter title for the members field"
 msgstr "Du måste ange en rubrik för medlemmar på gruppsidor"
 
-#: src/Services/Admin.php:1162
+#: src/Services/Admin.php:1199
 msgid "You have to enter title for the leaders field"
 msgstr "Du måste ange en rubrik för ledare på gruppsidor"
 
-#: src/Services/Admin.php:1180
+#: src/Services/Admin.php:1217
 msgid "You must enter a title for the news field"
 msgstr "Du måste ange en rubrik för nyheter på gruppsidor"
 
-#: src/Services/Admin.php:1198
+#: src/Services/Admin.php:1235
 msgid "You must enter a title for the club news field"
 msgstr "Du måste ange en rubrik för nyheter för föreningen"
 
-#: src/Services/Admin.php:1245
+#: src/Services/Admin.php:1282
 msgid "The selected template was not found."
 msgstr "Vald mall kunde inte hittas."
 
-#: src/Services/Admin.php:1406
+#: src/Services/Admin.php:1443
 msgid "news"
 msgstr "nyheter"
 
-#: src/Services/Admin.php:1411
+#: src/Services/Admin.php:1448
 msgid "groups"
 msgstr "grupper"
 
-#: src/Services/Admin.php:1417
+#: src/Services/Admin.php:1454
 msgid "The %1$s update task is currently running."
 msgstr "Uppdateringen av %1$s håller på att köras."
 
-#: src/Services/Admin.php:1422
+#: src/Services/Admin.php:1459
 msgid "Not synchronized yet"
 msgstr "Ingen synkronisering än"
 

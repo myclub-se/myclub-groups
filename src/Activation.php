@@ -132,6 +132,11 @@ class Activation
                 'autoload' => 'no',
             ],
             [
+                'name'  => 'myclub_groups_delete_unused_news',
+                'value' => '0',
+                'autoload' => 'no',
+            ],
+            [
                 'name'  => 'myclub_groups_show_items_order',
                 'value' => array (
                     'default',

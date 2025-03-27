@@ -187,6 +187,13 @@ class Admin extends Base
             ],
             'default'           => '0'
         ] );
+        register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_delete_unused_news', [
+            'sanitize_callback' => [
+                $this,
+                'sanitize_checkbox'
+            ],
+            'default'           => '0'
+        ] );
         register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_last_news_sync', [
             'default' => NULL
         ] );
@@ -354,6 +361,10 @@ class Admin extends Base
             $this,
             'render_add_news_categories'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_main', [ 'label_for' => 'myclub_groups_add_news_categories' ] );
+        add_settings_field( 'myclub_groups_delete_unused_news', __( 'Delete posts for news deleted from MyClub', 'myclub-groups' ), [
+            $this,
+            'render_delete_unused_news'
+        ], 'myclub_groups_settings_tab1', 'myclub_groups_main', [ 'label_for' => 'myclub_groups_delete_unused_news' ] );
         add_settings_field( 'myclub_groups_last_news_sync', __( 'News last synchronized', 'myclub-groups' ), [
             $this,
             'render_news_last_sync'
@@ -669,6 +680,18 @@ class Admin extends Base
     public function render_add_news_categories( array $args )
     {
         $this->render_checkbox( $args, 'myclub_groups_add_news_categories', 'news_categories', __( 'Add news categories for group news', 'myclub-groups' ) );
+    }
+
+    /**
+     * Renders the checkbox option for deleting unused news posts from MyClub.
+     *
+     * @param array $args Arguments passed for rendering the checkbox.
+     * @return void
+     * @since 1.3.3
+     */
+    public function render_delete_unused_news( array $args )
+    {
+        $this->render_checkbox( $args, 'myclub_groups_delete_unused_news', 'delete_unused_news', __( 'Delete posts for news deleted from MyClub', 'myclub-groups' ) );
     }
 
     /**

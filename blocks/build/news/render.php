@@ -20,7 +20,7 @@ if ( !empty( $attributes ) ) {
 if ( empty ( $post_id ) || $post_id == 0 ) {
     echo esc_html__( 'No group page found. Invalid post_id or group_id.', 'myclub-groups' );
 } else {
-    $meta = get_post_meta( $post_id, 'myclub_group_id' );
+    $meta = get_post_meta( $post_id, 'myclub_groups_id' );
 
     ?>
     <?php
@@ -30,7 +30,7 @@ if ( empty ( $post_id ) || $post_id == 0 ) {
             'taxonomy'   => NewsService::MYCLUB_GROUP_NEWS,
             'meta_query' => [
                 [
-                    'key'     => 'myclub_group_id',
+                    'key'     => 'myclub_groups_id',
                     'value'   => $myclub_group_id,
                     'compare' => '='
                 ]
@@ -63,12 +63,16 @@ if ( empty ( $post_id ) || $post_id == 0 ) {
                 <?php
                 foreach ( $posts as $post ) {
                     $image_url = get_the_post_thumbnail_url( $post->ID, 'thumbnail' );
+                    $image_caption = get_the_post_thumbnail_caption( $post->ID );
                     ?>
             <div class="myclub-news-item">
                 <h4><a href="<?php echo esc_attr( get_permalink( $post->ID ) ) ; ?>"><?php echo esc_attr( $post->post_title ); ?></a></h4>
                 <?php if ( $image_url ) {?>
                 <div class="myclub-news-image">
                     <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $post->post_title ); ?>" />
+                    <?php if ( $image_caption ) { ?>
+                        <div class="myclub-news-image-caption"><?php echo esc_attr( $image_caption ); ?></div>
+                    <?php } ?>
                 </div>
                 <?php }
                     if ( $post->post_excerpt ) {
