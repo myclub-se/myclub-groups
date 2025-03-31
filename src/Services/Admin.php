@@ -338,12 +338,30 @@ class Admin extends Base
         ] );
 
         add_settings_section( 'myclub_groups_main', __( 'MyClub Groups Main Settings', 'myclub-groups' ), function () {
+            echo '<p>';
+            esc_attr_e(
+                'Here are the general settings available from the MyClub Groups plugin. The available Gutenberg blocks and their usage is described under the "Gutenberg blocks" tab. The available shortcodes and their usage are described under the "Shortcodes" tab. Please check the documentation there.',
+                'myclub-groups'
+            );
+            echo '</p>';
         }, 'myclub_groups_settings_tab1' );
         add_settings_section( 'myclub_groups_sync', __( 'Synchronization information', 'myclub-groups' ), function () {
         }, 'myclub_groups_settings_tab1' );
         add_settings_section( 'myclub_groups_title_settings', __( 'Title settings', 'myclub-groups' ), function () {
+            echo '<p>';
+            esc_attr_e(
+                'Here you can set the titles for the fields that are displayed on the group pages. The titles are used in the Gutenberg blocks and shortcodes. You cannot leave the title field empty.',
+                'myclub-groups'
+            );
+            echo '</p>';
         }, 'myclub_groups_settings_tab2' );
         add_settings_section( 'myclub_groups_display_settings', __( 'Display settings', 'myclub-groups' ), function () {
+            echo '<p>';
+            esc_attr_e(
+                'Here you can set the display options for the group pages. You select which fields should be visible and then in which order. On a Gutenberg theme you can also choose which template should be used for the group pages.',
+                'myclub-groups'
+            );
+            echo '</p>';
         }, 'myclub_groups_settings_tab3' );
         add_settings_field( 'myclub_groups_api_key', __( 'MyClub API Key', 'myclub-groups' ), [
             $this,

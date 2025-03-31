@@ -38,6 +38,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         } else if( $active_tab === 'tab4' ) {
             ?> <h2><?php esc_attr_e( 'Gutenberg blocks', 'myclub-groups') ?></h2>
             <div><?php esc_attr_e( 'Here are the Gutenberg blocks available from the MyClub groups plugin', 'myclub-groups' )?></div>
+            <div><?php esc_attr_e( 'The group Gutenberg blocks require a post_id or a group_id parameter (the club blocks do not). The post_id parameter is the ID of the MyClub Groups page that the plugin creates for the Group. The group_id parameter is found on the MyClub Groups page under the MyClub group information tab - the property `MyClub group id`', 'myclub-groups' )?></div>
             <ul>
                 <li><strong><?php esc_attr_e( 'Calendar', 'myclub-groups' ) ?></strong> - <?php myclub_groups_allow_code_html( __( 'The calendar block will display a group calendar. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the calendar from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page.', 'myclub-groups' ) ) ?></li>
                 <li><strong><?php esc_attr_e( 'Club calendar', 'myclub-groups' ) ?></strong> - <?php esc_html_e( "The club calendar block will display the club calendar. This block doesn't require any attributes.", 'myclub-groups' ) ?></li>
@@ -54,6 +55,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         } else { ?>
             <h2><?php esc_attr_e( 'Shortcodes', 'myclub-groups' ) ?></h2>
             <div><?php esc_attr_e( 'Here are the shortcodes available from the MyClub groups plugin', 'myclub-groups' ) ?></div>
+            <div><?php esc_attr_e( 'The group shortcodes require a post_id or a group_id parameter (the club shortcodes do not). The post_id parameter is the ID of the MyClub Groups page that the plugin creates for the Group. The group_id parameter is found on the MyClub Groups page under the MyClub group information tab - the property `MyClub group id`', 'myclub-groups' )?></div>
             <ul>
                 <li><code>[myclub-groups-calendar]</code> - <?php myclub_groups_allow_code_html( __( 'The calendar shortcode will display a group calendar. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the calendar from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page.', 'myclub-groups' ) ) ?></li>
                 <li><code>[myclub-groups-club-calendar]</code> - <?php esc_html_e( "The club calendar shortcode will display the club calendar. This block doesn't require any attributes.", 'myclub-groups' ) ?></li>
