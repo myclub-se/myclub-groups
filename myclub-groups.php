@@ -4,7 +4,7 @@
 Plugin Name: MyClub Groups
 Plugin URI: https://github.com/myclub-se/myclub-groups
 Description: Retrieves group information from the MyClub member administration platform. Generates pages for groups defined in the MyClub platform.
-Version: 1.3.4
+Version: 1.3.5
 Requires at least: 6.4
 Tested up to: 6.7.1
 Requires PHP: 7.4
@@ -32,7 +32,7 @@ if ( file_exists( plugin_dir_path( __FILE__ ) . '/lib/autoload.php' ) ) {
     require_once( plugin_dir_path( __FILE__ ) . '/lib/autoload.php' );
 }
 
-define( 'MYCLUB_GROUPS_PLUGIN_VERSION', '1.3.4' );
+define( 'MYCLUB_GROUPS_PLUGIN_VERSION', '1.3.5' );
 
 ImageTask::init();
 RefreshGroupsTask::init();

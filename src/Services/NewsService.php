@@ -433,17 +433,21 @@ class NewsService extends Groups
      */
     private function create_news_args( object $news_item, int $post_id = null ): array
     {
-        $time = str_replace( 'T', ' ', str_replace( 'Z', '', $news_item->published_date ) );
-
         // Get time for post and make sure that the time is correct with utc time as well
         try {
-            $date_time_utc = new DateTime( $time, $this->myclub_timezone );
+            $date_time = new DateTime( $news_item->published_date );
+
+            // Convert the date to UTC timezone
+            $date_time_utc = clone $date_time;
             $date_time_utc->setTimezone( $this->utc_timezone );
             $gmtTime = $date_time_utc->format( 'Y-m-d H:i:s' );
 
-            $date_time_utc->setTimezone( $this->timezone );
-            $time = $date_time_utc->format( 'Y-m-d H:i:s' );
+            // Convert the date to the site's local timezone
+            $date_time->setTimezone( $this->timezone );
+            $time = $date_time->format( 'Y-m-d H:i:s' );
         } catch ( Exception $e ) {
+            // Fallback if parsing fails (use the original string without conversion)
+            $time = $news_item->published_date;
             $gmtTime = $time;
         }
 
