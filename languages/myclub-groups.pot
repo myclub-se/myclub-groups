@@ -2,63 +2,68 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MyClub Groups 1.3.4\n"
+"Project-Id-Version: MyClub Groups 2.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/myclub-groups\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-03-31T13:58:01+00:00\n"
+"POT-Creation-Date: 2025-06-02T09:06:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.9.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: myclub-groups\n"
 
 #. Plugin Name of the plugin
+#: myclub-groups.php
 #: src/Services/Admin.php:102
 #: src/Services/Admin.php:1333
 msgid "MyClub Groups"
 msgstr ""
 
 #. Plugin URI of the plugin
+#: myclub-groups.php
 msgid "https://github.com/myclub-se/myclub-groups"
 msgstr ""
 
 #. Description of the plugin
+#: myclub-groups.php
 msgid "Retrieves group information from the MyClub member administration platform. Generates pages for groups defined in the MyClub platform."
 msgstr ""
 
 #. Author of the plugin
+#: myclub-groups.php
 msgid "MyClub AB"
 msgstr ""
 
 #. Author URI of the plugin
+#: myclub-groups.php
 msgid "https://www.myclub.se"
 msgstr ""
 
-#: blocks/build/calendar/render.php:19
-#: blocks/build/coming-games/render.php:19
-#: blocks/build/leaders/render.php:21
-#: blocks/build/members/render.php:20
-#: blocks/build/navigation/render.php:18
+#: blocks/build/calendar/render.php:20
+#: blocks/build/coming-games/render.php:20
+#: blocks/build/leaders/render.php:13
+#: blocks/build/members/render.php:13
+#: blocks/build/navigation/render.php:19
 #: blocks/build/news/render.php:21
 #: blocks/build/title/render.php:18
-#: blocks/src/calendar/render.php:19
-#: blocks/src/coming-games/render.php:19
-#: blocks/src/leaders/render.php:21
-#: blocks/src/members/render.php:20
-#: blocks/src/navigation/render.php:18
+#: blocks/src/calendar/render.php:20
+#: blocks/src/coming-games/render.php:20
+#: blocks/src/leaders/render.php:13
+#: blocks/src/members/render.php:13
+#: blocks/src/navigation/render.php:19
 #: blocks/src/news/render.php:21
 #: blocks/src/title/render.php:18
 msgid "No group page found. Invalid post_id or group_id."
 msgstr ""
 
-#: blocks/build/calendar/render.php:26
+#: blocks/build/calendar/render.php:25
 #: blocks/build/club-calendar/render.php:18
-#: blocks/src/calendar/render.php:26
+#: blocks/src/calendar/render.php:25
 #: blocks/src/club-calendar/render.php:18
-#: src/Activation.php:56
-#: src/Activation.php:61
+#: src/Activation.php:63
+#: src/Activation.php:68
 #: src/Services/Admin.php:211
 #: src/Services/Admin.php:219
 #: src/Services/Admin.php:728
@@ -73,19 +78,19 @@ msgstr ""
 msgid "Calendar"
 msgstr ""
 
-#: blocks/build/calendar/render.php:27
+#: blocks/build/calendar/render.php:26
 #: blocks/build/club-calendar/render.php:19
-#: blocks/src/calendar/render.php:27
+#: blocks/src/calendar/render.php:26
 #: blocks/src/club-calendar/render.php:19
 msgid "Information"
 msgstr ""
 
-#: blocks/build/calendar/render.php:28
+#: blocks/build/calendar/render.php:27
 #: blocks/build/club-calendar/render.php:20
-#: blocks/src/calendar/render.php:28
+#: blocks/src/calendar/render.php:27
 #: blocks/src/club-calendar/render.php:20
-#: templates/admin/admin_myclub_groups_activities.php:10
-#: templates/admin/admin_myclub_groups_members.php:9
+#: templates/admin/admin_myclub_groups_activities.php:14
+#: templates/admin/admin_myclub_groups_members.php:15
 #: blocks/build/calendar/index.js:1
 #: blocks/build/club-calendar/index.js:1
 #: blocks/src/calendar/edit.js:16
@@ -93,9 +98,9 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: blocks/build/calendar/render.php:29
+#: blocks/build/calendar/render.php:28
 #: blocks/build/club-calendar/render.php:21
-#: blocks/src/calendar/render.php:29
+#: blocks/src/calendar/render.php:28
 #: blocks/src/club-calendar/render.php:21
 #: blocks/build/calendar/index.js:1
 #: blocks/build/club-calendar/index.js:1
@@ -104,11 +109,11 @@ msgstr ""
 msgid "When"
 msgstr ""
 
-#: blocks/build/calendar/render.php:30
+#: blocks/build/calendar/render.php:29
 #: blocks/build/club-calendar/render.php:22
-#: blocks/src/calendar/render.php:30
+#: blocks/src/calendar/render.php:29
 #: blocks/src/club-calendar/render.php:22
-#: templates/admin/admin_myclub_groups_activities.php:14
+#: templates/admin/admin_myclub_groups_activities.php:18
 #: blocks/build/calendar/index.js:1
 #: blocks/build/club-calendar/index.js:1
 #: blocks/src/calendar/edit.js:18
@@ -116,9 +121,9 @@ msgstr ""
 msgid "Location"
 msgstr ""
 
-#: blocks/build/calendar/render.php:31
+#: blocks/build/calendar/render.php:30
 #: blocks/build/club-calendar/render.php:23
-#: blocks/src/calendar/render.php:31
+#: blocks/src/calendar/render.php:30
 #: blocks/src/club-calendar/render.php:23
 #: blocks/build/calendar/index.js:1
 #: blocks/build/club-calendar/index.js:1
@@ -127,9 +132,9 @@ msgstr ""
 msgid "Gathering location"
 msgstr ""
 
-#: blocks/build/calendar/render.php:32
+#: blocks/build/calendar/render.php:31
 #: blocks/build/club-calendar/render.php:24
-#: blocks/src/calendar/render.php:32
+#: blocks/src/calendar/render.php:31
 #: blocks/src/club-calendar/render.php:24
 #: blocks/build/calendar/index.js:1
 #: blocks/build/club-calendar/index.js:1
@@ -138,44 +143,44 @@ msgstr ""
 msgid "Gathering time"
 msgstr ""
 
-#: blocks/build/calendar/render.php:33
+#: blocks/build/calendar/render.php:32
 #: blocks/build/club-calendar/render.php:25
-#: blocks/src/calendar/render.php:33
+#: blocks/src/calendar/render.php:32
 #: blocks/src/club-calendar/render.php:25
 msgid "today"
 msgstr ""
 
-#: blocks/build/calendar/render.php:34
+#: blocks/build/calendar/render.php:33
 #: blocks/build/club-calendar/render.php:26
-#: blocks/src/calendar/render.php:34
+#: blocks/src/calendar/render.php:33
 #: blocks/src/club-calendar/render.php:26
 msgid "day"
 msgstr ""
 
-#: blocks/build/calendar/render.php:35
+#: blocks/build/calendar/render.php:34
 #: blocks/build/club-calendar/render.php:27
-#: blocks/src/calendar/render.php:35
+#: blocks/src/calendar/render.php:34
 #: blocks/src/club-calendar/render.php:27
 msgid "month"
 msgstr ""
 
-#: blocks/build/calendar/render.php:36
+#: blocks/build/calendar/render.php:35
 #: blocks/build/club-calendar/render.php:28
-#: blocks/src/calendar/render.php:36
+#: blocks/src/calendar/render.php:35
 #: blocks/src/club-calendar/render.php:28
 msgid "week"
 msgstr ""
 
-#: blocks/build/calendar/render.php:37
+#: blocks/build/calendar/render.php:36
 #: blocks/build/club-calendar/render.php:29
-#: blocks/src/calendar/render.php:37
+#: blocks/src/calendar/render.php:36
 #: blocks/src/club-calendar/render.php:29
 msgid "list"
 msgstr ""
 
-#: blocks/build/calendar/render.php:38
+#: blocks/build/calendar/render.php:37
 #: blocks/build/club-calendar/render.php:30
-#: blocks/src/calendar/render.php:38
+#: blocks/src/calendar/render.php:37
 #: blocks/src/club-calendar/render.php:30
 #: blocks/build/calendar/index.js:1
 #: blocks/build/club-calendar/index.js:1
@@ -184,9 +189,9 @@ msgstr ""
 msgid "W"
 msgstr ""
 
-#: blocks/build/calendar/render.php:39
+#: blocks/build/calendar/render.php:38
 #: blocks/build/club-calendar/render.php:31
-#: blocks/src/calendar/render.php:39
+#: blocks/src/calendar/render.php:38
 #: blocks/src/club-calendar/render.php:31
 #: blocks/build/calendar/index.js:1
 #: blocks/build/club-calendar/index.js:1
@@ -201,15 +206,15 @@ msgstr ""
 #: blocks/src/club-news/render.php:5
 #: blocks/src/club-news/render.php:53
 #: blocks/src/news/render.php:8
-#: src/Activation.php:81
+#: src/Activation.php:88
 #: src/Services/Admin.php:251
 #: src/Services/Admin.php:258
 #: src/Services/Admin.php:777
 #: src/Services/Admin.php:864
 #: src/Services/Admin.php:974
 #: src/Services/Admin.php:1050
-#: src/Services/NewsService.php:75
-#: src/Services/NewsService.php:78
+#: src/Services/NewsService.php:89
+#: src/Services/NewsService.php:92
 #: templates/admin/admin_settings.php:51
 msgid "News"
 msgstr ""
@@ -232,34 +237,34 @@ msgstr ""
 msgid "No news found"
 msgstr ""
 
-#: blocks/build/coming-games/render.php:58
+#: blocks/build/coming-games/render.php:59
 #: blocks/build/leaders/render.php:75
-#: blocks/build/members/render.php:72
-#: blocks/src/coming-games/render.php:58
+#: blocks/build/members/render.php:73
+#: blocks/src/coming-games/render.php:59
 #: blocks/src/leaders/render.php:75
-#: blocks/src/members/render.php:72
+#: blocks/src/members/render.php:73
 msgid "Show more"
 msgstr ""
 
-#: blocks/build/coming-games/render.php:59
+#: blocks/build/coming-games/render.php:60
 #: blocks/build/leaders/render.php:76
-#: blocks/build/members/render.php:73
-#: blocks/src/coming-games/render.php:59
+#: blocks/build/members/render.php:74
+#: blocks/src/coming-games/render.php:60
 #: blocks/src/leaders/render.php:76
-#: blocks/src/members/render.php:73
+#: blocks/src/members/render.php:74
 msgid "Show less"
 msgstr ""
 
-#: blocks/build/coming-games/render.php:64
-#: blocks/src/coming-games/render.php:64
+#: blocks/build/coming-games/render.php:65
+#: blocks/src/coming-games/render.php:65
 msgid "No upcoming games"
 msgstr ""
 
-#: blocks/build/leaders/render.php:29
+#: blocks/build/leaders/render.php:28
 #: blocks/build/members/render.php:28
-#: blocks/src/leaders/render.php:29
+#: blocks/src/leaders/render.php:28
 #: blocks/src/members/render.php:28
-#: templates/admin/admin_myclub_groups_members.php:13
+#: templates/admin/admin_myclub_groups_members.php:19
 #: blocks/build/leaders/index.js:1
 #: blocks/build/members/index.js:1
 #: blocks/src/leaders/edit.js:27
@@ -267,13 +272,13 @@ msgstr ""
 msgid "Age"
 msgstr ""
 
-#: blocks/build/leaders/render.php:30
+#: blocks/build/leaders/render.php:29
 #: blocks/build/members/render.php:29
 #: blocks/build/title/render.php:48
-#: blocks/src/leaders/render.php:30
+#: blocks/src/leaders/render.php:29
 #: blocks/src/members/render.php:29
 #: blocks/src/title/render.php:48
-#: templates/admin/admin_myclub_groups_members.php:11
+#: templates/admin/admin_myclub_groups_members.php:17
 #: blocks/build/leaders/index.js:1
 #: blocks/build/members/index.js:1
 #: blocks/build/title/index.js:1
@@ -283,11 +288,11 @@ msgstr ""
 msgid "E-mail"
 msgstr ""
 
-#: blocks/build/leaders/render.php:31
+#: blocks/build/leaders/render.php:30
 #: blocks/build/members/render.php:30
-#: blocks/src/leaders/render.php:31
+#: blocks/src/leaders/render.php:30
 #: blocks/src/members/render.php:30
-#: templates/admin/admin_myclub_groups_members.php:10
+#: templates/admin/admin_myclub_groups_members.php:16
 #: blocks/build/leaders/index.js:1
 #: blocks/build/members/index.js:1
 #: blocks/src/leaders/edit.js:26
@@ -295,11 +300,11 @@ msgstr ""
 msgid "Role"
 msgstr ""
 
-#: blocks/build/leaders/render.php:32
+#: blocks/build/leaders/render.php:31
 #: blocks/build/members/render.php:31
-#: blocks/src/leaders/render.php:32
+#: blocks/src/leaders/render.php:31
 #: blocks/src/members/render.php:31
-#: templates/admin/admin_myclub_groups_members.php:12
+#: templates/admin/admin_myclub_groups_members.php:18
 #: templates/admin/admin_myclub_groups_metabox_tabs.php:70
 #: blocks/build/leaders/index.js:1
 #: blocks/build/members/index.js:1
@@ -323,7 +328,7 @@ msgstr ""
 msgid "Telephone"
 msgstr ""
 
-#: src/Activation.php:66
+#: src/Activation.php:73
 #: src/Services/Admin.php:227
 #: src/Services/Admin.php:796
 #: src/Services/Admin.php:1016
@@ -332,24 +337,24 @@ msgstr ""
 msgid "Upcoming games"
 msgstr ""
 
-#: src/Activation.php:71
+#: src/Activation.php:78
 #: src/Services/Admin.php:235
 #: src/Services/Admin.php:815
 #: src/Services/Admin.php:904
 #: src/Services/Admin.php:1046
-#: templates/admin/admin_myclub_groups_members.php:36
+#: templates/admin/admin_myclub_groups_members.php:42
 #: templates/admin/admin_settings.php:47
 #: blocks/build/leaders/index.js:1
 #: blocks/src/leaders/edit.js:16
 msgid "Leaders"
 msgstr ""
 
-#: src/Activation.php:76
+#: src/Activation.php:83
 #: src/Services/Admin.php:243
 #: src/Services/Admin.php:834
 #: src/Services/Admin.php:932
 #: src/Services/Admin.php:1047
-#: templates/admin/admin_myclub_groups_members.php:19
+#: templates/admin/admin_myclub_groups_members.php:25
 #: templates/admin/admin_myclub_groups_metabox_tabs.php:60
 #: templates/admin/admin_settings.php:48
 #: blocks/build/members/index.js:1
@@ -362,6 +367,7 @@ msgid "Every Minute"
 msgstr ""
 
 #: src/BackgroundProcessing/Background_Process.php:699
+#, php-format
 msgid "Every %d Minutes"
 msgstr ""
 
@@ -371,7 +377,7 @@ msgstr ""
 
 #: src/Services/Admin.php:126
 #: src/Services/Admin.php:130
-#: src/Services/NewsService.php:170
+#: src/Services/NewsService.php:184
 #: src/Services/Taxonomy.php:166
 msgid "Group news"
 msgstr ""
@@ -532,11 +538,13 @@ msgstr ""
 
 #. translators: 1: number of groups
 #: src/Services/Admin.php:643
+#, php-format
 msgid "There is currently <strong>%1$s groups</strong> loaded from the MyClub member system."
 msgstr ""
 
 #. translators: 1: number of news items
 #: src/Services/Admin.php:646
+#, php-format
 msgid "There is currently <strong>%1$s group news items</strong> loaded from the MyClub member system."
 msgstr ""
 
@@ -607,6 +615,7 @@ msgid "groups"
 msgstr ""
 
 #: src/Services/Admin.php:1472
+#, php-format
 msgid "The %1$s update task is currently running."
 msgstr ""
 
@@ -614,7 +623,7 @@ msgstr ""
 msgid "Not synchronized yet"
 msgstr ""
 
-#: src/Services/Api.php:130
+#: src/Services/Api.php:131
 msgid "There is no MyClub Group post with that ID"
 msgstr ""
 
@@ -744,8 +753,8 @@ msgstr ""
 #: blocks/build/title/index.js:1
 #: blocks/src/calendar/edit.js:153
 #: blocks/src/coming-games/edit.js:34
-#: blocks/src/leaders/edit.js:125
-#: blocks/src/members/edit.js:122
+#: blocks/src/leaders/edit.js:122
+#: blocks/src/members/edit.js:119
 #: blocks/src/navigation/edit.js:31
 #: blocks/src/news/edit.js:33
 #: blocks/src/title/edit.js:67
@@ -756,15 +765,15 @@ msgstr ""
 msgid "MyClub group information"
 msgstr ""
 
-#: templates/admin/admin_myclub_groups_activities.php:11
+#: templates/admin/admin_myclub_groups_activities.php:15
 msgid "Day"
 msgstr ""
 
-#: templates/admin/admin_myclub_groups_activities.php:12
+#: templates/admin/admin_myclub_groups_activities.php:16
 msgid "Start time"
 msgstr ""
 
-#: templates/admin/admin_myclub_groups_activities.php:13
+#: templates/admin/admin_myclub_groups_activities.php:17
 msgid "End time"
 msgstr ""
 
@@ -964,8 +973,8 @@ msgstr ""
 #: blocks/build/title/index.js:1
 #: blocks/src/calendar/edit.js:150
 #: blocks/src/coming-games/edit.js:30
-#: blocks/src/leaders/edit.js:121
-#: blocks/src/members/edit.js:118
+#: blocks/src/leaders/edit.js:118
+#: blocks/src/members/edit.js:115
 #: blocks/src/navigation/edit.js:27
 #: blocks/src/news/edit.js:29
 #: blocks/src/title/edit.js:63
@@ -982,12 +991,12 @@ msgid "No group selected"
 msgstr ""
 
 #: blocks/build/leaders/index.js:1
-#: blocks/src/leaders/edit.js:115
+#: blocks/src/leaders/edit.js:112
 msgid "No groups with leaders selected"
 msgstr ""
 
 #: blocks/build/members/index.js:1
-#: blocks/src/members/edit.js:112
+#: blocks/src/members/edit.js:109
 msgid "No members found"
 msgstr ""
 
