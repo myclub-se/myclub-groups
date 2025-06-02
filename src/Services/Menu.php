@@ -22,7 +22,7 @@ class Menu
     {
         add_action( 'init', [
             $this,
-            'init_groups_menu'
+            'initGroupsMenu'
         ] );
     }
 
@@ -34,7 +34,7 @@ class Menu
      *
      * @return void
      */
-    public function init_groups_menu()
+    public function initGroupsMenu()
     {
         register_nav_menu( 'myclub-groups-menu', 'MyClub Groups Menu Location' );
 

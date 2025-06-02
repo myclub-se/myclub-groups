@@ -1,0 +1,85 @@
+<?php
+
+namespace MyClub\MyClubGroups;
+
+use MyClub\MyClubGroups\Services\ActivityService;
+use MyClub\MyClubGroups\Services\GroupService;
+use MyClub\MyClubGroups\Services\MemberService;
+use WP_Query;
+
+if ( !defined( 'ABSPATH' ) ) exit;
+
+/**
+ * Handles database migrations for the MyClub Groups plugin.
+ */
+class Migration
+{
+    const VERSION_OPTION = 'myclub_groups_version';
+    const CURRENT_VERSION = MYCLUB_GROUPS_PLUGIN_VERSION;
+
+    /**
+     * Checks if any migrations need to be executed by comparing the installed version
+     * with the current version. If the installed version is less than the current version,
+     * it triggers the migration process.
+     *
+     * @return void
+     * @since 2.0.0
+     */
+    public static function checkMigrations()
+    {
+        $installed_version = get_option( self::VERSION_OPTION, '1.3.5' );
+
+        if ( version_compare( $installed_version, self::CURRENT_VERSION, '<' ) ) {
+            self::migrate( $installed_version );
+        }
+    }
+
+    /**
+     * Migrates the system to ensure it is compatible with the current version.
+     *
+     * @param string $installed_version The currently installed version of the system.
+     * @return void
+     * @since 2.0.0
+     */
+    public static function migrate( string $installed_version )
+    {
+        if ( version_compare( $installed_version, '2.0.0', '<' ) ) {
+            self::migrateMyclubGroupTables();
+        }
+
+        update_option( self::VERSION_OPTION, self::CURRENT_VERSION );
+    }
+
+    /**
+     * Migrates the MyClub group tables by performing the following operations:
+     * - Creates the required activity and member tables.
+     * - Deletes old metadata fields associated with group activities and members.
+     * - Reloads groups to reflect the updated structure.
+     *
+     * @return void
+     * @since 2.0.0
+     */
+    private static function migrateMyclubGroupTables()
+    {
+        ActivityService::createActivityTables();
+        MemberService::createMemberTable();
+
+        // Remove the old metadata fields (if present)
+        $query = new WP_Query( [
+            'post_type'      => GroupService::MYCLUB_GROUPS,
+            'posts_per_page' => -1,
+            'fields'         => 'ids',
+        ] );
+
+        if ( $query->have_posts() ) {
+            foreach ( $query->posts as $post_id ) {
+                delete_post_meta( $post_id, 'myclub_groups_activities' );
+                delete_post_meta( $post_id, 'myclub_groups_members' );
+            }
+        }
+
+        ( new GroupService() )->reloadGroups();
+
+        unset( $query );
+    }
+}

@@ -1,7 +1,11 @@
 <?php
+
+use MyClub\MyClubGroups\Services\ActivityService;
+
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-$activities = json_decode( get_post_meta( get_the_ID(), 'myclub_groups_activities', true ) );
+$activities = ActivityService::listPostActivities( get_the_ID() );
+
 ?>
 
 <div class="activity-box">

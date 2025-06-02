@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 function myclub_groups_render_meta_data_date( $post, $label, $name )
 {
-    $value = Utils::format_date_time( get_post_meta( $post, $name, true ) );
+    $value = Utils::formatDateTime( get_post_meta( $post, $name, true ) );
 
     echo '<div class="metadata-wrap">';
     echo '<p class="post-attributes-label-wrapper">';

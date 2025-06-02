@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 <?php
 
 if ( !empty( $attributes ) ) {
-    $post_id = Utils::get_post_id( $attributes );
+    $post_id = Utils::getPostId( $attributes );
 }
 
 if ( empty ( $post_id ) || $post_id == 0 ) {

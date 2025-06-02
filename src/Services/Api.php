@@ -4,6 +4,7 @@ namespace MyClub\MyClubGroups\Services;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+use MyClub\MyClubGroups\Utils;
 use WP_Error;
 use WP_Query;
 use WP_REST_Request;
@@ -29,7 +30,7 @@ class Api
     {
         add_action( 'rest_api_init', [
             $this,
-            'register_routes'
+            'registerRoutes'
         ] );
     }
 
@@ -40,13 +41,13 @@ class Api
      *
      * @return void
      */
-    public function register_routes()
+    public function registerRoutes()
     {
         register_rest_route( 'myclub/v1', '/club-activities', [
             'methods'             => 'GET',
             'callback'            => [
                 $this,
-                'return_club_activities'
+                'returnClubActivities'
             ],
             'permission_callback' => function () {
                 return current_user_can( 'manage_options' );
@@ -57,7 +58,7 @@ class Api
             'methods'             => 'GET',
             'callback'            => [
                 $this,
-                'return_options'
+                'returnOptions'
             ],
             'permission_callback' => function () {
                 return current_user_can( 'manage_options' );
@@ -68,7 +69,7 @@ class Api
             'methods'             => 'GET',
             'callback'            => [
                 $this,
-                'return_groups'
+                'returnGroups'
             ],
             'permission_callback' => function () {
                 return current_user_can( 'edit_posts' );
@@ -79,7 +80,7 @@ class Api
             'methods'             => 'GET',
             'callback'            => [
                 $this,
-                'return_group'
+                'returnGroup'
             ],
             'permission_callback' => function () {
                 return current_user_can( 'edit_posts' );
@@ -101,7 +102,7 @@ class Api
      *
      * @return WP_REST_Response The response containing the list of club activities.
      */
-    public function return_club_activities(): WP_REST_Response
+    public function returnClubActivities(): WP_REST_Response
     {
         return new WP_REST_Response( CalendarService::ListActivities(), 200 );
     }
@@ -120,7 +121,7 @@ class Api
      * @since 1.0.0
      *
      */
-    public function return_group( WP_REST_Request $request ): WP_REST_Response
+    public function returnGroup( WP_REST_Request $request ): WP_REST_Response
     {
         $post = get_post( $request[ 'id' ] );
 
@@ -135,11 +136,12 @@ class Api
         $post_id = $post->ID;
 
         return new WP_REST_Response( [
-            'activities'   => get_post_meta( $post_id, 'myclub_groups_activities', true ),
+            'activities'   => Utils::prepareActivitiesJson( ActivityService::listPostActivities( $post_id ) ),
             'contact_name' => get_post_meta( $post_id, 'myclub_groups_contact_name', true ),
             'email'        => get_post_meta( $post_id, 'myclub_groups_email', true ),
             'info_text'    => get_post_meta( $post_id, 'myclub_groups_info_text', true ),
-            'members'      => get_post_meta( $post_id, 'myclub_groups_members', true ),
+            'leaders'      => Utils::prepareMembersJson( MemberService::listGroupMembers( $post_id, true ) ),
+            'members'      => Utils::prepareMembersJson( MemberService::listGroupMembers( $post_id ) ),
             'phone'        => get_post_meta( $post_id, 'myclub_groups_phone', true ),
             'title'        => get_the_title( $post_id ),
         ], 200 );
@@ -155,7 +157,7 @@ class Api
      *
      * @since 1.0.0
      */
-    public function return_groups(): WP_REST_Response
+    public function returnGroups(): WP_REST_Response
     {
         $args = array (
             'post_type'      => GroupService::MYCLUB_GROUPS,
@@ -194,7 +196,7 @@ class Api
      *
      * @since 1.0.0
      */
-    public function return_options(): WP_REST_Response
+    public function returnOptions(): WP_REST_Response
     {
         return new WP_REST_Response( [
             'myclub_groups_calendar_title'      => esc_attr( get_option( 'myclub_groups_calendar_title' ) ),

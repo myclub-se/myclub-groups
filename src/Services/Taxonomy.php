@@ -26,33 +26,33 @@ class Taxonomy extends Base
         // Add required custom posts
         add_action( 'init', [
             $this,
-            'init_CPT'
+            'initCPT'
         ], 5 );
 
         // Add required javascript and css for group pages in admin
         add_action( 'admin_enqueue_scripts', [
             $this,
-            'enqueue_scripts'
+            'enqueueScripts'
         ] );
 
         add_action( 'template_redirect', [
             $this,
-            'check_group_in_menus'
+            'checkGroupInMenus'
         ] );
 
         add_filter( 'body_class', [
             $this,
-            'add_body_class'
+            'addBodyClass'
         ] );
 
         add_filter( 'hidden_meta_boxes', [
             $this,
-            'show_groups_in_screen_options'
+            'showGroupsInScreenOptions'
         ], 10, 2);
 
         add_filter( 'single_template', [
             $this,
-            'show_single_group'
+            'showSingleGroup'
         ], 20 );
     }
 
@@ -64,7 +64,7 @@ class Taxonomy extends Base
      * @return void
      * @since 1.0.0
      */
-    public function init_CPT()
+    public function initCPT()
     {
         $slug = get_option( 'myclub_groups_group_slug' );
         if ( empty( $slug ) ) {
@@ -101,7 +101,7 @@ class Taxonomy extends Base
                 ],
                 'register_meta_box_cb' => [
                     $this,
-                    'register_meta_box'
+                    'registerMetaBox'
                 ],
                 'show_in_rest'         => true,
                 'show_in_nav_menus'    => true,
@@ -183,7 +183,7 @@ class Taxonomy extends Base
      * @return array The updated array of body classes.
      * @since 1.0.0
      */
-    public function add_body_class( array $classes ): array
+    public function addBodyClass( array $classes ): array
     {
         global $post;
 
@@ -201,7 +201,7 @@ class Taxonomy extends Base
      * @return void
      * @since 1.0.5
      */
-    public function check_group_in_menus()
+    public function checkGroupInMenus()
     {
         if ( is_singular( GroupService::MYCLUB_GROUPS ) ) {
             global $post;
@@ -233,7 +233,7 @@ class Taxonomy extends Base
      * @return void
      * @since 1.0.0
      */
-    public function enqueue_scripts()
+    public function enqueueScripts()
     {
         $current_page = get_current_screen();
 
@@ -254,11 +254,11 @@ class Taxonomy extends Base
      * @return void
      * @since 1.0.0
      */
-    public function register_meta_box()
+    public function registerMetaBox()
     {
         add_meta_box( 'myclub-groups-meta', __( 'MyClub group information', 'myclub-groups' ), [
             $this,
-            'render_meta_box'
+            'renderMetaBox'
         ], 'myclub-groups', 'normal', 'high' );
     }
 
@@ -270,7 +270,7 @@ class Taxonomy extends Base
      * @return void
      * @since 1.0.0
      */
-    public function render_meta_box()
+    public function renderMetaBox()
     {
         return require_once( "$this->plugin_path/templates/admin/admin_myclub_groups_metabox_tabs.php" );
     }
@@ -287,7 +287,7 @@ class Taxonomy extends Base
      * @return array The updated array of hidden items in the screen options.
      * @since 1.0.0
      */
-    public function show_groups_in_screen_options( array $hidden, WP_Screen $screen ): array {
+    public function showGroupsInScreenOptions( array $hidden, WP_Screen $screen ): array {
         if ( $screen->id == 'nav-menus' ) {
             $index = array_search( 'add-post-type-myclub-groups', $hidden );
 
@@ -305,7 +305,7 @@ class Taxonomy extends Base
      * @param mixed $single The current single template file.
      * @return string The single group template file path or the current single template file if the condition is not met.
      */
-    public function show_single_group( $single ): string
+    public function showSingleGroup( $single ): string
     {
         if ( !wp_is_block_theme() ) {
             $templateName = 'single-myclub-group.php';

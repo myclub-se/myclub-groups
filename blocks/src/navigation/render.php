@@ -1,5 +1,6 @@
 <?php
 
+use MyClub\MyClubGroups\Services\MemberService;
 use MyClub\MyClubGroups\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -11,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 <?php
 
 if ( !empty( $attributes ) ) {
-    $post_id = Utils::get_post_id( $attributes );
+    $post_id = Utils::getPostId( $attributes );
 }
 
 if ( empty ( $post_id ) || $post_id == 0 ) {
@@ -29,7 +30,19 @@ if ( empty ( $post_id ) || $post_id == 0 ) {
         // Check if $blockName starts with "myclub-groups/"
         if(!empty($block_name) && strpos($block_name, 'myclub-groups/') === 0) {
             $blockParts = explode("/", $block_name);
-            $myclub_blocks[] = end($blockParts);
+            $blockName = end( $blockParts );
+
+            if ( $blockName == "members" ) {
+                if ( !empty( MemberService::listGroupMemberIds( $post_id ) ) ) {
+                    $myclub_blocks[] = $blockName;
+                }
+            } else if ( $blockName == "leaders" ) {
+                if ( !empty( MemberService::listGroupMemberIds( $post_id, true ) ) ) {
+                    $myclub_blocks[] = $blockName;
+                }
+            } else {
+                $myclub_blocks[] = $blockName;
+            }
         }
     }
 

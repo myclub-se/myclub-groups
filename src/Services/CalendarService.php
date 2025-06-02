@@ -16,6 +16,11 @@ class CalendarService
         $this->api = new RestApi();
     }
 
+    public function __destruct()
+    {
+        unset( $this->api );
+    }
+
     /**
      * Retrieves a list of activities from the specified database table.
      *
@@ -24,9 +29,7 @@ class CalendarService
      */
     static public function ListActivities(): array
     {
-        $value = json_decode( get_option( 'myclub_groups_club_activities' ) );
-
-        return !empty( $value ) ? $value : [];
+        return ActivityService::listClubActivities() ?? [];
     }
 
     /**
@@ -36,24 +39,52 @@ class CalendarService
      * @return void
      * @since 1.3.0
      */
-    public function reload_club_events(): void
+    public function reloadClubEvents(): void
     {
-        $response = $this->api->load_club_calendar();
+        $response = $this->api->loadClubCalendar();
 
         if ( !is_wp_error( $response ) && $response->status === 200 ) {
+            $update = false;
+            $activity_ids = array ();
+
             foreach ( $response->result->results as $activity ) {
-                $activity->description = str_replace( "\n", '<br />', htmlspecialchars( $activity->description, ENT_QUOTES, 'UTF-8' ) );
+                $update = ActivityService::createOrUpdateActivity( $activity, [ "show_on_club_calendar" => 1 ] ) || $update;
+                $activity_ids[] = $activity->uid;
             }
 
-            $club_events_json = Utils::prepare_activities_json( $response->result->results );
-            if ( Utils::update_or_create_option( 'myclub_groups_club_activities', $club_events_json, 'no', true ) === false) {
-                $post_ids = Utils::get_club_calendar_posts();
+            $deletable_ids = array_diff( ActivityService::listClubActivityIds(), $activity_ids );
+
+            if ( !empty( $deletable_ids ) ) {
+                $update = true;
+                foreach ( $deletable_ids as $id ) {
+                    if ( count( ActivityService::listActivityPostIds( $id ) ) ) {
+                        $activity = ActivityService::getActivity( $id );
+                        ActivityService::createOrUpdateActivity( $activity, [ "show_on_club_calendar" => 0 ] );
+                    } else {
+                        ActivityService::deleteActivity( $id );
+                    }
+                }
+
+                unset( $deletable_ids );
+            }
+
+            if ( $update ) {
+                $post_ids = Utils::getClubCalendarPosts();
 
                 foreach ( $post_ids as $post_id ) {
-                    Utils::clear_cache_for_page( $post_id );
+                    Utils::clearCacheForPage( $post_id );
                 }
+
+                unset( $post_ids );
             }
+
+            Utils::updateOrCreateOption( 'myclub_groups_last_club_calendar_sync', gmdate( "c" ), 'no' );
         }
-        Utils::update_or_create_option( 'myclub_groups_last_club_calendar_sync', gmdate( "c" ), 'no' );
+
+        unset( $response );
+
+        if ( function_exists( 'gc_collect_cycles' ) ) {
+            gc_collect_cycles();
+        }
     }
 }

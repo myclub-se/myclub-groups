@@ -4,9 +4,9 @@
 Plugin Name: MyClub Groups
 Plugin URI: https://github.com/myclub-se/myclub-groups
 Description: Retrieves group information from the MyClub member administration platform. Generates pages for groups defined in the MyClub platform.
-Version: 1.3.5
+Version: 2.0.0
 Requires at least: 6.4
-Tested up to: 6.7.1
+Tested up to: 6.8.1
 Requires PHP: 7.4
 Author: MyClub AB
 Author URI: https://www.myclub.se
@@ -16,6 +16,7 @@ License: GPLv2 or later
 */
 
 use MyClub\MyClubGroups\Activation;
+use MyClub\MyClubGroups\Migration;
 use MyClub\MyClubGroups\Services;
 use MyClub\MyClubGroups\Tasks\ImageTask;
 use MyClub\MyClubGroups\Tasks\RefreshGroupsTask;
@@ -32,12 +33,14 @@ if ( file_exists( plugin_dir_path( __FILE__ ) . '/lib/autoload.php' ) ) {
     require_once( plugin_dir_path( __FILE__ ) . '/lib/autoload.php' );
 }
 
-define( 'MYCLUB_GROUPS_PLUGIN_VERSION', '1.3.5' );
+define( 'MYCLUB_GROUPS_PLUGIN_VERSION', '2.0.0' );
 
 ImageTask::init();
 RefreshGroupsTask::init();
 RefreshMenusTask::init();
 RefreshNewsTask::init();
+Services\ActivityService::init();
+Services\MemberService::init();
 
 if ( file_exists( plugin_dir_path( __FILE__ ) . '/src/Activation.php' ) ) {
     function myclub_groups_activate()
@@ -68,7 +71,15 @@ if ( file_exists( plugin_dir_path( __FILE__ ) . '/src/Activation.php' ) ) {
     register_uninstall_hook( __FILE__, 'myclub_groups_uninstall' );
 }
 
+if ( file_exists( plugin_dir_path( __FILE__ ) . '/src/Migration.php' ) ) {
+    function myclub_groups_migration() {
+        Migration::checkMigrations();
+    }
+
+    add_action( 'plugins_loaded', 'myclub_groups_migration');
+}
+
 if ( file_exists( plugin_dir_path( __FILE__) . '/src/Services.php' ) ) {
     // Register all plugin functionality
-    Services::register_services();
+    Services::registerServices();
 }

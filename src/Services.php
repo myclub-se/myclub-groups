@@ -41,7 +41,7 @@ class Services
      * @return void
      * @since 1.0.0
      */
-    public static function register_services()
+    public static function registerServices()
     {
         foreach ( self::SERVICES as $class ) {
             $service = new $class();

@@ -1,11 +1,21 @@
 <?php
 
 use MyClub\MyClubGroups\Utils;
+use MyClub\MyClubGroups\Services\MemberService;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-$leader_title = get_option( 'myclub_groups_leaders_title' );
+if ( !empty( $attributes ) ) {
+    $post_id = Utils::getPostId( $attributes );
+}
 
+if ( empty ( $post_id ) || $post_id == 0 ) {
+    echo esc_html__( 'No group page found. Invalid post_id or group_id.', 'myclub-groups' );
+} else {
+    $leader_title = get_option( 'myclub_groups_leaders_title' );
+    $leaders = MemberService::listGroupMembers( $post_id, true );
+
+    if ( !empty( $leaders ) ):
 ?>
     <div class="myclub-groups-leaders-list" id="leaders">
         <div class="myclub-groups-leaders-container">
@@ -13,70 +23,58 @@ $leader_title = get_option( 'myclub_groups_leaders_title' );
 
 <?php
 
-if ( !empty( $attributes ) ) {
-    $post_id = Utils::get_post_id( $attributes );
-}
+    $hidden_added = false;
+    $labels = [
+        'age'   => __( 'Age', 'myclub-groups' ),
+        'email' => __( 'E-mail', 'myclub-groups' ),
+        'role'  => __( 'Role', 'myclub-groups' ),
+        'phone' => __( 'Phone', 'myclub-groups' )
+    ];
 
-if ( empty ( $post_id ) || $post_id == 0 ) {
-    echo esc_html__( 'No group page found. Invalid post_id or group_id.', 'myclub-groups' );
-} else {
-    $meta = get_post_meta( $post_id, 'myclub_groups_members', true );
-
-    if ( !empty( $meta ) ) {
-        $hidden_added = false;
-        $leaders = json_decode( $meta )->leaders;
-        $labels = [
-            'age'   => __( 'Age', 'myclub-groups' ),
-            'email' => __( 'E-mail', 'myclub-groups' ),
-            'role'  => __( 'Role', 'myclub-groups' ),
-            'phone' => __( 'Phone', 'myclub-groups' )
-        ];
-
-        ?>
-            <div class="leaders-list" data-labels="<?php echo esc_attr( wp_json_encode( $labels, JSON_UNESCAPED_UNICODE ) ); ?>">
-            <?php
-            foreach ( $leaders as $key=>$leader ) {
-                $leader->name = str_replace( 'u0022', '\"', $leader->name );
-                if ( isset ( $leader->role ) ) {
-                    $leader->role = str_replace( 'u0022', '\"', $leader->role );
-                }
-                ?>
-                    <div class="leader" data-leader="<?php echo esc_attr( wp_json_encode( $leader, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT ) ); ?>">
-                        <?php
-                            if ( $leader->member_image ) {
-                                $leader->member_image->url = Utils::change_host_name( $leader->member_image->url );
-
-                                ?>
-                                <div class="leader-picture">
-                                    <img src="<?php echo esc_url( $leader->member_image->url ); ?>" alt="<?php echo esc_attr( $leader->name ); ?>" />
-                                </div>
-                                <?php
-
-                            } else {
-                                echo '<div class="leader-picture"></div>';
-                            }
-                        ?>
-                        <div class="leader-name">
-                            <?php echo esc_attr( $leader->name ); ?>
-                            <div class="leader-role"><?php echo esc_attr( $leader->role ); ?></div>
-                        </div>
-                    </div>
-                <?php
-
-                if ( $key  === 3) {
-                    echo '<div class="hidden extended-list">';
-                    $hidden_added = true;
-                }
+    ?>
+        <div class="leaders-list" data-labels="<?php echo esc_attr( wp_json_encode( $labels, JSON_UNESCAPED_UNICODE ) ); ?>">
+        <?php
+        foreach ( $leaders as $key=>$leader ) {
+            $leader->dynamic_fields = json_decode( $leader->dynamic_fields );
+            $leader->name = str_replace( 'u0022', '\"', $leader->name );
+            if ( isset ( $leader->role ) ) {
+                $leader->role = str_replace( 'u0022', '\"', $leader->role );
             }
+            ?>
+                <div class="leader" data-leader="<?php echo esc_attr( wp_json_encode( $leader, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT ) ); ?>">
+                    <?php
+                        if ( $leader->image_id ) {
+                            $leader->image_url = Utils::changeHostName( $leader->image_url );
 
-            if ($hidden_added) {
-                ?>
+                            ?>
+                            <div class="leader-picture">
+                                <img src="<?php echo esc_url( $leader->image_url ); ?>" alt="<?php echo esc_attr( $leader->name ); ?>" />
+                            </div>
+                            <?php
+
+                        } else {
+                            echo '<div class="leader-picture"></div>';
+                        }
+                    ?>
+                    <div class="leader-name">
+                        <?php echo esc_attr( $leader->name ); ?>
+                        <div class="leader-role"><?php echo esc_attr( $leader->role ); ?></div>
+                    </div>
                 </div>
-                <div class="leader-show-more"><?php esc_attr_e( 'Show more', 'myclub-groups' ); ?></div>
-                <div class="leader-show-less hidden"><?php esc_attr_e( 'Show less', 'myclub-groups' ); ?></div>
-            <?php  }
-    }
-}
+            <?php
+
+            if ( $key === 3) {
+                echo '<div class="hidden extended-list">';
+                $hidden_added = true;
+            }
+        }
+
+        if ($hidden_added) {
+            ?>
+            </div>
+            <div class="leader-show-more"><?php esc_attr_e( 'Show more', 'myclub-groups' ); ?></div>
+            <div class="leader-show-less hidden"><?php esc_attr_e( 'Show less', 'myclub-groups' ); ?></div>
+        <?php  }
 ?>
         </div>
         <div class="leader-modal">
@@ -90,3 +88,6 @@ if ( empty ( $post_id ) || $post_id == 0 ) {
         </div>
     </div>
 </div>
+<?php
+endif;
+}

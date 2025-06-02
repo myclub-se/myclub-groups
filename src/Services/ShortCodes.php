@@ -39,7 +39,7 @@ class ShortCodes extends Base
     {
         add_action( 'init', [
             $this,
-            'register_short_codes'
+            'registerShortCodes'
         ] );
     }
 
@@ -50,58 +50,58 @@ class ShortCodes extends Base
      *
      * @since 1.0.0
      */
-    public function register_short_codes()
+    public function registerShortCodes()
     {
         $available_blocks = Blocks::BLOCKS;
 
         add_shortcode( 'myclub-groups-calendar', [
             $this,
-            'render_myclub_groups_calendar'
+            'renderMyclubGroupsCalendar'
         ] );
 
         add_shortcode( 'myclub-groups-club-calendar', [
             $this,
-            'render_myclub_groups_club_calendar'
+            'renderMyclubGroupsClubCalendar'
         ] );
 
         add_shortcode( 'myclub-groups-club-news', [
             $this,
-            'render_myclub_groups_club_news'
+            'renderMyclubGroupsClubNews'
         ] );
 
         add_shortcode( 'myclub-groups-coming-games', [
             $this,
-            'render_myclub_groups_coming_games'
+            'renderMyclubGroupsComingGames'
         ] );
 
         add_shortcode( 'myclub-groups-leaders', [
             $this,
-            'render_myclub_groups_leaders'
+            'renderMyclubGroupsLeaders'
         ] );
 
         add_shortcode( 'myclub-groups-members', [
             $this,
-            'render_myclub_groups_members'
+            'renderMyclubGroupsMembers'
         ] );
 
         add_shortcode( 'myclub-groups-menu', [
             $this,
-            'render_myclub_groups_menu'
+            'renderMyclubGroupsMenu'
         ] );
 
         add_shortcode( 'myclub-groups-navigation', [
             $this,
-            'render_myclub_groups_navigation'
+            'renderMyclubGroupsNavigation'
         ] );
 
         add_shortcode( 'myclub-groups-news', [
             $this,
-            'render_myclub_groups_news'
+            'renderMyclubGroupsNews'
         ] );
 
         add_shortcode( 'myclub-groups-title', [
             $this,
-            'render_myclub_groups_title'
+            'renderMyclubGroupsTitle'
         ] );
 
         foreach( $available_blocks as $block ) {
@@ -124,14 +124,14 @@ class ShortCodes extends Base
      *
      * @since 1.0.0
      */
-    public function render_myclub_groups_calendar( array $attrs = [], string $content = null ): string
+    public function renderMyclubGroupsCalendar( array $attrs = [], string $content = null ): string
     {
         $service = new Blocks();
 
         wp_enqueue_script( 'myclub-groups-calendar-js' );
         wp_enqueue_style( 'myclub-groups-calendar-css' );
 
-        return $service->render_calendar( $this->get_shortcode_attrs( $attrs, 'myclub-groups-calendar' ), $content );
+        return $service->renderCalendar( $this->getShortcodeAttrs( $attrs, 'myclub-groups-calendar' ), $content );
     }
 
     /**
@@ -144,14 +144,14 @@ class ShortCodes extends Base
      *
      * @since 1.3.0
      */
-    public function render_myclub_groups_club_calendar( array $attrs = [], string $content = null ): string
+    public function renderMyclubGroupsClubCalendar( array $attrs = [], string $content = null ): string
     {
         $service = new Blocks();
 
         wp_enqueue_script( 'myclub-groups-club-calendar-js' );
         wp_enqueue_style( 'myclub-groups-club-calendar-css' );
 
-        return $service->render_club_calendar( $this->get_shortcode_attrs( $attrs, 'myclub-groups-club-calendar' ), $content );
+        return $service->renderClubCalendar( $this->getShortcodeAttrs( $attrs, 'myclub-groups-club-calendar' ), $content );
     }
 
     /**
@@ -164,9 +164,9 @@ class ShortCodes extends Base
      *
      * @since 1.0.0
      */
-    public function render_myclub_groups_club_news( $attrs = [], string $content = null ): string
+    public function renderMyclubGroupsClubNews( $attrs = [], string $content = null ): string
     {
-        return $this->render_shortcode( 'myclub-groups-club-news', 'club-news', __( 'The MyClub club news block couldn\'t be found', 'myclub-groups' ), $attrs, $content );
+        return $this->renderShortcode( 'myclub-groups-club-news', 'club-news', __( 'The MyClub club news block couldn\'t be found', 'myclub-groups' ), $attrs, $content );
     }
 
     /**
@@ -179,9 +179,9 @@ class ShortCodes extends Base
      *
      * @since 1.0.0
      */
-    public function render_myclub_groups_coming_games( array $attrs = [], string $content = null ): string
+    public function renderMyclubGroupsComingGames( array $attrs = [], string $content = null ): string
     {
-        return $this->render_shortcode( 'myclub-groups-coming-games', 'coming-games', __( 'The MyClub coming games block couldn\'t be found', 'myclub-groups' ), $attrs, $content );
+        return $this->renderShortcode( 'myclub-groups-coming-games', 'coming-games', __( 'The MyClub coming games block couldn\'t be found', 'myclub-groups' ), $attrs, $content );
     }
 
     /**
@@ -194,9 +194,9 @@ class ShortCodes extends Base
      *
      * @since 1.0.0
      */
-    public function render_myclub_groups_leaders( array $attrs = [], string $content = null ): string
+    public function renderMyclubGroupsLeaders( array $attrs = [], string $content = null ): string
     {
-        return $this->render_shortcode( 'myclub-groups-leaders', 'leaders', __( 'The MyClub leaders block couldn\'t be found', 'myclub-groups' ), $attrs, $content );
+        return $this->renderShortcode( 'myclub-groups-leaders', 'leaders', __( 'The MyClub leaders block couldn\'t be found', 'myclub-groups' ), $attrs, $content );
     }
 
     /**
@@ -209,9 +209,9 @@ class ShortCodes extends Base
      *
      * @since 1.0.0
      */
-    public function render_myclub_groups_members( array $attrs = [], string $content = null ): string
+    public function renderMyclubGroupsMembers( array $attrs = [], string $content = null ): string
     {
-        return $this->render_shortcode( 'myclub-groups-members', 'members', __( 'The MyClub members block couldn\'t be found', 'myclub-groups' ), $attrs, $content );
+        return $this->renderShortcode( 'myclub-groups-members', 'members', __( 'The MyClub members block couldn\'t be found', 'myclub-groups' ), $attrs, $content );
     }
 
     /**
@@ -224,9 +224,9 @@ class ShortCodes extends Base
      *
      * @since 1.0.0
      */
-    public function render_myclub_groups_menu( $attrs = [], string $content = null ): string
+    public function renderMyclubGroupsMenu( $attrs = [], string $content = null ): string
     {
-        return $this->render_shortcode( 'myclub-groups-menu', 'menu', __( 'The MyClub menu block couldn\'t be found', 'myclub-groups' ), $attrs, $content );
+        return $this->renderShortcode( 'myclub-groups-menu', 'menu', __( 'The MyClub menu block couldn\'t be found', 'myclub-groups' ), $attrs, $content );
     }
 
     /**
@@ -239,9 +239,9 @@ class ShortCodes extends Base
      *
      * @since 1.0.0
      */
-    public function render_myclub_groups_navigation( array $attrs = [], string $content = null ): string
+    public function renderMyclubGroupsNavigation( array $attrs = [], string $content = null ): string
     {
-        return $this->render_shortcode( 'myclub-groups-navigation', 'navigation', __( 'The MyClub navigation block couldn\'t be found', 'myclub-groups' ), $attrs, $content );
+        return $this->renderShortcode( 'myclub-groups-navigation', 'navigation', __( 'The MyClub navigation block couldn\'t be found', 'myclub-groups' ), $attrs, $content );
     }
 
     /**
@@ -254,9 +254,9 @@ class ShortCodes extends Base
      *
      * @since 1.0.0
      */
-    public function render_myclub_groups_news( array $attrs = [], string $content = null ): string
+    public function renderMyclubGroupsNews( array $attrs = [], string $content = null ): string
     {
-        return $this->render_shortcode( 'myclub-groups-news', 'news', __( 'The MyClub news block couldn\'t be found', 'myclub-groups' ), $attrs, $content );
+        return $this->renderShortcode( 'myclub-groups-news', 'news', __( 'The MyClub news block couldn\'t be found', 'myclub-groups' ), $attrs, $content );
     }
 
     /**
@@ -269,9 +269,9 @@ class ShortCodes extends Base
      *
      * @since 1.0.0
      */
-    public function render_myclub_groups_title( array $attrs = [], string $content = null ): string
+    public function renderMyclubGroupsTitle( array $attrs = [], string $content = null ): string
     {
-        return $this->render_shortcode( 'myclub-groups-title', 'title', __( 'The MyClub title block couldn\'t be found', 'myclub-groups' ), $attrs, $content );
+        return $this->renderShortcode( 'myclub-groups-title', 'title', __( 'The MyClub title block couldn\'t be found', 'myclub-groups' ), $attrs, $content );
     }
 
     /**
@@ -284,7 +284,7 @@ class ShortCodes extends Base
      *
      * @since 1.0.0
      */
-    private function get_shortcode_attrs( array $attrs, string $shortCode ): array
+    private function getShortcodeAttrs( array $attrs, string $shortCode ): array
     {
         return shortcode_atts([
             'group_id' => '',
@@ -304,9 +304,9 @@ class ShortCodes extends Base
      * @return string The rendered HTML output of the block or the error message.
      * @since 1.0.0
      */
-    private function render_shortcode( string $short_code, string $block_path, string $error_string, $attrs = [], string $content = null): string
+    private function renderShortcode( string $short_code, string $block_path, string $error_string, $attrs = [], string $content = null): string
     {
-        $attributes = $this->get_shortcode_attrs( is_array( $attrs ) ? $attrs : [], $short_code );
+        $attributes = $this->getShortcodeAttrs( is_array( $attrs ) ? $attrs : [], $short_code );
         $file_path = $this->plugin_path . 'blocks/build/' . $block_path . '/render.php';
 
         wp_enqueue_script( 'myclub-groups-' . $block_path . '-js' );

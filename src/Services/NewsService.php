@@ -57,6 +57,20 @@ class NewsService extends Groups
     }
 
     /**
+     * Class destructor to clean up resources.
+     *
+     * This method releases memory by unsetting properties related to time zones and the API instance.
+     * It is automatically called when the object is destroyed or goes out of scope.
+     *
+     * @return void
+     * @since 2.0.0
+     */
+    public function __destruct()
+    {
+        unset( $this->myclub_timezone, $this->timezone, $this->utc_timezone, $this->api );
+    }
+
+    /**
      * Adds the default category 'News' to a post.
      *
      * This method checks if the category 'News' exists in the 'category' taxonomy. If the category does not
@@ -70,7 +84,7 @@ class NewsService extends Groups
      * @return void
      * @since 1.0.0
      */
-    public function add_default_category( int $post_id )
+    public function addDefaultCategory( int $post_id )
     {
         $category = get_term_by( 'name', __( 'News', 'myclub-groups' ), 'category' );
 
@@ -103,7 +117,7 @@ class NewsService extends Groups
      * @return void
      * @since 1.3.1
      */
-    public function add_team_news_category( int $post_id, array $myclub_group )
+    public function addTeamNewsCategory( int $post_id, array $myclub_group )
     {
         $add_news_category = get_option( 'myclub_groups_add_news_categories' );
 
@@ -140,7 +154,7 @@ class NewsService extends Groups
      * @return void
      * @since 1.0.0
      */
-    public function delete_all_news()
+    public function deleteAllNews()
     {
         $args = array (
             'post_type'      => 'post',
@@ -161,7 +175,7 @@ class NewsService extends Groups
 
                 $post_id = $query->post->ID;
 
-                Utils::delete_post( $post_id );
+                Utils::deletePost( $post_id );
             }
         }
 
@@ -192,6 +206,8 @@ class NewsService extends Groups
                 wp_delete_term( $term->term_id, NewsService::MYCLUB_GROUP_NEWS );
             }
         }
+
+        unset( $args, $query, $terms );
     }
 
     /**
@@ -205,13 +221,13 @@ class NewsService extends Groups
      * @return void
      * @since 1.0.0
      */
-    public function load_news( string $group_id = null )
+    public function loadNews( string $group_id = null )
     {
-        $response = $this->api->load_news( $group_id );
+        $response = $this->api->loadNews( $group_id );
         $group = null;
 
         if ( $group_id !== null ) {
-            $groupName = $this->get_group_name( $group_id );
+            $groupName = $this->getGroupName( $group_id );
 
             if ( $groupName !== null ) {
                 $group = array (
@@ -223,9 +239,11 @@ class NewsService extends Groups
 
         if ( !is_wp_error( $response ) && $response->status === 200 ) {
             foreach ( $response->result->results as $newsItem ) {
-                $this->add_news( $newsItem, $group );
+                $this->addNews( $newsItem, $group );
             }
         }
+
+        unset( $response );
     }
 
     /**
@@ -238,10 +256,10 @@ class NewsService extends Groups
      * @return void
      * @since 1.0.0
      */
-    public function reload_news()
+    public function reloadNews()
     {
         // Load menu items from member backend
-        $groups = $this->get_all_group_ids();
+        $groups = $this->getAllGroupIds();
 
         if ( $groups->success ) {
             $process = RefreshNewsTask::init();
@@ -254,6 +272,8 @@ class NewsService extends Groups
             // Enqueue and start the background task
             $process->save()->dispatch();
         }
+
+        unset( $groups );
     }
 
     /**
@@ -268,18 +288,18 @@ class NewsService extends Groups
      * @return void
      * @since 1.3.3
      */
-    public function remove_unused_news_items(): void
+    public function removeUnusedNewsItems(): void
     {
         if ( get_option( 'myclub_groups_remove_unused_news_items' ) !== '1' ) {
-            $group_ids = $this->get_all_group_ids();
+            $group_ids = $this->getAllGroupIds();
             $remote_news_ids = [];
 
             if ( $group_ids->success ) {
                 foreach ( $group_ids->ids as $group_id ) {
-                    $remote_news_ids = array_merge( $remote_news_ids, $this->get_news_ids( $group_id ) );
+                    $remote_news_ids = array_merge( $remote_news_ids, $this->getNewsIds( $group_id ) );
                 }
 
-                $remote_news_ids = array_merge( $remote_news_ids, $this->get_news_ids( null ) );
+                $remote_news_ids = array_merge( $remote_news_ids, $this->getNewsIds( null ) );
 
                 $remote_news_ids = array_unique( $remote_news_ids );
 
@@ -301,11 +321,13 @@ class NewsService extends Groups
 
                     if ( $query->have_posts() ) {
                         foreach ( $query->posts as $post_id ) {
-                            Utils::delete_post( $post_id );
+                            Utils::deletePost( $post_id );
                         }
                     }
                 }
             }
+
+            unset( $group_ids, $remote_news_ids );;
         }
     }
 
@@ -329,7 +351,7 @@ class NewsService extends Groups
      * @since 1.0.0
      *
      */
-    private function add_news( object $news_item, array $myclub_group = null )
+    private function addNews( object $news_item, array $myclub_group = null )
     {
         $query_args = array (
             'posts_per_page' => 1,
@@ -345,7 +367,7 @@ class NewsService extends Groups
 
         $query_results = new WP_Query( $query_args );
 
-        $post_id = $query_results->have_posts() ? wp_update_post( $this->create_news_args( $news_item, $query_results->posts[ 0 ]->ID ) ) : wp_insert_post( $this->create_news_args( $news_item ) );
+        $post_id = $query_results->have_posts() ? wp_update_post( $this->createNewsArgs( $news_item, $query_results->posts[ 0 ]->ID ) ) : wp_insert_post( $this->createNewsArgs( $news_item ) );
 
         if ( isset( $news_item->news_image ) ) {
             $image_task = ImageTask::init();
@@ -362,10 +384,10 @@ class NewsService extends Groups
             $image_task->save()->dispatch();
         }
 
-        $this->add_default_category( $post_id );
+        $this->addDefaultCategory( $post_id );
 
         if ( $myclub_group ) {
-            $this->add_team_news_category( $post_id, $myclub_group );
+            $this->addTeamNewsCategory( $post_id, $myclub_group );
 
             $query_args = array (
                 'taxonomy'   => NewsService::MYCLUB_GROUP_NEWS,
@@ -417,6 +439,8 @@ class NewsService extends Groups
                 }
             }
         }
+
+        unset( $query_args, $query_results );
     }
 
     /**
@@ -431,7 +455,7 @@ class NewsService extends Groups
      * @return array The arguments array for creating or updating a news post.
      * @since 1.0.0
      */
-    private function create_news_args( object $news_item, int $post_id = null ): array
+    private function createNewsArgs( object $news_item, int $post_id = null ): array
     {
         // Get time for post and make sure that the time is correct with utc time as well
         try {
@@ -489,7 +513,7 @@ class NewsService extends Groups
      * @return string|null The name of the group, or null if no matching group is found.
      * @since 1.0.0
      */
-    private function get_group_name( string $group_id ): ?string
+    private function getGroupName( string $group_id ): ?string
     {
         $args = array (
             'post_type'      => GroupService::MYCLUB_GROUPS,
@@ -522,17 +546,19 @@ class NewsService extends Groups
      * @return array An array of news IDs retrieved from the API. Returns an empty array if the API response is not successful.
      * @since 1.3.3
      */
-    private function get_news_ids( ?string $group_id ): array
+    private function getNewsIds( ?string $group_id ): array
     {
         $ids = [];
 
-        $response = $this->api->load_news( $group_id );
+        $response = $this->api->loadNews( $group_id );
 
         if ( !is_wp_error( $response ) && $response->status === 200 ) {
             foreach ( $response->result->results as $newsItem ) {
                 $ids[] = $newsItem->id;
             }
         }
+
+        unset( $response );
 
         return $ids;
     }

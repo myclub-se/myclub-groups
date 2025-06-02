@@ -14,7 +14,7 @@ class i18n extends Base
      */
     public function register()
     {
-        add_action( 'plugins_loaded', [ $this, 'load_plugin_text_domain' ] );
+        add_action( 'plugins_loaded', [ $this, 'loadPluginTextDomain' ] );
     }
 
     /**
@@ -23,7 +23,7 @@ class i18n extends Base
      * @return void
      * @since 1.0.0
      */
-    public function load_plugin_text_domain()
+    public function loadPluginTextDomain()
     {
         $result = load_plugin_textdomain(
             'myclub-groups',

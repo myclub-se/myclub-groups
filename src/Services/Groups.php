@@ -2,7 +2,7 @@
 
 namespace MyClub\MyClubGroups\Services;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 use MyClub\MyClubGroups\Api\RestApi;
 use stdClass;
@@ -20,7 +20,7 @@ class Groups
      *
      * @return stdClass An object with an array of ids and a success flag.
      */
-    protected function get_all_group_ids(): stdClass
+    protected function getAllGroupIds(): stdClass
     {
         $api = new RestApi();
 
@@ -29,17 +29,17 @@ class Groups
         $return_value->success = true;
 
         // Load menu items from member backend
-        $response = $api->load_menu_items();
+        $response = $api->loadMenuItems();
 
         if ( $response->status === 200 ) {
             $menu_items = $response->result;
 
-            $return_value->ids = $this->get_group_ids( $menu_items, [] );
+            $return_value->ids = $this->getGroupIds( $menu_items, [] );
         } else {
             $return_value->success = false;
         }
 
-        $response = $api->load_other_teams();
+        $response = $api->loadOtherTeams();
         if ( $response->status === 200 ) {
             $other_teams = $response->result->results;
             foreach ( $other_teams as $other_team ) {
@@ -48,6 +48,8 @@ class Groups
         } else {
             $return_value->success = false;
         }
+
+        unset( $api, $response );
 
         return $return_value;
     }
@@ -61,7 +63,7 @@ class Groups
      *
      * @since 1.0.0
      */
-    protected function get_group_ids( object $menu, array $team_ids ): array
+    protected function getGroupIds( object $menu, array $team_ids ): array
     {
         if ( property_exists( $menu, 'teams' ) ) {
             foreach ( $menu->teams as $team ) {
@@ -73,7 +75,7 @@ class Groups
 
         if ( property_exists( $menu, 'child_menus' ) ) {
             foreach ( $menu->child_menus as $child_menu ) {
-                $team_ids = $this->get_group_ids( $child_menu, $team_ids );
+                $team_ids = $this->getGroupIds( $child_menu, $team_ids );
             }
         }
 
@@ -87,7 +89,7 @@ class Groups
      *
      * @return int|false The ID of the group post if found, false otherwise.
      */
-    protected function get_group_post_id( string $myclub_groups_id )
+    protected function getGroupPostId( string $myclub_groups_id )
     {
         $args = array (
             'post_type'      => GroupService::MYCLUB_GROUPS,
@@ -102,12 +104,14 @@ class Groups
         );
 
         $query = new WP_Query( $args );
+        $id = false;
 
         if ( $query->have_posts() ) {
-            return $query->posts[ 0 ]->ID;
-        } else {
-            return false;
+            $id = $query->posts[ 0 ]->ID;
         }
+
+        unset( $query );
+        return $id;
     }
 
     /**
@@ -118,7 +122,7 @@ class Groups
      *
      * @since 1.0.0
      */
-    protected function menu_items_exist( object $menu_items ): bool
+    protected function menuItemsExist( object $menu_items ): bool
     {
         if ( !empty ( $menu_items ) ) {
             if ( ( property_exists( $menu_items, 'teams' ) && count( $menu_items->teams ) ) || ( property_exists( $menu_items, 'child_menus' ) && count( $menu_items->child_menus ) ) ) {

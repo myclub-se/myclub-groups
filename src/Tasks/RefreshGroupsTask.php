@@ -41,7 +41,7 @@ class RefreshGroupsTask extends Background_Process {
      */
     protected function task( $item ): bool {
         $service = new GroupService();
-        $service->update_group_page( $item );
+        $service->updateGroupPage( $item );
         return false;
     }
 
@@ -61,10 +61,10 @@ class RefreshGroupsTask extends Background_Process {
         parent::complete();
 
         $service = new GroupService();
-        $service->remove_unused_group_pages();
+        $service->removeUnusedGroupPages();
 
         $process = RefreshMenusTask::init();
         $process->push_to_queue([])->save()->dispatch();
-        Utils::update_or_create_option( 'myclub_groups_last_groups_sync', gmdate( "c" ), 'no' );
+        Utils::updateOrCreateOption( 'myclub_groups_last_groups_sync', gmdate( "c" ), 'no' );
     }
 }

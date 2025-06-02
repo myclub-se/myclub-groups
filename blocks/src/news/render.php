@@ -14,7 +14,7 @@ $news_title = get_option( 'myclub_groups_news_title' ) ?:  __( 'News', 'myclub-g
 <?php
 
 if ( !empty( $attributes ) ) {
-    $post_id = Utils::get_post_id( $attributes );
+    $post_id = Utils::getPostId( $attributes );
 }
 
 if ( empty ( $post_id ) || $post_id == 0 ) {

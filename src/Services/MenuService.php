@@ -2,7 +2,7 @@
 
 namespace MyClub\MyClubGroups\Services;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 use MyClub\MyClubGroups\Api\RestApi;
 use stdClass;
@@ -30,12 +30,24 @@ class MenuService extends Groups
     }
 
     /**
+     * Destructor method that is called when the object is destroyed.
+     * It unsets the API, current menus, and menu properties to free up resources.
+     *
+     * @return void
+     * @since 2.0.0
+     */
+    public function __destruct()
+    {
+        unset( $this->api, $this->current_menus, $this->menu );;
+    }
+
+    /**
      * Deletes the "MyClub Groups Menu" if it exists.
      *
      * @return void
      * @since 1.0.0
      */
-    public function delete_all_menus()
+    public function deleteAllMenus()
     {
         $menu_object = wp_get_nav_menu_object( 'MyClub Groups Menu' );
 
@@ -51,22 +63,24 @@ class MenuService extends Groups
      * @return void
      * @since 1.0.0
      */
-    public function refresh_menus()
+    public function refreshMenus()
     {
-        $this->load_current_menus();
+        $this->loadCurrentMenus();
 
         // Load menu items from member backend
-        $response = $this->api->load_menu_items();
+        $response = $this->api->loadMenuItems();
 
         if ( $response->status === 200 ) {
             $menu_items = $response->result;
 
-            if ( $this->menu_items_exist( $menu_items ) && !empty( $this->menu ) ) {
-                $this->add_menus( 0, $menu_items );
+            if ( $this->menuItemsExist( $menu_items ) && !empty( $this->menu ) ) {
+                $this->addMenus( 0, $menu_items );
 
-                $this->delete_unused_menus();
+                $this->deleteUnusedMenus();
             }
         }
+
+        unset( $response );
     }
 
     /**
@@ -79,12 +93,12 @@ class MenuService extends Groups
      * @return int The updated position after adding menus.
      * @since 1.0.0
      */
-    private function add_menus( int $parent_item, object $api_menu, int $position = 1 ): int
+    private function addMenus( int $parent_item, object $api_menu, int $position = 1 ): int
     {
         foreach ( $api_menu->child_menus as $child_menu ) {
             // Check if menu item already exists - overwrite in that case
-            $menu_item_id = $this->query_menu_items( $child_menu->name, $parent_item );
-            $menu_item_info = $this->create_menu_item_args( $child_menu->name, $parent_item, $position );
+            $menu_item_id = $this->queryMenuItems( $child_menu->name, $parent_item );
+            $menu_item_info = $this->createMenuItemArgs( $child_menu->name, $parent_item, $position );
 
             $menu_id = wp_update_nav_menu_item( $this->menu->term_id, $menu_item_id, $menu_item_info );
 
@@ -92,9 +106,9 @@ class MenuService extends Groups
 
             if ( !is_wp_error( $menu_id ) ) {
                 // Update current menu items
-                $this->update_current_menus( 'menu' . $menu_id, $menu_id, $parent_item, $child_menu->name );
+                $this->updateCurrentMenus( 'menu' . $menu_id, $menu_id, $parent_item, $child_menu->name );
 
-                $position = $this->add_menus( $menu_id, $child_menu, $position );
+                $position = $this->addMenus( $menu_id, $child_menu, $position );
             } else {
                 error_log( 'Unable to create menus' );
             }
@@ -104,14 +118,14 @@ class MenuService extends Groups
             if ( !empty( $group->id ) ) {
                 // Check if menu already exists and update
                 $menu_item_id = key_exists( $group->id, $this->current_menus ) ? $this->current_menus[ $group->id ]->id : 0;
-                $post_id = $this->get_group_post_id( $group->id ) ?: 0;
-                $menu_item_info = $this->create_menu_item_args( $group->name, $parent_item, $position, $post_id );
+                $post_id = $this->getGroupPostId( $group->id ) ?: 0;
+                $menu_item_info = $this->createMenuItemArgs( $group->name, $parent_item, $position, $post_id );
 
                 $menu_id = wp_update_nav_menu_item( $this->menu->term_id, $menu_item_id, $menu_item_info );
                 update_post_meta( $menu_id, 'myclub_groups_id', $group->id );
 
                 // Update current menu items
-                $this->update_current_menus( $group->id, $menu_id, $parent_item, $group->name, $group->id );
+                $this->updateCurrentMenus( $group->id, $menu_id, $parent_item, $group->name, $group->id );
 
                 $position += 1;
             }
@@ -129,7 +143,7 @@ class MenuService extends Groups
      * @param int $object_id The ID of the object associated with the menu item. Default value is 0.
      * @return array An array of menu item arguments.
      */
-    private function create_menu_item_args( string $name, int $parent_item, int $position, int $object_id = 0 ): array
+    private function createMenuItemArgs( string $name, int $parent_item, int $position, int $object_id = 0 ): array
     {
         $menu_item_info = [
             'menu-item-title'  => $name,
@@ -158,7 +172,7 @@ class MenuService extends Groups
      *
      * @since 1.0.0
      */
-    private function delete_unused_menus()
+    private function deleteUnusedMenus()
     {
         foreach ( $this->current_menus as $current_menu ) {
             if ( $current_menu->status === 0 ) {
@@ -173,7 +187,7 @@ class MenuService extends Groups
      * @return void
      * @since 1.0.0
      */
-    private function load_current_menus()
+    private function loadCurrentMenus()
     {
         $this->current_menus = array ();
         if ( !empty( $this->menu ) ) {
@@ -206,7 +220,7 @@ class MenuService extends Groups
      *
      * @since 1.0.0
      */
-    private function query_menu_items( string $name, int $parent_item ): int
+    private function queryMenuItems( string $name, int $parent_item ): int
     {
         $query = [
             'post_type'              => 'nav_menu_item',
@@ -226,11 +240,15 @@ class MenuService extends Groups
 
         // Query menu items
         $posts = get_posts( $query );
+        $id = 0;
 
         if ( !empty( $posts ) ) {
-            return $posts[ 0 ]->ID;
+            $id = $posts[ 0 ]->ID;
         }
-        return 0;
+
+        unset( $posts, $query );
+
+        return $id;
     }
 
     /**
@@ -244,7 +262,7 @@ class MenuService extends Groups
      * @return void
      * @since 1.0.0
      */
-    private function update_current_menus( string $key, int $menu_id, int $parent_item, string $name, string $myclub_groups_id = '' )
+    private function updateCurrentMenus( string $key, int $menu_id, int $parent_item, string $name, string $myclub_groups_id = '' )
     {
         if ( key_exists( $key, $this->current_menus ) ) {
             $this->current_menus[ $key ]->status = 1;

@@ -2,7 +2,7 @@
 
 namespace MyClub\MyClubGroups\Api;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
 use stdClass;
@@ -58,7 +58,7 @@ class RestApi
      *                           Returns a WP_Error object or a stdClass object with an error status if any issue arises.
      * @since 1.3.0
      */
-    public function load_club_calendar()
+    public function loadClubCalendar()
     {
         $service_path = 'calendar/';
 
@@ -69,7 +69,7 @@ class RestApi
             return $return_value;
         }
 
-        $decoded = $this->get( $service_path, [ 'limit' => "null", "version" => "2" ] );
+        $decoded = $this->get( $service_path, [ 'limit'   => "null", "version" => "2" ] );
 
         if ( is_wp_error( $decoded ) ) {
             error_log( 'Unable to load club calendar: Error occurred in API call' );
@@ -90,7 +90,7 @@ class RestApi
      *                   with a status code of 500. Otherwise, it returns the decoded menu items.
      * @since 1.0.0
      */
-    public function load_menu_items()
+    public function loadMenuItems()
     {
         $service_path = 'team_menu/';
 
@@ -122,7 +122,7 @@ class RestApi
      *                   with a status code of 500. Otherwise, it returns the decoded menu items for other teams.
      * @since 1.0.0
      */
-    public function load_other_teams()
+    public function loadOtherTeams()
     {
         $service_path = 'team_menu/other_teams/';
 
@@ -154,7 +154,7 @@ class RestApi
      *                        decoded JSON or the WordPress error. Otherwise, it returns the decoded group.
      * @since 1.0.0
      */
-    public function load_group( $groupId )
+    public function loadGroup( $groupId )
     {
         if ( empty( $this->apiKey ) ) {
             return false;
@@ -170,12 +170,8 @@ class RestApi
             if ( $members->status === 200 ) {
                 $decoded->result->members = $members->result->results;
 
-                $activities = $this->get( "teams/$groupId/calendar/", [ "limit" => "null", "version" => "2" ] );
+                $activities = $this->get( "teams/$groupId/calendar/", [ "limit"   => "null", "version" => "2" ] );
                 if ( $activities->status === 200 ) {
-                    foreach ($activities->result->results as $activity) {
-                        $activity->description = str_replace("\n", '<br />', htmlspecialchars( $activity->description, ENT_QUOTES, 'UTF-8' ) );
-                    }
-
                     $decoded->result->activities = $activities->result->results;
                 } else {
                     $return_value = new stdClass();
@@ -204,7 +200,7 @@ class RestApi
      *                        decoded JSON or WordPress error. Otherwise, it returns the decoded news items.
      * @since 1.0.0
      */
-    public function load_news( string $groupId = null )
+    public function loadNews( string $groupId = null )
     {
         if ( empty( $this->apiKey ) ) {
             return false;
@@ -237,9 +233,9 @@ class RestApi
         if ( !empty ( $data ) ) {
             $service_path = $service_path . '?' . http_build_query( $data );
         }
-        $response = wp_remote_get( $this->get_server_url( $service_path ),
+        $response = wp_remote_get( $this->getServerUrl( $service_path ),
             [
-                'headers' => $this->create_request_headers(),
+                'headers' => $this->createRequestHeaders(),
                 'timeout' => 20
             ]
         );
@@ -263,7 +259,7 @@ class RestApi
      *               class property $apiKey.
      * @since 1.0.0
      */
-    private function create_request_headers(): array
+    private function createRequestHeaders(): array
     {
         return [
             'Accept'             => 'application/json',
@@ -283,7 +279,7 @@ class RestApi
      * @return string The complete URL to be used for the API request.
      * @since 1.0.0
      */
-    private function get_server_url( string $path ): string
+    private function getServerUrl( string $path ): string
     {
         return self::MYCLUB_SERVER_API_PATH . $path;
     }

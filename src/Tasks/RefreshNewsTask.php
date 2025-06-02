@@ -35,7 +35,7 @@ class RefreshNewsTask extends Background_Process {
      */
     protected function task( $item ) {
         $service = new NewsService();
-        $service->load_news( $item );
+        $service->loadNews( $item );
         return false;
     }
 
@@ -50,8 +50,8 @@ class RefreshNewsTask extends Background_Process {
         parent::complete();
 
         $service = new NewsService();
-        $service->remove_unused_news_items();
+        $service->removeUnusedNewsItems();
 
-        Utils::update_or_create_option( 'myclub_groups_last_news_sync', gmdate( "c" ), 'no' );
+        Utils::updateOrCreateOption( 'myclub_groups_last_news_sync', gmdate( "c" ), 'no' );
     }
 }

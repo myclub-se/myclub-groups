@@ -2,9 +2,11 @@
 
 namespace MyClub\MyClubGroups;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+use MyClub\MyClubGroups\Services\ActivityService;
 use MyClub\MyClubGroups\Services\GroupService;
+use MyClub\MyClubGroups\Services\MemberService;
 use MyClub\MyClubGroups\Services\MenuService;
 use MyClub\MyClubGroups\Services\MyClubCron;
 use MyClub\MyClubGroups\Services\NewsService;
@@ -17,141 +19,146 @@ use MyClub\MyClubGroups\Services\NewsService;
 class Activation
 {
     private array $options;
-    
+
     public function __construct()
     {
         $this->options = [
             [
-                'name'  => 'myclub_groups_api_key',
-                'value' => null,
+                'name'     => 'myclub_groups_version',
+                'value'    => null,
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_group_slug',
-                'value' => 'groups',
+                'name'     => 'myclub_groups_api_key',
+                'value'    => null,
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_group_news_slug',
-                'value' => 'group-news',
+                'name'     => 'myclub_groups_group_slug',
+                'value'    => 'groups',
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_last_club_calendar_sync',
-                'value' => null,
+                'name'     => 'myclub_groups_group_news_slug',
+                'value'    => 'group-news',
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_last_news_sync',
-                'value' => null,
+                'name'     => 'myclub_groups_last_club_calendar_sync',
+                'value'    => null,
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_last_news_sync',
-                'value' => null,
+                'name'     => 'myclub_groups_last_groups_sync',
+                'value'    => null,
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_calendar_title',
-                'value' => __( 'Calendar', 'myclub-groups' ),
+                'name'     => 'myclub_groups_last_news_sync',
+                'value'    => null,
+                'autoload' => 'no',
+            ],
+            [
+                'name'     => 'myclub_groups_calendar_title',
+                'value'    => __( 'Calendar', 'myclub-groups' ),
                 'autoload' => 'yes',
             ],
             [
-                'name'  => 'myclub_groups_club_calendar_title',
-                'value' => __( 'Calendar', 'myclub-groups' ),
+                'name'     => 'myclub_groups_club_calendar_title',
+                'value'    => __( 'Calendar', 'myclub-groups' ),
                 'autoload' => 'yes',
             ],
             [
-                'name'  => 'myclub_groups_coming_games_title',
-                'value' => __( 'Upcoming games', 'myclub-groups' ),
+                'name'     => 'myclub_groups_coming_games_title',
+                'value'    => __( 'Upcoming games', 'myclub-groups' ),
                 'autoload' => 'yes',
             ],
             [
-                'name'  => 'myclub_groups_leaders_title',
-                'value' => __( 'Leaders', 'myclub-groups' ),
+                'name'     => 'myclub_groups_leaders_title',
+                'value'    => __( 'Leaders', 'myclub-groups' ),
                 'autoload' => 'yes',
             ],
             [
-                'name'  => 'myclub_groups_members_title',
-                'value' => __( 'Members', 'myclub-groups' ),
+                'name'     => 'myclub_groups_members_title',
+                'value'    => __( 'Members', 'myclub-groups' ),
                 'autoload' => 'yes',
             ],
             [
-                'name'  => 'myclub_groups_news_title',
-                'value' => __( 'News', 'myclub-groups' ),
+                'name'     => 'myclub_groups_news_title',
+                'value'    => __( 'News', 'myclub-groups' ),
                 'autoload' => 'yes',
             ],
             [
-                'name'  => 'myclub_groups_page_template',
-                'value' => '',
+                'name'     => 'myclub_groups_page_template',
+                'value'    => '',
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_page_calendar',
-                'value' => '1',
+                'name'     => 'myclub_groups_page_calendar',
+                'value'    => '1',
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_page_navigation',
-                'value' => '1',
+                'name'     => 'myclub_groups_page_navigation',
+                'value'    => '1',
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_page_leaders',
-                'value' => '1',
+                'name'     => 'myclub_groups_page_leaders',
+                'value'    => '1',
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_page_menu',
-                'value' => '1',
+                'name'     => 'myclub_groups_page_menu',
+                'value'    => '1',
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_page_news',
-                'value' => '1',
+                'name'     => 'myclub_groups_page_news',
+                'value'    => '1',
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_page_title',
-                'value' => '1',
+                'name'     => 'myclub_groups_page_title',
+                'value'    => '1',
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_page_picture',
-                'value' => '1',
+                'name'     => 'myclub_groups_page_picture',
+                'value'    => '1',
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_page_coming_games',
-                'value' => '1',
+                'name'     => 'myclub_groups_page_coming_games',
+                'value'    => '1',
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_add_news_categories',
-                'value' => '0',
+                'name'     => 'myclub_groups_add_news_categories',
+                'value'    => '0',
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_delete_unused_news',
-                'value' => '0',
+                'name'     => 'myclub_groups_delete_unused_news',
+                'value'    => '0',
                 'autoload' => 'no',
             ],
             [
-                'name'  => 'myclub_groups_show_items_order',
-                'value' => array (
+                'name'     => 'myclub_groups_show_items_order',
+                'value'    => array (
                     'default',
                 ),
                 'autoload' => 'no',
             ],
             [
-                'name' => 'myclub_groups_club_activities',
-                'value' => '[]',
+                'name'     => 'myclub_groups_club_activities',
+                'value'    => '[]',
                 'autoload' => 'no',
             ]
         ];
     }
-    
-    
+
+
     /**
      * Activates the plugin.
      *
@@ -199,13 +206,16 @@ class Activation
         }
 
         $newsService = new NewsService();
-        $newsService->delete_all_news();
+        $newsService->deleteAllNews();
 
         $menuService = new MenuService();
-        $menuService->delete_all_menus();
+        $menuService->deleteAllMenus();
 
         $groupsService = new GroupService();
-        $groupsService->delete_all_groups();
+        $groupsService->deleteAllGroups();
+
+        ActivityService::deleteActivityTables();
+        MemberService::deleteMemberTable();
     }
 
     /**
@@ -218,7 +228,8 @@ class Activation
      * @return void
      * @since 1.0.0
      */
-    private function addOption( string $optionName, $default, string $autoload ) {
+    private function addOption( string $optionName, $default, string $autoload )
+    {
         if ( get_option( $optionName ) === false ) {
             add_option( $optionName, $default, '', $autoload );
         }

@@ -5,6 +5,7 @@ namespace MyClub\MyClubGroups\Tasks;
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 use MyClub\MyClubGroups\BackgroundProcessing\Background_Process;
+use MyClub\MyClubGroups\Services\MemberService;
 use MyClub\MyClubGroups\Utils;
 
 /**
@@ -47,10 +48,10 @@ class ImageTask extends Background_Process {
             if ( $decoded_item ) {
                 switch ( $decoded_item->type ) {
                     case 'group':
-                        $this->add_group_image( $decoded_item );
+                        $this->addGroupImage( $decoded_item );
                         break;
                     case 'member':
-                        $this->add_member_image( $decoded_item );
+                        $this->addMemberImage( $decoded_item );
                         break;
                     case 'news':
                         $this->addNewsImage( $decoded_item );
@@ -70,10 +71,10 @@ class ImageTask extends Background_Process {
      * @return void
      * @since 1.0.0
      */
-    private function add_group_image( object $item )
+    private function addGroupImage( object $item )
     {
         if ( property_exists( $item, 'group_id' ) ) {
-            Utils::add_featured_image( $item->post_id, $item->image, 'group_' . $item->group_id . '_');
+            Utils::addFeaturedImage( $item->post_id, $item->image, 'group_' . $item->group_id . '_');
         }
     }
 
@@ -85,43 +86,24 @@ class ImageTask extends Background_Process {
      * @return void
      * @since 1.0.0
      */
-    private function add_member_image( object $item )
+    private function addMemberImage( object $item )
     {
         if ( property_exists( $item, 'member_id' ) ) {
-            $member_items = json_decode( get_post_meta( $item->post_id, 'myclub_groups_members', true ) );
-            $member_type = $item->member_type;
-            $members = $member_items->$member_type;
-            $member_updated = false;
+            $member_item = MemberService::getMember( $item->post_id, $item->member_id );
+            $url = $item->image->raw->url;
 
-            if ( isset( $members ) ) {
-                foreach ( $members as $member ) {
-                    if ( $member->id === $item->member_id ) {
-                        $url = $item->image->raw->url;
-
-                        if ( $item->image->member_default_image ) {
-                            // Save non personal image (reuse image if present)
-                            $member_image = Utils::add_image( $url );
-                        } else {
-                            // Save image and save attachment id
-                            $member_image = Utils::add_image( $url, 'member_' . $member->id . '_' );
-                        }
-
-                        if ( !property_exists( $member, 'member_image' ) || ( $member->member_image->id !== $member_image[ 'id' ] ) ) {
-                            if ( property_exists( $member, 'member_image' ) && isset( $member->member_image->id ) ) {
-                                wp_delete_attachment( $member->member_image->id );
-                            }
-                            $member->member_image = $member_image;
-                            $member_updated = true;
-                        }
-
-                        break;
-                    }
-                }
+            if ( $item->image->member_default_image ) {
+                // Save non-personal image (reuse image if present)
+                $member_image = Utils::addImage( $url );
+            } else {
+                // Save image and save attachment id
+                $member_image = Utils::addImage( $url, 'member_' . $member_item->member_id . '_' );
             }
 
-            if ( $member_updated ) {
-                $member_items->$member_type = $members;
-                update_post_meta( $item->post_id, 'myclub_groups_members', wp_json_encode( $member_items, JSON_UNESCAPED_UNICODE ) );
+            if ( $member_image && $member_item->image_id !== $member_image[ 'id' ] ) {
+                $member_item->image_id = $member_image[ 'id' ];
+                $member_item->image_url = $member_image[ 'url' ];
+                MemberService::createOrUpdateMember( $item->post_id, $member_item );
             }
         }
     }
@@ -137,8 +119,7 @@ class ImageTask extends Background_Process {
     private function addNewsImage( object $item )
     {
         if ( property_exists( $item, 'news_id' ) ) {
-            Utils::add_featured_image( $item->post_id, $item->image, 'news_' . $item->news_id . '_', $item->caption );
+            Utils::addFeaturedImage( $item->post_id, $item->image, 'news_' . $item->news_id . '_', $item->caption );
         }
     }
 }
-

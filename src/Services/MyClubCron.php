@@ -32,19 +32,19 @@ class MyClubCron
     {
         add_action( 'init', [
             $this,
-            'setup_schedule'
+            'setupSchedule'
         ] );
         add_action( MyClubCron::REFRESH_NEWS_HOOK, [
             $this,
-            'reload_news'
+            'reloadNews'
         ] );
         add_action( MyClubCron::REFRESH_GROUPS_HOOK, [
             $this,
-            'reload_groups'
+            'reloadGroups'
         ] );
         add_action( MyClubCron::REFRESH_CLUB_CALENDAR_HOOK, [
             $this,
-            'reload_club_calendar'
+            'reloadClubCalendar'
         ] );
     }
 
@@ -90,7 +90,7 @@ class MyClubCron
      * @return void
      * @since 1.0.0
      */
-    public function setup_schedule()
+    public function setupSchedule()
     {
         if ( !wp_next_scheduled( MyClubCron::REFRESH_NEWS_HOOK ) ) {
             wp_schedule_event( time(), 'hourly', MyClubCron::REFRESH_NEWS_HOOK );
@@ -114,10 +114,10 @@ class MyClubCron
      * @return void
      * @since 1.0.0
      */
-    public function reload_groups()
+    public function reloadGroups()
     {
         $service = new GroupService();
-        $service->reload_groups();
+        $service->reloadGroups();
     }
 
     /**
@@ -129,10 +129,10 @@ class MyClubCron
      * @return void
      * @since 1.0.0
      */
-    public function reload_news()
+    public function reloadNews()
     {
         $service = new NewsService();
-        $service->reload_news();
+        $service->reloadNews();
     }
 
     /**
@@ -143,9 +143,9 @@ class MyClubCron
      * @return void
      * @since 1.3.0
      */
-    public function reload_club_calendar(): void
+    public function reloadClubCalendar(): void
     {
         $service = new CalendarService();
-        $service->reload_club_events();
+        $service->reloadClubEvents();
     }
 }

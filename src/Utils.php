@@ -8,6 +8,7 @@ use DateTime;
 use DateTimeZone;
 use Exception;
 use MyClub\MyClubGroups\Services\GroupService;
+use MyClub\MyClubGroups\Services\MemberService;
 use WP_Query;
 
 /**
@@ -25,12 +26,12 @@ class Utils
      * @return void
      * @since 1.0.0
      */
-    static function add_featured_image( int $post_id, ?object $image, string $prefix = '', string $caption = '' ): void
+    static function addFeaturedImage( int $post_id, ?object $image, string $prefix = '', string $caption = '' ): void
     {
         $attachment_id = null;
 
         if ( isset( $image ) ) {
-            $attachment = Utils::add_image( $image->raw->url, $prefix, $caption );
+            $attachment = Utils::addImage( $image->raw->url, $prefix, $caption );
             if ( isset( $attachment ) ) {
                 $attachment_id = $attachment[ 'id' ];
             }
@@ -58,23 +59,23 @@ class Utils
      *
      * @since 1.0.0
      */
-    static function add_image( string $image_url, string $prefix = '', string $caption = '' ): ?array
+    static function addImage( string $image_url, string $prefix = '', string $caption = '' ): ?array
     {
         $attachment_id = null;
         $image = pathinfo( $image_url );
 
         // Construct sanitized filename
-        $name = sanitize_title( $prefix . urldecode( $image['filename'] ) );
+        $name = sanitize_title( $prefix . urldecode( $image[ 'filename' ] ) );
         $filename = $name;
         if ( array_key_exists( 'extension', $image ) ) {
-            $filename .= '.' . $image['extension'];
+            $filename .= '.' . $image[ 'extension' ];
         }
 
         // Sanitize the value for _source_image_url meta query comparison
         $meta_value = sanitize_text_field( $prefix . $image_url );
 
         // *** Step 1: Query for an existing attachment using _source_image_url ***
-        $args = array(
+        $args = array (
             'posts_per_page' => 1,
             'post_type'      => 'attachment',
             'meta_query'     => [
@@ -87,18 +88,18 @@ class Utils
         );
 
         $query_results = new WP_Query( $args );
-        if ( isset( $query_results->posts, $query_results->posts[0] ) ) {
-            $attachment_id = $query_results->posts[0]->ID;
+        if ( isset( $query_results->posts, $query_results->posts[ 0 ] ) ) {
+            $attachment_id = $query_results->posts[ 0 ]->ID;
         } else {
-            $args_fallback = array(
+            $args_fallback = array (
                 'posts_per_page' => 1,
                 'post_type'      => 'attachment',
                 'name'           => $name
             );
 
             $fallback_query = new WP_Query( $args_fallback );
-            if ( isset( $fallback_query->posts, $fallback_query->posts[0] ) ) {
-                $attachment_id = $fallback_query->posts[0]->ID;
+            if ( isset( $fallback_query->posts, $fallback_query->posts[ 0 ] ) ) {
+                $attachment_id = $fallback_query->posts[ 0 ]->ID;
 
                 if ( !get_post_meta( $attachment_id, '_source_image_url', true ) ) {
                     update_post_meta( $attachment_id, '_source_image_url', $meta_value );
@@ -111,11 +112,11 @@ class Utils
                     'tmp_name' => download_url( $image_url )
                 ];
 
-                if ( !is_wp_error( $file['tmp_name'] ) ) {
+                if ( !is_wp_error( $file[ 'tmp_name' ] ) ) {
                     $attachment_id = media_handle_sideload( $file );
 
                     if ( is_wp_error( $attachment_id ) ) {
-                        wp_delete_file( $file['tmp_name'] );
+                        wp_delete_file( $file[ 'tmp_name' ] );
                         $attachment_id = null;
                     } else {
                         update_post_meta( $attachment_id, '_source_image_url', $meta_value );
@@ -132,7 +133,7 @@ class Utils
                 $image_url = $image_src_array[ 0 ];
             }
 
-            wp_update_post( array(
+            wp_update_post( array (
                 'ID'           => $attachment_id,
                 'post_excerpt' => $caption
             ) );
@@ -155,7 +156,7 @@ class Utils
      *
      * @since 1.0.0
      */
-    static function change_host_name( string $oldUrl ): string
+    static function changeHostName( string $oldUrl ): string
     {
         $host_url_parts = wp_parse_url( home_url() );
         $old_url_parts = wp_parse_url( $oldUrl );
@@ -178,9 +179,9 @@ class Utils
      * @return bool True if the cache was successfully cleared, false if no supported caching plugin was detected or
      * an error occurred.
      */
-    static function clear_cache_for_page( int $post_id ): bool
+    static function clearCacheForPage( int $post_id ): bool
     {
-        $cache_plugin = Utils::detect_cache_plugin();
+        $cache_plugin = Utils::detectCachePlugin();
 
         try {
             switch ( $cache_plugin ) {
@@ -273,7 +274,7 @@ class Utils
      * @return void
      * @since 1.0.0
      */
-    static function delete_post( int $post_id )
+    static function deletePost( int $post_id )
     {
         if ( has_post_thumbnail( $post_id ) ) {
             $attachment_id = get_post_thumbnail_id( $post_id );
@@ -281,32 +282,16 @@ class Utils
             wp_delete_attachment( $attachment_id, true );
         }
 
-        $meta = get_post_meta( $post_id, 'myclub_groups_members', true );
-
-        if ( $meta ) {
-            $members = json_decode( $meta );
-            foreach ( $members->members as $member ) {
-                if ( property_exists( $member, 'member_image' ) && $member->member_image->id ) {
-                    wp_delete_attachment( $member->member_image->id );
-                }
-            }
-
-            foreach ( $members->leaders as $leader ) {
-                if ( property_exists( $leader, 'member_image' ) && $leader->member_image->id ) {
-                    wp_delete_attachment( $leader->member_image->id );
-                }
-            }
-        }
-
+        MemberService::deleteGroupMembers( $post_id );
         wp_delete_post( $post_id, true );
 
-        $other_cached_post_ids = Utils::get_other_cached_posts( $post_id );
+        $other_cached_post_ids = Utils::getOtherCachedPosts( $post_id );
 
         foreach ( $other_cached_post_ids as $cached_post_id ) {
-            Utils::clear_cache_for_page( $cached_post_id );
+            Utils::clearCacheForPage( $cached_post_id );
         }
 
-        Utils::clear_cache_for_page( $post_id );
+        Utils::clearCacheForPage( $post_id );
     }
 
     /**
@@ -316,7 +301,7 @@ class Utils
      * 'wp_rocket', or 'litespeed_cache'), or false if no supported caching plugin is detected.
      * @since 1.2.0
      */
-    static function detect_cache_plugin()
+    static function detectCachePlugin()
     {
         // Use unique identifiers for each plugin (classes, functions, or constants)
         if ( class_exists( 'WP_Super_Cache' ) || defined( 'WPCACHEHOME' ) ) {
@@ -363,7 +348,7 @@ class Utils
      * @return string The formatted date/time string.
      * @since 1.0.0
      */
-    static function format_date_time( $utc_time ): string
+    static function formatDateTime( $utc_time ): string
     {
         try {
             // Retrieve the timezone string from WordPress options
@@ -398,7 +383,7 @@ class Utils
      * @return int The retrieved post ID.
      * @since 1.0.0
      */
-    static function get_post_id( array $attributes ): int
+    static function getPostId( array $attributes ): int
     {
         if ( !empty( $attributes[ 'post_id' ] ) ) {
             $post_id = (int)$attributes[ 'post_id' ];
@@ -427,7 +412,7 @@ class Utils
      * @return array An array of post IDs that match the specified conditions.
      * @since 1.3.0
      */
-    static function get_club_calendar_posts(): array
+    static function getClubCalendarPosts(): array
     {
         global $wpdb;
 
@@ -457,7 +442,7 @@ class Utils
      * @return array An array of matching post IDs, or an empty array if no matches are found.
      * @since 1.2.0
      */
-    static function get_other_cached_posts( ?int $post_id = null, ?string $group_id = null ): array
+    static function getOtherCachedPosts( ?int $post_id = null, ?string $group_id = null ): array
     {
         global $wpdb;
 
@@ -510,9 +495,11 @@ class Utils
      * @return string A JSON-encoded string representation of the processed activities.
      * @since 1.3.0
      */
-    static function prepare_activities_json( array $activities ): string
+    static function prepareActivitiesJson( array $activities ): string
     {
         foreach ( $activities as $activity ) {
+            $activity->id = $activity->uid;
+            unset( $activity->uid );
             $activity->description = str_replace( '<br /> <br />', '<br />', $activity->description );
             $activity->description = str_replace( '<br /><br />', '<br />', $activity->description );
             $activity->description = addslashes( str_replace( '<br /><br /><br />', '<br /><br />', $activity->description ) );
@@ -525,6 +512,22 @@ class Utils
     }
 
     /**
+     * Processes a list of members by decoding their dynamic fields and returns the data in JSON format.
+     *
+     * @param array $members An array of member objects, each containing a dynamic_fields property to decode.
+     * @return string A JSON-encoded string representation of the processed members.
+     * @since 2.0.0
+     */
+    static function prepareMembersJson( array $members ): string
+    {
+        foreach ( $members as $member ) {
+            $member->dynamic_fields = json_decode( $member->dynamic_fields );
+        }
+
+        return wp_json_encode( $members, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT );
+    }
+
+    /**
      * Sanitize an array by recursively sanitizing text fields.
      *
      * @param array $array The array to be sanitized.
@@ -533,11 +536,11 @@ class Utils
      *
      * @since 1.0.0
      */
-    static function sanitize_array( array $array ): array
+    static function sanitizeArray( array $array ): array
     {
         foreach ( $array as $key => &$value ) {
             if ( is_array( $value ) ) {
-                $value = Utils::sanitize_array( $value );
+                $value = Utils::sanitizeArray( $value );
             } else {
                 $value = sanitize_text_field( $value );
             }
@@ -558,7 +561,7 @@ class Utils
      *
      * @since 1.0.0
      */
-    static function update_or_create_option( string $option_name, $value, string $autoload = 'yes', bool $check_same = false ): bool
+    static function updateOrCreateOption( string $option_name, $value, string $autoload = 'yes', bool $check_same = false ): bool
     {
         $current_value = get_option( $option_name, 'non-existent' );
 

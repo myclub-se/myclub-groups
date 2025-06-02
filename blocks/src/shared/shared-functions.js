@@ -21,8 +21,8 @@ function showModal ( modalClassName, labels, data ) {
     const image = modal.getElementsByClassName('image')[0];
     const information = modal.getElementsByClassName('information')[0];
     const close = modal.getElementsByClassName('close')[0];
-    if (data.member_image) {
-        image.innerHTML = '<img src="' + data.member_image.url + '" alt="' + data.name.replaceAll('u0022', '\"') + '" />';
+    if (data.image_id) {
+        image.innerHTML = '<img src="' + data.image_url + '" alt="' + data.name.replaceAll('u0022', '\"') + '" />';
     }
     let output = '<div class="name">' + data.name.replaceAll('u0022', '\"') + '</div>';
 

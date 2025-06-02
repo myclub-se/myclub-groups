@@ -11,7 +11,7 @@ import { changeHostName, closeModal, getMyClubGroups, setHeight, showMemberModal
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes } ) {
-	const [postLeaders, setPostLeaders] = useState({members: [], leaders: [], loaded: false});
+	const [postLeaders, setPostLeaders] = useState({leaders: [], loaded: false});
 	const [posts, setPosts] = useState([]);
 	const [leaderTitle, setLeaderTitle] = useState(__( 'Leaders', 'myclub-groups' ) );
 	let memberOutput;
@@ -38,16 +38,13 @@ export default function Edit( { attributes, setAttributes } ) {
 		if (attributes.post_id) {
 			apiFetch({ path: `/myclub/v1/groups/${attributes.post_id}`})
 				.then((post) => {
-					const allLeaders = JSON.parse(post.members);
-
 					setPostLeaders( {
-						...allLeaders,
+						leaders: JSON.parse(post.leaders),
 						loaded: true
 					} );
 				});
 		} else {
 			setPostLeaders({
-				members: [],
 				leaders: [],
 				loaded: true
 			});
@@ -74,7 +71,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		getMyClubGroups( setPosts, selectPostLabel );
 	}, []);
 
-	if (postLeaders && postLeaders.members && postLeaders.members.length) {
+	if (postLeaders && postLeaders.leaders && postLeaders.leaders.length) {
 		memberOutput =
 			<div className="myclub-groups-leaders-list">
 				<div className="myclub-groups-leaders-container">
@@ -88,7 +85,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							return (
 								<div className="leader" onClick={() => showMemberModal(modalRef, leader, labels)}>
 									<div className="leader-picture">
-										{ leader.member_image && <img src={changeHostName(leader.member_image.url)} alt={leader.name}/> }
+										{ leader.image_id && <img src={changeHostName(leader.image_url)} alt={leader.name}/> }
 									</div>
 									<div className="leader-name">
 										{leader.name}

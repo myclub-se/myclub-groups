@@ -34,7 +34,7 @@ class Blocks extends Base
      *
      * @since 1.0.0
      */
-    public function enqueue_scripts()
+    public function enqueueScripts()
     {
         foreach ( $this->handles as $handle ) {
             wp_set_script_translations( $handle, 'myclub-groups', $this->plugin_path . 'languages' );
@@ -50,7 +50,7 @@ class Blocks extends Base
      * @return string The rendered HTML content of the calendar block.
      * @since 1.0.0
      */
-    public function render_calendar( array $attributes, string $content = '' ): string
+    public function renderCalendar( array $attributes, string $content = '' ): string
     {
         wp_enqueue_script( 'fullcalendar-js' );
 
@@ -68,7 +68,7 @@ class Blocks extends Base
      * @return string The rendered HTML content of the club calendar block.
      * @since 1.3.0
      */
-    public function render_club_calendar( array $attributes, string $content = '' ): string
+    public function renderClubCalendar( array $attributes, string $content = '' ): string
     {
         wp_enqueue_script( 'fullcalendar-js' );
 
@@ -93,18 +93,18 @@ class Blocks extends Base
         // Register custom MyClub blocks
         add_action( 'init', [
             $this,
-            'register_blocks'
+            'registerBlocks'
         ] );
         // Enqueue js scripts for translations
         add_action( 'admin_enqueue_scripts', [
             $this,
-            'enqueue_scripts'
+            'enqueueScripts'
         ] );
 
         // Add custom category to blocks chooser
         add_filter( 'block_categories_all', [
             $this,
-            'register_myclub_category'
+            'registerMyclubCategory'
         ] );
     }
 
@@ -116,14 +116,14 @@ class Blocks extends Base
      *
      * @since 1.0.0
      */
-    public function register_blocks()
+    public function registerBlocks()
     {
         $this->block_args = [
             'calendar' => [
                 'description' => __( 'Display calendar for a selected group', 'myclub-groups' ),
                 'render_callback' => [
                     $this,
-                    'render_calendar'
+                    'renderCalendar'
                 ],
                 'title' => __( 'MyClub Group Calendar', 'myclub-groups' )
             ],
@@ -131,7 +131,7 @@ class Blocks extends Base
                 'description' => __( 'Display calendar for the entire Club', 'myclub-groups' ),
                 'render_callback' => [
                     $this,
-                    'render_club_calendar'
+                    'renderClubCalendar'
                 ],
                 'title' => __( 'MyClub Club Calendar', 'myclub-groups')
             ],
@@ -170,7 +170,7 @@ class Blocks extends Base
         ];
 
         foreach ( Blocks::BLOCKS as $block ) {
-            $this->register_block( $block );
+            $this->registerBlock( $block );
         }
 
         wp_register_script( 'fullcalendar-js', $this->plugin_url . 'resources/javascript/fullcalendar.6.1.11.min.js', [], '6.1.11', true );
@@ -183,7 +183,7 @@ class Blocks extends Base
      * @return array The updated block categories list.
      * @since 1.0.0
      */
-    public function register_myclub_category( array $categories ): array
+    public function registerMyclubCategory( array $categories ): array
     {
         $categories[] = array (
             'slug'  => 'myclub',
@@ -202,7 +202,7 @@ class Blocks extends Base
      *
      * @since 1.0.0
      */
-    private function register_block( string $block )
+    private function registerBlock( string $block )
     {
         $block_type = register_block_type( $this->plugin_path . 'blocks/build/' . $block, $this->block_args[ $block ] );
 

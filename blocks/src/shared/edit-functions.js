@@ -52,9 +52,11 @@ export function showMemberModal( ref, member, labels ) {
         const informationElement = ref.current.getElementsByClassName('information')[0];
         let output = '<div class="name">' + member.name + '</div>';
 
-        imageElement.innerHTML = '<img src="' + changeHostName(member.member_image.url) + '" alt="' + member.name + '" />';
+        if (member.image_id) {
+            imageElement.innerHTML = '<img src="' + changeHostName(member.image_url) + '" alt="' + member.name + '" />';
+        }
 
-        if ( member.role || member.phone || member.email || member.age ) {
+        if ( member.role || member.phone || member.email || member.age || (member.dynamic_fields && member.dynamic_fields.length ) ) {
             output += '<table>';
 
             if ( member.role ) {
@@ -71,6 +73,12 @@ export function showMemberModal( ref, member, labels ) {
 
             if ( member.phone ) {
                 output += `<tr><th>${labels.phone}</th><td><a href="tel:${member.phone}">${member.phone}</a></td></tr>`;
+            }
+
+            if ( member.dynamic_fields && member.dynamic_fields.length ) {
+                member.dynamic_fields.forEach( ( field ) => {
+                    output += `<tr><th>${field.name}</th><td>${field.value.replaceAll('u0022', '\"')}</td></tr>`;
+                });
             }
 
             output += '</table>';

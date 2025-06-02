@@ -41,7 +41,7 @@ class RefreshMenusTask extends Background_Process
      */
     protected function task( $item ) {
         $service = new MenuService();
-        $service->refresh_menus();
+        $service->refreshMenus();
         return false;
     }
 }

@@ -22,7 +22,7 @@ class GroupService extends Groups
     private RestApi $api;
     private ImageTask $image_task;
 
-    private bool $content_or_metadata_updated = false;
+    private bool $content_or_data_updated = false;
 
     public function __construct()
     {
@@ -37,7 +37,7 @@ class GroupService extends Groups
      * @return string The new content of the MyClub group post.
      * @since 1.0.0
      */
-    public static function create_post_content( int $post_id, $selected_blocks = null ): string
+    public static function createPostContent( int $post_id, $selected_blocks = null ): string
     {
         $option_names = [
             'calendar'     => 'myclub_groups_page_calendar',
@@ -90,11 +90,11 @@ class GroupService extends Groups
      * @param bool $clear_cache Clear cache if set
      * @return void
      */
-    public static function update_group_page_contents( int $post_id, $page_contents, bool $clear_cache = true )
+    public static function updateGroupPageContents( int $post_id, $page_contents, bool $clear_cache = true )
     {
         $post_content = array (
             'ID'           => $post_id,
-            'post_content' => GroupService::create_post_content( $post_id, $page_contents ),
+            'post_content' => GroupService::createPostContent( $post_id, $page_contents ),
         );
 
         // Update the post into the database
@@ -106,7 +106,7 @@ class GroupService extends Groups
         }
 
         if ( $clear_cache ) {
-            Utils::clear_cache_for_page( $post_id );
+            Utils::clearCacheForPage( $post_id );
         }
     }
 
@@ -120,7 +120,7 @@ class GroupService extends Groups
      * @return void
      * @since 1.0.0
      */
-    public function delete_all_groups()
+    public function deleteAllGroups()
     {
         $args = array (
             'post_type'      => GroupService::MYCLUB_GROUPS,
@@ -135,9 +135,11 @@ class GroupService extends Groups
 
                 $post_id = $query->post->ID;
 
-                Utils::delete_post( $post_id );
+                Utils::deletePost( $post_id );
             }
         }
+
+        unset( $args, $query );
     }
 
     /**
@@ -146,10 +148,10 @@ class GroupService extends Groups
      * @return void
      * @since 1.0.0
      */
-    public function reload_groups()
+    public function reloadGroups()
     {
         // Load menu items from member backend
-        $groups = $this->get_all_group_ids();
+        $groups = $this->getAllGroupIds();
 
         if ( $groups->success ) {
             $process = RefreshGroupsTask::init();
@@ -161,6 +163,8 @@ class GroupService extends Groups
             // Enqueue and start the background task
             $process->save()->dispatch();
         }
+
+        unset( $groups );
     }
 
     /**
@@ -171,9 +175,9 @@ class GroupService extends Groups
      *
      * @return void
      */
-    public function remove_unused_group_pages()
+    public function removeUnusedGroupPages()
     {
-        $group_ids = $this->get_all_group_ids();
+        $group_ids = $this->getAllGroupIds();
 
         if ( $group_ids->success ) {
             global $wpdb;
@@ -206,11 +210,18 @@ class GroupService extends Groups
                 if ( $query->have_posts() ) {
                     while ( $query->have_posts() ) {
                         $query->next_post();
+                        MemberService::deleteGroupMembers( $query->post->ID );
                         wp_delete_post( $query->post->ID, true );
                     }
                 }
+
+                unset( $old_ids, $args, $query );
             }
+
+            unset( $existing_ids );
         }
+
+        unset( $group_ids );
     }
 
     /**
@@ -229,26 +240,26 @@ class GroupService extends Groups
      * @return void
      * @since 1.0.0
      */
-    public function update_group_page( string $id )
+    public function updateGroupPage( string $id )
     {
-        $this->content_or_metadata_updated = false;
+        $this->content_or_data_updated = false;
         $this->image_task = ImageTask::init();
 
         $page_template = get_option( 'myclub_groups_page_template' );
-        $response = $this->api->load_group( $id );
+        $response = $this->api->loadGroup( $id );
 
         if ( !is_wp_error( $response ) && $response !== false && $response->status === 200 ) {
             $group = $response->result;
-            $post_id = $this->get_group_post_id( $id );
+            $post_id = $this->getGroupPostId( $id );
 
             if ( !$post_id ) {
-                $post_id = wp_insert_post( $this->create_post_args( $group, 0, $page_template ) );
+                $post_id = wp_insert_post( $this->createPostArgs( $group, 0, $page_template ) );
 
                 if ( $post_id && !is_wp_error( $post_id ) ) {
-                    $this::update_group_page_contents( $post_id, null, false );
+                    $this::updateGroupPageContents( $post_id, null, false );
                 }
             } else {
-                $post_id = wp_update_post( $this->create_post_args( $group, $post_id, $page_template ) );
+                $post_id = wp_update_post( $this->createPostArgs( $group, $post_id, $page_template ) );
             }
 
             if ( $post_id && !is_wp_error( $post_id ) ) {
@@ -262,42 +273,65 @@ class GroupService extends Groups
                         ), JSON_UNESCAPED_UNICODE )
                     );
                 }
-                $this->add_members( $post_id, $group );
-                $this->add_activities( $post_id, $group );
+                $this->addMembers( $post_id, $group );
+                $this->addActivities( $post_id, $group );
                 update_post_meta( $post_id, 'myclub_groups_last_updated', gmdate( "c" ) );
                 update_post_meta( $post_id, '_wp_page_template', $page_template );
 
-                if ($this->content_or_metadata_updated) {
-                    $other_cached_post_ids = Utils::get_other_cached_posts( $post_id, $group->id );
+                if ( $this->content_or_data_updated ) {
+                    $other_cached_post_ids = Utils::getOtherCachedPosts( $post_id, $group->id );
 
-                    foreach ($other_cached_post_ids as $other_post_id) {
-                        Utils::clear_cache_for_page( $other_post_id );
+                    foreach ( $other_cached_post_ids as $other_post_id ) {
+                        Utils::clearCacheForPage( $other_post_id );
                     }
 
-                    Utils::clear_cache_for_page( $post_id );
+                    Utils::clearCacheForPage( $post_id );
                 }
 
                 $this->image_task->save()->dispatch();
             }
+
+            unset( $group );
+        }
+
+        unset( $response  );
+
+        if ( function_exists( 'gc_collect_cycles' ) ) {
+            gc_collect_cycles();
         }
     }
 
     /**
-     * Adds activities to a post by performing the following steps:
-     * - Encodes the activities array into a JSON string
-     * - Checks if the 'activities' custom field already exists for the post
-     *   - If it exists, updates the 'activities' custom field with the JSON string
-     *   - If it does not exist, adds the 'activities' custom field with the JSON string
+     * Adds or updates activities for a given post and group, and removes obsolete activities.
      *
-     * @param int $post_id The ID of the post to add activities to
-     * @param object $group The group object containing the activities array
+     * @param int $post_id The post ID associated with the activities.
+     * @param object $group An object representing the group, which contains an array of activities.
      * @return void
      * @since 1.0.0
      */
-    private function add_activities( int $post_id, object $group )
+    private function addActivities( int $post_id, object $group )
     {
-        $activities_json = Utils::prepare_activities_json( $group->activities );
-        $this->update_metadata_if_changed( $post_id, 'myclub_groups_activities', $activities_json );
+        $remote_ids = array ();
+        $update = false;
+
+        foreach ( $group->activities as $activity ) {
+            $remote_ids[] = $activity->uid;
+            $activity->post_id = $post_id;
+            $update = ActivityService::createOrUpdateActivity( $activity ) || $update;
+        }
+
+        $deletable_ids = array_diff( ActivityService::listPostActivityIds( $post_id ), $remote_ids );
+
+        foreach ( $deletable_ids as $id ) {
+            ActivityService::removeActivityFromPost( $post_id, $id );
+            $update = true;
+        }
+
+        if ( $update ) {
+            $this->content_or_data_updated = true;
+        }
+
+        unset( $deletable_ids, $remote_ids );
     }
 
     /**
@@ -320,48 +354,52 @@ class GroupService extends Groups
      * @return void
      * @since 1.0.0
      */
-    private function add_members( int $post_id, object $group )
+    private function addMembers( int $post_id, object $group )
     {
-        $members = array ();
-        $leaders = array ();
+        $update = false;
+        $remote_ids = array ();
 
         foreach ( $group->members as $member ) {
-            $nameArray = [];
+            $name_array = [];
             if ( $member->first_name ) {
-                $nameArray[] = $member->first_name;
+                $name_array[] = $member->first_name;
             }
             if ( $member->last_name ) {
-                $nameArray[] = $member->last_name;
+                $name_array[] = $member->last_name;
             }
-            $member->name = implode( ' ', $nameArray );
-            unset( $member->first_name );
-            unset( $member->last_name );
+            $member->name = implode( ' ', $name_array );
+            $member->member_id = $member->id;
+
+            $remote_ids[] = $member->id;
 
             if ( isset( $member->member_image ) ) {
                 $this->image_task->push_to_queue(
                     wp_json_encode( array (
-                        'post_id'     => $post_id,
-                        'type'        => 'member',
-                        'member_id'   => $member->id,
-                        'member_type' => $member->is_leader ? 'leaders' : 'members',
-                        'image'       => $member->member_image
+                        'post_id'   => $post_id,
+                        'type'      => 'member',
+                        'member_id' => $member->member_id,
+                        'image'     => $member->member_image
                     ), JSON_UNESCAPED_UNICODE )
                 );
             }
 
-            unset( $member->member_image );
-
-            if ( $member->is_leader ) {
-                $leaders[] = $member;
-            } else {
-                $members[] = $member;
-            }
+            unset( $member->id, $member->member_image, $member->first_name, $member->last_name, $name_array );
+            $member->dynamic_fields = wp_json_encode( $member->dynamic_fields, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT );
+            $update = MemberService::createOrUpdateMember( $post_id, $member ) || $update;
         }
 
-        array_multisort( array_column( $members, 'name' ), SORT_ASC, $members );
-        array_multisort( array_column( $leaders, 'name' ), SORT_ASC, $leaders );
+        $deletable_ids = array_diff( MemberService::listAllGroupMemberIds( $post_id ), $remote_ids );
 
-        $this->update_members( $post_id, $members, $leaders );
+        foreach ( $deletable_ids as $id ) {
+            MemberService::deleteMember( $post_id, $id );
+            $update = true;
+        }
+
+        if ( $update ) {
+            $this->content_or_data_updated = true;
+        }
+
+        unset( $deletable_ids, $remote_ids );
     }
 
     /**
@@ -372,14 +410,14 @@ class GroupService extends Groups
      * @param string $page_template The page template.
      * @return array The array of arguments for creating or updating a post.
      */
-    private function create_post_args( $group, int $post_id, string $page_template ): array
+    private function createPostArgs( $group, int $post_id, string $page_template ): array
     {
         $args = [
             'post_title'    => sanitize_text_field( $group->name ),
             'post_name'     => sanitize_title( $group->name ),
             'post_status'   => 'publish',
             'post_type'     => GroupService::MYCLUB_GROUPS,
-            'post_content'  => $post_id ? $this->create_post_content( $post_id ) : '',
+            'post_content'  => $post_id ? $this->createPostContent( $post_id ) : '',
             'page_template' => wp_is_block_theme() ? $page_template : '',
             'meta_input'    => [
                 'myclub_groups_id'           => sanitize_text_field( $group->id ),
@@ -397,132 +435,31 @@ class GroupService extends Groups
 
             // Compare title
             if ( $existing_post && $existing_post->post_title !== $args[ 'post_title' ] ) {
-                $this->content_or_metadata_updated = true;
+                $this->content_or_data_updated = true;
             }
 
             // Compare content
             if ( $existing_post && $existing_post->post_content !== $args[ 'post_content' ] ) {
-                $this->content_or_metadata_updated = true;
+                $this->content_or_data_updated = true;
             }
 
             if ( $existing_meta ) {
                 if ( isset( $existing_meta[ '_wp_page_template' ][ 0 ] ) &&
                     $existing_meta[ '_wp_page_template' ][ 0 ] !== $args[ 'page_template' ] ) {
-                    $this->content_or_metadata_updated = true;
+                    $this->content_or_data_updated = true;
                 }
 
                 // Compare meta fields
                 foreach ( $args[ 'meta_input' ] as $key => $value ) {
                     if ( !isset( $existing_meta[ $key ][ 0 ] ) || $existing_meta[ $key ][ 0 ] !== $value ) {
-                        $this->content_or_metadata_updated = true;
+                        $this->content_or_data_updated = true;
                     }
                 }
             } else {
-                $this->content_or_metadata_updated = true;
+                $this->content_or_data_updated = true;
             }
         }
 
         return $args;
-    }
-
-    /**
-     * Updates the members of a specific post.
-     * Retrieves the existing members from the post meta with the key 'members',
-     * maps them into an associative array called $mappedEntities,
-     * then updates the members and leaders with the provided $members and $leaders arrays.
-     * Finally, updates the post meta with the updated members' data.
-     *
-     * @param int $post_id The ID of the post to update the member metadata for.
-     * @param array $members The loaded array of members.
-     * @param array $leaders The loaded array of leaders.
-     * @return void
-     * @since 1.0.0
-     */
-    private function update_members( int $post_id, array $members, array $leaders )
-    {
-        $metadata = get_post_meta( $post_id, 'myclub_groups_members', true );
-
-        if ( !empty( $metadata ) ) {
-            $metadata_json = json_decode( $metadata );
-            $mapped_entities = [
-                'leaders' => [],
-                'members' => [],
-            ];
-
-            foreach ( $metadata_json as $type => $entities ) {
-                foreach ( $entities as $entity ) {
-                    $mapped_entities[ $type ][ $entity->id ] = $entity;
-                }
-            }
-
-            $updated_metadata = [
-                'members' => $this->update_member_entities( $members, $mapped_entities[ 'members' ] ),
-                'leaders' => $this->update_member_entities( $leaders, $mapped_entities[ 'leaders' ] ),
-            ];
-        } else {
-            $updated_metadata = [
-                'members' => $members,
-                'leaders' => $leaders
-            ];
-        }
-
-        $members_json = $this->prepare_members_json( $updated_metadata );
-        $this->update_metadata_if_changed( $post_id, 'myclub_groups_members', $members_json );
-    }
-
-    /**
-     * Updates the member entities by mapping their member_image property
-     * based on the provided mapped entities.
-     *
-     * Iterates over the given entities and checks if the mappedEntities array
-     * contains a member_image property for each entity. If a member_image property
-     * is found, the corresponding entity's member_image property gets updated with
-     * the mapped value.
-     *
-     * @param array $entities The array of member entities to update.
-     * @param array $mapped_entities The array of mapped entities containing the
-     *                              member_image property.
-     * @return array The updated array of member entities.
-     * @since 1.0.0
-     */
-    private function update_member_entities( array $entities, array $mapped_entities ): array
-    {
-        foreach ( $entities as $entity ) {
-            if ( isset( $mapped_entities[ $entity->id ]->member_image ) ) {
-                $entity->member_image = $mapped_entities[ $entity->id ]->member_image;
-            }
-        }
-
-        return $entities;
-    }
-
-    /**
-     * Determines if the metadata value has changed and updates it if necessary.
-     *
-     * @param int $post_id The post ID to update the metadata for.
-     * @param string $meta_key The meta key.
-     * @param mixed $new_value The new value.
-     * @return void
-     * @since 1.2.0
-     */
-    private function update_metadata_if_changed( int $post_id, string $meta_key, $new_value ): void
-    {
-        $existing_value = get_post_meta( $post_id, $meta_key, true );
-        if ( $existing_value !== $new_value ) {
-            update_post_meta( $post_id, $meta_key, $new_value );
-            $this->content_or_metadata_updated = true;
-        }
-    }
-
-    /**
-     * Converts members and leaders to JSON and ensures changes are tracked.
-     *
-     * @param array $metadata The metadata array with members and leaders.
-     * @return string JSON representation of members and leaders.
-     * @since 1.2.0
-     */
-    private function prepare_members_json( array $metadata ): string
-    {
-        return wp_json_encode( $metadata, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT );
     }
 }
