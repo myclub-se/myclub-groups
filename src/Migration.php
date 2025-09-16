@@ -29,7 +29,17 @@ class Migration
     {
         $installed_version = get_option( self::VERSION_OPTION, '1.3.5' );
 
-        if ( version_compare( $installed_version, self::CURRENT_VERSION, '<' ) ) {
+        // Normalize unexpected values (e.g., NULL stored in the DB)
+        if ( ! is_string( $installed_version ) || $installed_version === '' ) {
+            $installed_version = '1.3.5';
+        }
+
+        // Also ensure CURRENT_VERSION is a non-empty string before comparing
+        $current_version = ( is_string( self::CURRENT_VERSION ) && self::CURRENT_VERSION !== '' )
+            ? self::CURRENT_VERSION
+            : '2.0.0';
+
+        if ( version_compare( $installed_version, $current_version, '<' ) ) {
             self::migrate( $installed_version );
         }
     }
