@@ -67,6 +67,7 @@ The plugin will try to clear cache on the following cache plugins for MyClub gro
 * WP Rocket
 * WP Super Cache
 * W3 Total Cache
+* NitroPack
 * Redis or Memcache cache
 
 For unsupported cache systems, please contact us to request integration.
