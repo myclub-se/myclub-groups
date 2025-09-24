@@ -27,66 +27,78 @@ class Admin extends Base
     public function register()
     {
         add_action( 'admin_menu', [
-            $this,
-            'addAdminMenu'
+                $this,
+                'addAdminMenu'
         ] );
         add_action( 'admin_init', [
-            $this,
-            'addMyclubGroupsSettings'
+                $this,
+                'addMyclubGroupsSettings'
         ] );
         add_action( 'update_option_myclub_groups_api_key', [
-            $this,
-            'updateApiKey'
+                $this,
+                'updateApiKey'
         ], 10, 0 );
         add_action( 'update_option_myclub_groups_show_items_order', [
-            $this,
-            'updateShowOrder'
+                $this,
+                'updateShowOrder'
         ], 10, 2 );
         add_action( 'update_option_myclub_groups_page_template', [
-            $this,
-            'updatePageTemplate'
+                $this,
+                'updatePageTemplate'
         ], 10, 2 );
         add_action( 'wp_ajax_myclub_reload_groups', [
-            $this,
-            'ajaxReloadGroups'
+                $this,
+                'ajaxReloadGroups'
         ] );
         add_action( 'wp_ajax_myclub_reload_news', [
-            $this,
-            'ajaxReloadNews'
+                $this,
+                'ajaxReloadNews'
         ] );
         add_action( 'wp_ajax_myclub_sync_club_calendar', [
-            $this,
-            'syncClubCalendar'
+                $this,
+                'syncClubCalendar'
         ] );
         add_action( 'admin_enqueue_scripts', [
-            $this,
-            'enqueueAdminJS'
+                $this,
+                'enqueueAdminJS'
         ] );
         add_action( 'admin_notices', [
-            $this,
-            'wpCronAdminNotice'
+                $this,
+                'wpCronAdminNotice'
         ] );
         add_action( 'manage_post_posts_columns', [
-            $this,
-            'addGroupNewsColumn'
+                $this,
+                'addGroupNewsColumn'
         ] );
         add_action( 'after_switch_theme', [
-            $this,
-            'updateThemePageTemplate'
+                $this,
+                'updateThemePageTemplate'
         ] );
         add_action( 'wp_dashboard_setup', [
-            $this,
-            'setupDashboardWidget'
+                $this,
+                'setupDashboardWidget'
         ] );
 
         add_filter( 'manage_post_posts_custom_column', [
-            $this,
-            'addGroupNewsColumnContent'
+                $this,
+                'addGroupNewsColumnContent'
         ], 10, 2 );
         add_filter( "plugin_action_links_" . plugin_basename( $this->plugin_path . '/myclub-groups.php' ), [
-            $this,
-            'addPluginSettingsLink'
+                $this,
+                'addPluginSettingsLink'
         ] );
+
+        add_action( 'admin_enqueue_scripts', [
+                $this,
+                'enqueueMediaModalFilter'
+        ] );
+        add_filter( 'ajax_query_attachments_args', [
+                $this,
+                'applyImageTypeFilterToMediaModal'
+        ] );
+
+        add_action( 'restrict_manage_posts', [ $this, 'renderMediaLibraryImageTypeFilter' ] );
+        add_action( 'pre_get_posts', [ $this, 'applyMediaLibraryImageTypeFilterQuery' ] );
     }
 
     /**
@@ -98,14 +110,14 @@ class Admin extends Base
     public function addAdminMenu()
     {
         add_options_page(
-            __( 'MyClub Groups plugin settings', 'myclub-groups' ),
-            __( 'MyClub Groups', 'myclub-groups' ),
-            'manage_options',
-            'myclub-groups-settings',
-            [
-                $this,
-                'adminSettings'
-            ]
+                __( 'MyClub Groups plugin settings', 'myclub-groups' ),
+                __( 'MyClub Groups', 'myclub-groups' ),
+                'manage_options',
+                'myclub-groups-settings',
+                [
+                        $this,
+                        'adminSettings'
+                ]
         );
     }
 
@@ -122,9 +134,9 @@ class Admin extends Base
 
         if ( $index && count( $columns ) > $index ) {
             return array_merge(
-                array_slice( $columns, 0, $index + 1 ),
-                [ 'group_news' => __( 'Group news', 'myclub-groups' ) ],
-                array_slice( $columns, $index + 1, count( $columns ) )
+                    array_slice( $columns, 0, $index + 1 ),
+                    [ 'group_news' => __( 'Group news', 'myclub-groups' ) ],
+                    array_slice( $columns, $index + 1, count( $columns ) )
             );
         } else {
             return array_merge( $columns, [ 'group_news' => __( 'Group news', 'myclub-groups' ) ] );
@@ -160,188 +172,188 @@ class Admin extends Base
     public function addMyclubGroupsSettings()
     {
         register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_api_key', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeApiKey'
-            ],
-            'default'           => NULL
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeApiKey'
+                ],
+                'default'           => NULL
         ] );
         register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_group_slug', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeGroupSlug'
-            ],
-            'default'           => 'groups'
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeGroupSlug'
+                ],
+                'default'           => 'groups'
         ] );
         register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_group_news_slug', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeGroupNewsSlug'
-            ],
-            'default'           => 'group-news'
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeGroupNewsSlug'
+                ],
+                'default'           => 'group-news'
         ] );
         register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_add_news_categories', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeCheckbox'
-            ],
-            'default'           => '0'
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCheckbox'
+                ],
+                'default'           => '0'
         ] );
         register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_delete_unused_news', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeCheckbox'
-            ],
-            'default'           => '0'
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCheckbox'
+                ],
+                'default'           => '0'
         ] );
         register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_last_news_sync', [
-            'default' => NULL
+                'default' => NULL
         ] );
         register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_last_groups_sync', [
-            'default' => NULL
+                'default' => NULL
         ] );
         register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_last_club_calendar_sync', [
-            'default' => NULL
+                'default' => NULL
         ] );
         register_setting( 'myclub_groups_settings_tab2', 'myclub_groups_calendar_title', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeCalendarTitle'
-            ],
-            'default'           => __( 'Calendar', 'myclub-groups' ),
-            'show_in_rest'      => true
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCalendarTitle'
+                ],
+                'default'           => __( 'Calendar', 'myclub-groups' ),
+                'show_in_rest'      => true
         ] );
         register_setting( 'myclub_groups_settings_tab2', 'myclub_groups_club_calendar_title', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeClubCalendarTitle'
-            ],
-            'default'           => __( 'Calendar', 'myclub-groups' ),
-            'show_in_rest'      => true
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeClubCalendarTitle'
+                ],
+                'default'           => __( 'Calendar', 'myclub-groups' ),
+                'show_in_rest'      => true
         ] );
         register_setting( 'myclub_groups_settings_tab2', 'myclub_groups_coming_games_title', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeComingGamesTitle'
-            ],
-            'default'           => __( 'Upcoming games', 'myclub-groups' ),
-            'show_in_rest'      => true
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeComingGamesTitle'
+                ],
+                'default'           => __( 'Upcoming games', 'myclub-groups' ),
+                'show_in_rest'      => true
         ] );
         register_setting( 'myclub_groups_settings_tab2', 'myclub_groups_leaders_title', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeLeadersTitle'
-            ],
-            'default'           => __( 'Leaders', 'myclub-groups' ),
-            'show_in_rest'      => true
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeLeadersTitle'
+                ],
+                'default'           => __( 'Leaders', 'myclub-groups' ),
+                'show_in_rest'      => true
         ] );
         register_setting( 'myclub_groups_settings_tab2', 'myclub_groups_members_title', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeMembersTitle'
-            ],
-            'default'           => __( 'Members', 'myclub-groups' ),
-            'show_in_rest'      => true
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeMembersTitle'
+                ],
+                'default'           => __( 'Members', 'myclub-groups' ),
+                'show_in_rest'      => true
         ] );
         register_setting( 'myclub_groups_settings_tab2', 'myclub_groups_news_title', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeNewsTitle'
-            ],
-            'default'           => __( 'News', 'myclub-groups' )
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeNewsTitle'
+                ],
+                'default'           => __( 'News', 'myclub-groups' )
         ] );
         register_setting( 'myclub_groups_settings_tab2', 'myclub_groups_club_news_title', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeClubNewsTitle'
-            ],
-            'default'           => __( 'News', 'myclub-groups' )
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeClubNewsTitle'
+                ],
+                'default'           => __( 'News', 'myclub-groups' )
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_template', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizePageTemplate'
-            ],
-            'default'           => ''
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizePageTemplate'
+                ],
+                'default'           => ''
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_calendar', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeCheckbox'
-            ],
-            'default'           => '1'
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCheckbox'
+                ],
+                'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_navigation', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeCheckbox'
-            ],
-            'default'           => '1'
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCheckbox'
+                ],
+                'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_members', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeCheckbox'
-            ],
-            'default'           => '1'
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCheckbox'
+                ],
+                'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_leaders', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeCheckbox'
-            ],
-            'default'           => '1'
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCheckbox'
+                ],
+                'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_menu', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeCheckbox'
-            ],
-            'default'           => '1'
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCheckbox'
+                ],
+                'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_news', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeCheckbox'
-            ],
-            'default'           => '1'
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCheckbox'
+                ],
+                'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_title', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeCheckbox'
-            ],
-            'default'           => '1'
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCheckbox'
+                ],
+                'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_picture', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeCheckbox'
-            ],
-            'default'           => '1'
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCheckbox'
+                ],
+                'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_coming_games', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeCheckbox'
-            ],
-            'default'           => '1'
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCheckbox'
+                ],
+                'default'           => '1'
         ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_show_items_order', [
-            'sanitize_callback' => [
-                $this,
-                'sanitizeShowItemsOrder'
-            ],
-            'default'           => array (
-                'default',
-            )
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeShowItemsOrder'
+                ],
+                'default'           => array (
+                        'default',
+                )
         ] );
 
         add_settings_section( 'myclub_groups_main', __( 'MyClub Groups Main Settings', 'myclub-groups' ), function () {
             echo '<p>';
             esc_attr_e(
-                'Here are the general settings available from the MyClub Groups plugin. The available Gutenberg blocks and their usage is described under the "Gutenberg blocks" tab. The available shortcodes and their usage are described under the "Shortcodes" tab. Please check the documentation there.',
-                'myclub-groups'
+                    'Here are the general settings available from the MyClub Groups plugin. The available Gutenberg blocks and their usage is described under the "Gutenberg blocks" tab. The available shortcodes and their usage are described under the "Shortcodes" tab. Please check the documentation there.',
+                    'myclub-groups'
             );
             echo '</p>';
         }, 'myclub_groups_settings_tab1' );
@@ -350,124 +362,124 @@ class Admin extends Base
         add_settings_section( 'myclub_groups_title_settings', __( 'Title settings', 'myclub-groups' ), function () {
             echo '<p>';
             esc_attr_e(
-                'Here you can set the titles for the fields that are displayed on the group pages. The titles are used in the Gutenberg blocks and shortcodes. You cannot leave the title field empty.',
-                'myclub-groups'
+                    'Here you can set the titles for the fields that are displayed on the group pages. The titles are used in the Gutenberg blocks and shortcodes. You cannot leave the title field empty.',
+                    'myclub-groups'
             );
             echo '</p>';
         }, 'myclub_groups_settings_tab2' );
         add_settings_section( 'myclub_groups_display_settings', __( 'Display settings', 'myclub-groups' ), function () {
             echo '<p>';
             esc_attr_e(
-                'Here you can set the display options for the group pages. You select which fields should be visible and then in which order. On a Gutenberg theme you can also choose which template should be used for the group pages.',
-                'myclub-groups'
+                    'Here you can set the display options for the group pages. You select which fields should be visible and then in which order. On a Gutenberg theme you can also choose which template should be used for the group pages.',
+                    'myclub-groups'
             );
             echo '</p>';
         }, 'myclub_groups_settings_tab3' );
         add_settings_field( 'myclub_groups_api_key', __( 'MyClub API Key', 'myclub-groups' ), [
-            $this,
-            'renderApiKey'
+                $this,
+                'renderApiKey'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_main', [ 'label_for' => 'myclub_groups_api_key' ] );
         add_settings_field( 'myclub_groups_group_slug', __( 'Slug for group pages', 'myclub-groups' ), [
-            $this,
-            'renderGroupSlug'
+                $this,
+                'renderGroupSlug'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_main', [ 'label_for' => 'myclub_groups_group_slug' ] );
         add_settings_field( 'myclub_groups_group_news_slug', __( 'Slug for group news posts', 'myclub-groups' ), [
-            $this,
-            'renderGroupNewsSlug'
+                $this,
+                'renderGroupNewsSlug'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_main', [ 'label_for' => 'myclub_groups_group_news_slug' ] );
         add_settings_field( 'myclub_groups_add_news_categories', __( 'Add news categories for group news', 'myclub-groups' ), [
-            $this,
-            'renderAddNewsCategories'
+                $this,
+                'renderAddNewsCategories'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_main', [ 'label_for' => 'myclub_groups_add_news_categories' ] );
         add_settings_field( 'myclub_groups_delete_unused_news', __( 'Delete posts for news deleted from MyClub', 'myclub-groups' ), [
-            $this,
-            'renderDeleteUnusedNews'
+                $this,
+                'renderDeleteUnusedNews'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_main', [ 'label_for' => 'myclub_groups_delete_unused_news' ] );
         add_settings_field( 'myclub_groups_last_news_sync', __( 'News last synchronized', 'myclub-groups' ), [
-            $this,
-            'renderNewsLastSync'
+                $this,
+                'renderNewsLastSync'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_sync' );
         add_settings_field( 'myclub_groups_last_groups_sync', __( 'Groups last synchronized', 'myclub-groups' ), [
-            $this,
-            'renderGroupsLastSync'
+                $this,
+                'renderGroupsLastSync'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_sync' );
         add_settings_field( 'myclub_groups_last_club_calendar_sync', __( 'Club calendar last synchronized', 'myclub-groups' ), [
-            $this,
-            'renderClubCalendarLastSync'
+                $this,
+                'renderClubCalendarLastSync'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_sync' );
         add_settings_field( 'myclub_groups_calendar_title', __( 'Title for calendar field', 'myclub-groups' ), [
-            $this,
-            'renderCalendarTitle'
+                $this,
+                'renderCalendarTitle'
         ], 'myclub_groups_settings_tab2', 'myclub_groups_title_settings', [ 'label_for' => 'myclub_groups_calendar_title' ] );
         add_settings_field( 'myclub_groups_club_calendar_title', __( 'Title for club calendar field', 'myclub-groups' ), [
-            $this,
-            'renderClubCalendarTitle'
+                $this,
+                'renderClubCalendarTitle'
         ], 'myclub_groups_settings_tab2', 'myclub_groups_title_settings', [ 'label_for' => 'myclub_groups_club_calendar_title' ] );
         add_settings_field( 'myclub_groups_coming_games_title', __( 'Title for upcoming games field', 'myclub-groups' ), [
-            $this,
-            'renderComingGamesTitle'
+                $this,
+                'renderComingGamesTitle'
         ], 'myclub_groups_settings_tab2', 'myclub_groups_title_settings', [ 'label_for' => 'myclub_groups_coming_games_title' ] );
         add_settings_field( 'myclub_groups_leaders_title', __( 'Title for leaders field', 'myclub-groups' ), [
-            $this,
-            'renderLeadersTitle'
+                $this,
+                'renderLeadersTitle'
         ], 'myclub_groups_settings_tab2', 'myclub_groups_title_settings', [ 'label_for' => 'myclub_groups_leaders_title' ] );
         add_settings_field( 'myclub_groups_members_title', __( 'Title for members field', 'myclub-groups' ), [
-            $this,
-            'renderMembersTitle'
+                $this,
+                'renderMembersTitle'
         ], 'myclub_groups_settings_tab2', 'myclub_groups_title_settings', [ 'label_for' => 'myclub_groups_members_title' ] );
         add_settings_field( 'myclub_groups_news_title', __( 'Title for news field', 'myclub-groups' ), [
-            $this,
-            'renderNewsTitle'
+                $this,
+                'renderNewsTitle'
         ], 'myclub_groups_settings_tab2', 'myclub_groups_title_settings', [ 'label_for' => 'myclub_groups_news_title' ] );
         add_settings_field( 'myclub_groups_club_news_title', __( 'Title for club news field', 'myclub-groups' ), [
-            $this,
-            'renderClubNewsTitle'
+                $this,
+                'renderClubNewsTitle'
         ], 'myclub_groups_settings_tab2', 'myclub_groups_title_settings', [ 'label_for' => 'myclub_groups_club_news_title' ] );
         if ( wp_is_block_theme() ) {
             add_settings_field( 'myclub_groups_page_template', __( 'Template for group pages', 'myclub-groups' ), [
-                $this,
-                'renderPageTemplate'
+                    $this,
+                    'renderPageTemplate'
             ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_template' ] );
         }
         add_settings_field( 'myclub_groups_page_title', __( 'Show group title', 'myclub-groups' ), [
-            $this,
-            'renderPageTitle'
+                $this,
+                'renderPageTitle'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_title' ] );
         add_settings_field( 'myclub_groups_page_picture', __( 'Show group picture', 'myclub-groups' ), [
-            $this,
-            'renderPagePicture'
+                $this,
+                'renderPagePicture'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_picture' ] );
         add_settings_field( 'myclub_groups_page_menu', __( 'Show groups menu', 'myclub-groups' ), [
-            $this,
-            'renderPageMenu'
+                $this,
+                'renderPageMenu'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_menu' ] );
         add_settings_field( 'myclub_groups_page_navigation', __( 'Show group page navigation', 'myclub-groups' ), [
-            $this,
-            'renderPageNavigation'
+                $this,
+                'renderPageNavigation'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_navigation' ] );
         add_settings_field( 'myclub_groups_page_calendar', __( 'Show group calendar', 'myclub-groups' ), [
-            $this,
-            'renderPageCalendar'
+                $this,
+                'renderPageCalendar'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_calendar' ] );
         add_settings_field( 'myclub_groups_page_leaders', __( 'Show group members', 'myclub-groups' ), [
-            $this,
-            'renderPageMembers'
+                $this,
+                'renderPageMembers'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_leaders' ] );
         add_settings_field( 'myclub_groups_page_members', __( 'Show group leaders', 'myclub-groups' ), [
-            $this,
-            'renderPageLeaders'
+                $this,
+                'renderPageLeaders'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_members' ] );
         add_settings_field( 'myclub_groups_page_news', __( 'Show group news', 'myclub-groups' ), [
-            $this,
-            'renderPageNews'
+                $this,
+                'renderPageNews'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_news' ] );
         add_settings_field( 'myclub_groups_page_coming_games', __( 'Show group upcoming games', 'myclub-groups' ), [
-            $this,
-            'renderPageComingGames'
+                $this,
+                'renderPageComingGames'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_coming_games' ] );
         add_settings_field( 'myclub_groups_show_items_order', __( 'Shown items order', 'myclub-groups' ), [
-            $this,
-            'renderShowItemsOrder'
+                $this,
+                'renderShowItemsOrder'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_show_items_order' ] );
     }
 
@@ -482,9 +494,273 @@ class Admin extends Base
      */
     public function addPluginSettingsLink( array $links ): array
     {
-        $settings_link = '<a href="options-general.php?page=myclub-groups-settings">' . __( 'Settings' ) . '</a>';
-        $links[] = $settings_link;
+        $settings_link = '<a href="' . esc_url( admin_url( 'options-general.php?page=myclub-groups-settings' ) ) . '">' . __( 'Settings', 'myclub-groups' ) . '</a>';
+        array_unshift( $links, $settings_link );
         return $links;
+    }
+
+    /**
+     * Enqueue inline JS that adds a filter to the media modal and defaults to "Standard images"
+     * The labels are translated via wp.i18n and the plugin's textdomain.
+     *
+     * @param string $hook
+     * @return void
+     *
+     * @since 2.1.0
+     */
+    public function enqueueMediaModalFilter( string $hook )
+    {
+        // Load only where the media modal can appear
+        $allowed = [
+                'post.php',
+                'post-new.php',
+                'upload.php',
+                'site-editor.php',
+                'widgets.php'
+        ];
+        if ( !in_array( $hook, $allowed, true ) ) {
+            return;
+        }
+
+        wp_enqueue_media();
+
+        // Register a small script handle so we can attach translations to it
+        $handle = 'myclub-media-filters';
+        wp_register_script( $handle, false, [
+                'media-views',
+                'wp-i18n'
+        ], defined( 'MYCLUB_GROUPS_PLUGIN_VERSION' ) ? MYCLUB_GROUPS_PLUGIN_VERSION : false, true );
+        wp_enqueue_script( $handle );
+
+        // Load translations from your languages directory
+        wp_set_script_translations( $handle, 'myclub-groups', $this->plugin_path . 'languages' );
+
+        $script = "(function(wp){
+            if (!wp || !wp.media || !wp.media.view || !wp.i18n || !wp.i18n.__) return;
+
+            var __ = wp.i18n.__;
+
+            var MyClubFilter = wp.media.view.AttachmentFilters.extend({
+                id: 'myclub-image-type',
+                createFilters: function() {
+                    var filters = {};
+                    // Default: Standard images (no taxonomy term)
+                    filters.standard = {
+                        text: __('Standard images (no MyClub)', 'myclub-groups'),
+                        props: { myclub_image_type: 'none' },
+                        priority: 10
+                    };
+                    // Build dynamic options from taxonomy terms so names/values stay in sync
+                    try {
+                        var terms = [];
+                        if (window.myclubImageTypeTerms && Array.isArray(window.myclubImageTypeTerms)) {
+                            terms = window.myclubImageTypeTerms;
+                        } else if (wp && wp.data && wp.data.select) {
+                            // Optional: could fetch via REST if preloaded
+                        }
+                        terms.forEach(function(t, idx){
+                            // t.slug, t.name expected
+                            filters['term_' + t.slug] = {
+                                text: t.name,
+                                props: { myclub_image_type: t.slug },
+                                priority: 20 + idx
+                            };
+                        });
+                    } catch(e){}
+                    // Show everything (including library images)
+                    filters.all = {
+                        text: __('All images', 'myclub-groups'),
+                        props: { myclub_image_type: 'all' },
+                        priority: 100
+                    };
+                    this.filters = filters;
+                }
+            });
+
+            var OrigBrowser = wp.media.view.AttachmentsBrowser;
+            wp.media.view.AttachmentsBrowser = OrigBrowser.extend({
+                createToolbar: function(){
+                    OrigBrowser.prototype.createToolbar.apply(this, arguments);
+
+                    var model = this.collection && this.collection.props ? this.collection.props : null;
+                    if (!model) return;
+
+                    // Default to 'Standard images' if not set
+                    if (!model.get('myclub_image_type')) {
+                        model.set('myclub_image_type', 'none');
+                    }
+
+                    this.toolbar.set('MyClubImageType', new MyClubFilter({
+                        controller: this.controller,
+                        model: model
+                    }));
+                }
+            });
+        })(window.wp);";
+
+        // Localize taxonomy terms (slug/name) for dynamic filter creation
+        $taxonomy = ImageService::MYCLUB_IMAGES;
+        $terms = get_terms( [
+                'taxonomy'   => $taxonomy,
+                'hide_empty' => false,
+                'fields'     => 'all',
+        ] );
+        $localized = [];
+        if ( ! is_wp_error( $terms ) ) {
+            foreach ( $terms as $t ) {
+                $localized[] = [
+                        'slug' => $t->slug,
+                        'name' => $t->name,
+                ];
+            }
+        }
+        wp_localize_script( $handle, 'myclubImageTypeTerms', $localized );
+
+        // Attach our translated inline script to our handle
+        wp_add_inline_script( $handle, $script );
+    }
+
+    /**
+     * Apply the selected library filter to media modal queries.
+     * Default is to exclude any attachments tagged with the MyClub image taxonomy (i.e., show only standard images).
+     *
+     * @param array $query
+     * @return array
+     *
+     * @since 2.1.0
+     */
+    public function applyImageTypeFilterToMediaModal( array $query ): array
+    {
+        // Use the taxonomy registered for image libraries
+        $taxonomy = ImageService::MYCLUB_IMAGES;
+
+        $value = '';
+        if ( isset( $_REQUEST[ 'query' ][ 'myclub_image_type' ] ) ) {
+            $value = sanitize_text_field( (string)$_REQUEST[ 'query' ][ 'myclub_image_type' ] );
+        }
+
+        if ( $value === 'all' ) {
+            return $query;
+        }
+
+        // Default to untagged on Media Library grid initial load (query-attachments without our param)
+        if ( $value === '' && isset( $_REQUEST[ 'action' ] ) && $_REQUEST[ 'action' ] === 'query-attachments' ) {
+            $query[ 'tax_query' ] = [
+                    [
+                            'taxonomy' => $taxonomy,
+                            'operator' => 'NOT EXISTS',
+                    ],
+            ];
+            return $query;
+        }
+
+        if ( $value === 'none' || $value === '' ) {
+            $query[ 'tax_query' ] = [
+                    [
+                            'taxonomy' => $taxonomy,
+                            'operator' => 'NOT EXISTS',
+                    ],
+            ];
+            return $query;
+        }
+
+        $query[ 'tax_query' ] = [
+                [
+                        'taxonomy' => $taxonomy,
+                        'field'    => 'slug',
+                        'terms'    => [ $value ],
+                        'operator' => 'IN',
+                ],
+        ];
+
+        return $query;
+    }
+
+    /**
+     * Applies the dropdown selection to the Media Library main query.
+     *
+     * @param WP_Query $query
+     * @return void
+     * @since 2.1.0
+     */
+    public function applyMediaLibraryImageTypeFilterQuery( WP_Query $query ): void
+    {
+        if ( ! is_admin() || ! $query->is_main_query() ) {
+            return;
+        }
+
+        $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+        if ( ! $screen || $screen->id !== 'upload' ) {
+            return;
+        }
+
+        $taxonomy = ImageService::MYCLUB_IMAGES;
+        $paramKey = $taxonomy . '-filter';
+
+        $val = isset( $_GET[ $paramKey ] ) ? sanitize_text_field( (string) $_GET[ $paramKey ] ) : 'none';
+
+        // Normalize base constraints so results aren’t accidentally empty
+        $query->set( 'post_type', 'attachment' );
+        $query->set( 'post_status', 'inherit' );
+
+        if ( empty( $_GET['post_mime_type'] ) ) {
+            $query->set( 'post_mime_type', '' );
+        }
+        if ( isset( $_GET['m'] ) && ( $_GET['m'] === '0' || $_GET['m'] === '' ) ) {
+            $query->set( 'm', '' );
+        }
+        if ( isset( $_GET['attachment-filter'] ) && $_GET['attachment-filter'] === '' ) {
+            $query->set( 'attachment-filter', '' );
+        }
+        if ( isset( $_GET['s'] ) && $_GET['s'] === '' ) {
+            $query->set( 's', '' );
+        }
+
+        // Always replace tax_query to avoid sticky merges
+        $query->set( 'tax_query', [] );
+
+        if ( $val === 'all' ) {
+            // No taxonomy restriction
+            return;
+        }
+
+        if ( $val === 'none' || $val === '' ) {
+            // Only untagged items: exclude all terms via NOT IN
+            $term_ids = get_terms( [
+                    'taxonomy'   => $taxonomy,
+                    'fields'     => 'ids',
+                    'hide_empty' => false,
+            ] );
+
+            if ( is_wp_error( $term_ids ) || empty( $term_ids ) ) {
+                // No terms exist: everything is "untagged" => no tax_query needed
+                return;
+            }
+
+            $query->set( 'tax_query', [
+                    'relation' => 'AND',
+                    [
+                            'taxonomy'         => $taxonomy,
+                            'field'            => 'term_id',
+                            'terms'            => array_map( 'intval', $term_ids ),
+                            'operator'         => 'NOT IN',
+                            'include_children' => false,
+                    ],
+            ] );
+            return;
+        }
+
+        // Specific term
+        $query->set( 'tax_query', [
+                'relation' => 'AND',
+                [
+                        'taxonomy'         => $taxonomy,
+                        'field'            => 'slug',
+                        'terms'            => [ $val ],
+                        'operator'         => 'IN',
+                        'include_children' => false,
+                ],
+        ] );
     }
 
     /**
@@ -531,7 +807,7 @@ class Admin extends Base
     {
         if ( !current_user_can( 'manage_options' ) ) {
             wp_send_json_error( [
-                'message' => __( 'Permission denied', 'myclub-groups' )
+                    'message' => __( 'Permission denied', 'myclub-groups' )
             ] );
         }
 
@@ -539,7 +815,7 @@ class Admin extends Base
         $service->reloadGroups();
 
         wp_send_json_success( [
-            'message' => __( 'Successfully queued groups reloading', 'myclub-groups' )
+                'message' => __( 'Successfully queued groups reloading', 'myclub-groups' )
         ] );
     }
 
@@ -555,7 +831,7 @@ class Admin extends Base
     {
         if ( !current_user_can( 'manage_options' ) ) {
             wp_send_json_error( [
-                'message' => __( 'Permission denied', 'myclub-groups' )
+                    'message' => __( 'Permission denied', 'myclub-groups' )
             ] );
         }
 
@@ -563,7 +839,7 @@ class Admin extends Base
         $service->reloadNews();
 
         wp_send_json_success( [
-            'message' => __( 'Successfully queued news reloading', 'myclub-groups' )
+                'message' => __( 'Successfully queued news reloading', 'myclub-groups' )
         ] );
     }
 
@@ -577,7 +853,7 @@ class Admin extends Base
     {
         if ( !current_user_can( 'manage_options' ) ) {
             wp_send_json_error( [
-                'message' => __( 'Permission denied', 'myclub-groups' )
+                    'message' => __( 'Permission denied', 'myclub-groups' )
             ] );
         }
 
@@ -585,7 +861,7 @@ class Admin extends Base
         $service->reloadClubEvents();
 
         wp_send_json_success( [
-            'message' => __( 'Successfully reloaded club calendar', 'myclub-groups' )
+                'message' => __( 'Successfully reloaded club calendar', 'myclub-groups' )
         ] );
     }
 
@@ -617,23 +893,23 @@ class Admin extends Base
     {
         // Count the number of group posts in WordPress
         $args = array (
-            'post_type'      => GroupService::MYCLUB_GROUPS,
-            'post_status'    => 'publish',
-            'posts_per_page' => -1
+                'post_type'      => GroupService::MYCLUB_GROUPS,
+                'post_status'    => 'publish',
+                'posts_per_page' => -1
         );
         $query = new WP_Query( $args );
         $groups_count = $query->found_posts;
 
         // Count the number of news items imported to WordPress
         $args = array (
-            'post_status'    => 'publish',
-            'posts_per_page' => -1,
-            'meta_query'     => array (
-                array (
-                    'key'     => 'myclub_news_id',
-                    'compare' => 'EXISTS'
+                'post_status'    => 'publish',
+                'posts_per_page' => -1,
+                'meta_query'     => array (
+                        array (
+                                'key'     => 'myclub_news_id',
+                                'compare' => 'EXISTS'
+                        ),
                 ),
-            ),
         );
         $query = new WP_Query( $args );
         $news_count = $query->found_posts;
@@ -816,6 +1092,52 @@ class Admin extends Base
         }
 
         echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_leaders_title" value="' . esc_attr( $leaders_title ) . '" />';
+    }
+
+    /**
+     * Adds a dropdown filter for Image Type on Media Library (upload.php).
+     *
+     * @return void
+     * @since 2.1.0
+     */
+    public function renderMediaLibraryImageTypeFilter(): void
+    {
+        $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+        if ( ! $screen || $screen->id !== 'upload' ) {
+            return;
+        }
+
+        $taxonomy = ImageService::MYCLUB_IMAGES;
+        $tax_obj  = get_taxonomy( $taxonomy );
+        if ( ! $tax_obj ) {
+            return;
+        }
+
+        // Use native param name to integrate with screen state
+        $paramKey = $taxonomy . '-filter';
+        $selected = isset( $_GET[ $paramKey ] ) ? sanitize_text_field( (string) $_GET[ $paramKey ] ) : 'none';
+
+        echo '<label class="screen-reader-text" for="' . esc_attr( $paramKey ) . '">' . esc_html( $tax_obj->labels->menu_name ) . '</label>';
+        echo '<select name="' . esc_attr( $paramKey ) . '" id="' . esc_attr( $paramKey ) . '" class="postform">';
+        echo '<option value="none"' . selected( $selected, 'none', false ) . '>' . esc_html__( 'Standard images (no MyClub)', 'myclub-groups' ) . '</option>';
+
+        $terms = get_terms( [
+                'taxonomy'   => $taxonomy,
+                'hide_empty' => false,
+        ] );
+        if ( ! is_wp_error( $terms ) ) {
+            foreach ( $terms as $term ) {
+                printf(
+                        '<option value="%s"%s>%s</option>',
+                        esc_attr( $term->slug ),
+                        selected( $selected, $term->slug, false ),
+                        esc_html( $term->name )
+                );
+            }
+        }
+
+        echo '<option value="all"' . selected( $selected, 'all', false ) . '>' . esc_html__( 'All images', 'myclub-groups' ) . '</option>';
+        echo '</select>';
     }
 
     /**
@@ -1030,24 +1352,24 @@ class Admin extends Base
         $items = get_option( 'myclub_groups_show_items_order', array () );
         if ( in_array( 'default', $items ) ) {
             $items = array (
-                'menu',
-                'navigation',
-                'calendar',
-                'members',
-                'leaders',
-                'news',
-                'coming-games'
+                    'menu',
+                    'navigation',
+                    'calendar',
+                    'members',
+                    'leaders',
+                    'news',
+                    'coming-games'
             );
         }
 
         $sort_names = [
-            'calendar'     => __( 'Calendar', 'myclub-groups' ),
-            'coming-games' => __( 'Upcoming games', 'myclub-groups' ),
-            'leaders'      => __( 'Leaders', 'myclub-groups' ),
-            'members'      => __( 'Members', 'myclub-groups' ),
-            'menu'         => __( 'Menu', 'myclub-groups' ),
-            'navigation'   => __( 'Navigation', 'myclub-groups' ),
-            'news'         => __( 'News', 'myclub-groups' )
+                'calendar'     => __( 'Calendar', 'myclub-groups' ),
+                'coming-games' => __( 'Upcoming games', 'myclub-groups' ),
+                'leaders'      => __( 'Leaders', 'myclub-groups' ),
+                'members'      => __( 'Members', 'myclub-groups' ),
+                'menu'         => __( 'Menu', 'myclub-groups' ),
+                'navigation'   => __( 'Navigation', 'myclub-groups' ),
+                'news'         => __( 'News', 'myclub-groups' )
         ];
 
         echo '<ul id="' . esc_attr( $args[ 'label_for' ] ) . '">';
@@ -1268,13 +1590,13 @@ class Admin extends Base
     public function sanitizeShowItemsOrder( array $items ): array
     {
         $allowed_items = [
-            'calendar',
-            'coming-games',
-            'leaders',
-            'members',
-            'menu',
-            'navigation',
-            'news'
+                'calendar',
+                'coming-games',
+                'leaders',
+                'members',
+                'menu',
+                'navigation',
+                'news'
         ];
 
         return array_intersect( Utils::sanitizeArray( $items ), $allowed_items );
@@ -1329,12 +1651,12 @@ class Admin extends Base
     public function setupDashboardWidget()
     {
         wp_add_dashboard_widget(
-            'myclub_groups_dashboard_widget',
-            __( 'MyClub Groups', 'myclub-groups' ),
-            [
-                $this,
-                'renderDashboardWidget'
-            ]
+                'myclub_groups_dashboard_widget',
+                __( 'MyClub Groups', 'myclub-groups' ),
+                [
+                        $this,
+                        'renderDashboardWidget'
+                ]
         );
     }
 
@@ -1364,8 +1686,8 @@ class Admin extends Base
     public function updatePageTemplate( $old_value, $new_value )
     {
         $args = array (
-            'post_type'      => 'myclub-groups',
-            'posts_per_page' => -1,
+                'post_type'      => 'myclub-groups',
+                'posts_per_page' => -1,
         );
         $query = new WP_Query( $args );
 
@@ -1389,8 +1711,8 @@ class Admin extends Base
     public function updateShowOrder( array $old_value, array $new_value )
     {
         $args = array (
-            'post_type'      => 'myclub-groups',
-            'posts_per_page' => -1,
+                'post_type'      => 'myclub-groups',
+                'posts_per_page' => -1,
         );
         $query = new WP_Query( $args );
 

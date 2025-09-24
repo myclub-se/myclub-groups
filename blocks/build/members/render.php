@@ -1,7 +1,7 @@
 <?php
 
 use MyClub\MyClubGroups\Utils;
-use Myclub\MyClubGroups\Services\MemberService;
+use MyClub\MyClubGroups\Services\MemberService;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 

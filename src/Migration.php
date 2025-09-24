@@ -4,6 +4,7 @@ namespace MyClub\MyClubGroups;
 
 use MyClub\MyClubGroups\Services\ActivityService;
 use MyClub\MyClubGroups\Services\GroupService;
+use MyClub\MyClubGroups\Services\ImageService;
 use MyClub\MyClubGroups\Services\MemberService;
 use WP_Query;
 
@@ -57,6 +58,10 @@ class Migration
             self::migrateMyclubGroupTables();
         }
 
+        if ( version_compare( $installed_version, '2.1.0', '<' ) ) {
+            self::migrateMyclubImages();
+        }
+
         update_option( self::VERSION_OPTION, self::CURRENT_VERSION );
     }
 
@@ -91,5 +96,44 @@ class Migration
         ( new GroupService() )->reloadGroups();
 
         unset( $query );
+    }
+
+    /**
+     * Migrates MyClub images by associating attachments with corresponding terms.
+     * - Maps specific prefixes to terms (e.g., 'news_', 'member_', 'group_').
+     * - Queries all attachments matching the defined prefixes.
+     * - Assigns each attachment to appropriate taxonomy terms under the MyClub image taxonomy.
+     *
+     * @return void
+     * @since 2.1.0
+     */
+    private static function migrateMyclubImages()
+    {
+        $map = [
+            'news_'   => 'news',
+            'member_' => 'member',
+            'group_'  => 'group',
+        ];
+
+        foreach ( $map as $prefix => $term ) {
+            $args = [
+                'post_type'      => 'attachment',
+                'post_status'    => 'inherit',
+                'posts_per_page' => -1,
+                'fields'         => 'ids',
+                'orderby'        => 'date',
+                'order'          => 'DESC',
+                'name__like'     => sanitize_title( $prefix ),
+                'no_found_rows'  => true,
+            ];
+
+            $q = new WP_Query( $args );
+
+            if ( ! empty( $q->posts ) ) {
+                foreach ( $q->posts as $attachment_id ) {
+                    wp_set_object_terms( (int) $attachment_id, $term, ImageService::MYCLUB_IMAGES, false );
+                }
+            }
+        }
     }
 }

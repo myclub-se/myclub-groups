@@ -5,6 +5,7 @@ namespace MyClub\MyClubGroups\Tasks;
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 use MyClub\MyClubGroups\BackgroundProcessing\Background_Process;
+use MyClub\MyClubGroups\Services\ImageService;
 use MyClub\MyClubGroups\Services\MemberService;
 use MyClub\MyClubGroups\Utils;
 
@@ -64,6 +65,31 @@ class ImageTask extends Background_Process {
     }
 
     /**
+     * Completes the process by updating term counts for a specified taxonomy.
+     *
+     * Retrieves all term IDs for the taxonomy defined in ImageService::MYCLUB_IMAGES,
+     * splits them into smaller chunks, and processes each chunk to update term counts.
+     *
+     * @return void
+     * @since 2.1.0
+     */
+    protected function complete() {
+        parent::complete();
+
+        $term_ids = get_terms([
+            'taxonomy' => ImageService::MYCLUB_IMAGES,
+            'fields' => 'ids',
+            'hide_empty' => false,
+        ]);
+
+        if ( is_wp_error( $term_ids ) || empty( $term_ids ) ) {
+            return;
+        }
+
+        wp_update_term_count_now( $term_ids, ImageService::MYCLUB_IMAGES );
+    }
+
+    /**
      * Adds a group image to the featured images of a post.
      *
      * @param object $item The item containing the necessary data for adding the image.
@@ -74,7 +100,7 @@ class ImageTask extends Background_Process {
     private function addGroupImage( object $item )
     {
         if ( property_exists( $item, 'group_id' ) ) {
-            Utils::addFeaturedImage( $item->post_id, $item->image, 'group_' . $item->group_id . '_');
+            ImageService::addFeaturedImage( $item->post_id, $item->image, 'group_' . $item->group_id . '_', '', 'group' );
         }
     }
 
@@ -94,10 +120,10 @@ class ImageTask extends Background_Process {
 
             if ( $item->image->member_default_image ) {
                 // Save non-personal image (reuse image if present)
-                $member_image = Utils::addImage( $url );
+                $member_image = ImageService::addImage( $url, '', '', 'member' );
             } else {
                 // Save image and save attachment id
-                $member_image = Utils::addImage( $url, 'member_' . $member_item->member_id . '_' );
+                $member_image = ImageService::addImage( $url, 'member_' . $member_item->member_id . '_', '', 'member' );
             }
 
             if ( $member_image && $member_item->image_id !== $member_image[ 'id' ] ) {
@@ -119,7 +145,7 @@ class ImageTask extends Background_Process {
     private function addNewsImage( object $item )
     {
         if ( property_exists( $item, 'news_id' ) ) {
-            Utils::addFeaturedImage( $item->post_id, $item->image, 'news_' . $item->news_id . '_', $item->caption );
+            ImageService::addFeaturedImage( $item->post_id, $item->image, 'news_' . $item->news_id . '_', $item->caption, 'news' );
         }
     }
 }

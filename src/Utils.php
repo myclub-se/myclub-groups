@@ -17,137 +17,6 @@ use WP_Query;
 class Utils
 {
     /**
-     * Add a featured image to a post in the WordPress database.
-     *
-     * @param int $post_id The ID of the post to add the featured image to.
-     * @param object|null $image The image information object. Should contain 'raw' property with 'url' property.
-     * @param string $prefix Optional. The prefix to be added to the image URL before adding it to the database. Default is an empty string.
-     *
-     * @return void
-     * @since 1.0.0
-     */
-    static function addFeaturedImage( int $post_id, ?object $image, string $prefix = '', string $caption = '' ): void
-    {
-        $attachment_id = null;
-
-        if ( isset( $image ) ) {
-            $attachment = Utils::addImage( $image->raw->url, $prefix, $caption );
-            if ( isset( $attachment ) ) {
-                $attachment_id = $attachment[ 'id' ];
-            }
-
-            $old_attachment_id = get_post_thumbnail_id( $post_id );
-
-            if ( $attachment_id !== null && $old_attachment_id !== $attachment_id ) {
-                if ( $old_attachment_id ) {
-                    delete_post_thumbnail( $post_id );
-                    wp_delete_attachment( $old_attachment_id, true );
-                }
-
-                set_post_thumbnail( $post_id, $attachment_id );
-            }
-        }
-    }
-
-    /**
-     * Add an image to the WordPress media library.
-     *
-     * @param string $image_url The URL of the image to add.
-     * @param string $prefix Optional. Prefix to be added to the image filename. Default is an empty string.
-     *
-     * @return array|null The attachment information of the attachment or null
-     *
-     * @since 1.0.0
-     */
-    static function addImage( string $image_url, string $prefix = '', string $caption = '' ): ?array
-    {
-        $attachment_id = null;
-        $image = pathinfo( $image_url );
-
-        // Construct sanitized filename
-        $name = sanitize_title( $prefix . urldecode( $image[ 'filename' ] ) );
-        $filename = $name;
-        if ( array_key_exists( 'extension', $image ) ) {
-            $filename .= '.' . $image[ 'extension' ];
-        }
-
-        // Sanitize the value for _source_image_url meta query comparison
-        $meta_value = sanitize_text_field( $prefix . $image_url );
-
-        // *** Step 1: Query for an existing attachment using _source_image_url ***
-        $args = array (
-            'posts_per_page' => 1,
-            'post_type'      => 'attachment',
-            'meta_query'     => [
-                [
-                    'key'     => '_source_image_url',
-                    'value'   => $meta_value,
-                    'compare' => '='
-                ]
-            ]
-        );
-
-        $query_results = new WP_Query( $args );
-        if ( isset( $query_results->posts, $query_results->posts[ 0 ] ) ) {
-            $attachment_id = $query_results->posts[ 0 ]->ID;
-        } else {
-            $args_fallback = array (
-                'posts_per_page' => 1,
-                'post_type'      => 'attachment',
-                'name'           => $name
-            );
-
-            $fallback_query = new WP_Query( $args_fallback );
-            if ( isset( $fallback_query->posts, $fallback_query->posts[ 0 ] ) ) {
-                $attachment_id = $fallback_query->posts[ 0 ]->ID;
-
-                if ( !get_post_meta( $attachment_id, '_source_image_url', true ) ) {
-                    update_post_meta( $attachment_id, '_source_image_url', $meta_value );
-                }
-            } else {
-                require_once( ABSPATH . 'wp-admin/includes/file.php' );
-
-                $file = [
-                    'name'     => $filename,
-                    'tmp_name' => download_url( $image_url )
-                ];
-
-                if ( !is_wp_error( $file[ 'tmp_name' ] ) ) {
-                    $attachment_id = media_handle_sideload( $file );
-
-                    if ( is_wp_error( $attachment_id ) ) {
-                        wp_delete_file( $file[ 'tmp_name' ] );
-                        $attachment_id = null;
-                    } else {
-                        update_post_meta( $attachment_id, '_source_image_url', $meta_value );
-                    }
-                }
-            }
-        }
-
-        if ( $attachment_id !== null ) {
-            $image_url = null;
-            $image_src_array = wp_get_attachment_image_src( $attachment_id, 'medium' );
-
-            if ( $image_src_array ) {
-                $image_url = $image_src_array[ 0 ];
-            }
-
-            wp_update_post( array (
-                'ID'           => $attachment_id,
-                'post_excerpt' => $caption
-            ) );
-
-            return [
-                'id'  => $attachment_id,
-                'url' => $image_url
-            ];
-        } else {
-            return $attachment_id;
-        }
-    }
-
-    /**
      * Change the host name in a given URL to match the host name of the WordPress site.
      *
      * @param string $oldUrl The URL with the host name to be changed.
@@ -249,6 +118,20 @@ class Utils
                     }
                     return true;
 
+                case 'nitropack':
+                    if ( function_exists( 'nitropack_purge_post' ) ) {
+                        nitropack_purge_post( $post_id );
+                        return true;
+                    }
+                    if ( function_exists( 'nitropack_purge_url' ) ) {
+                        $url = get_permalink( $post_id );
+                        if ( $url ) {
+                            nitropack_purge_url( $url );
+                            return true;
+                        }
+                    }
+                    return false;
+
                 case 'memcached_cache':
                 case 'redis_cache':
                     if ( function_exists( 'wp_cache_delete' ) ) {
@@ -332,6 +215,8 @@ class Utils
             return 'redis_cache';
         } elseif ( class_exists( 'Memcached\Backend' ) || defined( 'WP_MEMCACHED_VERSION' ) ) {
             return 'memcached_cache';
+        } elseif ( class_exists( 'NitroPack\Integration' ) || defined( 'NITROPACK_VERSION' ) ) {
+            return 'nitropack';
         } elseif ( file_exists( WP_CONTENT_DIR . '/advanced-cache.php' ) ) {
             return 'advanced_cache';
         }

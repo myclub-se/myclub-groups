@@ -173,6 +173,101 @@ class Taxonomy extends Base
             'show_in_rest' => true,
         ] );
 
+        register_taxonomy(
+            ImageService::MYCLUB_IMAGES,
+            'attachment',
+            [
+                'labels'                => [
+                    'name'          => __( 'Image Types', 'myclub-groups' ),
+                    'singular_name' => __( 'Image Type', 'myclub-groups' ),
+                    'search_items'  => __( 'Search Image Types', 'myclub-groups' ),
+                    'all_items'     => __( 'All Image Types', 'myclub-groups' ),
+                    'edit_item'     => __( 'Edit Image Type', 'myclub-groups' ),
+                    'update_item'   => __( 'Update Image Type', 'myclub-groups' ),
+                    'add_new_item'  => __( 'Add New Image Type', 'myclub-groups' ),
+                    'new_item_name' => __( 'New Image Type Name', 'myclub-groups' ),
+                    'menu_name'     => __( 'Image Types', 'myclub-groups' ),
+                    'back_to_items' => __( 'Back to Image Types', 'myclub-groups' ),
+                    'not_found'     => __( 'No image types found.', 'myclub-groups' ),
+                ],
+                'public'                => false,
+                'show_ui'               => true,
+                'show_admin_column'     => true,
+                'hierarchical'          => false,
+                'show_in_rest'          => true,
+                'rewrite'               => false,
+                'update_count_callback' => function ( $terms, $taxonomy ) {
+                    global $wpdb;
+
+                    $term_taxonomy_ids = array_map( 'intval', (array)$terms );
+                    if ( empty( $term_taxonomy_ids ) ) {
+                        return;
+                    }
+
+                    // Build counts per term_taxonomy_id for attachments in allowed statuses
+                    $in = implode( ',', $term_taxonomy_ids );
+                    $sql = "
+                        SELECT tr.term_taxonomy_id AS ttid, COUNT(*) AS cnt
+                        FROM {$wpdb->term_relationships} tr
+                        INNER JOIN {$wpdb->term_taxonomy} tt ON tt.term_taxonomy_id = tr.term_taxonomy_id
+                        INNER JOIN {$wpdb->posts} p ON p.ID = tr.object_id
+                        WHERE tt.taxonomy = %s
+                          AND tr.term_taxonomy_id IN ($in)
+                          AND p.post_type = 'attachment'
+                          AND p.post_status IN ('inherit','private','publish')
+                        GROUP BY tr.term_taxonomy_id
+                    ";
+
+                    $rows = $wpdb->get_results( $wpdb->prepare( $sql, $taxonomy ), ARRAY_A );
+                    $by_ttid = [];
+                    foreach ( (array)$rows as $row ) {
+                        $by_ttid[ (int)$row[ 'ttid' ] ] = (int)$row[ 'cnt' ];
+                    }
+
+                    foreach ( $term_taxonomy_ids as $ttid ) {
+                        $count = isset( $by_ttid[ $ttid ] ) ? $by_ttid[ $ttid ] : 0;
+                        $wpdb->update(
+                            $wpdb->term_taxonomy,
+                            [ 'count' => $count ],
+                            [ 'term_taxonomy_id' => $ttid ],
+                            [ '%d' ],
+                            [ '%d' ]
+                        );
+                    }
+
+                    // Clear term caches so the admin UI reflects new counts
+                    $term_ids = $wpdb->get_col( "SELECT term_id FROM {$wpdb->term_taxonomy} WHERE term_taxonomy_id IN ($in)" );
+                    if ( $term_ids ) {
+                        clean_term_cache( array_map( 'intval', $term_ids ), $taxonomy, true );
+                    }
+                },
+            ]
+        );
+
+        $name_map = [
+            'member' => __( 'Member images', 'myclub-groups' ),
+            'group'  => __( 'Group images', 'myclub-groups' ),
+            'news'   => __( 'News images', 'myclub-groups' ),
+        ];
+
+        foreach ( [ 'member', 'group', 'news' ] as $term ) {
+            if ( ! term_exists( $term, ImageService::MYCLUB_IMAGES ) ) {
+                wp_insert_term(
+                    $name_map[ $term ] ?? ucfirst( $term ),
+                    ImageService::MYCLUB_IMAGES,
+                    [ 'slug' => $term ]
+                );
+            } else {
+                $term_obj = get_term_by( 'slug', $term, ImageService::MYCLUB_IMAGES );
+                if ( $term_obj && ! is_wp_error( $term_obj ) ) {
+                    $desired_name = $name_map[ $term ];
+                    if ( $term_obj->name !== $desired_name ) {
+                        wp_update_term( $term_obj->term_id, ImageService::MYCLUB_IMAGES, [ 'name' => $desired_name ] );
+                    }
+                }
+            }
+        }
+
         flush_rewrite_rules();
     }
 
