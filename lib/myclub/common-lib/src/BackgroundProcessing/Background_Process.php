@@ -11,8 +11,9 @@
  * * License: GPLv2+
  */
 
-namespace MyClub\MyClubGroups\BackgroundProcessing;
+namespace MyClub\Common\BackgroundProcessing;
 
+use WP_Error;
 use stdClass;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly

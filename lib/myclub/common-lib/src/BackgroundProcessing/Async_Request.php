@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Async Request
+ * WP Async RestApi
  *
  * @package Background-Processing
  *
@@ -12,7 +12,9 @@
  *
   */
 
-namespace MyClub\MyClubGroups\BackgroundProcessing;
+namespace MyClub\Common\BackgroundProcessing;
+
+use WP_Error;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 

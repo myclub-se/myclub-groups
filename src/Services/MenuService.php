@@ -15,13 +15,12 @@ use WP_Term;
  */
 class MenuService extends Groups
 {
-    private RestApi $api;
     private array $current_menus;
     private WP_Term $menu;
 
     public function __construct()
     {
-        $this->api = new RestApi();
+        parent::__construct();
         $menu_object = wp_get_nav_menu_object( 'MyClub Groups Menu' );
 
         if ( !empty( $menu_object ) ) {

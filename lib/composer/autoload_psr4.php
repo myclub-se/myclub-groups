@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'MyClub\\MyClubGroups\\' => array($baseDir . '/src'),
+    'MyClub\\Common\\' => array($vendorDir . '/myclub/common-lib/src'),
 );

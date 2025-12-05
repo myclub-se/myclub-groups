@@ -19,15 +19,9 @@ class GroupService extends Groups
 {
     const MYCLUB_GROUPS = 'myclub-groups';
 
-    private RestApi $api;
     private ImageTask $image_task;
 
     private bool $content_or_data_updated = false;
-
-    public function __construct()
-    {
-        $this->api = new RestApi();
-    }
 
     /**
      * Retrieves the content for a MyClub group post.

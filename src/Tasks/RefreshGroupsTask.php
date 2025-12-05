@@ -4,9 +4,9 @@ namespace MyClub\MyClubGroups\Tasks;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-use MyClub\MyClubGroups\BackgroundProcessing\Background_Process;
-use MyClub\MyClubGroups\Utils;
+use MyClub\Common\BackgroundProcessing\Background_Process;
 use MyClub\MyClubGroups\Services\GroupService;
+use MyClub\MyClubGroups\Utils;
 
 /**
  * Class RefreshGroupsTask

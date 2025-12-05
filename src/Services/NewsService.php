@@ -26,7 +26,6 @@ class NewsService extends Groups
     private DateTimeZone $myclub_timezone;
     private DateTimeZone $timezone;
     private DateTimeZone $utc_timezone;
-    private RestApi $api;
 
     /**
      * Constructor method for the class.
@@ -41,6 +40,7 @@ class NewsService extends Groups
      */
     public function __construct()
     {
+        parent::__construct();
         try {
             $this->myclub_timezone = new DateTimeZone( 'Europe/Stockholm' );
             $this->utc_timezone = new DateTimeZone( 'UTC' );
@@ -52,8 +52,6 @@ class NewsService extends Groups
         } catch ( Exception $e ) {
             error_log( 'Unable to get timezones' );
         }
-
-        $this->api = new RestApi();
     }
 
     /**

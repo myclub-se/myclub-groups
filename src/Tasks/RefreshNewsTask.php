@@ -4,7 +4,7 @@ namespace MyClub\MyClubGroups\Tasks;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-use MyClub\MyClubGroups\BackgroundProcessing\Background_Process;
+use MyClub\Common\BackgroundProcessing\Background_Process;
 use MyClub\MyClubGroups\Services\NewsService;
 use MyClub\MyClubGroups\Utils;
 

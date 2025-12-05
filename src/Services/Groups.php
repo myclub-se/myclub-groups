@@ -15,6 +15,13 @@ use WP_Query;
  */
 class Groups
 {
+    protected RestApi $api;
+
+    public function __construct()
+    {
+        $this->api = new RestApi();
+    }
+
     /**
      * Retrieves an array of all group IDs from the MyClub backend.
      *
@@ -22,14 +29,12 @@ class Groups
      */
     protected function getAllGroupIds(): stdClass
     {
-        $api = new RestApi();
-
         $return_value = new stdClass();
         $return_value->ids = [];
         $return_value->success = true;
 
         // Load menu items from member backend
-        $response = $api->loadMenuItems();
+        $response = $this->api->loadMenuItems();
 
         if ( $response->status === 200 ) {
             $menu_items = $response->result;
@@ -39,7 +44,7 @@ class Groups
             $return_value->success = false;
         }
 
-        $response = $api->loadOtherTeams();
+        $response = $this->api->loadOtherTeams();
         if ( $response->status === 200 ) {
             $other_teams = $response->result->results;
             foreach ( $other_teams as $other_team ) {

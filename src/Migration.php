@@ -2,9 +2,9 @@
 
 namespace MyClub\MyClubGroups;
 
+use MyClub\Common\Services\ImageService;
 use MyClub\MyClubGroups\Services\ActivityService;
 use MyClub\MyClubGroups\Services\GroupService;
-use MyClub\MyClubGroups\Services\ImageService;
 use MyClub\MyClubGroups\Services\MemberService;
 use WP_Query;
 

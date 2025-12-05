@@ -4,10 +4,9 @@ namespace MyClub\MyClubGroups\Tasks;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-use MyClub\MyClubGroups\BackgroundProcessing\Background_Process;
-use MyClub\MyClubGroups\Services\ImageService;
+use MyClub\Common\BackgroundProcessing\Background_Process;
+use MyClub\Common\Services\ImageService;
 use MyClub\MyClubGroups\Services\MemberService;
-use MyClub\MyClubGroups\Utils;
 
 /**
  * Class ImageTask
@@ -116,6 +115,10 @@ class ImageTask extends Background_Process {
     {
         if ( property_exists( $item, 'member_id' ) ) {
             $member_item = MemberService::getMember( $item->post_id, $item->member_id );
+            if ( !$member_item ) {
+                return;
+            }
+
             $url = $item->image->raw->url;
 
             if ( $item->image->member_default_image ) {
