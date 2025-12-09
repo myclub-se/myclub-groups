@@ -8,7 +8,7 @@ $news_title = get_option( 'myclub_groups_club_news_title' ) ?:  __( 'News', 'myc
 
 <div class="myclub-groups-club-news" id="news">
     <div class="myclub-groups-club-news-container">
-        <h3 class="myclub-groups-header"><?php echo esc_attr( $news_title ); ?></h3>
+        <h3 class="myclub-groups-header"><?php echo esc_html( $news_title ); ?></h3>
 
 <?php
 
@@ -32,20 +32,24 @@ if ( !empty( $posts ) ) {
             $image_caption = get_the_post_thumbnail_caption( $post->ID );
         ?>
         <div class="myclub-club-news-item">
-            <h4><a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>"><?php echo esc_attr( $post->post_title ); ?></a></h4>
+            <h4><a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>"><?php echo esc_html( $post->post_title ); ?></a></h4>
             <?php if ( $image_url ) {?>
                 <div class="myclub-club-news-image">
-                    <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $post->post_title ); ?>" />
+                    <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_html( $post->post_title ); ?>" />
                     <?php if ( $image_caption ) { ?>
-                        <div class="myclub-club-news-image-caption"><?php echo esc_attr( $image_caption ); ?></div>
+                        <div class="myclub-club-news-image-caption"><?php echo esc_html( $image_caption ); ?></div>
                     <?php } ?>
                 </div>
             <?php }
-            if ( $post->post_excerpt ) {
-                echo esc_attr( $post->post_excerpt );
-            } else {
-                echo esc_attr( $post->post_content );
-            } ?>
+            $content = $post->post_excerpt ?: $post->post_content;
+
+            // Render Gutenberg blocks if any, and shortcodes
+            $content = do_blocks( $content );
+            $content = do_shortcode( $content );
+
+            // Output safely
+            echo wp_kses_post( $content );
+         ?>
         </div>
         <?php
             }
