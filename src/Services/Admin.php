@@ -96,6 +96,10 @@ class Admin extends Base
                 $this,
                 'applyImageTypeFilterToMediaModal'
         ] );
+        add_filter( 'myclub_common_cron_interval_label', [
+                $this,
+                'applyCronIntervalLabel'
+        ], 10, 1 );
 
         add_action( 'restrict_manage_posts', [ $this, 'renderMediaLibraryImageTypeFilter' ] );
         add_action( 'pre_get_posts', [ $this, 'applyMediaLibraryImageTypeFilterQuery' ] );
@@ -497,6 +501,23 @@ class Admin extends Base
         $settings_link = '<a href="' . esc_url( admin_url( 'options-general.php?page=myclub-groups-settings' ) ) . '">' . __( 'Settings', 'myclub-groups' ) . '</a>';
         array_unshift( $links, $settings_link );
         return $links;
+    }
+
+    /**
+     * Add translations for the cron interval.
+     *
+     * @param int $interval The interval value.
+     * @return string The translated label.
+     *
+     * @since 2.1.0
+     */
+    public function applyCronIntervalLabel( int $interval ): string
+    {
+        // Example: French translation
+        if ( $interval === 1 ) {
+            return __( 'Every minute', 'myclub-groups' );
+        }
+        return sprintf( __( 'Every %d minutes', 'myclub-groups' ), $interval );
     }
 
     /**

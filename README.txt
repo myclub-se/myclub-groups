@@ -38,6 +38,15 @@ All components are minimally designed to make them easier to customize and fit y
 The plugin has no external plugin dependencies. All requirements are bundled in the plugin itself. However we are using the following opensource library (which is included in the plugin):
 * FullCalendar (v5.11.5), which can be seen [here](https://fullcalendar.io/). All source to the plugin is available [here](https://github.com/fullcalendar/fullcalendar). No data is being sent to the FullCalendar plugin website.
 
+== Privacy ==
+
+This plugin communicates with https://member.myclub.se/ to provide data for the plugin.
+
+The following information is transmitted:
+- Site URL
+
+No personal user data is collected or stored. This is only sent when the data is being updated.
+
 == Installation ==
 
 To fetch data from MyClub, you must first install this plugin:

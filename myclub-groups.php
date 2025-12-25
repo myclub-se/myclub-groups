@@ -60,15 +60,6 @@ if ( file_exists( plugin_dir_path( __FILE__ ) . '/src/Activation.php' ) ) {
 
     // Register deactivation code
     register_deactivation_hook( __FILE__, 'myclub_groups_deactivate' );
-
-    function myclub_groups_uninstall()
-    {
-        $activation = new Activation();
-        $activation->uninstall();
-    }
-
-    // Register uninstall code
-    register_uninstall_hook( __FILE__, 'myclub_groups_uninstall' );
 }
 
 if ( file_exists( plugin_dir_path( __FILE__ ) . '/src/Migration.php' ) ) {
