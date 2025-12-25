@@ -23,7 +23,6 @@ class NewsService extends Groups
 {
     const MYCLUB_GROUP_NEWS = 'myclub-group-news';
 
-    private DateTimeZone $myclub_timezone;
     private DateTimeZone $timezone;
     private DateTimeZone $utc_timezone;
 
@@ -42,7 +41,6 @@ class NewsService extends Groups
     {
         parent::__construct();
         try {
-            $this->myclub_timezone = new DateTimeZone( 'Europe/Stockholm' );
             $this->utc_timezone = new DateTimeZone( 'UTC' );
             $timezone_string = wp_timezone_string();
             if ( !$timezone_string ) {
@@ -65,7 +63,7 @@ class NewsService extends Groups
      */
     public function __destruct()
     {
-        unset( $this->myclub_timezone, $this->timezone, $this->utc_timezone, $this->api );
+        unset( $this->timezone, $this->utc_timezone, $this->api );
     }
 
     /**
@@ -173,7 +171,7 @@ class NewsService extends Groups
 
                 $post_id = $query->post->ID;
 
-                Utils::deletePost( $post_id );
+                Utils::deletePost( $post_id, true );
             }
         }
 
@@ -319,7 +317,7 @@ class NewsService extends Groups
 
                     if ( $query->have_posts() ) {
                         foreach ( $query->posts as $post_id ) {
-                            Utils::deletePost( $post_id );
+                            Utils::deletePost( $post_id, true );
                         }
                     }
                 }
@@ -338,7 +336,7 @@ class NewsService extends Groups
      *
      * Adds a featured image to the news item post using the 'Utils::addFeaturedImage()' method.
      *
-     * If a myclub group is specified, checks if a term with the 'myclub_groups_id' meta value exists in the 'RefreshNews::MYCLUB_GROUP_NEWS' taxonomy.
+     * If a myclub group is specified, checks if a term with the 'myclub_groups_id' meta value exists in the 'NewsService::MYCLUB_GROUP_NEWS' taxonomy.
      * If the term exists, assigns the term to the news item post using the 'wp_set_post_terms()' function.
      * If the term does not exist, inserts a new term with the myclub group name and assigns it to the news item post.
      *
@@ -364,8 +362,9 @@ class NewsService extends Groups
         );
 
         $query_results = new WP_Query( $query_args );
+        $group_id = $myclub_group !== null ? $myclub_group[ 'id' ] : null;
 
-        $post_id = $query_results->have_posts() ? wp_update_post( $this->createNewsArgs( $news_item, $query_results->posts[ 0 ]->ID ) ) : wp_insert_post( $this->createNewsArgs( $news_item ) );
+        $post_id = $query_results->have_posts() ? wp_update_post( $this->createNewsArgs( $news_item, $query_results->posts[ 0 ]->ID, $group_id ) ) : wp_insert_post( $this->createNewsArgs( $news_item, null, $group_id ) );
 
         if ( isset( $news_item->news_image ) ) {
             $image_task = ImageTask::init();
@@ -453,7 +452,7 @@ class NewsService extends Groups
      * @return array The arguments array for creating or updating a news post.
      * @since 1.0.0
      */
-    private function createNewsArgs( object $news_item, int $post_id = null ): array
+    private function createNewsArgs( object $news_item, int $post_id = null, string $group_id = null): array
     {
         // Get time for post and make sure that the time is correct with utc time as well
         try {
@@ -495,6 +494,10 @@ class NewsService extends Groups
 
         if ( $post_id !== null ) {
             $args[ 'ID' ] = $post_id;
+        }
+
+        if ( $group_id !== null ) {
+            $args[ 'meta_input' ][ 'myclub_groups_id' ] = $group_id;
         }
 
         return $args;

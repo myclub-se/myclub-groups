@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/myclub-groups\n"
-"POT-Creation-Date: 2025-09-24T11:35:52+00:00\n"
-"PO-Revision-Date: 2025-09-24 13:38+0200\n"
+"POT-Creation-Date: 2025-12-09T22:23:13+00:00\n"
+"PO-Revision-Date: 2025-12-18 19:43+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.7\n"
+"X-Generator: Poedit 3.8\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: src\n"
@@ -151,9 +151,9 @@ msgstr "V"
 msgid "Week"
 msgstr "Vecka"
 
-#: blocks/build/club-news/render.php:5 blocks/build/club-news/render.php:53
+#: blocks/build/club-news/render.php:5 blocks/build/club-news/render.php:57
 #: blocks/build/news/render.php:8 blocks/src/club-news/render.php:5
-#: blocks/src/club-news/render.php:53 blocks/src/news/render.php:8
+#: blocks/src/club-news/render.php:57 blocks/src/news/render.php:8
 #: src/Activation.php:88 src/Services/Admin.php:263 src/Services/Admin.php:270
 #: src/Services/Admin.php:1053 src/Services/Admin.php:1186
 #: src/Services/Admin.php:1296 src/Services/Admin.php:1372
@@ -162,15 +162,15 @@ msgstr "Vecka"
 msgid "News"
 msgstr "Nyheter"
 
-#: blocks/build/club-news/render.php:75 blocks/build/news/render.php:104
-#: blocks/src/club-news/render.php:75 blocks/src/news/render.php:104
+#: blocks/build/club-news/render.php:79 blocks/build/news/render.php:108
+#: blocks/src/club-news/render.php:79 blocks/src/news/render.php:108
 msgid "Show more news"
 msgstr "Visa fler nyheter"
 
-#: blocks/build/club-news/render.php:80 blocks/build/news/render.php:108
-#: blocks/build/news/render.php:111 blocks/build/news/render.php:114
-#: blocks/src/club-news/render.php:80 blocks/src/news/render.php:108
-#: blocks/src/news/render.php:111 blocks/src/news/render.php:114
+#: blocks/build/club-news/render.php:84 blocks/build/news/render.php:112
+#: blocks/build/news/render.php:115 blocks/build/news/render.php:118
+#: blocks/src/club-news/render.php:84 blocks/src/news/render.php:112
+#: blocks/src/news/render.php:115 blocks/src/news/render.php:118
 msgid "No news found"
 msgstr "Finns inga nyheter"
 
@@ -724,7 +724,7 @@ msgstr "Tillbaka till bildtyper"
 
 #: src/Services/Taxonomy.php:191
 msgid "No image types found."
-msgstr "Inga bildtyper hittades"
+msgstr "Inga bildtyper hittades."
 
 #: src/Services/Taxonomy.php:248
 msgid "Member images"
