@@ -2,31 +2,31 @@
 
 namespace MyClub\Common\Services;
 
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 use stdClass;
 
-if ( !defined( 'ABSPATH' ) ) exit;
-
 /**
- * Class ActivityService
+ * Class BaseActivityService
  *
  * A service responsible for managing activities related to posts and club calendars. It provides methods
  * to create, update, delete, and retrieve activities stored in a database table. It also allows listing of
  * activities in various contexts like club calendars or specific post associations.
  */
-class ActivityService
+class BaseActivityService
 {
-    private static $wpdb;
-    private static string $activities_table_name;
-    private static string $activities_link_table_name;
+    protected static $wpdb;
+    protected static string $activities_table_name;
+    protected static string $activities_link_table_name;
 
     protected static string $activities_table_suffix = '';
     protected static string $activities_link_table_suffix = '';
 
     /**
-     * Initializes the database connection and sets up the table name for group activities.
+     * Initializes the database connection and sets up the table name for activities.
      *
      * @return void
-     * @since 2.0.0
+     * @since 1.0.0
      */
     public static function init()
     {
@@ -42,15 +42,21 @@ class ActivityService
      * It incorporates constraints like unique identification, foreign keys, and default values.
      *
      * @return void
-     * @since 2.0.0
+     * @since 1.0.0
      */
     static function createActivityTables()
     {
         $charset_collate = static::$wpdb->get_charset_collate();
 
-        $activities_table_sql = "CREATE TABLE " . static::$activities_table_name . " (
+        $activities_table = static::$activities_table_name;
+        $activities_link_table = static::$activities_link_table_name;
+        $posts_table = static::$wpdb->prefix . 'posts';
+
+        $activities_table_sql = "
+        CREATE TABLE {$activities_table} (
             id bigint(20) NOT NULL AUTO_INCREMENT,
             uid varchar(20) NOT NULL UNIQUE,
+            section_id varchar(20) DEFAULT NULL,
             show_on_club_calendar tinyint(1) DEFAULT 0,
             title varchar(255) DEFAULT '',
             day DATE NOT NULL,
@@ -64,20 +70,23 @@ class ActivityService
             meet_up_time int(11) DEFAULT NULL,
             meet_up_place varchar(255) DEFAULT '',
             PRIMARY KEY (id)
-        ) $charset_collate;";
+        ) {$charset_collate};
+    ";
 
-        $activities_link_table_sql = "CREATE TABLE " . static::$activities_link_table_name . " (
+        $activities_link_table_sql = "
+        CREATE TABLE {$activities_link_table} (
             id bigint(20) NOT NULL AUTO_INCREMENT,
             post_id BIGINT UNSIGNED NOT NULL,
             activity_uid varchar(20) NOT NULL,
             PRIMARY KEY (id),
             UNIQUE KEY unique_post_activity (post_id, activity_uid),
-            FOREIGN KEY (post_id) REFERENCES " . static::$wpdb->prefix . "posts(ID) ON DELETE CASCADE,
-            FOREIGN KEY (activity_uid) REFERENCES " . static::$activities_table_name . "(uid) ON DELETE CASCADE
-        ) $charset_collate;";
+            FOREIGN KEY (post_id) REFERENCES {$posts_table}(ID) ON DELETE CASCADE,
+            FOREIGN KEY (activity_uid) REFERENCES {$activities_table}(uid) ON DELETE CASCADE
+        ) {$charset_collate};
+    ";
 
+        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
-        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
         dbDelta( $activities_table_sql );
         dbDelta( $activities_link_table_sql );
     }
@@ -86,12 +95,15 @@ class ActivityService
      * Deletes the activity tables from the database if it exists.
      *
      * @return void
-     * @since 2.0.0
+     * @since 1.0.0
      */
     static function deleteActivityTables()
     {
-        static::$wpdb->query( "DROP TABLE IF EXISTS " . static::$activities_link_table_name );
-        static::$wpdb->query( "DROP TABLE IF EXISTS " . static::$activities_table_name );
+        $link_table_name = static::$activities_link_table_name;
+        $table_name = static::$activities_table_name;
+
+        static::$wpdb->query( "DROP TABLE IF EXISTS {$link_table_name}" );
+        static::$wpdb->query( "DROP TABLE IF EXISTS {$table_name}" );
     }
 
     /**
@@ -100,13 +112,15 @@ class ActivityService
      * @param int $post_id The ID of the post to associate the activity with.
      * @param string $activity_id The unique identifier of the activity to be added.
      * @return bool Returns true if the activity was successfully added, or false if it already exists.
-     * @since 2.0.0
+     * @since 1.0.0
      */
     static function addActivityToPost( int $post_id, string $activity_id ): bool
     {
+        $table_name = static::$activities_link_table_name;
+
         $existing_row = static::$wpdb->get_row(
             static::$wpdb->prepare(
-                "SELECT id FROM " . static::$activities_link_table_name . " WHERE post_id = %d AND activity_uid = %s",
+                "SELECT id FROM {$table_name} WHERE post_id = %d AND activity_uid = %s",
                 $post_id,
                 $activity_id
             )
@@ -116,7 +130,7 @@ class ActivityService
             return false;
         }
 
-        static::$wpdb->insert( static::$activities_link_table_name, [
+        static::$wpdb->insert( $table_name, [
             'post_id'      => $post_id,
             'activity_uid' => $activity_id
         ] );
@@ -132,12 +146,13 @@ class ActivityService
      * @param array $calendar_array Optional array containing properties like 'show_on_club_calendar' for visibility settings.
      *
      * @return bool Returns true if a new activity is created or the activity is updated with changes. Returns false if there are no changes and the activity already exists.
-     * @since 2.0.0
+     * @since 1.0.0
      */
     static function createOrUpdateActivity( stdClass $activity, array $calendar_array = [] ): bool
     {
         $data = [
             'uid'           => $activity->uid,
+            'section_id'    => $activity->section_id,
             'title'         => $activity->title,
             'day'           => $activity->day,
             'start_time'    => $activity->start_time,
@@ -163,6 +178,7 @@ class ActivityService
             $update = true;
         } else {
             $compared_values = array_filter( [
+                "section_id",
                 "title",
                 "description",
                 "day",
@@ -195,7 +211,7 @@ class ActivityService
      *
      * @param string $activity_id The unique identifier of the activity to be deleted.
      * @return void
-     * @since 2.0.0
+     * @since 1.0.0
      */
     static function deleteActivity( string $activity_id )
     {
@@ -204,7 +220,9 @@ class ActivityService
 
     static function removeActivityFromPost( int $post_id, string $activity_id )
     {
-        static::$wpdb->delete( static::$activities_link_table_name, [ 'post_id' => $post_id, 'activity_uid' => $activity_id ] );
+        static::$wpdb->delete( static::$activities_link_table_name, [ 'post_id'      => $post_id,
+                                                                      'activity_uid' => $activity_id
+        ] );
 
         if ( count( static::listActivityPostIds( $activity_id ) ) === 0 ) {
             $activity = static::getActivity( $activity_id );
@@ -219,13 +237,15 @@ class ActivityService
      *
      * @param string $activity_id The unique identifier of the activity to retrieve.
      * @return object|null An object containing the activity data or null if no activity is found.
-     * @since 2.0.0
+     * @since 1.0.0
      */
     static function getActivity( string $activity_id ): ?object
     {
+        $table_name = static::$activities_table_name;
+
         return static::$wpdb->get_row(
             static::$wpdb->prepare(
-                "SELECT * FROM " . static::$activities_table_name . " WHERE uid = %s",
+                "SELECT * FROM {$table_name} WHERE uid = %s",
                 $activity_id
             )
         );
@@ -235,12 +255,14 @@ class ActivityService
      * Retrieves a list of club activities to display on the club calendar. Each activity is included only if it is marked to be shown on the club calendar.
      *
      * @return array|object|null A list of activities that should be shown on the club calendar, ordered by day, start time, and end time.
-     * @since 2.0.0
+     * @since 1.0.0
      */
     static function listClubActivities()
     {
+        $table_name = static::$activities_table_name;
+
         return static::$wpdb->get_results(
-            "SELECT * FROM " . static::$activities_table_name . " WHERE show_on_club_calendar = 1 ORDER BY day, start_time, end_time",
+            "SELECT * FROM {$table_name} WHERE show_on_club_calendar = 1 ORDER BY day, start_time, end_time",
         );
     }
 
@@ -248,11 +270,52 @@ class ActivityService
      * Retrieves a list of activity IDs that are marked to be shown on the club calendar.
      *
      * @return array|object|null An array of activity IDs that are set to be visible on the club calendar.
-     * @since 2.0.0
+     * @since 1.0.0
      */
     static function listClubActivityIds()
     {
-        return static::$wpdb->get_col( "SELECT uid FROM " . static::$activities_table_name . " WHERE show_on_club_calendar = 1" );
+        $table_name = static::$activities_table_name;
+
+        return static::$wpdb->get_col( "SELECT uid FROM {$table_name} WHERE show_on_club_calendar = 1" );
+    }
+
+
+    /**
+     * Retrieves a list of activities for a specific section. Activities are filtered based on the provided section ID.
+     *
+     * @param string $sectionId The ID of the section for which activities should be retrieved.
+     * @return array|object|null A list of activities for the specified section, ordered by day, start time, and end time.
+     * @since 1.0.0
+     */
+    static function listSectionActivities( string $sectionId )
+    {
+        $table_name = static::$activities_table_name;
+
+        return static::$wpdb->get_results(
+            static::$wpdb->prepare(
+                "SELECT * FROM {$table_name} WHERE section_id = %s ORDER BY day, start_time, end_time",
+                $sectionId
+            )
+        );
+    }
+
+    /**
+     * Retrieves a list of activity IDs associated with the specified section.
+     *
+     * @param string $sectionId The unique identifier of the section for which to fetch activity IDs.
+     * @return array An array of activity IDs corresponding to the given section.
+     * @since 1.0.0
+     */
+    static function listSectionActivityIds( string $sectionId ): array
+    {
+        $table_name = static::$activities_table_name;
+
+        return static::$wpdb->get_col(
+            static::$wpdb->prepare(
+                "SELECT uid FROM {$table_name} WHERE section_id = %s",
+                $sectionId
+            )
+        );
     }
 
     /**
@@ -264,14 +327,15 @@ class ActivityService
      */
     static function listPostActivities( int $post_id ): array
     {
-        {
-            return static::$wpdb->get_results(
-                static::$wpdb->prepare(
-                    "SELECT a.* FROM " . static::$activities_table_name . " a INNER JOIN " . static::$activities_link_table_name . " pa ON a.uid = pa.activity_uid WHERE pa.post_id = %d ORDER BY day, start_time, end_time",
-                    $post_id
-                )
-            );
-        }
+        $table_name = static::$activities_table_name;
+        $link_table_name = static::$activities_link_table_name;
+
+        return static::$wpdb->get_results(
+            static::$wpdb->prepare(
+                "SELECT a.* FROM {$table_name} a INNER JOIN {$link_table_name} pa ON a.uid = pa.activity_uid WHERE pa.post_id = %d ORDER BY day, start_time, end_time",
+                $post_id
+            )
+        );
     }
 
     /**
@@ -283,9 +347,11 @@ class ActivityService
      */
     static function listPostActivityIds( int $post_id )
     {
+        $link_table_name = static::$activities_link_table_name;
+
         return static::$wpdb->get_col(
             static::$wpdb->prepare(
-                "SELECT activity_uid FROM " . static::$activities_link_table_name . " WHERE post_id = %d",
+                "SELECT activity_uid FROM {$link_table_name} WHERE post_id = %d",
                 $post_id
             )
         );
@@ -300,9 +366,11 @@ class ActivityService
      */
     static function listActivityPostIds( string $activity_id )
     {
+        $link_table_name = static::$activities_link_table_name;
+
         return static::$wpdb->get_col(
             static::$wpdb->prepare(
-                "SELECT post_id FROM " . static::$activities_link_table_name . " WHERE activity_uid = %s",
+                "SELECT post_id FROM {$link_table_name} WHERE activity_uid = %s",
                 $activity_id
             )
         );

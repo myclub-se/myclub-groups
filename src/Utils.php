@@ -7,12 +7,12 @@ if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 use MyClub\MyClubGroups\Services\GroupService;
 use MyClub\MyClubGroups\Services\MemberService;
 
-use MyClub\Common\Utils as CommonUtils;
+use MyClub\Common\BaseUtils;
 
 /**
  * A utility class for managing images, URLs, cache, and posts in a WordPress environment.
  */
-class Utils extends CommonUtils
+class Utils extends BaseUtils
 {
     /**
      * Delete a post and related attachments and metadata from the WordPress database.

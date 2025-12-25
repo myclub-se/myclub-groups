@@ -1,30 +1,30 @@
 {
-    "name": "myclub/myclub-groups",
-    "description": "MyClub groups plugin for WordPress",
-    "type": "wordpress-plugin",
-    "license": "GPL2",
-    "autoload": {
-        "psr-4": {
-            "MyClub\\MyClubGroups\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "MyClub AB",
-            "email": "dev@myclub.se"
-        }
-    ],
-    "repositories": [
-      {
-        "type": "vcs",
-        "url": "https://github.com/myclub-se/myclub-php-lib"
-      }
-    ],
-    "require": {
-      "ext-json": "*",
-      "myclub/common-lib": "^1.0"
-    },
-    "config": {
-        "vendor-dir": "lib"
+  "name": "myclub/myclub-groups",
+  "description": "MyClub groups plugin for WordPress",
+  "type": "wordpress-plugin",
+  "license": "GPL2",
+  "autoload": {
+    "psr-4": {
+      "MyClub\\MyClubGroups\\": "src/"
     }
+  },
+  "authors": [
+    {
+      "name": "MyClub AB",
+      "email": "dev@myclub.se"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/myclub-se/myclub-php-lib"
+    }
+  ],
+  "require": {
+    "ext-json": "*",
+    "myclub/common-lib": "^1.0"
+  },
+  "config": {
+    "vendor-dir": "lib"
+  }
 }

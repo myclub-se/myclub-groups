@@ -2,7 +2,7 @@
 
 namespace MyClub\MyClubGroups\Services;
 
-use MyClub\Common\Services\ActivityService as CommonActivityService;
+use MyClub\Common\Services\BaseActivityService;
 
 if ( !defined( 'ABSPATH' ) ) exit;
 
@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * to create, update, delete, and retrieve activities stored in a database table. It also allows listing of
  * activities in various contexts like club calendars or specific post associations.
  */
-class ActivityService extends CommonActivityService
+class ActivityService extends BaseActivityService
 {
     protected static string $activities_table_suffix = 'myclub_groups_activities';
     protected static string $activities_link_table_suffix = 'myclub_groups_post_activities';

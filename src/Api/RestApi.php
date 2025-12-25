@@ -4,7 +4,7 @@ namespace MyClub\MyClubGroups\Api;
 
 if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-use MyClub\Common\Api\RestApi as CommonRestApi;
+use MyClub\Common\Api\BaseRestApi;
 
 /**
  * Class RestApi
@@ -12,7 +12,7 @@ use MyClub\Common\Api\RestApi as CommonRestApi;
  * Provides methods to interact with the MyClub backend API, including retrieving club calendar,
  * menu items, other teams, group details, news, and executing GET requests.
  */
-class RestApi extends CommonRestApi
+class RestApi extends BaseRestApi
 {
     protected string $apiKeyOptionName = 'myclub_groups_api_key';
 
@@ -28,6 +28,6 @@ class RestApi extends CommonRestApi
      */
     public function __construct( string $apiKey = null )
     {
-        parent::__construct( $apiKey, 'MyClub Groups WordPress', MYCLUB_GROUPS_PLUGIN_VERSION );
+        parent::__construct( 'MyClub Groups WordPress', MYCLUB_SECTIONS_PLUGIN_VERSION, $apiKey );
     }
 }

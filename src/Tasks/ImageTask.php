@@ -5,7 +5,7 @@ namespace MyClub\MyClubGroups\Tasks;
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 use MyClub\Common\BackgroundProcessing\Background_Process;
-use MyClub\Common\Services\ImageService;
+use MyClub\MyClubGroups\Services\ImageService;
 use MyClub\MyClubGroups\Services\MemberService;
 
 /**
