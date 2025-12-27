@@ -10,7 +10,7 @@ jobs:
   notify_start:
     runs-on: ubuntu-latest
     steps:
-      - name: Slack Notify Success
+      - name: Slack Notify Start
         uses: slackapi/slack-github-action@v1.25.0
         with:
           channel-id: 'C07E4QNM3T7'

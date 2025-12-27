@@ -4,7 +4,7 @@ namespace MyClub\MyClubGroups\Services;
 
 if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-use Myclub\Common\Services\BaseImageService;
+use MyClub\Common\Services\BaseImageService;
 
 class ImageService extends BaseImageService
 {

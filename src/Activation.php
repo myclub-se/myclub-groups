@@ -214,7 +214,9 @@ class Activation
         $groupsService = new GroupService();
         $groupsService->deleteAllGroups();
 
+        ActivityService::init();
         ActivityService::deleteActivityTables();
+        MemberService::init();
         MemberService::deleteMemberTable();
     }
 

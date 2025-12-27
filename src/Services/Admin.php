@@ -99,7 +99,7 @@ class Admin extends Base
         add_filter( 'myclub_common_cron_interval_label', [
                 $this,
                 'applyCronIntervalLabel'
-        ], 10, 1 );
+        ], 10, 2 );
 
         add_action( 'restrict_manage_posts', [ $this, 'renderMediaLibraryImageTypeFilter' ] );
         add_action( 'pre_get_posts', [ $this, 'applyMediaLibraryImageTypeFilterQuery' ] );
@@ -506,17 +506,19 @@ class Admin extends Base
     /**
      * Add translations for the cron interval.
      *
+     * @param string $label The existing label for the interval.
      * @param int $interval The interval value.
      * @return string The translated label.
      *
-     * @since 2.1.0
+     * @since 2.2.0
      */
-    public function applyCronIntervalLabel( int $interval ): string
+    public function applyCronIntervalLabel( string $label, int $interval ): string
     {
         // Example: French translation
         if ( $interval === 1 ) {
             return __( 'Every minute', 'myclub-groups' );
         }
+        /* translators: Display string for the cron interval */
         return sprintf( __( 'Every %d minutes', 'myclub-groups' ), $interval );
     }
 
@@ -1812,6 +1814,7 @@ class Admin extends Base
         if ( !empty( $cron_job_name ) && isset( $cron_job_type ) ) {
             $next_scheduled = wp_next_scheduled( $cron_job_name );
             if ( $next_scheduled ) {
+                /* translators: 1: the type of update cron job that is running */
                 $output = sprintf( __( 'The %1$s update task is currently running.', 'myclub-groups' ), esc_attr( $cron_job_type ) );
             }
         }

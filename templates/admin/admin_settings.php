@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
     $valid_tabs = [ 'tab1', 'tab2', 'tab3', 'tab4', 'tab5' ];
-    $active_tab = !empty( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'tab1';
+    $active_tab = sanitize_text_field( wp_unslash( $_GET[ 'tab' ] ?? 'tab1' ) );
     $valid_action_tabs = [ 'tab1', 'tab2', 'tab3' ];
 
     if ( !in_array( $active_tab, $valid_tabs ) ) {

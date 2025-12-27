@@ -4,6 +4,7 @@ namespace MyClub\MyClubGroups\Services;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+use WP_Query;
 use WP_Screen;
 
 /**
@@ -28,13 +29,11 @@ class Taxonomy extends Base
             $this,
             'initCPT'
         ], 5 );
-
         // Add required javascript and css for group pages in admin
         add_action( 'admin_enqueue_scripts', [
             $this,
             'enqueueScripts'
         ] );
-
         add_action( 'template_redirect', [
             $this,
             'checkGroupInMenus'
@@ -44,16 +43,36 @@ class Taxonomy extends Base
             $this,
             'addBodyClass'
         ] );
-
+        add_filter( 'pre_get_posts', [
+            $this,
+            'addDefaultSortOrder'
+        ] );
         add_filter( 'hidden_meta_boxes', [
             $this,
             'showGroupsInScreenOptions'
         ], 10, 2);
-
         add_filter( 'single_template', [
             $this,
             'showSingleGroup'
         ], 20 );
+    }
+
+    /**
+     * Adds a default sort order to the query for the specified post type in the admin interface.
+     *
+     * @param WP_Query $query The query instance.
+     * @return void
+     * @since 2.2.0
+     */
+    public function addDefaultSortOrder( WP_Query $query ): void {
+        if ( is_admin() && $query->is_main_query() && $query->get( 'post_type' ) === GroupService::MYCLUB_GROUPS ) {
+
+            // Only set if user hasn't manually clicked a sort column
+            if ( ! isset( $_GET['orderby'] ) ) {
+                $query->set( 'orderby', 'title' );
+                $query->set( 'order', 'ASC' );
+            }
+        }
     }
 
     /**
@@ -199,6 +218,7 @@ class Taxonomy extends Base
                 'update_count_callback' => function ( $terms, $taxonomy ) {
                     global $wpdb;
 
+                    $taxonomy_name = is_object( $taxonomy ) ? $taxonomy->name : $taxonomy;
                     $term_taxonomy_ids = array_map( 'intval', (array)$terms );
                     if ( empty( $term_taxonomy_ids ) ) {
                         return;
@@ -218,7 +238,7 @@ class Taxonomy extends Base
                         GROUP BY tr.term_taxonomy_id
                     ";
 
-                    $rows = $wpdb->get_results( $wpdb->prepare( $sql, $taxonomy ), ARRAY_A );
+                    $rows = $wpdb->get_results( $wpdb->prepare( $sql, $taxonomy_name ), ARRAY_A );
                     $by_ttid = [];
                     foreach ( (array)$rows as $row ) {
                         $by_ttid[ (int)$row[ 'ttid' ] ] = (int)$row[ 'cnt' ];
@@ -238,7 +258,7 @@ class Taxonomy extends Base
                     // Clear term caches so the admin UI reflects new counts
                     $term_ids = $wpdb->get_col( "SELECT term_id FROM {$wpdb->term_taxonomy} WHERE term_taxonomy_id IN ($in)" );
                     if ( $term_ids ) {
-                        clean_term_cache( array_map( 'intval', $term_ids ), $taxonomy, true );
+                        clean_term_cache( array_map( 'intval', $term_ids ), $taxonomy_name, true );
                     }
                 },
             ]

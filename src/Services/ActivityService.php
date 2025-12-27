@@ -17,4 +17,5 @@ class ActivityService extends BaseActivityService
 {
     protected static string $activities_table_suffix = 'myclub_groups_activities';
     protected static string $activities_link_table_suffix = 'myclub_groups_post_activities';
+    protected static string $activities_unique_key = 'myclub_groups_post_activity_unique';
 }
