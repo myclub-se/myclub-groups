@@ -144,6 +144,12 @@ export const showDialog = (item, modal, labels) => {
     const content = modal?.querySelector('.modal-body');
     const close = modal?.querySelector('.close');
 
+    const decodeHTML = (html) => {
+        const txt = document.createElement('textarea');
+        txt.innerHTML = html;
+        return txt.value;
+    };
+
     let output = `<div class="name">${type}</div>`;
     output += '<table>';
     output += `<tr><th>${labels.calendar}</th><td>${calendar_name}</td></tr>`;
@@ -157,7 +163,7 @@ export const showDialog = (item, modal, labels) => {
         output += `<tr><th>${labels.meetUpLocation}</th><td>${meetUpPlace}</td></tr>`;
     }
     if (description) {
-        output += `<tr><th>${labels.description}</th><td>${description}</td></tr>`;
+        output += `<tr><th>${labels.description}</th><td>${decodeHTML(description)}</td></tr>`;
     }
     output += '</table>';
 
