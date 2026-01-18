@@ -13,7 +13,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 
 // Define the version constant which is normally defined in the main plugin file
 if ( ! defined( 'MYCLUB_GROUPS_PLUGIN_VERSION' ) ) {
-    define( 'MYCLUB_GROUPS_PLUGIN_VERSION', '2.2.1' );
+    define( 'MYCLUB_GROUPS_PLUGIN_VERSION', '2.2.2' );
 }
 
 

@@ -28,6 +28,6 @@ class RestApi extends BaseRestApi
      */
     public function __construct( string $apiKey = null )
     {
-        parent::__construct( 'MyClub Groups WordPress', MYCLUB_SECTIONS_PLUGIN_VERSION, $apiKey );
+        parent::__construct( 'MyClub Groups WordPress', MYCLUB_GROUPS_PLUGIN_VERSION, $apiKey );
     }
 }
