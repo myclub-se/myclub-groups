@@ -173,6 +173,9 @@ class Activation
         foreach ( $this->options as $option ) {
             $this->addOption( $option[ 'name' ], $option[ 'value' ], $option[ 'autoload' ] );
         }
+
+        ActivityService::createActivityTables();
+        MemberService::createMemberTable();
     }
 
     /**

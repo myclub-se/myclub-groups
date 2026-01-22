@@ -62,6 +62,10 @@ class Migration
             self::migrateMyclubImages();
         }
 
+        if ( version_compare( $installed_version, '2.2.4', '<' ) ) {
+            ActivityService::createActivityTables();
+        }
+
         update_option( self::VERSION_OPTION, self::CURRENT_VERSION );
     }
 
