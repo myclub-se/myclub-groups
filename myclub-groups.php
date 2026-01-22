@@ -4,7 +4,7 @@
 Plugin Name: MyClub Groups
 Plugin URI: https://github.com/myclub-se/myclub-groups
 Description: Retrieves group information from the MyClub member administration platform. Generates pages for groups defined in the MyClub platform.
-Version: 2.2.2
+Version: 2.2.3
 Requires at least: 6.4
 Tested up to: 6.9
 Requires PHP: 7.4
@@ -33,7 +33,7 @@ if ( file_exists( plugin_dir_path( __FILE__ ) . '/lib/autoload.php' ) ) {
     require_once( plugin_dir_path( __FILE__ ) . '/lib/autoload.php' );
 }
 
-define( 'MYCLUB_GROUPS_PLUGIN_VERSION', '2.2.0' );
+define( 'MYCLUB_GROUPS_PLUGIN_VERSION', '2.2.3' );
 
 ImageTask::init();
 RefreshGroupsTask::init();
@@ -62,15 +62,25 @@ if ( file_exists( plugin_dir_path( __FILE__ ) . '/src/Activation.php' ) ) {
     register_deactivation_hook( __FILE__, 'myclub_groups_deactivate' );
 }
 
+if ( file_exists( plugin_dir_path( __FILE__ ) . '/src/Services/ActivityService.php' ) && file_exists( plugin_dir_path( __FILE__ ) . '/src/Services/MemberService.php' ) ) {
+    add_action( 'upgrader_process_complete', function ( $upgrader, $hook_extra ) {
+        if ( isset( $hook_extra[ 'plugins' ] ) && in_array( plugin_basename( __FILE__ ), $hook_extra[ 'plugins' ] ) ) {
+            Services\ActivityService::createActivityTables();
+            Services\MemberService::createMemberTable();
+        }
+    }, 10, 2 );
+}
+
 if ( file_exists( plugin_dir_path( __FILE__ ) . '/src/Migration.php' ) ) {
-    function myclub_groups_migration() {
+    function myclub_groups_migration()
+    {
         Migration::checkMigrations();
     }
 
-    add_action( 'plugins_loaded', 'myclub_groups_migration');
+    add_action( 'plugins_loaded', 'myclub_groups_migration' );
 }
 
-if ( file_exists( plugin_dir_path( __FILE__) . '/src/Services.php' ) ) {
+if ( file_exists( plugin_dir_path( __FILE__ ) . '/src/Services.php' ) ) {
     // Register all plugin functionality
     Services::registerServices();
 }
