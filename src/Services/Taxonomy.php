@@ -2,7 +2,7 @@
 
 namespace MyClub\MyClubGroups\Services;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 use WP_Query;
 use WP_Screen;
@@ -50,7 +50,7 @@ class Taxonomy extends Base
         add_filter( 'hidden_meta_boxes', [
             $this,
             'showGroupsInScreenOptions'
-        ], 10, 2);
+        ], 10, 2 );
         add_filter( 'single_template', [
             $this,
             'showSingleGroup'
@@ -64,11 +64,12 @@ class Taxonomy extends Base
      * @return void
      * @since 2.2.0
      */
-    public function addDefaultSortOrder( WP_Query $query ): void {
+    public function addDefaultSortOrder( WP_Query $query ): void
+    {
         if ( is_admin() && $query->is_main_query() && $query->get( 'post_type' ) === GroupService::MYCLUB_GROUPS ) {
 
             // Only set if user hasn't manually clicked a sort column
-            if ( ! isset( $_GET['orderby'] ) ) {
+            if ( !isset( $_GET[ 'orderby' ] ) ) {
                 $query->set( 'orderby', 'title' );
                 $query->set( 'order', 'ASC' );
             }
@@ -136,44 +137,44 @@ class Taxonomy extends Base
 
         register_post_meta( GroupService::MYCLUB_GROUPS, 'myclub_groups_activities', [
             'show_in_rest' => true,
-            'single' => true,
-            'type' => 'string'
+            'single'       => true,
+            'type'         => 'string'
         ] );
 
         register_post_meta( GroupService::MYCLUB_GROUPS, 'myclub_groups_members', [
             'show_in_rest' => true,
-            'single' => true,
-            'type' => 'string'
+            'single'       => true,
+            'type'         => 'string'
         ] );
 
         register_post_meta( GroupService::MYCLUB_GROUPS, 'myclub_groups_id', [
             'show_in_rest' => true,
-            'single' => true,
-            'type' => 'string'
+            'single'       => true,
+            'type'         => 'string'
         ] );
 
         register_post_meta( GroupService::MYCLUB_GROUPS, 'myclub_groups_contact_name', [
             'show_in_rest' => true,
-            'single' => true,
-            'type' => 'string'
+            'single'       => true,
+            'type'         => 'string'
         ] );
 
         register_post_meta( GroupService::MYCLUB_GROUPS, 'myclub_groups_email', [
             'show_in_rest' => true,
-            'single' => true,
-            'type' => 'string'
+            'single'       => true,
+            'type'         => 'string'
         ] );
 
         register_post_meta( GroupService::MYCLUB_GROUPS, 'myclub_groups_info_text', [
             'show_in_rest' => true,
-            'single' => true,
-            'type' => 'string'
+            'single'       => true,
+            'type'         => 'string'
         ] );
 
         register_post_meta( GroupService::MYCLUB_GROUPS, 'myclub_groups_phone', [
             'show_in_rest' => true,
-            'single' => true,
-            'type' => 'string'
+            'single'       => true,
+            'type'         => 'string'
         ] );
 
         // Add custom taxonomy for sorting news connected to the groups
@@ -270,8 +271,12 @@ class Taxonomy extends Base
             'news'   => __( 'News images', 'myclub-groups' ),
         ];
 
-        foreach ( [ 'member', 'group', 'news' ] as $term ) {
-            if ( ! term_exists( $term, ImageService::MYCLUB_IMAGES ) ) {
+        foreach ( [
+                      'member',
+                      'group',
+                      'news'
+                  ] as $term ) {
+            if ( !term_exists( $term, ImageService::MYCLUB_IMAGES ) ) {
                 wp_insert_term(
                     $name_map[ $term ] ?? ucfirst( $term ),
                     ImageService::MYCLUB_IMAGES,
@@ -279,7 +284,7 @@ class Taxonomy extends Base
                 );
             } else {
                 $term_obj = get_term_by( 'slug', $term, ImageService::MYCLUB_IMAGES );
-                if ( $term_obj && ! is_wp_error( $term_obj ) ) {
+                if ( $term_obj && !is_wp_error( $term_obj ) ) {
                     $desired_name = $name_map[ $term ];
                     if ( $term_obj->name !== $desired_name ) {
                         wp_update_term( $term_obj->term_id, ImageService::MYCLUB_IMAGES, [ 'name' => $desired_name ] );
@@ -302,7 +307,7 @@ class Taxonomy extends Base
     {
         global $post;
 
-        if (isset($post) && GroupService::MYCLUB_GROUPS == $post->post_type) {
+        if ( isset( $post ) && GroupService::MYCLUB_GROUPS == $post->post_type ) {
             $classes[] = $post->post_name;
         }
 
@@ -402,7 +407,8 @@ class Taxonomy extends Base
      * @return array The updated array of hidden items in the screen options.
      * @since 1.0.0
      */
-    public function showGroupsInScreenOptions( array $hidden, WP_Screen $screen ): array {
+    public function showGroupsInScreenOptions( array $hidden, WP_Screen $screen ): array
+    {
         if ( $screen->id == 'nav-menus' ) {
             $index = array_search( 'add-post-type-myclub-groups', $hidden );
 

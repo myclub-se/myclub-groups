@@ -2,7 +2,7 @@
 
 use MyClub\MyClubGroups\Services\MemberService;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 $post_id = get_the_ID();
 
@@ -24,7 +24,7 @@ $leaders = MemberService::listGroupMembers( $post_id, true );
             <tr>
                 <td colspan="5" class="member-title"><?php esc_attr_e( 'Members', 'myclub-groups' ); ?></td>
             </tr>
-        <?php
+            <?php
             foreach ( $members as $member ) { ?>
                 <tr>
                     <td><?php echo esc_attr( str_replace( 'u0022', '"', $member->name ) ); ?></td>
@@ -37,20 +37,20 @@ $leaders = MemberService::listGroupMembers( $post_id, true );
         endif;
 
         if ( !empty( $leaders ) ):
-        ?>
-        <tr>
-            <td colspan="5" class="member-title"><?php esc_attr_e( 'Leaders', 'myclub-groups' ); ?></td>
-        </tr>
-        <?php
-            foreach ( $leaders as $leader ) { ?>
+            ?>
             <tr>
-                <td><?php echo esc_attr( str_replace( 'u0022', '"', $leader->name ) ); ?></td>
-                <td><?php echo esc_attr( $leader->role ? str_replace( 'u0022', '"', $leader->role ) : '' ); ?></td>
-                <td><?php echo esc_attr( $leader->email ); ?></td>
-                <td><?php echo esc_attr( $leader->phone ); ?></td>
-                <td><?php echo esc_attr( $leader->age ); ?></td>
+                <td colspan="5" class="member-title"><?php esc_attr_e( 'Leaders', 'myclub-groups' ); ?></td>
             </tr>
-        <?php }
+            <?php
+            foreach ( $leaders as $leader ) { ?>
+                <tr>
+                    <td><?php echo esc_attr( str_replace( 'u0022', '"', $leader->name ) ); ?></td>
+                    <td><?php echo esc_attr( $leader->role ? str_replace( 'u0022', '"', $leader->role ) : '' ); ?></td>
+                    <td><?php echo esc_attr( $leader->email ); ?></td>
+                    <td><?php echo esc_attr( $leader->phone ); ?></td>
+                    <td><?php echo esc_attr( $leader->age ); ?></td>
+                </tr>
+            <?php }
         endif;
         ?>
     </table>

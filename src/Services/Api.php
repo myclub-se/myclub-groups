@@ -2,7 +2,7 @@
 
 namespace MyClub\MyClubGroups\Services;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 use MyClub\MyClubGroups\Utils;
 use WP_Error;
@@ -52,7 +52,7 @@ class Api
             'permission_callback' => function () {
                 return current_user_can( 'manage_options' );
             }
-        ]);
+        ] );
 
         register_rest_route( 'myclub/v1', '/options', [
             'methods'             => 'GET',
@@ -198,13 +198,28 @@ class Api
      */
     public function returnOptions(): WP_REST_Response
     {
+        $default_desktop_calendar_views = Utils::getCalendarDesktopViews();
+        $default_desktop_calendar_views_default = Utils::getCalendarDesktopViewsDefault();
+        $default_mobile_calendar_views = Utils::getCalendarMobileViews();
+        $default_mobile_calendar_views_default = Utils::getCalendarMobileViewsDefault();
+
         return new WP_REST_Response( [
-            'myclub_groups_calendar_title'      => esc_attr( get_option( 'myclub_groups_calendar_title' ) ),
-            'myclub_groups_club_calendar_title' => esc_attr( get_option( 'myclub_groups_club_calendar_title' ) ),
-            'myclub_groups_coming_games_title'  => esc_attr( get_option( 'myclub_groups_coming_games_title' ) ),
-            'myclub_groups_leaders_title'       => esc_attr( get_option( 'myclub_groups_leaders_title' ) ),
-            'myclub_groups_members_title'       => esc_attr( get_option( 'myclub_groups_members_title' ) ),
-            'myclub_groups_page_picture'        => esc_attr( get_option( 'myclub_groups_page_picture' ) )
+            'myclub_groups_calendar_title'                       => esc_attr( get_option( 'myclub_groups_calendar_title' ) ),
+            'myclub_groups_club_calendar_title'                  => esc_attr( get_option( 'myclub_groups_club_calendar_title' ) ),
+            'myclub_groups_coming_games_title'                   => esc_attr( get_option( 'myclub_groups_coming_games_title' ) ),
+            'myclub_groups_leaders_title'                        => esc_attr( get_option( 'myclub_groups_leaders_title' ) ),
+            'myclub_groups_members_title'                        => esc_attr( get_option( 'myclub_groups_members_title' ) ),
+            'myclub_groups_page_picture'                         => esc_attr( get_option( 'myclub_groups_page_picture' ) ),
+            'myclub_groups_club_calendar_desktop_views'          => esc_attr( join( ',', get_option( 'myclub_groups_club_calendar_desktop_views', $default_desktop_calendar_views ) ) ),
+            'myclub_groups_club_calendar_desktop_views_default'  => esc_attr( get_option( 'myclub_groups_club_calendar_desktop_views_default', $default_desktop_calendar_views_default ) ),
+            'myclub_groups_club_calendar_mobile_views'           => esc_attr( join( ',', get_option( 'myclub_groups_club_calendar_mobile_views', $default_mobile_calendar_views ) ) ),
+            'myclub_groups_club_calendar_mobile_views_default'   => esc_attr( get_option( 'myclub_groups_club_calendar_mobile_views_default', $default_mobile_calendar_views_default ) ),
+            'myclub_groups_club_calendar_show_week_numbers'      => esc_attr( get_option( 'myclub_groups_club_calendar_show_week_numbers', '1' ) === '1' ),
+            'myclub_groups_group_calendar_desktop_views'         => esc_attr( join( ',', get_option( 'myclub_groups_group_calendar_desktop_views', $default_desktop_calendar_views ) ) ),
+            'myclub_groups_group_calendar_desktop_views_default' => esc_attr( get_option( 'myclub_groups_group_calendar_desktop_views_default', $default_desktop_calendar_views_default ) ),
+            'myclub_groups_group_calendar_mobile_views'          => esc_attr( join( ',', get_option( 'myclub_groups_group_calendar_mobile_views', $default_mobile_calendar_views ) ) ),
+            'myclub_groups_group_calendar_mobile_views_default'  => esc_attr( get_option( 'myclub_groups_group_calendar_mobile_views_default', $default_mobile_calendar_views_default ) ),
+            'myclub_groups_group_calendar_show_week_numbers'     => esc_attr( get_option( 'myclub_groups_group_calendar_show_week_numbers', '1' ) ),
         ], 200 );
     }
 }

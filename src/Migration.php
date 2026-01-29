@@ -31,7 +31,7 @@ class Migration
         $installed_version = get_option( self::VERSION_OPTION, '1.3.5' );
 
         // Normalize unexpected values (e.g., NULL stored in the DB)
-        if ( ! is_string( $installed_version ) || $installed_version === '' ) {
+        if ( !is_string( $installed_version ) || $installed_version === '' ) {
             $installed_version = '1.3.5';
         }
 
@@ -133,9 +133,9 @@ class Migration
 
             $q = new WP_Query( $args );
 
-            if ( ! empty( $q->posts ) ) {
+            if ( !empty( $q->posts ) ) {
                 foreach ( $q->posts as $attachment_id ) {
-                    wp_set_object_terms( (int) $attachment_id, $term, ImageService::MYCLUB_IMAGES, false );
+                    wp_set_object_terms( (int)$attachment_id, $term, ImageService::MYCLUB_IMAGES, false );
                 }
             }
         }

@@ -7,7 +7,6 @@ if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 use DateTime;
 use DateTimeZone;
 use Exception;
-use MyClub\MyClubGroups\Api\RestApi;
 use MyClub\MyClubGroups\Tasks\ImageTask;
 use MyClub\MyClubGroups\Tasks\RefreshNewsTask;
 use MyClub\MyClubGroups\Utils;
@@ -452,7 +451,7 @@ class NewsService extends Groups
      * @return array The arguments array for creating or updating a news post.
      * @since 1.0.0
      */
-    private function createNewsArgs( object $news_item, int $post_id = null, string $group_id = null): array
+    private function createNewsArgs( object $news_item, int $post_id = null, string $group_id = null ): array
     {
         // Get time for post and make sure that the time is correct with utc time as well
         try {

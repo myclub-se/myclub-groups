@@ -3,7 +3,7 @@
 use MyClub\MyClubGroups\Services\ActivityService;
 use MyClub\MyClubGroups\Utils;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 ?>
 <div class="myclub-groups-coming-games" id="coming-games">
@@ -21,9 +21,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         else:
             $activities = array_values(
                     array_filter(
-                            ActivityService::listPostActivities( $post_id ), function( $activity) {
-                                return $activity->day > gmdate( 'Y-m-d' ) && $activity->base_type === 'match';
-                            }
+                            ActivityService::listPostActivities( $post_id ), function ( $activity ) {
+                        return $activity->day > gmdate( 'Y-m-d' ) && $activity->base_type === 'match';
+                    }
                     )
             );
             ?>
@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                 <?php
                 if ( !empty( $activities ) ):
                     $hidden_added = false;
-                    foreach ( $activities as $key=>$activity ) { ?>
+                    foreach ( $activities as $key => $activity ) { ?>
                         <div class="myclub-groups-coming-game">
                             <div class="title">
                                 <div class="group-name"><?php echo esc_attr( get_the_title( $post_id ) ); ?></div>
@@ -44,7 +44,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                             </div>
                         </div>
                         <?php
-                        if ( $key === 3):
+                        if ( $key === 3 ):
                             $hidden_added = true;
                             ?>
                             <div class="hidden extended-list">
@@ -53,7 +53,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                         endif;
                     }
 
-                    if ($hidden_added):
+                    if ( $hidden_added ):
                         ?>
                         </div>
                         <div class="coming-game-show-more"><?php echo esc_attr__( 'Show more', 'myclub-groups' ); ?></div>

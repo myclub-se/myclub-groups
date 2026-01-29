@@ -1,5 +1,5 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 ?>
 
 <div class="myclub-groups-menu">
@@ -10,9 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
             <span></span>
         </div>
         <?php echo wp_nav_menu( array (
-            'theme_location' => 'myclub-groups-menu',
-            'container'  => false,
-            'echo' => false
+                'theme_location' => 'myclub-groups-menu',
+                'container'      => false,
+                'echo'           => false
         ) ); ?>
     </div>
 </div>

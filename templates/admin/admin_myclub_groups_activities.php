@@ -2,7 +2,7 @@
 
 use MyClub\MyClubGroups\Services\ActivityService;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 $activities = ActivityService::listPostActivities( get_the_ID() );
 
@@ -19,15 +19,15 @@ $activities = ActivityService::listPostActivities( get_the_ID() );
         </tr>
         <?php
         if ( !empty( $activities ) ) {
-        foreach ( $activities as $activity ) { ?>
-            <tr>
-                <td><?php echo esc_attr( str_replace( 'u0022', '"', $activity->title ) . ' (' . $activity->type . ')' ); ?></td>
-                <td><?php echo esc_attr( $activity->day ); ?></td>
-                <td><?php echo esc_attr( substr( $activity->start_time, 0, 5 ) ); ?></td>
-                <td><?php echo esc_attr( substr( $activity->end_time, 0, 5 ) ); ?></td>
-                <td><?php echo esc_attr( $activity->location ); ?></td>
-            </tr>
-        <?php }
+            foreach ( $activities as $activity ) { ?>
+                <tr>
+                    <td><?php echo esc_attr( str_replace( 'u0022', '"', $activity->title ) . ' (' . $activity->type . ')' ); ?></td>
+                    <td><?php echo esc_attr( $activity->day ); ?></td>
+                    <td><?php echo esc_attr( substr( $activity->start_time, 0, 5 ) ); ?></td>
+                    <td><?php echo esc_attr( substr( $activity->end_time, 0, 5 ) ); ?></td>
+                    <td><?php echo esc_attr( $activity->location ); ?></td>
+                </tr>
+            <?php }
         }
         ?>
     </table>

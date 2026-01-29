@@ -2,7 +2,7 @@
 
 namespace MyClub\MyClubGroups\Tasks;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 use MyClub\Common\BackgroundProcessing\Background_Process;
 use MyClub\MyClubGroups\Services\MenuService;
@@ -25,8 +25,9 @@ class RefreshMenusTask extends Background_Process
      *
      * @return RefreshMenusTask Returns an instance of the class. If the class has already been initialized, it returns the existing instance.
      */
-    public static function init(): RefreshMenusTask {
-        if (!self::$instance) {
+    public static function init(): RefreshMenusTask
+    {
+        if ( !self::$instance ) {
             self::$instance = new self();
         }
         return self::$instance;
@@ -39,7 +40,8 @@ class RefreshMenusTask extends Background_Process
      * @return mixed returns false to indicate that no further processing is required.
      * @since 1.0.0
      */
-    protected function task( $item ) {
+    protected function task( $item )
+    {
         $service = new MenuService();
         $service->refreshMenus();
         return false;

@@ -7,13 +7,13 @@
  */
 
 // If uninstall not called from WordPress, then exit.
-if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
+if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) {
     exit;
 }
 
 // Define the version constant which is normally defined in the main plugin file
-if ( ! defined( 'MYCLUB_GROUPS_PLUGIN_VERSION' ) ) {
-    define( 'MYCLUB_GROUPS_PLUGIN_VERSION', '2.2.3' );
+if ( !defined( 'MYCLUB_GROUPS_PLUGIN_VERSION' ) ) {
+    define( 'MYCLUB_GROUPS_PLUGIN_VERSION', '2.3.0' );
 }
 
 

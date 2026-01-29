@@ -16,6 +16,16 @@ jQuery(document).ready(function($) {
         $("#myclub-settings-form").find("h2").first().after($notice);
     }
 
+    function syncDefaultValue(name) {
+        const $disabled_fields = $(document).find(`input[name="${name}"]:disabled`);
+        const $default_select = $(document).find(`select[name="${name.replace('[]', '')}_default"]`);
+        $default_select.find('option').prop('disabled', false);
+
+        $disabled_fields.each((index, field) => {
+            $default_select.find(`option[value="${field.value}"]`).prop('disabled', true);
+        });
+    }
+
     function setSortableItems() {
         const $sortList = $("#myclub_groups_show_items_order");
         const $items = $sortList.find("li input");
@@ -113,4 +123,27 @@ jQuery(document).ready(function($) {
     });
 
     setSortableItems();
+
+    $('.myclub-sortable-calendar').sortable();
+
+    $(document).on('change', '.myclub-calendar-enable', function () {
+        const $li = $(this).closest('li');
+        const $hidden = $li.find('input.myclub-calendar-value');
+
+        if (this.checked) {
+            $hidden.prop('disabled', false);
+        } else {
+            $hidden.prop('disabled', true);
+        }
+
+        syncDefaultValue($hidden.prop("name"));
+    });
+
+    const uniqueNames = [...new Set(
+        $('input.myclub-calendar-value').map(function () {
+            return this.name;
+        }).get()
+    )];
+
+    uniqueNames.forEach(name => syncDefaultValue(name));
 });

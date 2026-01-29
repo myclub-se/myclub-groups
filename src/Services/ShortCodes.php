@@ -2,7 +2,7 @@
 
 namespace MyClub\MyClubGroups\Services;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
  * Registers the shortcode for the plugin.
@@ -104,11 +104,11 @@ class ShortCodes extends Base
             'renderMyclubGroupsTitle'
         ] );
 
-        foreach( $available_blocks as $block ) {
-            if ( file_exists ( $this->plugin_path . 'blocks/build/' . $block . '/view.js' ) ) {
+        foreach ( $available_blocks as $block ) {
+            if ( file_exists( $this->plugin_path . 'blocks/build/' . $block . '/view.js' ) ) {
                 wp_register_script( 'myclub-groups-' . $block . '-js', $this->plugin_url . 'blocks/build/' . $block . '/view.js', [], MYCLUB_GROUPS_PLUGIN_VERSION, true );
             }
-            if ( file_exists ( $this->plugin_path . 'blocks/build/' . $block . '/style-index.css' ) ) {
+            if ( file_exists( $this->plugin_path . 'blocks/build/' . $block . '/style-index.css' ) ) {
                 wp_register_style( 'myclub-groups-' . $block . '-css', $this->plugin_url . 'blocks/build/' . $block . '/style-index.css', [], MYCLUB_GROUPS_PLUGIN_VERSION );
             }
         }
@@ -286,10 +286,10 @@ class ShortCodes extends Base
      */
     private function getShortcodeAttrs( array $attrs, string $shortCode ): array
     {
-        return shortcode_atts([
+        return shortcode_atts( [
             'group_id' => '',
-            'post_id' => '',
-        ], $attrs, $shortCode);
+            'post_id'  => '',
+        ], $attrs, $shortCode );
     }
 
     /**
@@ -304,7 +304,7 @@ class ShortCodes extends Base
      * @return string The rendered HTML output of the block or the error message.
      * @since 1.0.0
      */
-    private function renderShortcode( string $short_code, string $block_path, string $error_string, $attrs = [], string $content = null): string
+    private function renderShortcode( string $short_code, string $block_path, string $error_string, $attrs = [], string $content = null ): string
     {
         $attributes = $this->getShortcodeAttrs( is_array( $attrs ) ? $attrs : [], $short_code );
         $file_path = $this->plugin_path . 'blocks/build/' . $block_path . '/render.php';

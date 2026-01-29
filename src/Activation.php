@@ -154,6 +154,56 @@ class Activation
                 'name'     => 'myclub_groups_club_activities',
                 'value'    => '[]',
                 'autoload' => 'no',
+            ],
+            [
+                'name'     => 'myclub_groups_group_calendar_desktop_views',
+                'value'    => Utils::getCalendarMobileViews(),
+                'autoload' => 'no'
+            ],
+            [
+                'name'     => 'myclub_groups_group_calendar_desktop_views_default',
+                'value'    => Utils::getCalendarDesktopViewsDefault(),
+                'autoload' => 'no'
+            ],
+            [
+                'name'     => 'myclub_groups_group_calendar_mobile_views',
+                'value'    => Utils::getCalendarMobileViews(),
+                'autoload' => 'no'
+            ],
+            [
+                'name'     => 'myclub_groups_group_calendar_mobile_views_default',
+                'value'    => Utils::getCalendarMobileViewsDefault(),
+                'autoload' => 'no'
+            ],
+            [
+                'name'     => 'myclub_groups_group_calendar_show_week_numbers',
+                'value'    => '1',
+                'autoload' => 'no'
+            ],
+            [
+                'name'     => 'myclub_groups_club_calendar_desktop_views',
+                'value'    => Utils::getCalendarDesktopViews(),
+                'autoload' => 'no'
+            ],
+            [
+                'name'     => 'myclub_groups_club_calendar_desktop_views_default',
+                'value'    => Utils::getCalendarDesktopViewsDefault(),
+                'autoload' => 'no'
+            ],
+            [
+                'name'     => 'myclub_groups_club_calendar_mobile_views',
+                'value'    => Utils::getCalendarMobileViews(),
+                'autoload' => 'no'
+            ],
+            [
+                'name'     => 'myclub_groups_club_calendar_mobile_views_default',
+                'value'    => Utils::getCalendarMobileViewsDefault(),
+                'autoload' => 'no'
+            ],
+            [
+                'name'     => 'myclub_groups_club_calendar_show_week_numbers',
+                'value'    => '1',
+                'autoload' => 'no'
             ]
         ];
     }

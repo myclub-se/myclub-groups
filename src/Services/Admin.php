@@ -101,8 +101,14 @@ class Admin extends Base
                 'applyCronIntervalLabel'
         ], 10, 2 );
 
-        add_action( 'restrict_manage_posts', [ $this, 'renderMediaLibraryImageTypeFilter' ] );
-        add_action( 'pre_get_posts', [ $this, 'applyMediaLibraryImageTypeFilterQuery' ] );
+        add_action( 'restrict_manage_posts', [
+                $this,
+                'renderMediaLibraryImageTypeFilter'
+        ] );
+        add_action( 'pre_get_posts', [
+                $this,
+                'applyMediaLibraryImageTypeFilterQuery'
+        ] );
     }
 
     /**
@@ -209,15 +215,6 @@ class Admin extends Base
                         'sanitizeCheckbox'
                 ],
                 'default'           => '0'
-        ] );
-        register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_last_news_sync', [
-                'default' => NULL
-        ] );
-        register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_last_groups_sync', [
-                'default' => NULL
-        ] );
-        register_setting( 'myclub_groups_settings_tab1', 'myclub_groups_last_club_calendar_sync', [
-                'default' => NULL
         ] );
         register_setting( 'myclub_groups_settings_tab2', 'myclub_groups_calendar_title', [
                 'sanitize_callback' => [
@@ -352,6 +349,76 @@ class Admin extends Base
                         'default',
                 )
         ] );
+        register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_group_calendar_desktop_views', [
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCalendarViews'
+                ],
+                'default'           => Utils::getCalendarDesktopViews()
+        ] );
+        register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_group_calendar_desktop_views_default', [
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCalendarDesktopViewDefault'
+                ],
+                'default'           => Utils::getCalendarDesktopViewsDefault()
+        ] );
+        register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_group_calendar_mobile_views', [
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCalendarViews'
+                ],
+                'default'           => Utils::getCalendarMobileViews()
+        ] );
+        register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_group_calendar_mobile_views_default', [
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCalendarMobileViewDefault'
+                ],
+                'default'           => Utils::getCalendarMobileViewsDefault()
+        ] );
+        register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_group_calendar_show_week_numbers', [
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCheckbox'
+                ],
+                'default'           => '1'
+        ] );
+        register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_club_calendar_desktop_views', [
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCalendarViews'
+                ],
+                'default'           => Utils::getCalendarDesktopViews()
+        ] );
+        register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_club_calendar_desktop_views_default', [
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCalendarDesktopViewDefault'
+                ],
+                'default'           => Utils::getCalendarDesktopViewsDefault()
+        ] );
+        register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_club_calendar_mobile_views', [
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCalendarViews'
+                ],
+                'default'           => Utils::getCalendarMobileViews()
+        ] );
+        register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_club_calendar_mobile_views_default', [
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCalendarMobileViewDefault'
+                ],
+                'default'           => Utils::getCalendarMobileViewsDefault()
+        ] );
+        register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_club_calendar_show_week_numbers', [
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCheckbox'
+                ],
+                'default'           => '1'
+        ] );
 
         add_settings_section( 'myclub_groups_main', __( 'MyClub Groups Main Settings', 'myclub-groups' ), function () {
             echo '<p>';
@@ -379,6 +446,23 @@ class Admin extends Base
             );
             echo '</p>';
         }, 'myclub_groups_settings_tab3' );
+        add_settings_section( 'myclub_groups_group_calendar_settings', __( 'Group calendar settings', 'myclub-groups' ), function () {
+            echo '<p>';
+            esc_attr_e(
+                    'Here you can set the calendar views for the group calendar. You can choose which views should be available for desktop and mobile devices.',
+                    'myclub-groups'
+            );
+            echo '</p>';
+        }, 'myclub_groups_settings_tab4' );
+        add_settings_section( 'myclub_groups_club_calendar_settings', __( 'Club calendar settings', 'myclub-groups' ), function () {
+            echo '<p>';
+            esc_attr_e(
+                    'Here you can set the calendar views for the club calendar. You can choose which views should be available for desktop and mobile devices.',
+                    'myclub-groups'
+            );
+            echo '</p>';
+        }, 'myclub_groups_settings_tab4' );
+
         add_settings_field( 'myclub_groups_api_key', __( 'MyClub API Key', 'myclub-groups' ), [
                 $this,
                 'renderApiKey'
@@ -399,18 +483,6 @@ class Admin extends Base
                 $this,
                 'renderDeleteUnusedNews'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_main', [ 'label_for' => 'myclub_groups_delete_unused_news' ] );
-        add_settings_field( 'myclub_groups_last_news_sync', __( 'News last synchronized', 'myclub-groups' ), [
-                $this,
-                'renderNewsLastSync'
-        ], 'myclub_groups_settings_tab1', 'myclub_groups_sync' );
-        add_settings_field( 'myclub_groups_last_groups_sync', __( 'Groups last synchronized', 'myclub-groups' ), [
-                $this,
-                'renderGroupsLastSync'
-        ], 'myclub_groups_settings_tab1', 'myclub_groups_sync' );
-        add_settings_field( 'myclub_groups_last_club_calendar_sync', __( 'Club calendar last synchronized', 'myclub-groups' ), [
-                $this,
-                'renderClubCalendarLastSync'
-        ], 'myclub_groups_settings_tab1', 'myclub_groups_sync' );
         add_settings_field( 'myclub_groups_calendar_title', __( 'Title for calendar field', 'myclub-groups' ), [
                 $this,
                 'renderCalendarTitle'
@@ -485,6 +557,94 @@ class Admin extends Base
                 $this,
                 'renderShowItemsOrder'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_show_items_order' ] );
+
+        # region group calendar display settings
+
+        add_settings_field( 'myclub_groups_group_calendar_desktop_views', __( 'Group calendar desktop views', 'myclub-groups' ), [
+                $this,
+                'renderGroupCalendarDesktopViews'
+        ], 'myclub_groups_settings_tab4', 'myclub_groups_group_calendar_settings', [
+                'label_for' => 'myclub_groups_group_calendar_desktop_views',
+                'help_text' => __( 'Select the calendar views that should be available for the group calendar on desktop devices. You can change the order of the views by dragging and dropping them.', 'myclub-groups' )
+        ] );
+
+        add_settings_field( 'myclub_groups_group_calendar_desktop_views_default', __( 'Default view for desktop group calendar', 'myclub-groups' ), [
+                $this,
+                'renderGroupCalendarDesktopViewsDefault'
+        ], 'myclub_groups_settings_tab4', 'myclub_groups_group_calendar_settings', [
+                'label_for' => 'myclub_groups_group_calendar_desktop_views_default',
+                'help_text' => __( 'Select the default view for the desktop group calendar. The default view will be displayed when the group calendar is loaded.', 'myclub-groups' )
+        ] );
+
+        add_settings_field( 'myclub_groups_group_calendar_mobile_views', __( 'Group calendar mobile views', 'myclub-groups' ), [
+                $this,
+                'renderGroupCalendarMobileViews'
+        ], 'myclub_groups_settings_tab4', 'myclub_groups_group_calendar_settings', [
+                'label_for' => 'myclub_groups_group_calendar_mobile_views',
+                'help_text' => __( 'Select the calendar views that should be available for the group calendar on mobile devices. You can change the order of the views by dragging and dropping them.', 'myclub-groups' )
+        ] );
+
+        add_settings_field( 'myclub_groups_group_calendar_mobile_views_default', __( 'Default view for mobile group calendar', 'myclub-groups' ), [
+                $this,
+                'renderGroupCalendarMobileViewsDefault'
+        ], 'myclub_groups_settings_tab4', 'myclub_groups_group_calendar_settings', [
+                'label_for' => 'myclub_groups_group_calendar_mobile_views_default',
+                'help_text' => __( 'Select the default view for the mobile group calendar. The default view will be displayed when the group calendar is loaded.', 'myclub-groups' )
+        ] );
+
+        add_settings_field( 'myclub_groups_group_calendar_show_week_numbers', __( 'Show week numbers in group calendar', 'myclub-groups' ), [
+                $this,
+                'renderGroupCalendarWeekNumbers'
+        ], 'myclub_groups_settings_tab4', 'myclub_groups_group_calendar_settings', [
+                'label_for' => 'myclub_groups_group_calendar_show_week_numbers',
+                'help_text' => __( 'Check this option to display week numbers in the group calendar.', 'myclub-groups' )
+        ] );
+
+        # endregion
+
+        # region club calendar display settings
+
+        add_settings_field( 'myclub_groups_club_calendar_desktop_views', __( 'Club calendar desktop views', 'myclub-groups' ), [
+                $this,
+                'renderClubCalendarDesktopViews'
+        ], 'myclub_groups_settings_tab4', 'myclub_groups_club_calendar_settings', [
+                'label_for' => 'myclub_groups_club_calendar_desktop_views',
+                'help_text' => __( 'Select the calendar views that should be available for the club calendar on desktop devices. You can change the order of the views by dragging and dropping them.', 'myclub-groups' )
+        ] );
+
+        add_settings_field( 'myclub_groups_club_calendar_desktop_views_default', __( 'Default view for desktop club calendar', 'myclub-groups' ), [
+                $this,
+                'renderClubCalendarDesktopViewsDefault'
+        ], 'myclub_groups_settings_tab4', 'myclub_groups_club_calendar_settings', [
+                'label_for' => 'myclub_groups_club_calendar_desktop_views_default',
+                'help_text' => __( 'Select the default view for the desktop club calendar. The default view will be displayed when the club calendar is loaded.', 'myclub-groups' )
+        ] );
+
+        add_settings_field( 'myclub_groups_club_calendar_mobile_views', __( 'Club calendar mobile views', 'myclub-groups' ), [
+                $this,
+                'renderClubCalendarMobileViews'
+        ], 'myclub_groups_settings_tab4', 'myclub_groups_club_calendar_settings', [
+                'label_for' => 'myclub_groups_club_calendar_mobile_views',
+                'help_text' => __( 'Select the calendar views that should be available for the club calendar on mobile devices. You can change the order of the views by dragging and dropping them.', 'myclub-groups' )
+        ] );
+
+        add_settings_field( 'myclub_groups_club_calendar_mobile_views_default', __( 'Default view for mobile club calendar', 'myclub-groups' ), [
+                $this,
+                'renderClubCalendarMobileViewsDefault'
+        ], 'myclub_groups_settings_tab4', 'myclub_groups_club_calendar_settings', [
+                'label_for' => 'myclub_groups_club_calendar_mobile_views_default',
+                'help_text' => __( 'Select the default view for the mobile club calendar. The default view will be displayed when the club calendar is loaded.', 'myclub-groups' )
+        ] );
+
+        add_settings_field( 'myclub_groups_club_calendar_show_week_numbers', __( 'Show week numbers in club calendar', 'myclub-groups' ), [
+                $this,
+                'renderClubCalendarWeekNumbers'
+        ], 'myclub_groups_settings_tab4', 'myclub_groups_club_calendar_settings', [
+                'label_for' => 'myclub_groups_club_calendar_show_week_numbers',
+                'help_text' => __( 'Check this option to display week numbers in the club calendar.', 'myclub-groups' )
+        ] );
+
+        # endregion
     }
 
     /**
@@ -629,7 +789,7 @@ class Admin extends Base
                 'fields'     => 'all',
         ] );
         $localized = [];
-        if ( ! is_wp_error( $terms ) ) {
+        if ( !is_wp_error( $terms ) ) {
             foreach ( $terms as $t ) {
                 $localized[] = [
                         'slug' => $t->slug,
@@ -708,34 +868,34 @@ class Admin extends Base
      */
     public function applyMediaLibraryImageTypeFilterQuery( WP_Query $query ): void
     {
-        if ( ! is_admin() || ! $query->is_main_query() ) {
+        if ( !is_admin() || !$query->is_main_query() ) {
             return;
         }
 
-        $screen = function_exists('get_current_screen') ? get_current_screen() : null;
-        if ( ! $screen || $screen->id !== 'upload' ) {
+        $screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+        if ( !$screen || $screen->id !== 'upload' ) {
             return;
         }
 
         $taxonomy = ImageService::MYCLUB_IMAGES;
         $paramKey = $taxonomy . '-filter';
 
-        $val = isset( $_GET[ $paramKey ] ) ? sanitize_text_field( (string) $_GET[ $paramKey ] ) : 'none';
+        $val = isset( $_GET[ $paramKey ] ) ? sanitize_text_field( (string)$_GET[ $paramKey ] ) : 'none';
 
         // Normalize base constraints so results aren’t accidentally empty
         $query->set( 'post_type', 'attachment' );
         $query->set( 'post_status', 'inherit' );
 
-        if ( empty( $_GET['post_mime_type'] ) ) {
+        if ( empty( $_GET[ 'post_mime_type' ] ) ) {
             $query->set( 'post_mime_type', '' );
         }
-        if ( isset( $_GET['m'] ) && ( $_GET['m'] === '0' || $_GET['m'] === '' ) ) {
+        if ( isset( $_GET[ 'm' ] ) && ( $_GET[ 'm' ] === '0' || $_GET[ 'm' ] === '' ) ) {
             $query->set( 'm', '' );
         }
-        if ( isset( $_GET['attachment-filter'] ) && $_GET['attachment-filter'] === '' ) {
+        if ( isset( $_GET[ 'attachment-filter' ] ) && $_GET[ 'attachment-filter' ] === '' ) {
             $query->set( 'attachment-filter', '' );
         }
-        if ( isset( $_GET['s'] ) && $_GET['s'] === '' ) {
+        if ( isset( $_GET[ 's' ] ) && $_GET[ 's' ] === '' ) {
             $query->set( 's', '' );
         }
 
@@ -950,6 +1110,82 @@ class Admin extends Base
     }
 
     /**
+     * Renders the calendar desktop views group for MyClub Groups.
+     *
+     * This method outputs the field for configuring the desktop views in the calendar group of MyClub Groups.
+     *
+     * @param array $args An array of arguments for rendering the calendar view field.
+     * @return void
+     * @since 1.1.0
+     *
+     */
+    public function renderGroupCalendarDesktopViews( array $args )
+    {
+        $this->renderCalendarViewField( 'myclub_groups_group_calendar_desktop_views', $args );
+    }
+
+    /**
+     * Renders the default calendar view for desktop in the group configuration.
+     *
+     * This method outputs the default field for configuring calendar views specifically for desktop
+     * in the MyClub Groups settings.
+     *
+     * @param array $args An array of arguments to customize the rendering of the field.
+     * @return void
+     * @since 1.1.0
+     *
+     */
+    public function renderGroupCalendarDesktopViewsDefault( array $args )
+    {
+        $this->renderCalendarViewDefaultField( 'myclub_groups_group_calendar_desktop_views_default', $args );
+    }
+
+    /**
+     * Renders the group calendar mobile views.
+     *
+     * This method renders the calendar view field for mobile-specific views of the group calendar
+     * using the provided arguments.
+     *
+     * @param array $args An associative array of arguments used for rendering the calendar view field.
+     * @return void
+     * @since 1.1.0
+     *
+     */
+    public function renderGroupCalendarMobileViews( array $args )
+    {
+        $this->renderCalendarViewField( 'myclub_groups_group_calendar_mobile_views', $args );
+    }
+
+    /**
+     * Renders the default field for group calendar mobile views.
+     *
+     * This method outputs the default field configuration for the mobile views of the group calendar in MyClub Groups.
+     *
+     * @param array $args Arguments used to render the default field.
+     * @return void
+     * @since 1.1.0
+     *
+     */
+    public function renderGroupCalendarMobileViewsDefault( array $args )
+    {
+        $this->renderCalendarViewDefaultField( 'myclub_groups_group_calendar_mobile_views_default', $args );
+    }
+
+    /**
+     * Renders the calendar week numbers group setting.
+     *
+     * This method outputs a checkbox for enabling or disabling the display of week numbers in the group calendar.
+     *
+     * @param array $args Arguments passed for rendering the checkbox.
+     * @return void
+     * @since 1.1.0
+     */
+    public function renderGroupCalendarWeekNumbers( array $args )
+    {
+        $this->renderCheckbox( $args, 'myclub_groups_group_calendar_show_week_numbers' );
+    }
+
+    /**
      * Renders the input field for the group slug in the plugin settings page.
      *
      * @param array $args The arguments for rendering the input field.
@@ -1000,6 +1236,82 @@ class Admin extends Base
     }
 
     /**
+     * Renders the desktop views for the club calendar.
+     *
+     * This method is responsible for rendering the calendar view field specifically
+     * for desktop views in the MyClub Sections plugin.
+     *
+     * @param array $args An associative array of arguments used for rendering the field.
+     * @return void
+     * @since 2.3.0
+     *
+     */
+    public function renderClubCalendarDesktopViews( array $args )
+    {
+        $this->renderCalendarViewField( 'myclub_groups_club_calendar_desktop_views', $args );
+    }
+
+    /**
+     * Renders the default settings for the club calendar desktop views.
+     *
+     * This method outputs the default view configuration field for the club calendar in desktop mode.
+     *
+     * @param array $args The arguments passed for rendering the calendar view default field.
+     * @return void
+     * @since 2.3.0
+     *
+     */
+    public function renderClubCalendarDesktopViewsDefault( array $args )
+    {
+        $this->renderCalendarViewDefaultField( 'myclub_groups_club_calendar_desktop_views_default', $args );
+    }
+
+    /**
+     * Renders the mobile views for the club calendar.
+     *
+     * This method outputs the configurable mobile views for the club calendar based on the provided arguments.
+     *
+     * @param array $args An associative array of arguments used to render the calendar view field.
+     * @return void
+     * @since 2.3.0
+     *
+     */
+    public function renderClubCalendarMobileViews( array $args )
+    {
+        $this->renderCalendarViewField( 'myclub_groups_club_calendar_mobile_views', $args );
+    }
+
+    /**
+     * Renders the default field for the club calendar mobile views.
+     *
+     * This method outputs the default configuration field for the mobile views of the club calendar in MyClub Sections.
+     *
+     * @param array $args Arguments passed for rendering the field.
+     * @return void
+     * @since 2.3.0
+     *
+     */
+    public function renderClubCalendarMobileViewsDefault( array $args )
+    {
+        $this->renderCalendarViewDefaultField( 'myclub_groups_club_calendar_mobile_views_default', $args );
+    }
+
+    /**
+     * Renders the club calendar week numbers checkbox.
+     *
+     * This method renders a checkbox for displaying week numbers in the club calendar based on the provided arguments.
+     *
+     * @param array $args An associative array of arguments used to configure the checkbox rendering.
+     * @return void
+     * @since 2.3.0
+     *
+     */
+    public function renderClubCalendarWeekNumbers( array $args )
+    {
+        $this->renderCheckbox( $args, 'myclub_groups_club_calendar_show_week_numbers' );
+    }
+
+    /**
      * Renders the checkbox option for deleting unused news posts from MyClub.
      *
      * @param array $args Arguments passed for rendering the checkbox.
@@ -1028,17 +1340,6 @@ class Admin extends Base
         }
 
         echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_calendar_title" value="' . esc_attr( $calendar_title ) . '" />';
-    }
-
-    /**
-     * Renders the date and time field for the last sync of the club calendar.
-     *
-     * @return void
-     * @since 1.3.1
-     */
-    public function renderClubCalendarLastSync()
-    {
-        $this->renderDateTimeField( 'myclub_groups_last_club_calendar_sync' );
     }
 
     /**
@@ -1125,20 +1426,20 @@ class Admin extends Base
      */
     public function renderMediaLibraryImageTypeFilter(): void
     {
-        $screen = function_exists('get_current_screen') ? get_current_screen() : null;
-        if ( ! $screen || $screen->id !== 'upload' ) {
+        $screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+        if ( !$screen || $screen->id !== 'upload' ) {
             return;
         }
 
         $taxonomy = ImageService::MYCLUB_IMAGES;
-        $tax_obj  = get_taxonomy( $taxonomy );
-        if ( ! $tax_obj ) {
+        $tax_obj = get_taxonomy( $taxonomy );
+        if ( !$tax_obj ) {
             return;
         }
 
         // Use native param name to integrate with screen state
         $paramKey = $taxonomy . '-filter';
-        $selected = isset( $_GET[ $paramKey ] ) ? sanitize_text_field( (string) $_GET[ $paramKey ] ) : 'none';
+        $selected = isset( $_GET[ $paramKey ] ) ? sanitize_text_field( (string)$_GET[ $paramKey ] ) : 'none';
 
         echo '<label class="screen-reader-text" for="' . esc_attr( $paramKey ) . '">' . esc_html( $tax_obj->labels->menu_name ) . '</label>';
         echo '<select name="' . esc_attr( $paramKey ) . '" id="' . esc_attr( $paramKey ) . '" class="postform">';
@@ -1148,7 +1449,7 @@ class Admin extends Base
                 'taxonomy'   => $taxonomy,
                 'hide_empty' => false,
         ] );
-        if ( ! is_wp_error( $terms ) ) {
+        if ( !is_wp_error( $terms ) ) {
             foreach ( $terms as $term ) {
                 printf(
                         '<option value="%s"%s>%s</option>',
@@ -1180,17 +1481,6 @@ class Admin extends Base
         }
 
         echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_members_title" value="' . esc_attr( $members_title ) . '" />';
-    }
-
-    /**
-     * Renders the last news sync field in the MyClub Groups plugin.
-     *
-     * @return void
-     * @since 1.0.0
-     */
-    public function renderNewsLastSync()
-    {
-        $this->renderDateTimeField( 'myclub_groups_last_news_sync' );
     }
 
     /**
@@ -1405,17 +1695,6 @@ class Admin extends Base
     }
 
     /**
-     * Renders the last groups sync field in the MyClub Groups plugin.
-     *
-     * @return void
-     * @since 1.0.0
-     */
-    public function renderGroupsLastSync()
-    {
-        $this->renderDateTimeField( 'myclub_groups_last_groups_sync' );
-    }
-
-    /**
      * Sanitizes the provided API key and verifies its validity.
      *
      * @param string $input The API key to be sanitized.
@@ -1474,6 +1753,69 @@ class Admin extends Base
         } else {
             return $input;
         }
+    }
+
+    /**
+     * Sanitizes the provided calendar view items by removing invalid entries.
+     *
+     * This method ensures that only allowed calendar views are retained by filtering the input
+     * array against a predefined list of permitted items.
+     *
+     * @param array $items The array of calendar view items to be sanitized.
+     * @return array The sanitized array containing only valid calendar view items.
+     * @since 2.3.0
+     *
+     */
+    public function sanitizeCalendarViews( array $items ): array
+    {
+        $allowed_items = array_keys( Utils::getCalendarArray() );
+        return array_intersect( Utils::sanitizeArray( $items ), $allowed_items );
+    }
+
+    /**
+     * Sanitizes the default view for the calendar on the desktop.
+     *
+     * This method ensures that the provided input is a valid calendar view option.
+     * If the input is not valid, it defaults to 'dayGridMonth'.
+     *
+     * @param string $input The input value representing the desired calendar view.
+     * @return string The sanitized calendar view option, or 'dayGridMonth' if the input is invalid.
+     * @since 2.3.0
+     *
+     */
+    public function sanitizeCalendarDesktopViewDefault( string $input ): string
+    {
+        $allowed_items = array_keys( Utils::getCalendarArray() );
+        $input = sanitize_text_field( $input );
+
+        if ( array_find( $allowed_items, fn ( $item ) => $item === $input ) === false ) {
+            return 'dayGridMonth';
+        }
+
+        return $input;
+    }
+
+    /**
+     * Sanitizes the input for the default calendar mobile view.
+     *
+     * This method ensures that the provided calendar view input is valid and allowed.
+     * If the input is not part of the allowed items, a default value of 'listMonth' is returned.
+     *
+     * @param string $input The input string representing the calendar mobile view to be sanitized.
+     * @return string The sanitized calendar mobile view, either the provided valid input or the default value 'listMonth'.
+     * @since 2.3.0
+     *
+     */
+    public function sanitizeCalendarMobileViewDefault( string $input ): string
+    {
+        $allowed_items = array_keys( Utils::getCalendarArray() );
+        $input = sanitize_text_field( $input );
+
+        if ( array_find( $allowed_items, fn ( $item ) => $item === $input ) === false ) {
+            return 'listMonth';
+        }
+
+        return $input;
     }
 
     /**
@@ -1788,43 +2130,96 @@ class Admin extends Base
     }
 
     /**
-     * Renders a datetime field.
+     * Renders a calendar view selection field with a default value.
      *
-     * @param string $field_name The name of the option field.
+     * This method generates a select dropdown for choosing a calendar view,
+     * and ensures a valid default value is set based on the provided name.
+     * The dropdown options are derived from a predefined set of valid items.
      *
+     * @param string $name The name of the option to retrieve and store the selected value.
+     * @param array $args Additional arguments, including the label ID for the field.
      * @return void
-     * @since 1.0.0
+     * @since 2.3.0
+     *
      */
-    private function renderDateTimeField( string $field_name )
+    private function renderCalendarViewDefaultField( string $name, array $args )
     {
-        $last_sync = esc_attr( get_option( $field_name ) );
-        $cron_job_name = '';
-        $output = '';
+        $default = get_option( $name, '' );
+        $valid_items = Utils::getCalendarArray();
 
-        if ( $field_name === 'myclub_groups_last_news_sync' ) {
-            $cron_job_name = 'myclub_groups_refresh_news_task_cron';
-            $cron_job_type = __( 'news', 'myclub-groups' );
+        if ( empty( $default ) ) {
+            $default = ( strpos( $name, 'mobile' ) !== false ) ? Utils::getCalendarMobileViewsDefault() : Utils::getCalendarDesktopViewsDefault();
         }
 
-        if ( $field_name === 'myclub_groups_last_groups_sync' ) {
-            $cron_job_name = 'myclub_groups_refresh_groups_task_cron';
-            $cron_job_type = __( 'groups', 'myclub-groups' );
+        // Fallback if stored value is not a valid key anymore.
+        if ( !isset( $valid_items[ $default ] ) ) {
+            $default = ( strpos( $name, 'mobile' ) !== false ) ? Utils::getCalendarMobileViewsDefault() : Utils::getCalendarDesktopViewsDefault();
         }
 
-        if ( !empty( $cron_job_name ) && isset( $cron_job_type ) ) {
-            $next_scheduled = wp_next_scheduled( $cron_job_name );
-            if ( $next_scheduled ) {
-                /* translators: 1: the type of update cron job that is running */
-                $output = sprintf( __( 'The %1$s update task is currently running.', 'myclub-groups' ), esc_attr( $cron_job_type ) );
-            }
+        echo '<select id="' . esc_attr( $args[ 'label_for' ] ) . '" name="' . esc_attr( $name ) . '">';
+
+        foreach ( $valid_items as $key => $label ) {
+            echo '<option value="' . esc_attr( $key ) . '" ' . selected( $default, $key, false ) . '>' . esc_html( $label ) . '</option>';
         }
 
-        if ( empty ( $output ) ) {
-            $output = empty( $last_sync ) ? __( 'Not synchronized yet', 'myclub-groups' ) : Utils::formatDateTime( $last_sync );
+        echo '</select>';
+        if ( isset( $args[ 'description' ] ) ) {
+            echo '<p class="description">' . wp_kses_post( $args[ 'description' ] ) . '</p>';
         }
-
-        echo '<div id="' . $field_name . '">' . esc_attr( $output ) . '</div>';
     }
+
+    /**
+     * Renders the calendar view field for MyClub settings.
+     *
+     * This method outputs an interactive sortable and selectable calendar view field
+     * for use in the admin interface. It displays the available calendar views and
+     * their current enabled/disabled state, allowing users to reorder and toggle them.
+     *
+     * @param string $name The name of the option being rendered, used to store the settings.
+     * @param array $args Arguments for the field, including labels and identifiers.
+     * @return void
+     * @since 2.3.0
+     *
+     */
+    private function renderCalendarViewField( string $name, array $args )
+    {
+        $defaultArray = strpos( $name, 'mobile' ) !== false ? Utils::getCalendarMobileViews() : Utils::getCalendarDesktopViews();
+        $items = get_option( $name, $defaultArray );
+        if ( !is_array( $items ) ) {
+            $items = array ();
+        }
+        $view_names = Utils::getCalendarArray();
+
+        // Show enabled ones first (in saved order), then any remaining available keys.
+        $all_keys = array_keys( $view_names );
+        $ordered_keys = array_values( array_unique( array_merge( $items, $all_keys ) ) );
+
+        echo '<ul id="' . esc_attr( $args[ 'label_for' ] ) . '" class="myclub-sortable-calendar">';
+
+        foreach ( $ordered_keys as $key ) {
+            if ( !isset( $view_names[ $key ] ) ) {
+                continue;
+            }
+
+            $id = $args[ 'label_for' ] . '_' . $key;
+            $is_enabled = in_array( $key, $items, true );
+
+            echo '<li class="myclub-sortable-item" data-key="' . esc_attr( $key ) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr( $id ) . '" class="myclub-calendar-enable" value="' . esc_attr( $key ) . '" ' . checked( $is_enabled, true, false ) . ' />';
+            echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $view_names[ $key ] ) . '</label>';
+
+            echo '<input type="hidden" class="myclub-calendar-value" name="' . $name . '[]" value="' . esc_attr( $key ) . '"' . ( $is_enabled ? '' : ' disabled="disabled"' ) . ' />';
+
+            echo '</li>';
+        }
+
+        echo '</ul>';
+        if ( isset( $args[ 'description' ] ) ) {
+            echo '<p class="description">' . wp_kses_post( $args[ 'description' ] ) . '</p>';
+        }
+    }
+
 
     /**
      * Renders a checkbox element with the given arguments and field name.

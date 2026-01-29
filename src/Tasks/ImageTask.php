@@ -2,7 +2,7 @@
 
 namespace MyClub\MyClubGroups\Tasks;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 use MyClub\Common\BackgroundProcessing\Background_Process;
 use MyClub\MyClubGroups\Services\ImageService;
@@ -13,7 +13,8 @@ use MyClub\MyClubGroups\Services\MemberService;
  *
  * Represents an image task that creates images from external links for different types of items (group, member, news).
  */
-class ImageTask extends Background_Process {
+class ImageTask extends Background_Process
+{
     protected $prefix = 'myclub_groups';
     protected $action = 'image_task';
 
@@ -25,8 +26,9 @@ class ImageTask extends Background_Process {
      * @return ImageTask The initialized instance of the ImageTask class.
      * @since 1.0.0
      */
-    public static function init(): ImageTask {
-        if (!self::$instance) {
+    public static function init(): ImageTask
+    {
+        if ( !self::$instance ) {
             self::$instance = new self();
         }
         return self::$instance;
@@ -40,7 +42,7 @@ class ImageTask extends Background_Process {
      * @return bool Indicates whether the task should be processed further.
      * @since 1.0.0
      */
-    protected function task ( $item ): bool
+    protected function task( $item ): bool
     {
         $decoded_item = json_decode( $item );
 
@@ -72,14 +74,15 @@ class ImageTask extends Background_Process {
      * @return void
      * @since 2.1.0
      */
-    protected function complete() {
+    protected function complete()
+    {
         parent::complete();
 
-        $term_ids = get_terms([
-            'taxonomy' => ImageService::MYCLUB_IMAGES,
-            'fields' => 'ids',
+        $term_ids = get_terms( [
+            'taxonomy'   => ImageService::MYCLUB_IMAGES,
+            'fields'     => 'ids',
             'hide_empty' => false,
-        ]);
+        ] );
 
         if ( is_wp_error( $term_ids ) || empty( $term_ids ) ) {
             return;

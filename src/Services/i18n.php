@@ -2,7 +2,7 @@
 
 namespace MyClub\MyClubGroups\Services;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class i18n extends Base
 {
     /**
@@ -14,7 +14,10 @@ class i18n extends Base
      */
     public function register()
     {
-        add_action( 'plugins_loaded', [ $this, 'loadPluginTextDomain' ] );
+        add_action( 'plugins_loaded', [
+            $this,
+            'loadPluginTextDomain'
+        ] );
     }
 
     /**

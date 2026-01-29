@@ -4,7 +4,6 @@ namespace MyClub\MyClubGroups\Services;
 
 if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-use MyClub\MyClubGroups\Api\RestApi;
 use MyClub\MyClubGroups\Tasks\ImageTask;
 use MyClub\MyClubGroups\Tasks\RefreshGroupsTask;
 use MyClub\MyClubGroups\Utils;
@@ -288,7 +287,7 @@ class GroupService extends Groups
             unset( $group );
         }
 
-        unset( $response  );
+        unset( $response );
 
         if ( function_exists( 'gc_collect_cycles' ) ) {
             gc_collect_cycles();

@@ -4,16 +4,89 @@ namespace MyClub\MyClubGroups;
 
 if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+use MyClub\Common\BaseUtils;
 use MyClub\MyClubGroups\Services\GroupService;
 use MyClub\MyClubGroups\Services\MemberService;
-
-use MyClub\Common\BaseUtils;
 
 /**
  * A utility class for managing images, URLs, cache, and posts in a WordPress environment.
  */
 class Utils extends BaseUtils
 {
+    /**
+     * Retrieve an array of calendar view options with their corresponding labels.
+     *
+     * @return array An associative array where keys represent calendar view types
+     *               (e.g., 'dayGridMonth') and values are their localized labels.
+     * @since 2.3.0
+     */
+    static function getCalendarArray(): array
+    {
+        return [
+            'dayGridMonth' => __( 'Month view', 'myclub-groups' ),
+            'timeGridWeek' => __( 'Week view', 'myclub-groups' ),
+            'timeGridDay'  => __( 'Day view', 'myclub-groups' ),
+            'listMonth'    => __( 'List view', 'myclub-groups' )
+        ];
+    }
+
+    /**
+     * Retrieve the calendar views available for the desktop interface.
+     *
+     * @return array An array of available calendar view identifiers for desktop.
+     *               Possible values include:
+     *               - dayGridMonth: Displays the calendar in a month grid layout.
+     *               - timeGridWeek: Displays the calendar in a weekly time grid layout.
+     *               - listMonth: Displays events as a list for the month.
+     *
+     * @since 2.3.0
+     *
+     */
+    static function getCalendarDesktopViews(): array
+    {
+        return [
+            'dayGridMonth',
+            'timeGridWeek',
+            'listMonth'
+        ];
+    }
+
+    /**
+     * Get the default desktop view for the calendar.
+     *
+     * @return string The default desktop view configuration for the calendar.
+     * @since 2.3.0
+     */
+    static function getCalendarDesktopViewsDefault(): string
+    {
+        return 'dayGridMonth';
+    }
+
+    /**
+     * Retrieve the available calendar views for mobile displays.
+     *
+     * @return array An array of view identifiers optimized for mobile usage.
+     * @since 2.3.0
+     */
+    static function getCalendarMobileViews(): array
+    {
+        return [
+            'timeGridDay',
+            'listMonth'
+        ];
+    }
+
+    /**
+     * Retrieve the default calendar view for mobile devices.
+     *
+     * @return string The default calendar mobile view.
+     * @since 2.3.0
+     */
+    static function getCalendarMobileViewsDefault(): string
+    {
+        return 'listMonth';
+    }
+
     /**
      * Delete a post and related attachments and metadata from the WordPress database.
      *
@@ -28,7 +101,7 @@ class Utils extends BaseUtils
             // Make sure that posts containing sections are not deleted
             $section_id = get_post_meta( $post_id, 'myclub_sections_id', true );
 
-            if ( ! empty( $section_id ) ) {
+            if ( !empty( $section_id ) ) {
                 // The news item has a myclub_sections_id value
                 return;
             }

@@ -2,7 +2,7 @@
 
 namespace MyClub\MyClubGroups;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 use MyClub\MyClubGroups\Services\Admin;
 use MyClub\MyClubGroups\Services\Api;

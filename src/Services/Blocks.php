@@ -2,7 +2,7 @@
 
 namespace MyClub\MyClubGroups\Services;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
  * Class Blocks
@@ -119,53 +119,53 @@ class Blocks extends Base
     public function registerBlocks()
     {
         $this->block_args = [
-            'calendar' => [
-                'description' => __( 'Display calendar for a selected group', 'myclub-groups' ),
+            'calendar'      => [
+                'description'     => __( 'Display calendar for a selected group', 'myclub-groups' ),
                 'render_callback' => [
                     $this,
                     'renderCalendar'
                 ],
-                'title' => __( 'MyClub Group Calendar', 'myclub-groups' )
+                'title'           => __( 'MyClub Group Calendar', 'myclub-groups' )
             ],
             'club-calendar' => [
-                'description' => __( 'Display calendar for the entire Club', 'myclub-groups' ),
+                'description'     => __( 'Display calendar for the entire Club', 'myclub-groups' ),
                 'render_callback' => [
                     $this,
                     'renderClubCalendar'
                 ],
-                'title' => __( 'MyClub Club Calendar', 'myclub-groups')
+                'title'           => __( 'MyClub Club Calendar', 'myclub-groups' )
             ],
-            'club-news' => [
+            'club-news'     => [
                 'description' => __( 'Display news for the entire Club', 'myclub-groups' ),
-                'title' => __( 'MyClub Club News', 'myclub-groups')
+                'title'       => __( 'MyClub Club News', 'myclub-groups' )
             ],
-            'coming-games' => [
+            'coming-games'  => [
                 'description' => __( 'Display upcoming games for a selected group', 'myclub-groups' ),
-                'title' => __( 'MyClub Group Upcoming games', 'myclub-groups')
+                'title'       => __( 'MyClub Group Upcoming games', 'myclub-groups' )
             ],
-            'leaders' => [
+            'leaders'       => [
                 'description' => __( 'Display leaders for a selected group', 'myclub-groups' ),
-                'title' => __( 'MyClub Group Leaders', 'myclub-groups')
+                'title'       => __( 'MyClub Group Leaders', 'myclub-groups' )
             ],
-            'members' => [
+            'members'       => [
                 'description' => __( 'Display members for a selected group', 'myclub-groups' ),
-                'title' => __( 'MyClub Group Members', 'myclub-groups')
+                'title'       => __( 'MyClub Group Members', 'myclub-groups' )
             ],
-            'menu' => [
+            'menu'          => [
                 'description' => __( 'Display the MyClub Group menu items', 'myclub-groups' ),
-                'title' => __( 'MyClub Groups Menu', 'myclub-groups')
+                'title'       => __( 'MyClub Groups Menu', 'myclub-groups' )
             ],
-            'navigation' => [
+            'navigation'    => [
                 'description' => __( 'Display the MyClub group page navigation', 'myclub-groups' ),
-                'title' => __( 'MyClub Group Navigation', 'myclub-groups')
+                'title'       => __( 'MyClub Group Navigation', 'myclub-groups' )
             ],
-            'news' => [
+            'news'          => [
                 'description' => __( 'Display news for a selected group', 'myclub-groups' ),
-                'title' => __( 'MyClub Group News', 'myclub-groups')
+                'title'       => __( 'MyClub Group News', 'myclub-groups' )
             ],
-            'title' => [
+            'title'         => [
                 'description' => __( 'Display title for a selected group', 'myclub-groups' ),
-                'title' => __( 'MyClub Group Title', 'myclub-groups')
+                'title'       => __( 'MyClub Group Title', 'myclub-groups' )
             ]
         ];
 

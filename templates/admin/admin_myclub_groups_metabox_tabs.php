@@ -2,7 +2,7 @@
 
 use MyClub\MyClubGroups\Utils;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 function myclub_groups_render_meta_data_date( $post, $label, $name )
 {
@@ -53,7 +53,7 @@ function myclub_groups_render_meta_data_textarea( $post, $label, $name )
 $post = get_the_ID();
 
 ?>
-    <div id="myclub-tabs">
+<div id="myclub-tabs">
     <ul>
         <li class="tabs"><a href="#myclub-tab1"><?php esc_attr_e( 'Standard information', 'myclub-groups' ) ?></a></li>
         <li class="tabs"><a href="#myclub-tab2"><?php esc_attr_e( 'Other information', 'myclub-groups' ) ?></a></li>
@@ -61,28 +61,28 @@ $post = get_the_ID();
         <li class="tabs"><a href="#myclub-tab4"><?php esc_attr_e( 'Activities', 'myclub-groups' ) ?></a></li>
     </ul>
     <div id="myclub-tab1" class="tabs-panel">
-<?php
-// All of these fields are readonly and will not be saved on post save.
-myclub_groups_render_meta_data_text( $post, __( 'MyClub group id', 'myclub-groups' ), 'myclub_groups_id' );
-myclub_groups_render_meta_data_date( $post, __( 'Last updated', 'myclub-groups' ), 'myclub_groups_last_updated' );
-myclub_groups_render_meta_data_text( $post, __( 'Contact person', 'myclub-groups' ), 'myclub_groups_contact_name' );
-myclub_groups_render_meta_data_text( $post, __( 'E-mail address', 'myclub-groups' ), 'myclub_groups_email' );
-myclub_groups_render_meta_data_text( $post, __( 'Phone', 'myclub-groups' ), 'myclub_groups_phone' );
-?>
+        <?php
+        // All of these fields are readonly and will not be saved on post save.
+        myclub_groups_render_meta_data_text( $post, __( 'MyClub group id', 'myclub-groups' ), 'myclub_groups_id' );
+        myclub_groups_render_meta_data_date( $post, __( 'Last updated', 'myclub-groups' ), 'myclub_groups_last_updated' );
+        myclub_groups_render_meta_data_text( $post, __( 'Contact person', 'myclub-groups' ), 'myclub_groups_contact_name' );
+        myclub_groups_render_meta_data_text( $post, __( 'E-mail address', 'myclub-groups' ), 'myclub_groups_email' );
+        myclub_groups_render_meta_data_text( $post, __( 'Phone', 'myclub-groups' ), 'myclub_groups_phone' );
+        ?>
     </div>
     <div id="myclub-tab2" class="hidden tabs-panel">
-<?php
-myclub_groups_render_meta_data_textarea( $post, __( 'Other information', 'myclub-groups' ), 'info_text' );
-?>
+        <?php
+        myclub_groups_render_meta_data_textarea( $post, __( 'Other information', 'myclub-groups' ), 'info_text' );
+        ?>
     </div>
     <div id="myclub-tab3" class="hidden tabs-panel">
-<?php
-require_once( $this->plugin_path . '/templates/admin/admin_myclub_groups_members.php' );
-?>
+        <?php
+        require_once( $this->plugin_path . '/templates/admin/admin_myclub_groups_members.php' );
+        ?>
     </div>
     <div id="myclub-tab4" class="hidden tabs-panel">
-<?php
-require_once( $this->plugin_path . '/templates/admin/admin_myclub_groups_activities.php' );
-?>
+        <?php
+        require_once( $this->plugin_path . '/templates/admin/admin_myclub_groups_activities.php' );
+        ?>
     </div>
 </div>

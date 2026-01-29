@@ -4,7 +4,6 @@ namespace MyClub\MyClubGroups\Services;
 
 if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-use MyClub\MyClubGroups\Api\RestApi;
 use stdClass;
 use WP_Term;
 
