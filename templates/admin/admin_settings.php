@@ -1,6 +1,8 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+use MyClub\MyClubGroups\Utils;
+
 $myclub_groups_valid_tabs = [
         'tab1',
         'tab2',
