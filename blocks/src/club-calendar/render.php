@@ -1,6 +1,7 @@
 <?php
 
 use MyClub\MyClubGroups\Services\CalendarService;
+use MyClub\MyClubGroups\Utils;
 
 if ( !defined( 'ABSPATH' ) ) exit;
 
