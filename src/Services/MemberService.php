@@ -232,13 +232,30 @@ class MemberService
      */
     public static function listGroupMembers( int $post_id, bool $is_leader = false )
     {
-        return self::$wpdb->get_results(
+        $members = self::$wpdb->get_results(
             self::$wpdb->prepare(
                 "SELECT * FROM " . self::$table_name . " WHERE post_id = %d AND is_leader = %d ORDER BY name ASC",
                 $post_id,
                 $is_leader ? 1 : 0
             )
         );
+
+        if ( !empty( $members ) ) {
+            $image_size = get_option( 'myclub_groups_images_size', 'medium' );
+
+            foreach ( $members as $member ) {
+                if ( empty( $member->image_id ) ) {
+                    continue;
+                }
+
+                $image_url = wp_get_attachment_image_url( (int) $member->image_id, $image_size );
+                if ( $image_url ) {
+                    $member->image_url = $image_url;
+                }
+            }
+        }
+
+        return $members;
     }
 
     static function listGroupMemberIds( int $post_id, bool $is_leader = false ): array

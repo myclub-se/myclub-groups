@@ -12,14 +12,14 @@ if ( !empty( $attributes ) ) {
 if ( empty ( $post_id ) || $post_id == 0 ) {
     echo esc_html__( 'No group page found. Invalid post_id or group_id.', 'myclub-groups' );
 } else {
-    $leader_title = get_option( 'myclub_groups_leaders_title' );
-    $leaders = MemberService::listGroupMembers( $post_id, true );
+    $myclub_groups_leader_title = get_option( 'myclub_groups_leaders_title' );
+    $myclub_groups_leaders = MemberService::listGroupMembers( $post_id, true );
 
-    if ( !empty( $leaders ) ):
+    if ( !empty( $myclub_groups_leaders ) ):
         ?>
         <div class="myclub-groups-leaders-list" id="leaders">
             <div class="myclub-groups-leaders-container">
-                <h3 class="myclub-groups-header"><?php echo esc_attr( $leader_title ); ?></h3>
+                <h3 class="myclub-groups-header"><?php echo esc_attr( $myclub_groups_leader_title ); ?></h3>
 
                 <?php
 
@@ -35,7 +35,7 @@ if ( empty ( $post_id ) || $post_id == 0 ) {
                 <div class="leaders-list"
                      data-labels="<?php echo esc_attr( wp_json_encode( $labels, JSON_UNESCAPED_UNICODE ) ); ?>">
                     <?php
-                    foreach ( $leaders as $key => $leader ) {
+                    foreach ( $myclub_groups_leaders as $key => $leader ) {
                         $leader->dynamic_fields = json_decode( $leader->dynamic_fields );
                         $leader->name = str_replace( 'u0022', '\"', $leader->name );
                         if ( isset ( $leader->role ) ) {
@@ -45,9 +45,7 @@ if ( empty ( $post_id ) || $post_id == 0 ) {
                         <div class="leader"
                              data-leader="<?php echo esc_attr( wp_json_encode( $leader, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT ) ); ?>">
                             <?php
-                            if ( $leader->image_id ) {
-                                $leader->image_url = Utils::changeHostName( $leader->image_url );
-
+                            if ( !empty ( $leader->image_url ) ) {
                                 ?>
                                 <div class="leader-picture">
                                     <img src="<?php echo esc_url( $leader->image_url ); ?>"

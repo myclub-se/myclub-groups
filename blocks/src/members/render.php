@@ -12,14 +12,14 @@ if ( !empty( $attributes ) ) {
 if ( empty ( $post_id ) || $post_id == 0 ) {
     echo esc_html__( 'No group page found. Invalid post_id or group_id.', 'myclub-groups' );
 } else {
-    $member_title = get_option( 'myclub_groups_members_title' );
-    $members = MemberService::listGroupMembers( $post_id );
+    $myclub_groups_member_title = get_option( 'myclub_groups_members_title' );
+    $myclub_groups_members = MemberService::listGroupMembers( $post_id );
 
-    if ( !empty( $members ) ):
+    if ( !empty( $myclub_groups_members ) ):
         ?>
         <div class="myclub-groups-members-list" id="members">
             <div class="myclub-groups-members-container">
-                <h3 class="myclub-groups-header"><?php echo esc_attr( $member_title ) ?></h3>
+                <h3 class="myclub-groups-header"><?php echo esc_attr( $myclub_groups_member_title ) ?></h3>
 
                 <?php
 
@@ -34,7 +34,7 @@ if ( empty ( $post_id ) || $post_id == 0 ) {
                 <div class="members-list"
                      data-labels="<?php echo esc_attr( wp_json_encode( $labels, JSON_UNESCAPED_UNICODE ) ); ?>">
                     <?php
-                    foreach ( $members as $key => $member ) {
+                    foreach ( $myclub_groups_members as $key => $member ) {
                         $member->dynamic_fields = json_decode( $member->dynamic_fields );
                         $member->name = str_replace( 'u0022', '\"', $member->name );
                         if ( isset ( $member->role ) ) {
@@ -44,9 +44,7 @@ if ( empty ( $post_id ) || $post_id == 0 ) {
                         <div class="member"
                              data-member="<?php echo esc_attr( wp_json_encode( $member, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT ) ); ?>">
                             <?php
-                            if ( $member->image_id ) {
-                                $member->image_url = Utils::changeHostName( $member->image_url );
-
+                            if ( !empty( $member->image_url ) ) {
                                 ?>
                                 <div class="member-picture">
                                     <img src="<?php echo esc_url( $member->image_url ); ?>"

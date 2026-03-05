@@ -277,6 +277,13 @@ class Admin extends Base
                 ],
                 'default'           => ''
         ] );
+        register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_images_size', [
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeImagesSize'
+                ],
+                'default'           => 'medium'
+        ] );
         register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_page_calendar', [
                 'sanitize_callback' => [
                         $this,
@@ -483,6 +490,7 @@ class Admin extends Base
                 $this,
                 'renderDeleteUnusedNews'
         ], 'myclub_groups_settings_tab1', 'myclub_groups_main', [ 'label_for' => 'myclub_groups_delete_unused_news' ] );
+
         add_settings_field( 'myclub_groups_calendar_title', __( 'Title for calendar field', 'myclub-groups' ), [
                 $this,
                 'renderCalendarTitle'
@@ -511,12 +519,17 @@ class Admin extends Base
                 $this,
                 'renderClubNewsTitle'
         ], 'myclub_groups_settings_tab2', 'myclub_groups_title_settings', [ 'label_for' => 'myclub_groups_club_news_title' ] );
+
         if ( wp_is_block_theme() ) {
             add_settings_field( 'myclub_groups_page_template', __( 'Template for group pages', 'myclub-groups' ), [
                     $this,
                     'renderPageTemplate'
             ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_template' ] );
         }
+        add_settings_field( 'myclub_groups_images_size', __( 'Image size for pictures', 'myclub-groups' ), [
+                $this,
+                'renderImagesSize'
+        ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_images_size' ] );
         add_settings_field( 'myclub_groups_page_title', __( 'Show group title', 'myclub-groups' ), [
                 $this,
                 'renderPageTitle'
@@ -1400,6 +1413,29 @@ class Admin extends Base
     }
 
     /**
+     * Renders a dropdown selection field for available image sizes.
+     *
+     * @param array $args An associative array of arguments, including the 'label_for' key used for the select field's ID.
+     * @return void
+     *
+     * @since 2.4.0
+     */
+    public function renderImagesSize( array $args )
+    {
+        $sizes = get_intermediate_image_sizes();
+        $options = array ();
+        foreach ( $sizes as $size ) {
+            $options[ $size ] = $size;
+        }
+        echo '<select id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_images_size">';
+        foreach ( $options as $value => $name ) {
+            $selected = selected( get_option( 'myclub_groups_images_size' ), $value, false );
+            echo '<option value="' . esc_attr( $value ) . '"' . $selected . '>' . esc_attr( $name ) . '</option>';
+        }
+        echo '</select>';
+    }
+
+    /**
      * Renders the input field for the group leaders title setting in the admin page.
      *
      * @param array $args The arguments for rendering the input field.
@@ -1990,6 +2026,28 @@ class Admin extends Base
         }
 
         return !empty( $input ) ? sanitize_text_field( $input ) : '';
+    }
+
+    /**
+     * Sanitizes the input for the images size option.
+     *
+     * @param mixed $input The input to be sanitized.
+     *
+     * @return string The sanitized input. If the input does not exist in the list of available sizes, an error message is shown.
+     *
+     * @since 2.4.0
+     */
+    public function sanitizeImagesSize( $input ): string
+    {
+        $sizes = get_intermediate_image_sizes();
+        $input = sanitize_text_field( $input );
+
+        if ( !in_array( $input, $sizes ) ) {
+            add_settings_error('myclub_groups_images_size', esc_attr( 'settings_updated' ), __( 'The selected image size was not found.', 'myclub-groups' ) );
+            $input = 'medium';
+        }
+
+        return !empty( $input ) ? sanitize_text_field( $input ) : 'medium';
     }
 
     /**

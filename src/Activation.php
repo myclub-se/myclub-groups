@@ -204,6 +204,11 @@ class Activation
                 'name'     => 'myclub_groups_club_calendar_show_week_numbers',
                 'value'    => '1',
                 'autoload' => 'no'
+            ],
+            [
+                'name'     => 'myclub_groups_images_size',
+                'value'    => 'medium',
+                'autoload' => 'no'
             ]
         ];
     }
