@@ -17,7 +17,14 @@ $news_title = get_option( 'myclub_groups_club_news_title' ) ?: __( 'News', 'mycl
                 'post_status' => 'publish',
                 'orderby'     => 'date',
                 'order'       => 'DESC',
-                'numberposts' => 3
+                'numberposts' => 3,
+                'meta_query'  => array (
+                        array (
+                                'key'     => 'myclub_show_on_club_news',
+                                'value'   => '1',
+                                'compare' => '=',
+                        ),
+                ),
         );
 
         $posts = get_posts( $args );
