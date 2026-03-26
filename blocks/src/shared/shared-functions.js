@@ -79,29 +79,29 @@ export function addModalFunction( type ) {
 }
 
 export function addShowMoreListener( type ) {
-    const element = document.getElementsByClassName( `${type}-show-more` )[0];
-    if (element) {
+    const elements = document.getElementsByClassName( `${type}-show-more` );
+    Array.from( elements ).forEach( ( element ) => {
         element.addEventListener('click', function() {
-            const list = document.getElementsByClassName(`${type}s-list`)[0];
+            const list = element.closest( `.${ type }s-list` );
             list.getElementsByClassName( 'extended-list' )[0].classList.remove('hidden');
             element.classList.add('hidden');
-            document.getElementsByClassName( `${type}-show-less` )[0].classList.remove('hidden');
+            list.getElementsByClassName( `${type}-show-less` )[0].classList.remove('hidden');
             setElementHeight( type );
         });
-    }
+    });
 }
 
 export function addShowLessListener( type ) {
-    const element = document.getElementsByClassName( `${type}-show-less` )[0];
-    if (element) {
+    const elements = document.getElementsByClassName( `${type}-show-less` );
+    Array.from( elements ).forEach( ( element ) => {
         element.addEventListener('click', function() {
-            const list = document.getElementsByClassName(`${type}s-list`)[0];
+            const list = element.closest( `.${ type }s-list` );
             list.getElementsByClassName( 'extended-list' )[0].classList.add('hidden');
             element.classList.add('hidden');
-            document.getElementsByClassName( `${type}-show-more` )[0].classList.remove('hidden');
+            list.getElementsByClassName( `${type}-show-more` )[0].classList.remove('hidden');
             setElementHeight( type );
         });
-    }
+    });
 }
 
 export function setElementHeight ( className ) {

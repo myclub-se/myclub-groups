@@ -178,7 +178,6 @@ function renderDateTimeLabel( string $field_name ): void
         <?php if ( in_array( $myclub_groups_active_tab, $myclub_groups_valid_action_tabs ) ) { ?>
             <div>
                 <?php if ( $myclub_groups_active_tab === 'tab1' ) { ?>
-                    <h2><?php esc_html_e( 'Synchronization information', 'myclub-groups' ) ?></h2>
                     <table class="form-table" role="presentation">
                         <tbody>
                         <tr>
