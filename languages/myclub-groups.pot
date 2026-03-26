@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MyClub Groups 2.3.2\n"
+"Project-Id-Version: MyClub Groups 2.4.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/myclub-groups\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-03-05T18:55:36+00:00\n"
+"POT-Creation-Date: 2026-03-26T10:37:05+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: myclub-groups\n"
@@ -201,10 +201,8 @@ msgid "Week"
 msgstr ""
 
 #: blocks/build/club-news/render.php:5
-#: blocks/build/club-news/render.php:60
 #: blocks/build/news/render.php:8
 #: blocks/src/club-news/render.php:5
-#: blocks/src/club-news/render.php:60
 #: blocks/src/news/render.php:8
 #: src/Activation.php:88
 #: src/Services/Admin.php:264
@@ -213,10 +211,18 @@ msgstr ""
 #: src/Services/Admin.php:1535
 #: src/Services/Admin.php:1645
 #: src/Services/Admin.php:1721
-#: src/Services/NewsService.php:84
-#: src/Services/NewsService.php:87
+#: src/Services/NewsService.php:85
+#: src/Services/NewsService.php:88
 #: templates/admin/admin_settings.php:133
 msgid "News"
+msgstr ""
+
+#: blocks/build/club-news/render.php:15
+#: blocks/src/club-news/render.php:15
+#: src/Services/NewsService.php:343
+#: src/Services/NewsService.php:346
+#: templates/admin/admin_settings.php:115
+msgid "Club news"
 msgstr ""
 
 #: blocks/build/club-news/render.php:82
@@ -226,11 +232,11 @@ msgstr ""
 msgid "Show more news"
 msgstr ""
 
-#: blocks/build/club-news/render.php:87
+#: blocks/build/club-news/render.php:88
 #: blocks/build/news/render.php:115
 #: blocks/build/news/render.php:118
 #: blocks/build/news/render.php:121
-#: blocks/src/club-news/render.php:87
+#: blocks/src/club-news/render.php:88
 #: blocks/src/news/render.php:115
 #: blocks/src/news/render.php:118
 #: blocks/src/news/render.php:121
@@ -238,20 +244,20 @@ msgid "No news found"
 msgstr ""
 
 #: blocks/build/coming-games/render.php:59
-#: blocks/build/leaders/render.php:78
-#: blocks/build/members/render.php:76
+#: blocks/build/leaders/render.php:76
+#: blocks/build/members/render.php:74
 #: blocks/src/coming-games/render.php:59
-#: blocks/src/leaders/render.php:79
-#: blocks/src/members/render.php:76
+#: blocks/src/leaders/render.php:76
+#: blocks/src/members/render.php:74
 msgid "Show more"
 msgstr ""
 
 #: blocks/build/coming-games/render.php:60
-#: blocks/build/leaders/render.php:79
-#: blocks/build/members/render.php:77
+#: blocks/build/leaders/render.php:77
+#: blocks/build/members/render.php:75
 #: blocks/src/coming-games/render.php:60
-#: blocks/src/leaders/render.php:80
-#: blocks/src/members/render.php:77
+#: blocks/src/leaders/render.php:77
+#: blocks/src/members/render.php:75
 msgid "Show less"
 msgstr ""
 
@@ -262,8 +268,8 @@ msgstr ""
 
 #: blocks/build/leaders/render.php:28
 #: blocks/build/members/render.php:28
-#: blocks/src/leaders/render.php:29
-#: blocks/src/members/render.php:29
+#: blocks/src/leaders/render.php:28
+#: blocks/src/members/render.php:28
 #: templates/admin/admin_myclub_groups_members.php:19
 #: blocks/build/leaders/index.js:1
 #: blocks/build/members/index.js:1
@@ -275,8 +281,8 @@ msgstr ""
 #: blocks/build/leaders/render.php:29
 #: blocks/build/members/render.php:29
 #: blocks/build/title/render.php:57
-#: blocks/src/leaders/render.php:30
-#: blocks/src/members/render.php:30
+#: blocks/src/leaders/render.php:29
+#: blocks/src/members/render.php:29
 #: blocks/src/title/render.php:57
 #: templates/admin/admin_myclub_groups_members.php:17
 #: blocks/build/leaders/index.js:1
@@ -290,8 +296,8 @@ msgstr ""
 
 #: blocks/build/leaders/render.php:30
 #: blocks/build/members/render.php:30
-#: blocks/src/leaders/render.php:31
-#: blocks/src/members/render.php:31
+#: blocks/src/leaders/render.php:30
+#: blocks/src/members/render.php:30
 #: templates/admin/admin_myclub_groups_members.php:16
 #: blocks/build/leaders/index.js:1
 #: blocks/build/members/index.js:1
@@ -302,8 +308,8 @@ msgstr ""
 
 #: blocks/build/leaders/render.php:31
 #: blocks/build/members/render.php:31
-#: blocks/src/leaders/render.php:32
-#: blocks/src/members/render.php:32
+#: blocks/src/leaders/render.php:31
+#: blocks/src/members/render.php:31
 #: templates/admin/admin_myclub_groups_members.php:18
 #: templates/admin/admin_myclub_groups_metabox_tabs.php:70
 #: blocks/build/leaders/index.js:1
@@ -368,7 +374,7 @@ msgstr ""
 
 #: src/Services/Admin.php:148
 #: src/Services/Admin.php:152
-#: src/Services/NewsService.php:179
+#: src/Services/NewsService.php:180
 #: src/Services/Taxonomy.php:186
 msgid "Group news"
 msgstr ""
@@ -382,7 +388,6 @@ msgid "Here are the general settings available from the MyClub Groups plugin. Th
 msgstr ""
 
 #: src/Services/Admin.php:438
-#: templates/admin/admin_settings.php:181
 msgid "Synchronization information"
 msgstr ""
 
@@ -1020,10 +1025,6 @@ msgstr ""
 msgid "The club calendar block will display the club calendar. This block doesn't require any attributes."
 msgstr ""
 
-#: templates/admin/admin_settings.php:115
-msgid "Club news"
-msgstr ""
-
 #: templates/admin/admin_settings.php:116
 msgid "The club news block will display all club news. This block doesn't require any attributes."
 msgstr ""
@@ -1108,27 +1109,27 @@ msgstr ""
 msgid "The title shortcode will display the group page title. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the title from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
 msgstr ""
 
-#: templates/admin/admin_settings.php:185
+#: templates/admin/admin_settings.php:184
 msgid "News last synchronized"
 msgstr ""
 
-#: templates/admin/admin_settings.php:191
+#: templates/admin/admin_settings.php:190
 msgid "Groups last synchronized"
 msgstr ""
 
-#: templates/admin/admin_settings.php:197
+#: templates/admin/admin_settings.php:196
 msgid "Club calendar last synchronized"
 msgstr ""
 
-#: templates/admin/admin_settings.php:206
+#: templates/admin/admin_settings.php:205
 msgid "Reload news"
 msgstr ""
 
-#: templates/admin/admin_settings.php:209
+#: templates/admin/admin_settings.php:208
 msgid "Reload groups"
 msgstr ""
 
-#: templates/admin/admin_settings.php:212
+#: templates/admin/admin_settings.php:211
 msgid "Resync club calendar"
 msgstr ""
 

@@ -12,17 +12,19 @@ $news_title = get_option( 'myclub_groups_club_news_title' ) ?: __( 'News', 'mycl
 
         <?php
 
+        $club_news_category = get_term_by( 'name', __( 'Club news', 'myclub-groups' ), 'category' );
+
         $args = array (
                 'post_type'   => 'post',
                 'post_status' => 'publish',
                 'orderby'     => 'date',
                 'order'       => 'DESC',
                 'numberposts' => 3,
-                'meta_query'  => array (
+                'tax_query'   => array (
                         array (
-                                'key'     => 'myclub_show_on_club_news',
-                                'value'   => '1',
-                                'compare' => '=',
+                                'taxonomy' => 'category',
+                                'field'    => 'term_id',
+                                'terms'    => $club_news_category ? $club_news_category->term_id : 0,
                         ),
                 ),
         );
@@ -63,30 +65,22 @@ $news_title = get_option( 'myclub_groups_club_news_title' ) ?: __( 'News', 'mycl
                 </div>
                 <?php
             }
-            $category_link = null;
-            $category = get_term_by( 'name', __( 'News', 'myclub-groups' ), 'category' );
+            if ( $club_news_category ) {
+                $category_link = get_category_link( $club_news_category->term_id );
 
-            if ( !is_wp_error( $category ) && isset( $category ) ) {
-                $category_id = $category->term_id;
-                $category_link = get_category_link( $category->term_id );
+                if ( !is_wp_error( $category_link ) ) {
+                    $args = array (
+                            'category__in' => array ( $club_news_category->term_id ),
+                            'post_type'    => 'post',
+                            'post_status'  => 'publish',
+                    );
 
-                if ( is_wp_error( $category_link ) ) {
-                    $category_link = null;
-                }
-            }
+                    $query = new WP_Query( $args );
+                    $total_posts = $query->found_posts;
 
-            if ( !empty( $category_link ) && !empty( $category_id ) ) {
-                $args = array (
-                        'category__in' => array ( $category_id ),
-                        'post_type'    => 'post',
-                        'post_status'  => 'publish',
-                );
-
-                $query = new WP_Query( $args );
-                $total_posts = $query->found_posts;
-
-                if ( $total_posts > 3 ) {
-                    echo '<div class="myclub-more-club-news"><a href="' . esc_url( $category_link ) . '">' . esc_attr__( 'Show more news', 'myclub-groups' ) . '</a></div>';
+                    if ( $total_posts > 3 ) {
+                        echo '<div class="myclub-more-club-news"><a href="' . esc_url( $category_link ) . '">' . esc_attr__( 'Show more news', 'myclub-groups' ) . '</a></div>';
+                    }
                 }
             }
             echo '</div>';

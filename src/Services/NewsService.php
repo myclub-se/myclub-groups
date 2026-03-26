@@ -13,10 +13,11 @@ use MyClub\MyClubGroups\Utils;
 use WP_Query;
 
 /**
- * Class NewsService
+ * Class responsible for managing news-related functionalities.
  *
- * This class is responsible for refreshing news items and adding them to WordPress posts.
- * It extends the Groups class.
+ * Extends the `Groups` class to provide additional features such as adding default categories,
+ * assigning team-specific news categories, deleting all news posts with a specific meta field,
+ * and loading news from an external API.
  */
 class NewsService extends Groups
 {
@@ -271,6 +272,7 @@ class NewsService extends Groups
         unset( $groups );
     }
 
+
     /**
      * Removes unused news posts that are not associated with any remote group or global news IDs.
      *
@@ -327,18 +329,29 @@ class NewsService extends Groups
     }
 
     /**
-     * Updates the meta field 'show_on_club_news' for posts based on 'myclub_news_id'.
+     * Updates posts to include or remove the 'Club news' category based on specific meta field filters.
      *
-     * This method synchronizes the 'show_on_club_news' meta field for posts. It first retrieves an array of remote
-     * news IDs and removes the 'show_on_club_news' meta field from posts whose 'myclub_news_id' is not in this array.
-     * It then adds or updates the 'show_on_club_news' meta field with a value of '1' for posts whose 'myclub_news_id'
-     * matches one of the remote news IDs.
+     * This method ensures that posts with a 'myclub_news_id' meta field matching remote news IDs are assigned
+     * to the 'Club news' category. If the 'Club news' category does not exist, it is created. Posts with a
+     * 'myclub_news_id' meta field that do not match the remote news IDs have the 'Club news' category removed.
      *
      * @return void
      * @since 2.4.2
      */
-    public function updateClubNewsMetaInput(): void
+    public function updateClubNewsCategory(): void
     {
+        $category = get_term_by( 'name', __( 'Club news', 'myclub-groups' ), 'category' );
+
+        if ( $category === false ) {
+            $category_id = wp_insert_term( __( 'Club news', 'myclub-groups' ), 'category' );
+            if ( $category_id == 0 || is_wp_error( $category_id ) ) {
+                error_log( 'Unable to add club category' );
+                return;
+            }
+        } else {
+            $category_id = $category->term_id;
+        }
+
         $remote_news_ids = $this->getNewsIds( null );
 
         $remove_args = array (
@@ -358,7 +371,7 @@ class NewsService extends Groups
 
         if ( $remove_query->have_posts() ) {
             foreach ( $remove_query->posts as $post_id ) {
-                delete_post_meta( $post_id, 'myclub_show_on_club_news' );
+                wp_remove_object_terms( $post_id, $category_id, 'category' );
             }
         }
 
@@ -379,7 +392,7 @@ class NewsService extends Groups
 
         if ( $add_query->have_posts() ) {
             foreach ( $add_query->posts as $post_id ) {
-                update_post_meta( $post_id, 'myclub_show_on_club_news', '1' );
+                wp_set_object_terms( $post_id, $category_id, 'category', true );
             }
         }
     }

@@ -54,7 +54,7 @@ class RefreshNewsTask extends Background_Process
 
         $service = new NewsService();
         $service->removeUnusedNewsItems();
-        $service->updateClubNewsMetaInput();
+        $service->updateClubNewsCategory();
 
         Utils::updateOrCreateOption( 'myclub_groups_last_news_sync', gmdate( "c" ), 'no' );
     }
