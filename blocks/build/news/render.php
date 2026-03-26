@@ -70,22 +70,16 @@ $news_title = get_option( 'myclub_groups_news_title' ) ?: __( 'News', 'myclub-gr
                         <a href="<?php echo esc_attr( get_permalink( $post->ID ) ); ?>"><?php echo esc_html( $post->post_title ); ?></a>
                     </h4>
 
-                    <div class="myclub-news-image-holder">
-                        <?php if ( $image_url ) { ?>
-                            <div class="myclub-news-image">
-                                <img src="<?php echo esc_url( $image_url ); ?>"
-                                     alt="<?php echo esc_attr( $post->post_title ); ?>"/>
-                            </div>
-                        <?php } else { ?>
-                            <div class="myclub-news-image myclub-news-image--placeholder" aria-hidden="true">
-                                <span class="myclub-news-image-placeholder-text"><?php echo esc_html__( 'No image', 'myclub-groups' ); ?></span>
-                            </div>
-                        <?php } ?>
+                    <?php if ( $image_url ) { ?>
+                        <div class="myclub-news-image">
+                            <img src="<?php echo esc_url( $image_url ); ?>"
+                                 alt="<?php echo esc_attr( $post->post_title ); ?>"/>
+                        </div>
+                    <?php } ?>
 
-                        <?php if ( $image_caption ) { ?>
-                            <div class="myclub-news-image-caption"><?php echo esc_html( $image_caption ); ?></div>
-                        <?php } ?>
-                    </div>
+                    <?php if ( $image_caption ) { ?>
+                        <div class="myclub-news-image-caption"><?php echo esc_html( $image_caption ); ?></div>
+                    <?php } ?>
 
                     <?php
                     $content = $post->post_excerpt ?: $post->post_content;

@@ -4,7 +4,7 @@ Donate link: https://www.myclub.se
 Tags: groups, members, administration
 Requires at least: 6.4
 Tested up to: 6.9
-Stable tag: 2.4.5
+Stable tag: 2.4.6
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -82,7 +82,10 @@ The plugin will try to clear cache on the following cache plugins for MyClub gro
 For unsupported cache systems, please contact us to request integration.
 
 == Changelog ==
-= 2.4.4 =
+= 2.4.6 =
+* Updated CSS for club news and group news.
+
+= 2.4.5 =
 * Updated CSS for club news and group news.
 
 = 2.4.4 =

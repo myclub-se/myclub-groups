@@ -21,10 +21,6 @@
         flex: 0 1 calc(100% - 1rem);
         padding: 0.5rem;
 
-        .myclub-news-image-holder {
-          margin-bottom: 0.75rem;
-        }
-
         .myclub-news-image {
           aspect-ratio: 16 / 9;
           overflow: hidden;
@@ -39,14 +35,6 @@
             object-fit: cover;
             display: block;
           }
-        }
-
-        .myclub-news-image--placeholder {
-          color: #888;
-        }
-
-        .myclub-news-image-placeholder-text {
-          font-size: 0.9rem;
         }
 
         .myclub-news-image-caption {
