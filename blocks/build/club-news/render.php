@@ -44,15 +44,25 @@ $news_title = get_option( 'myclub_groups_club_news_title' ) ?: __( 'News', 'mycl
                     <h4>
                         <a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>"><?php echo esc_html( $post->post_title ); ?></a>
                     </h4>
-                    <?php if ( $image_url ) { ?>
-                        <div class="myclub-club-news-image">
-                            <img src="<?php echo esc_url( $image_url ); ?>"
-                                 alt="<?php echo esc_html( $post->post_title ); ?>"/>
-                            <?php if ( $image_caption ) { ?>
-                                <div class="myclub-club-news-image-caption"><?php echo esc_html( $image_caption ); ?></div>
-                            <?php } ?>
-                        </div>
-                    <?php }
+
+                    <div class="myclub-club-news-image-holder">
+                        <?php if ( $image_url ) { ?>
+                            <div class="myclub-club-news-image">
+                                <img src="<?php echo esc_url( $image_url ); ?>"
+                                     alt="<?php echo esc_attr( $post->post_title ); ?>"/>
+                            </div>
+                        <?php } else { ?>
+                            <div class="myclub-club-news-image myclub-club-news-image--placeholder" aria-hidden="true">
+                                <span class="myclub-club-news-image-placeholder-text"><?php echo esc_html__( 'No image', 'myclub-groups' ); ?></span>
+                            </div>
+                        <?php } ?>
+
+                        <?php if ( $image_caption ) { ?>
+                            <div class="myclub-club-news-image-caption"><?php echo esc_html( $image_caption ); ?></div>
+                        <?php } ?>
+                    </div>
+
+                    <?php
                     $content = $post->post_excerpt ?: $post->post_content;
 
                     // Render Gutenberg blocks if any, and shortcodes
