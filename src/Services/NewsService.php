@@ -322,7 +322,7 @@ class NewsService extends Groups
      */
     public function removeUnusedNewsItems(): void
     {
-        if ( get_option( 'myclub_groups_remove_unused_news_items' ) !== '1' ) {
+        if ( get_option( 'myclub_groups_delete_unused_news' ) !== '1' ) {
             $group_ids = $this->getAllGroupIds();
             $remote_news_ids = [];
 

@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MyClub Groups 2.4.6\n"
+"Project-Id-Version: MyClub Groups 2.4.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/myclub-groups\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-03-26T16:31:52+00:00\n"
+"POT-Creation-Date: 2026-03-28T15:55:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: myclub-groups\n"
@@ -205,6 +205,7 @@ msgstr ""
 #: blocks/src/club-news/render.php:5
 #: blocks/src/news/render.php:8
 #: src/Activation.php:88
+#: src/Activation.php:93
 #: src/Services/Admin.php:264
 #: src/Services/Admin.php:271
 #: src/Services/Admin.php:1390
@@ -219,34 +220,27 @@ msgstr ""
 
 #: blocks/build/club-news/render.php:15
 #: blocks/src/club-news/render.php:15
-#: src/Services/NewsService.php:343
-#: src/Services/NewsService.php:346
+#: src/Services/NewsService.php:382
+#: src/Services/NewsService.php:385
 #: templates/admin/admin_settings.php:115
 msgid "Club news"
 msgstr ""
 
-#: blocks/build/club-news/render.php:56
-#: blocks/build/news/render.php:81
-#: blocks/src/club-news/render.php:56
-#: blocks/src/news/render.php:81
-msgid "No image"
-msgstr ""
-
-#: blocks/build/club-news/render.php:92
-#: blocks/build/news/render.php:121
-#: blocks/src/club-news/render.php:92
-#: blocks/src/news/render.php:121
+#: blocks/build/club-news/render.php:86
+#: blocks/build/news/render.php:115
+#: blocks/src/club-news/render.php:86
+#: blocks/src/news/render.php:115
 msgid "Show more news"
 msgstr ""
 
-#: blocks/build/club-news/render.php:98
+#: blocks/build/club-news/render.php:92
+#: blocks/build/news/render.php:119
+#: blocks/build/news/render.php:122
 #: blocks/build/news/render.php:125
-#: blocks/build/news/render.php:128
-#: blocks/build/news/render.php:131
-#: blocks/src/club-news/render.php:98
+#: blocks/src/club-news/render.php:92
+#: blocks/src/news/render.php:119
+#: blocks/src/news/render.php:122
 #: blocks/src/news/render.php:125
-#: blocks/src/news/render.php:128
-#: blocks/src/news/render.php:131
 msgid "No news found"
 msgstr ""
 
@@ -381,7 +375,7 @@ msgstr ""
 
 #: src/Services/Admin.php:148
 #: src/Services/Admin.php:152
-#: src/Services/NewsService.php:180
+#: src/Services/NewsService.php:215
 #: src/Services/Taxonomy.php:186
 msgid "Group news"
 msgstr ""
@@ -852,7 +846,7 @@ msgstr ""
 #: blocks/build/navigation/index.js:1
 #: blocks/build/news/index.js:1
 #: blocks/build/title/index.js:1
-#: blocks/src/calendar/edit.js:174
+#: blocks/src/calendar/edit.js:185
 #: blocks/src/coming-games/edit.js:34
 #: blocks/src/leaders/edit.js:122
 #: blocks/src/members/edit.js:119
@@ -1154,7 +1148,7 @@ msgstr ""
 #: blocks/build/navigation/index.js:1
 #: blocks/build/news/index.js:1
 #: blocks/build/title/index.js:1
-#: blocks/src/calendar/edit.js:69
+#: blocks/src/calendar/edit.js:84
 #: blocks/src/coming-games/edit.js:19
 #: blocks/src/leaders/edit.js:22
 #: blocks/src/members/edit.js:22
@@ -1171,7 +1165,7 @@ msgstr ""
 #: blocks/build/navigation/index.js:1
 #: blocks/build/news/index.js:1
 #: blocks/build/title/index.js:1
-#: blocks/src/calendar/edit.js:171
+#: blocks/src/calendar/edit.js:182
 #: blocks/src/coming-games/edit.js:30
 #: blocks/src/leaders/edit.js:118
 #: blocks/src/members/edit.js:115
@@ -1182,7 +1176,9 @@ msgid "Content settings"
 msgstr ""
 
 #: blocks/build/calendar/index.js:1
-#: blocks/src/calendar/edit.js:191
+#: blocks/build/club-calendar/index.js:1
+#: blocks/src/calendar/edit.js:202
+#: blocks/src/club-calendar/edit.js:148
 msgid "Loading..."
 msgstr ""
 

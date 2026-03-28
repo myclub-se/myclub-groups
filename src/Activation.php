@@ -89,6 +89,11 @@ class Activation
                 'autoload' => 'yes',
             ],
             [
+                'name'     => 'myclub_groups_club_news_title',
+                'value'    => __( 'News', 'myclub-groups' ),
+                'autoload' => 'yes',
+            ],
+            [
                 'name'     => 'myclub_groups_page_template',
                 'value'    => '',
                 'autoload' => 'no',
@@ -105,6 +110,11 @@ class Activation
             ],
             [
                 'name'     => 'myclub_groups_page_leaders',
+                'value'    => '1',
+                'autoload' => 'no',
+            ],
+            [
+                'name'     => 'myclub_groups_page_members',
                 'value'    => '1',
                 'autoload' => 'no',
             ],
