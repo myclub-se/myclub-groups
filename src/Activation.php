@@ -258,6 +258,10 @@ class Activation
      */
     public function uninstall()
     {
+        // Initialize services that use $wpdb before any delete operations
+        ActivityService::init();
+        MemberService::init();
+
         // Delete all plugin options
         foreach ( $this->options as $option ) {
             delete_option( $option[ 'name' ] );
@@ -272,9 +276,7 @@ class Activation
         $groupsService = new GroupService();
         $groupsService->deleteAllGroups();
 
-        ActivityService::init();
         ActivityService::deleteActivityTables();
-        MemberService::init();
         MemberService::deleteMemberTable();
     }
 

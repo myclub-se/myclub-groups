@@ -152,26 +152,61 @@ class NewsService extends Groups
      */
     public function deleteAllNews()
     {
-        $args = array (
+        // Delete group-specific news (posts that have myclub_groups_id)
+        $group_news_args = array (
             'post_type'      => 'post',
             'meta_query'     => array (
                 array (
                     'key'     => 'myclub_news_id',
                     'compare' => 'EXISTS',
                 ),
+                array (
+                    'key'     => 'myclub_groups_id',
+                    'compare' => 'EXISTS',
+                ),
             ),
             'posts_per_page' => -1,
         );
 
-        $query = new WP_Query( $args );
+        $query = new WP_Query( $group_news_args );
 
         if ( $query->have_posts() ) {
             while ( $query->have_posts() ) {
                 $query->next_post();
+                Utils::deletePost( $query->post->ID, true );
+            }
+        }
 
-                $post_id = $query->post->ID;
+        // Delete club news (no group or section ID) only if the sections plugin is not installed
+        $sections_plugin_installed = file_exists( WP_PLUGIN_DIR . '/myclub-sections/myclub-sections.php' );
 
-                Utils::deletePost( $post_id, true );
+        if ( !$sections_plugin_installed ) {
+            $club_news_args = array (
+                'post_type'      => 'post',
+                'meta_query'     => array (
+                    array (
+                        'key'     => 'myclub_news_id',
+                        'compare' => 'EXISTS',
+                    ),
+                    array (
+                        'key'     => 'myclub_groups_id',
+                        'compare' => 'NOT EXISTS',
+                    ),
+                    array (
+                        'key'     => 'myclub_sections_id',
+                        'compare' => 'NOT EXISTS',
+                    ),
+                ),
+                'posts_per_page' => -1,
+            );
+
+            $query = new WP_Query( $club_news_args );
+
+            if ( $query->have_posts() ) {
+                while ( $query->have_posts() ) {
+                    $query->next_post();
+                    Utils::deletePost( $query->post->ID );
+                }
             }
         }
 
@@ -308,6 +343,10 @@ class NewsService extends Groups
                                 'key'     => 'myclub_news_id',
                                 'compare' => 'NOT IN',
                                 'value'   => $remote_news_ids,
+                            ),
+                            array (
+                                'key'     => 'myclub_sections_id',
+                                'compare' => 'NOT EXISTS',
                             ),
                         ),
                         'posts_per_page' => -1,

@@ -4,7 +4,7 @@ Donate link: https://www.myclub.se
 Tags: groups, members, administration
 Requires at least: 6.4
 Tested up to: 6.9
-Stable tag: 2.4.6
+Stable tag: 2.4.7
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -36,7 +36,7 @@ All components are minimally designed to make them easier to customize and fit y
 == Dependencies ==
 
 The plugin has no external plugin dependencies. All requirements are bundled in the plugin itself. However we are using the following opensource library (which is included in the plugin):
-* FullCalendar (v5.11.5), which can be seen [here](https://fullcalendar.io/). All source to the plugin is available [here](https://github.com/fullcalendar/fullcalendar). No data is being sent to the FullCalendar plugin website.
+* FullCalendar (v6.1.20), which can be seen [here](https://fullcalendar.io/). All source to the plugin is available [here](https://github.com/fullcalendar/fullcalendar). No data is being sent to the FullCalendar plugin website.
 
 == Privacy ==
 
@@ -82,6 +82,10 @@ The plugin will try to clear cache on the following cache plugins for MyClub gro
 For unsupported cache systems, please contact us to request integration.
 
 == Changelog ==
+= 2.4.7 =
+* Updated the calendar blocks fullcalendar version.
+* Fixed news handling for synchronization with the sections plugin.
+
 = 2.4.6 =
 * Updated CSS for club news and group news.
 

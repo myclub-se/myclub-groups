@@ -1,5 +1,3 @@
-import { LocaleInput } from '@fullcalendar/core'
-
 export default {
     code: 'sv',
     week: {
