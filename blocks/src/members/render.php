@@ -14,6 +14,7 @@ if ( empty ( $post_id ) || $post_id == 0 ) {
 } else {
     $myclub_groups_member_title = get_option( 'myclub_groups_members_title' );
     $myclub_groups_members = MemberService::listGroupMembers( $post_id );
+    $myclub_groups_image_size = get_option( 'myclub_groups_images_size', 'medium' );
 
     if ( !empty( $myclub_groups_members ) ):
         ?>
@@ -44,11 +45,10 @@ if ( empty ( $post_id ) || $post_id == 0 ) {
                         <div class="member"
                              data-member="<?php echo esc_attr( wp_json_encode( $member, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT ) ); ?>">
                             <?php
-                            if ( !empty( $member->image_url ) ) {
+                            if ( !empty( $member->image_id ) ) {
                                 ?>
                                 <div class="member-picture">
-                                    <img src="<?php echo esc_url( $member->image_url ); ?>"
-                                         alt="<?php echo esc_attr( $member->name ); ?>"/>
+                                    <?php echo wp_kses_post( wp_get_attachment_image( (int) $member->image_id, $myclub_groups_image_size, false, array( 'alt' => $member->name ) ) ); ?>
                                 </div>
                                 <?php
 
@@ -87,8 +87,7 @@ if ( empty ( $post_id ) || $post_id == 0 ) {
                 </div>
             </div>
         </div>
-        </div>
-
+    </div>
     <?php
     endif;
 }

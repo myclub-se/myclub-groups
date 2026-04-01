@@ -4,7 +4,7 @@ Donate link: https://www.myclub.se
 Tags: groups, members, administration
 Requires at least: 6.4
 Tested up to: 6.9
-Stable tag: 2.4.7
+Stable tag: 2.5.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -82,6 +82,9 @@ The plugin will try to clear cache on the following cache plugins for MyClub gro
 For unsupported cache systems, please contact us to request integration.
 
 == Changelog ==
+= 2.5.0 =
+* Updated picture handling in member block, leader block, and news blocks.
+
 = 2.4.7 =
 * Updated the calendar blocks fullcalendar version.
 * Fixed news handling for synchronization with the sections plugin.
@@ -144,7 +147,7 @@ For unsupported cache systems, please contact us to request integration.
 
 = 2.0.0 =
 This version contains some breaking changes, the plugin will however handle this and reload all activities and members.
-The best way to upgrade is just to update the version and allow the plugin to reload news, groups and club calendar.
+The best way to upgrade is just to update the version and allow the plugin to reload news, groups, and club calendar.
 * Rewrote handling of activities and members to accommodate larger clubs.
 * Add new database tables for handling members and activities.
 

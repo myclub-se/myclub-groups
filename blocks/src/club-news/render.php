@@ -37,38 +37,43 @@ $news_title = get_option( 'myclub_groups_club_news_title' ) ?: __( 'News', 'mycl
 
             <?php
             foreach ( $posts as $post ) {
-                $image_url = get_the_post_thumbnail_url( $post->ID, 'thumbnail' );
-                $image_caption = get_the_post_thumbnail_caption( $post->ID );
-                ?>
-                <div class="myclub-club-news-item">
-                    <h4>
-                        <a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>"><?php echo esc_html( $post->post_title ); ?></a>
-                    </h4>
-
-                    <?php if ( $image_url ) { ?>
-                        <div class="myclub-club-news-image">
-                            <img src="<?php echo esc_url( $image_url ); ?>"
-                                 alt="<?php echo esc_attr( $post->post_title ); ?>"/>
-                        </div>
-                    <?php }  ?>
-
-                    <?php if ( $image_caption ) { ?>
-                        <div class="myclub-club-news-image-caption"><?php echo esc_html( $image_caption ); ?></div>
-                    <?php } ?>
-
-                    <?php
-                    $content = $post->post_excerpt ?: $post->post_content;
-
-                    // Render Gutenberg blocks if any, and shortcodes
-                    $content = do_blocks( $content );
-                    $content = do_shortcode( $content );
-
-                    // Output safely
-                    echo wp_kses_post( $content );
+                    $image_html = get_the_post_thumbnail(
+                        $post->ID,
+                        'medium_large',
+                        array(
+                            'alt' => esc_attr( $post->post_title ),
+                        )
+                    );
+                    $image_caption = get_the_post_thumbnail_caption( $post->ID );
                     ?>
-                </div>
-                <?php
-            }
+                    <div class="myclub-news-item">
+                        <h4>
+                            <a href="<?php echo esc_attr( get_permalink( $post->ID ) ); ?>"><?php echo esc_html( $post->post_title ); ?></a>
+                        </h4>
+
+                        <?php if ( $image_html ) { ?>
+                            <div class="myclub-news-image">
+                                <?php echo wp_kses_post( $image_html ); ?>
+                            </div>
+                        <?php } ?>
+
+                        <?php if ( $image_caption ) { ?>
+                            <div class="myclub-news-image-caption"><?php echo esc_html( $image_caption ); ?></div>
+                        <?php } ?>
+
+                        <?php
+                        $content = $post->post_excerpt ?: $post->post_content;
+
+                        // Render Gutenberg blocks if any, and shortcodes
+                        $content = do_blocks( $content );
+                        $content = do_shortcode( $content );
+
+                        // Output safely
+                        echo wp_kses_post( $content );
+                        ?>
+                    </div>
+                    <?php
+                }
             if ( $club_news_category ) {
                 $category_link = get_category_link( $club_news_category->term_id );
 
