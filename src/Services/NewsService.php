@@ -581,12 +581,6 @@ class NewsService extends Groups
             $gmtTime = $time;
         }
 
-        $post_content = $news_item->ingress;
-
-        if ( !empty ( wp_strip_all_tags( $news_item->text ) ) ) {
-            $post_content .= $news_item->text;
-        }
-
         $args = [
             'post_date'     => $time,
             'post_date_gmt' => $gmtTime,
@@ -594,8 +588,8 @@ class NewsService extends Groups
             'post_name'     => sanitize_title( $news_item->title ),
             'post_status'   => 'publish',
             'post_type'     => 'post',
-            'post_excerpt'  => $news_item->ingress,
-            'post_content'  => $post_content,
+            'post_excerpt'  => wp_kses_post( $news_item->ingress ),
+            'post_content'  => wp_kses_post( $news_item->text ),
             'meta_input'    => [
                 'myclub_news_id' => $news_item->id,
             ]
