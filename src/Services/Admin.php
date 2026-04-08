@@ -356,6 +356,13 @@ class Admin extends Base
                         'default',
                 )
         ] );
+        register_setting( 'myclub_groups_settings_tab3', 'myclub_groups_news_ingress_word_length', [
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeNewsIngressWordLength'
+                ],
+                'default'           => '0'
+        ] );
         register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_group_calendar_desktop_views', [
                 'sanitize_callback' => [
                         $this,
@@ -570,6 +577,13 @@ class Admin extends Base
                 $this,
                 'renderShowItemsOrder'
         ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_show_items_order' ] );
+        add_settings_field( 'myclub_groups_news_ingress_word_length', __( 'Number of words shown on news ingress', 'myclub-groups' ), [
+                $this,
+                'renderNewsIngressWordLength'
+        ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [
+                'label_for' => 'myclub_groups_news_ingress_word_length',
+                'help_text' => __( 'Select the number of words that should be shown in the news blocks. 0 means all words will be shown.', 'myclub-groups' )
+        ] );
 
         # region group calendar display settings
 
@@ -1520,6 +1534,23 @@ class Admin extends Base
     }
 
     /**
+     * Renders the input field for setting the word length of the news ingress.
+     *
+     * @param array $args An array of arguments used to render the field, including the label identifier.
+     * @return void
+     * @since 2.6.0
+     */
+    public function renderNewsIngressWordLength( array $args )
+    {
+        $news_ingress_word_length = get_option( 'myclub_groups_news_ingress_word_length' );
+        if ( empty( $news_ingress_word_length ) ) {
+            $news_ingress_word_length = 0;
+        }
+
+        echo '<input type="number" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_news_ingress_word_length" value="' . esc_attr( $news_ingress_word_length ) . '" />';
+    }
+
+    /**
      * Renders the input field for the group news title setting in the admin page.
      *
      * @param array $args The arguments for rendering the input field.
@@ -1942,6 +1973,39 @@ class Admin extends Base
         } else {
             return sanitize_text_field( $input );
         }
+    }
+
+    /**
+     * Sanitizes the input for the news ingress word length setting.
+     *
+     * This method ensures the input is a valid integer and processes it
+     * to remove any potentially harmful or invalid data. It provides
+     * appropriate error messages when the input is empty or invalid.
+     *
+     * @param string $input The raw input value for the news ingress word length.
+     * @return string The sanitized and validated word length value, or the saved option as a fallback if validation fails.
+     * @since 2.6.0
+     */
+    public function sanitizeNewsIngressWordLength( string $input ): string
+    {
+        $input = sanitize_text_field( wp_unslash( $input ) );
+
+        if ( $input === '' ) {
+            add_settings_error( 'myclub_groups_news_ingress_word_length', 'empty-value', __( 'You have to enter word length for the news ingress', 'myclub-groups' ) );
+            return get_option( 'myclub_groups_news_ingress_word_length', '0' );
+        }
+
+        if ( ! ctype_digit( $input ) ) {
+            add_settings_error(
+                    'myclub_groups_news_ingress_word_length',
+                    'invalid-value',
+                    __( 'The news ingress word length must be a valid integer.', 'myclub-groups' )
+            );
+
+            return get_option( 'myclub_groups_news_ingress_word_length', '0' );
+        }
+
+        return $input;
     }
 
     /**

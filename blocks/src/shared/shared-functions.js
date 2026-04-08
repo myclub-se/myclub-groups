@@ -7,9 +7,13 @@ function closeButtonListener() {
     modal.removeEventListener( 'click', closeModalListener );
 }
 
-function closeModalListener() {
+function closeModalListener(event) {
     const modal = document.getElementsByClassName('modal-open')[0];
     const close = modal.getElementsByClassName('close')[0];
+
+    if (event.target !== modal) {
+        return;
+    }
 
     modal.classList.remove('modal-open');
     close.removeEventListener('click', closeButtonListener);
@@ -58,7 +62,6 @@ function showModal ( modalClassName, labels, data ) {
 
     modal.classList.add('modal-open');
     modal.addEventListener( 'click', closeModalListener );
-
     close.addEventListener( 'click', closeButtonListener );
 }
 

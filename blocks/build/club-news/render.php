@@ -2,13 +2,14 @@
 
 if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-$news_title = get_option( 'myclub_groups_club_news_title' ) ?: __( 'News', 'myclub-groups' );
+$myclub_groups_club_news_title = get_option( 'myclub_groups_club_news_title' ) ?: __( 'News', 'myclub-groups' );
+$myclub_groups_ingress_word_length = (int) get_option( 'myclub_groups_news_ingress_word_length' ) ?: 0;
 
 ?>
 
 <div class="myclub-groups-club-news" id="news">
     <div class="myclub-groups-club-news-container">
-        <h3 class="myclub-groups-header"><?php echo esc_html( $news_title ); ?></h3>
+        <h3 class="myclub-groups-header"><?php echo esc_html( $myclub_groups_club_news_title ); ?></h3>
 
         <?php
 
@@ -60,7 +61,7 @@ $news_title = get_option( 'myclub_groups_club_news_title' ) ?: __( 'News', 'mycl
                         <?php if ( $myclub_groups_image_caption ) { ?>
                             <div class="myclub-news-image-caption"><?php echo esc_html( $myclub_groups_image_caption ); ?></div>
                         <?php } ?>
-
+                        <div class="myclub-news-ingress">
                         <?php
                         $content = $post->post_excerpt ?: $post->post_content;
 
@@ -68,9 +69,14 @@ $news_title = get_option( 'myclub_groups_club_news_title' ) ?: __( 'News', 'mycl
                         $content = do_blocks( $content );
                         $content = do_shortcode( $content );
 
+                        if ( $myclub_groups_ingress_word_length > 0 ) {
+                            $content = wp_trim_words( wp_strip_all_tags( $content ), $myclub_groups_ingress_word_length, '...' );
+                        }
+
                         // Output safely
                         echo wp_kses_post( $content );
                         ?>
+                        </div>
                     </div>
                     <?php
                 }

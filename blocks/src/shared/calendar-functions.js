@@ -182,7 +182,21 @@ export const showDialog = (item, modal, labels) => {
     const closeModal = () => {
         modal.classList.remove('modal-open');
         close?.removeEventListener('click', closeModal);
+        modal.removeEventListener('click', handleBackdropClick);
+        content?.removeEventListener('click', stopModalPropagation);
     };
+
+    const handleBackdropClick = (event) => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    };
+
+    const stopModalPropagation = (event) => {
+        event.stopPropagation();
+    };
+
     close?.addEventListener('click', closeModal);
-    modal.addEventListener('click', closeModal);
+    modal.addEventListener('click', handleBackdropClick);
+    content?.addEventListener('click', stopModalPropagation);
 }

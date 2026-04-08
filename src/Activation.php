@@ -219,6 +219,11 @@ class Activation
                 'name'     => 'myclub_groups_images_size',
                 'value'    => 'medium',
                 'autoload' => 'no'
+            ],
+            [
+                'name'     => 'myclub_groups_news_ingress_word_length',
+                'value'    => '0',
+                'autoload' => 'no'
             ]
         ];
     }
