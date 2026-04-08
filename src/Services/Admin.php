@@ -536,11 +536,17 @@ class Admin extends Base
         add_settings_field( 'myclub_groups_images_size', __( 'Image size for pictures', 'myclub-groups' ), [
                 $this,
                 'renderImagesSize'
-        ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_images_size' ] );
+        ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [
+                'label_for' => 'myclub_groups_images_size',
+                'help_text' => __( 'Select the image size that should be used for the group pictures. The default size is medium.', 'myclub-groups' )
+        ] );
         add_settings_field( 'myclub_groups_page_title', __( 'Show group title', 'myclub-groups' ), [
                 $this,
                 'renderPageTitle'
-        ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_page_title' ] );
+        ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [
+                'label_for' => 'myclub_groups_page_title',
+
+        ] );
         add_settings_field( 'myclub_groups_page_picture', __( 'Show group picture', 'myclub-groups' ), [
                 $this,
                 'renderPagePicture'
@@ -576,7 +582,10 @@ class Admin extends Base
         add_settings_field( 'myclub_groups_show_items_order', __( 'Shown items order', 'myclub-groups' ), [
                 $this,
                 'renderShowItemsOrder'
-        ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [ 'label_for' => 'myclub_groups_show_items_order' ] );
+        ], 'myclub_groups_settings_tab3', 'myclub_groups_display_settings', [
+                'label_for' => 'myclub_groups_show_items_order',
+                'help_text' => __( 'Select the order in which the fields should be shown on the group pages.', 'myclub-groups' )
+        ] );
         add_settings_field( 'myclub_groups_news_ingress_word_length', __( 'Number of words shown on news ingress', 'myclub-groups' ), [
                 $this,
                 'renderNewsIngressWordLength'
@@ -1447,6 +1456,11 @@ class Admin extends Base
             echo '<option value="' . esc_attr( $value ) . '"' . $selected . '>' . esc_attr( $name ) . '</option>';
         }
         echo '</select>';
+        if ( isset( $args[ 'help_text' ] ) ) {
+            echo '<p class="description">' . wp_kses_post( $args[ 'help_text' ] ) . '</p>';
+        } elseif ( isset( $args[ 'description' ] ) ) {
+            echo '<p class="description">' . wp_kses_post( $args[ 'description' ] ) . '</p>';
+        }
     }
 
     /**
@@ -1548,6 +1562,11 @@ class Admin extends Base
         }
 
         echo '<input type="number" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_news_ingress_word_length" value="' . esc_attr( $news_ingress_word_length ) . '" />';
+        if ( isset( $args[ 'help_text' ] ) ) {
+            echo '<p class="description">' . wp_kses_post( $args[ 'help_text' ] ) . '</p>';
+        } elseif ( isset( $args[ 'description' ] ) ) {
+            echo '<p class="description">' . wp_kses_post( $args[ 'description' ] ) . '</p>';
+        }
     }
 
     /**
@@ -1759,6 +1778,11 @@ class Admin extends Base
         }
 
         echo '</ul>';
+        if ( isset( $args[ 'help_text' ] ) ) {
+            echo '<p class="description">' . wp_kses_post( $args[ 'help_text' ] ) . '</p>';
+        } elseif ( isset( $args[ 'description' ] ) ) {
+            echo '<p class="description">' . wp_kses_post( $args[ 'description' ] ) . '</p>';
+        }
     }
 
     /**
@@ -2285,7 +2309,9 @@ class Admin extends Base
         }
 
         echo '</select>';
-        if ( isset( $args[ 'description' ] ) ) {
+        if ( isset( $args[ 'help_text' ] ) ) {
+            echo '<p class="description">' . wp_kses_post( $args[ 'help_text' ] ) . '</p>';
+        } elseif ( isset( $args[ 'description' ] ) ) {
             echo '<p class="description">' . wp_kses_post( $args[ 'description' ] ) . '</p>';
         }
     }
@@ -2337,11 +2363,12 @@ class Admin extends Base
         }
 
         echo '</ul>';
-        if ( isset( $args[ 'description' ] ) ) {
+        if ( isset( $args[ 'help_text' ] ) ) {
+            echo '<p class="description">' . wp_kses_post( $args[ 'help_text' ] ) . '</p>';
+        } elseif ( isset( $args[ 'description' ] ) ) {
             echo '<p class="description">' . wp_kses_post( $args[ 'description' ] ) . '</p>';
         }
     }
-
 
     /**
      * Renders a checkbox element with the given arguments and field name.
@@ -2360,5 +2387,10 @@ class Admin extends Base
         $class = $name ? ' class="sort-item-setter"' : '';
 
         echo '<input type="checkbox" id="' . esc_attr( $args[ 'label_for' ] ) . '" data-name="' . esc_attr( $name ) . '" data-display-name="' . esc_attr( $display_name ) . '" name="' . esc_attr( $field_name ) . '" value="1" ' . $checked . $class . ' />';
+        if ( isset( $args[ 'help_text' ] ) ) {
+            echo '<p class="description">' . wp_kses_post( $args[ 'help_text' ] ) . '</p>';
+        } elseif ( isset( $args[ 'description' ] ) ) {
+            echo '<p class="description">' . wp_kses_post( $args[ 'description' ] ) . '</p>';
+        }
     }
 }

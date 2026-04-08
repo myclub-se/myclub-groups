@@ -156,7 +156,7 @@ export const showDialog = (item, modal, labels) => {
 
     const renderHTML = (htmlString) => {
         const doc = new DOMParser().parseFromString(htmlString, 'text/html');
-        return doc.body.textContent;
+        return doc.body.innerHTML;
     };
 
     let output = `<div class="name">${type}</div>`;
@@ -172,7 +172,7 @@ export const showDialog = (item, modal, labels) => {
         output += `<tr><th>${labels.meetUpLocation}</th><td>${meetUpPlace}</td></tr>`;
     }
     if (description) {
-        output += `<tr><th>${labels.description}</th><td>${renderHTML(description)}</td></tr>`;
+        output += `<tr class="description-row"><th>${labels.description}</th><td><div class="description-content">${renderHTML(description)}</div></td></tr>`;
     }
     output += '</table>';
 
