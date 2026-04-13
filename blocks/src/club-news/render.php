@@ -48,34 +48,36 @@ $myclub_groups_ingress_word_length = (int) get_option( 'myclub_groups_news_ingre
                     $myclub_groups_image_caption = get_the_post_thumbnail_caption( $post->ID );
                     ?>
                     <div class="myclub-news-item">
-                        <h4>
-                            <a href="<?php echo esc_attr( get_permalink( $post->ID ) ); ?>"><?php echo esc_html( $post->post_title ); ?></a>
-                        </h4>
+                        <a href="<?php echo esc_attr( get_permalink( $post->ID ) ); ?>">
+                            <h4>
+                                <?php echo esc_html( $post->post_title ); ?>
+                            </h4>
 
-                        <?php if ( $myclub_groups_image_html ) { ?>
-                            <div class="myclub-news-image">
-                                <?php echo wp_kses_post( $myclub_groups_image_html ); ?>
-                            </div>
-                        <?php } ?>
+                            <?php if ( $myclub_groups_image_html ) { ?>
+                                <div class="myclub-news-image">
+                                    <?php echo wp_kses_post( $myclub_groups_image_html ); ?>
+                                </div>
+                            <?php } ?>
 
-                        <?php if ( $myclub_groups_image_caption ) { ?>
-                            <div class="myclub-news-image-caption"><?php echo esc_html( $myclub_groups_image_caption ); ?></div>
-                        <?php } ?>
+                            <?php if ( $myclub_groups_image_caption ) { ?>
+                                <div class="myclub-news-image-caption"><?php echo esc_html( $myclub_groups_image_caption ); ?></div>
+                            <?php } ?>
+                        </a>
                         <div class="myclub-news-ingress">
-                        <?php
-                        $content = $post->post_excerpt ?: $post->post_content;
+                            <?php
+                            $content = $post->post_excerpt ?: $post->post_content;
 
-                        // Render Gutenberg blocks if any, and shortcodes
-                        $content = do_blocks( $content );
-                        $content = do_shortcode( $content );
+                            // Render Gutenberg blocks if any, and shortcodes
+                            $content = do_blocks( $content );
+                            $content = do_shortcode( $content );
 
-                        if ( $myclub_groups_ingress_word_length > 0 ) {
-                            $content = wp_trim_words( wp_strip_all_tags( $content ), $myclub_groups_ingress_word_length, '...' );
-                        }
+                            if ( $myclub_groups_ingress_word_length > 0 ) {
+                                $content = wp_trim_words( wp_strip_all_tags( $content ), $myclub_groups_ingress_word_length, '...' );
+                            }
 
-                        // Output safely
-                        echo wp_kses_post( $content );
-                        ?>
+                            // Output safely
+                            echo wp_kses_post( $content );
+                            ?>
                         </div>
                     </div>
                     <?php

@@ -21,6 +21,14 @@
         flex: 0 1 calc(100% - 1rem);
         padding: 0.5rem;
 
+        a {
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
         .myclub-club-news-image-holder {
           margin-bottom: 0.75rem;
         }
