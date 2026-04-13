@@ -224,6 +224,11 @@ class Activation
                 'name'     => 'myclub_groups_news_ingress_word_length',
                 'value'    => '0',
                 'autoload' => 'no'
+            ],
+            [
+                'name'     => 'myclub_groups_no_activities_message',
+                'value'    => esc_attr__( 'No activities to display', 'myclub-groups' ),
+                'autoload' => 'no'
             ]
         ];
     }

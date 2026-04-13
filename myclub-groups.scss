@@ -1,5 +1,5 @@
 /**
- * MyClub groups calendar
+ * The following CSS is the default to display MyClub groups calendars.
  */
 
 .myclub-groups-calendar {
@@ -66,6 +66,20 @@
 
             th {
               font-weight: bold;
+              vertical-align: top;
+            }
+
+            &.description-row {
+              td {
+                max-height: 180px;
+              }
+
+              .description-content {
+                max-height: 180px;
+                overflow-y: auto;
+                display: block;
+                padding-right: 6px;
+              }
             }
           }
         }
@@ -158,7 +172,7 @@
 }
 
 /**
- * MyClub groups club calendar
+ * The following CSS is the default to display MyClub club calendar.
  */
 
 .myclub-groups-club-calendar {
@@ -225,6 +239,20 @@
 
             th {
               font-weight: bold;
+              vertical-align: top;
+            }
+
+            &.description-row {
+              td {
+                max-height: 180px;
+              }
+
+              .description-content {
+                max-height: 180px;
+                overflow-y: auto;
+                display: block;
+                padding-right: 6px;
+              }
             }
           }
         }
@@ -317,7 +345,7 @@
 }
 
 /**
- * MyClub Group Club News
+ * The following CSS is the default to display MyClub groups club news.
  */
 
 .myclub-groups-club-news {
@@ -339,15 +367,36 @@
         flex: 0 1 calc(100% - 1rem);
         padding: 0.5rem;
 
+        a {
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+        .myclub-club-news-image-holder {
+          margin-bottom: 0.75rem;
+        }
+
         .myclub-club-news-image {
+          aspect-ratio: 16 / 9;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
           img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
+            display: block;
           }
+        }
 
-          .myclub-club-news-image-caption {
-            font-size: small;
-          }
+        .myclub-club-news-image-caption {
+          font-size: small;
+          margin-top: 0.25rem;
         }
       }
 
@@ -388,7 +437,7 @@
 }
 
 /**
- * MyClub Groups coming games
+ * The following CSS is the default to display MyClub groups coming games.
  */
 
 .myclub-groups-coming-games {
@@ -491,8 +540,9 @@
 }
 
 /**
- * MyClub Groups Leaders
+ * The following CSS is the default to display MyClub groups leaders.
  */
+
 .myclub-groups-leaders-list {
   margin-bottom: 2rem;
   display: flex;
@@ -632,7 +682,6 @@
   }
 }
 
-
 @media(min-width: 768px) {
   .myclub-groups-leaders-list {
     .myclub-groups-leaders-container {
@@ -668,8 +717,9 @@
 }
 
 /**
- * MyClub Groups members.
+ * The following CSS is the default to display MyClub groups members.
  */
+
 .myclub-groups-members-list {
   margin-bottom: 2rem;
   display: flex;
@@ -844,7 +894,7 @@
 }
 
 /**
- * MyClub Groups menu
+ * The following CSS is the default to display MyClub groups menus.
  */
 
 .myclub-groups-menu {
@@ -1005,7 +1055,7 @@
 }
 
 /**
- * MyClub Groups navigation
+ * The following CSS is the default to display MyClub groups navigation.
  */
 .myclub-groups-navigation {
   display: flex;
@@ -1068,13 +1118,14 @@
 }
 
 /**
- * MyClub Groups News
+ * The following CSS is the default to display MyClub groups news.
  */
+
 .myclub-groups-news {
+  margin-bottom: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2rem;
 
   .myclub-groups-news-container {
     width: 100%;
@@ -1089,15 +1140,33 @@
         flex: 0 1 calc(100% - 1rem);
         padding: 0.5rem;
 
+        a {
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
         .myclub-news-image {
+          aspect-ratio: 16 / 9;
+          overflow: hidden;
+          background: #f2f2f2;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
           img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
+            display: block;
           }
+        }
 
-          .myclub-news-image-caption {
-            font-size: small;
-          }
+        .myclub-news-image-caption {
+          font-size: small;
+          margin-top: 0.25rem;
         }
       }
 
@@ -1108,7 +1177,7 @@
       }
     }
 
-    .no-news-found {
+    .no-news {
       padding: 1rem;
       text-align: center;
     }
@@ -1138,7 +1207,7 @@
 }
 
 /**
- * MyClub Groups Title
+ * The following CSS is the default to display MyClub groups title.
  */
 
 .myclub-groups-title {

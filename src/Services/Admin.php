@@ -363,6 +363,13 @@ class Admin extends Base
                 ],
                 'default'           => '0'
         ] );
+        register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_no_activities_message', [
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeNoActivitiesMessage'
+                ],
+                'default'           => __( "No activities to display", "myclub-groups" )
+        ] );
         register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_group_calendar_desktop_views', [
                 'sanitize_callback' => [
                         $this,
@@ -460,6 +467,14 @@ class Admin extends Base
             );
             echo '</p>';
         }, 'myclub_groups_settings_tab3' );
+        add_settings_section( 'myclub_groups_calendar_settings', __( 'General calendar settings', 'myclub-groups' ), function () {
+            echo '<p>';
+            esc_attr_e(
+                    'Here you can set the general calendar settings. These settings are used for the group calendar and the club calendar.',
+            );
+            echo '</p>';
+        }, 'myclub_groups_settings_tab4' );
+
         add_settings_section( 'myclub_groups_group_calendar_settings', __( 'Group calendar settings', 'myclub-groups' ), function () {
             echo '<p>';
             esc_attr_e(
@@ -593,6 +608,18 @@ class Admin extends Base
                 'label_for' => 'myclub_groups_news_ingress_word_length',
                 'help_text' => __( 'Select the number of words that should be shown in the news blocks. 0 means all words will be shown.', 'myclub-groups' )
         ] );
+
+        # region calendar display settings
+
+        add_settings_field( 'myclub_groups_no_activities_message', __( 'Text to display for no visible activities', 'myclub-groups' ), [
+                $this,
+                'renderNoActivitiesMessage'
+        ], 'myclub_groups_settings_tab4', 'myclub_groups_calendar_settings', [
+                'label_for' => 'myclub_groups_no_activities_message',
+                'help_text' => __( 'Enter the text to be displayed in the list view of the calendar when no activities exist.', 'myclub-groups' )
+        ] );
+
+        # endregion
 
         # region group calendar display settings
 
@@ -1589,6 +1616,34 @@ class Admin extends Base
     }
 
     /**
+     * Renders the input field for the "No Activities" message setting.
+     *
+     * @param array $args {
+     *     An associative array of arguments passed to the function.
+     *
+     * @type string $label_for The ID attribute for the input field.
+     * @type string $help_text Optional. Additional help text to display below the input field.
+     * @type string $description Optional. Description text to display below the input field if help text is not provided.
+     * }
+     * @return void
+     * @since 2.6.2
+     */
+    public function renderNoActivitiesMessage( array $args )
+    {
+        $no_activities_message = get_option( 'myclub_groups_no_activities_message' );
+        if ( empty( $no_activities_message ) ) {
+            $no_activities_message = __( 'No activities to display', 'myclub-groups' );
+        }
+
+        echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_groups_no_activities_message" value="' . esc_attr( $no_activities_message ) . '" />';
+        if ( isset( $args[ 'help_text' ] ) ) {
+            echo '<p class="description">' . wp_kses_post( $args[ 'help_text' ] ) . '</p>';
+        } elseif ( isset( $args[ 'description' ] ) ) {
+            echo '<p class="description">' . wp_kses_post( $args[ 'description' ] ) . '</p>';
+        }
+    }
+
+    /**
      * Renders the page template select field.
      *
      * @param array $args The arguments for rendering the page template select field.
@@ -2066,6 +2121,18 @@ class Admin extends Base
         } else {
             return sanitize_text_field( $input );
         }
+    }
+
+    /**
+     * Sanitizes the input message related to no activities by removing unwanted or harmful characters.
+     *
+     * @param string $input The input message to be sanitized.
+     * @return string The sanitized message.
+     * @since 2.6.2
+     */
+    public function sanitizeNoActivitiesMessage( string $input ): string
+    {
+        return sanitize_text_field( $input );
     }
 
     /**
