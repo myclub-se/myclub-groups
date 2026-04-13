@@ -467,14 +467,15 @@ class Admin extends Base
             );
             echo '</p>';
         }, 'myclub_groups_settings_tab3' );
+
         add_settings_section( 'myclub_groups_calendar_settings', __( 'General calendar settings', 'myclub-groups' ), function () {
             echo '<p>';
             esc_attr_e(
                     'Here you can set the general calendar settings. These settings are used for the group calendar and the club calendar.',
+                    'myclub-groups'
             );
             echo '</p>';
         }, 'myclub_groups_settings_tab4' );
-
         add_settings_section( 'myclub_groups_group_calendar_settings', __( 'Group calendar settings', 'myclub-groups' ), function () {
             echo '<p>';
             esc_attr_e(
@@ -2132,7 +2133,7 @@ class Admin extends Base
      */
     public function sanitizeNoActivitiesMessage( string $input ): string
     {
-        return sanitize_text_field( $input );
+        return sanitize_text_field( wp_unslash( $input ) );
     }
 
     /**
