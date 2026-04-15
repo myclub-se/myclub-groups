@@ -82,6 +82,9 @@ The plugin will try to clear cache on the following cache plugins for MyClub gro
 For unsupported cache systems, please contact us to request integration.
 
 == Changelog ==
+= 2.6.3 =
+* Fix bug in calendar block.
+
 = 2.6.2 =
 * Update so image is included in clickable item in news blocks.
 
