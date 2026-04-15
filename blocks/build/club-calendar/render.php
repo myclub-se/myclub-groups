@@ -39,7 +39,6 @@ $myclub_groups_no_activities_message = get_option( 'myclub_groups_no_activities_
         ];
         foreach ( $activities as $activity ) {
             $activity->title = str_replace( '&quot;', 'u0022', $activity->title );
-            $activity->description = str_replace( '&quot;', 'u0022', $activity->description );
         }
         ?>
         <div id="club-calendar-div"
@@ -51,8 +50,9 @@ $myclub_groups_no_activities_message = get_option( 'myclub_groups_no_activities_
              data-calendar-mobile="<?php echo esc_attr( join( ',', $myclub_groups_calendar_mobile_views ) ); ?>"
              data-calendar-mobile-default="<?php echo esc_attr( $myclub_groups_calendar_mobile_views_default ); ?>"
              data-calendar-week-numbers="<?php echo esc_attr( $myclub_groups_calendar_show_week_numbers ); ?>"
-             data-first-day-of-week="<?php echo esc_attr( get_option( 'start_of_week', 1 ) ); ?>"></div>
+             data-first-day-of-week="<?php echo esc_attr( get_option( 'start_of_week', 1 ) ); ?>"
              data-no-events-content="<?php echo esc_attr( $myclub_groups_no_activities_message ); ?>"
+        ></div>
     </div>
     <div class="club-calendar-modal" id="club-calendar-modal">
         <div class="modal-content">

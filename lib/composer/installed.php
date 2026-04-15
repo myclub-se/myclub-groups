@@ -3,7 +3,7 @@
         'name' => 'myclub/myclub-groups',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '914094b29a107a3a095bcbf3cf640ef259b7a434',
+        'reference' => '54d7e47ebaa7e0a5953559278073ade9231660c8',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'myclub/common-lib' => array(
-            'pretty_version' => '1.0.1',
-            'version' => '1.0.1.0',
-            'reference' => 'a70478e82688cdf2b493ab4dc66e5c1e2705c72a',
+            'pretty_version' => '1.0.2',
+            'version' => '1.0.2.0',
+            'reference' => '528de06771412511c3b2ca7c9e5752d61716bef2',
             'type' => 'library',
             'install_path' => __DIR__ . '/../myclub/common-lib',
             'aliases' => array(),
@@ -22,7 +22,7 @@
         'myclub/myclub-groups' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '914094b29a107a3a095bcbf3cf640ef259b7a434',
+            'reference' => '54d7e47ebaa7e0a5953559278073ade9231660c8',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

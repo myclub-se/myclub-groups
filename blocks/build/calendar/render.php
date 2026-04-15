@@ -46,7 +46,6 @@ $myclub_groups_no_activities_message = get_option( 'myclub_groups_no_activities_
 
             foreach ( $activities as $activity ) {
                 $activity->title = str_replace( '&quot;', 'u0022', $activity->title );
-                $activity->description = str_replace( '&quot;', 'u0022', $activity->description );
             }
             ?>
 
