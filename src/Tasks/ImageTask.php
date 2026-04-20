@@ -44,22 +44,26 @@ class ImageTask extends Background_Process
      */
     protected function task( $item ): bool
     {
-        $decoded_item = json_decode( $item );
+        try {
+            $decoded_item = json_decode( $item );
 
-        if ( property_exists( $decoded_item, 'post_id' ) && property_exists( $decoded_item, 'image' ) ) {
-            if ( $decoded_item ) {
-                switch ( $decoded_item->type ) {
-                    case 'group':
-                        $this->addGroupImage( $decoded_item );
-                        break;
-                    case 'member':
-                        $this->addMemberImage( $decoded_item );
-                        break;
-                    case 'news':
-                        $this->addNewsImage( $decoded_item );
-                        break;
+            if ( property_exists( $decoded_item, 'post_id' ) && property_exists( $decoded_item, 'image' ) ) {
+                if ( $decoded_item ) {
+                    switch ( $decoded_item->type ) {
+                        case 'group':
+                            $this->addGroupImage( $decoded_item );
+                            break;
+                        case 'member':
+                            $this->addMemberImage( $decoded_item );
+                            break;
+                        case 'news':
+                            $this->addNewsImage( $decoded_item );
+                            break;
+                    }
                 }
             }
+        } catch ( \Throwable $e ) {
+            error_log( 'MyClub ImageTask failed for item: ' . $item . ' — ' . $e->getMessage() );
         }
 
         return false;

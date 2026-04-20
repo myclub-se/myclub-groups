@@ -43,8 +43,13 @@ class RefreshGroupsTask extends Background_Process
      */
     protected function task( $item ): bool
     {
-        $service = new GroupService();
-        $service->updateGroupPage( $item );
+        try {
+            $service = new GroupService();
+            $service->updateGroupPage( $item );
+        } catch ( \Throwable $e ) {
+            error_log( 'MyClub RefreshGroupsTask failed for item: ' . $item . ' — ' . $e->getMessage() );
+        }
+
         return false;
     }
 
