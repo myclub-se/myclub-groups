@@ -46,7 +46,7 @@ class RefreshMenusTask extends Background_Process
             $service = new MenuService();
             $service->refreshMenus();
         } catch ( \Throwable $e ) {
-            error_log( 'MyClub RefreshMenusTask failed for item: ' . $item . ' — ' . $e->getMessage() );
+            error_log( 'MyClub Groups RefreshMenusTask failed for item: ' . $item . ' — ' . $e->getMessage() );
         }
 
         return false;

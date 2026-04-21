@@ -41,7 +41,7 @@ class RefreshNewsTask extends Background_Process
             $service = new NewsService();
             $service->loadNews( $item );
         } catch ( \Throwable $e ) {
-            error_log( 'MyClub RefreshNewsTask failed for item: ' . $item . ' — ' . $e->getMessage() );
+            error_log( 'MyClub Groups RefreshNewsTask failed for item: ' . $item . ' — ' . $e->getMessage() );
         }
 
         return false;

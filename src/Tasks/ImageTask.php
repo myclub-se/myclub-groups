@@ -63,7 +63,7 @@ class ImageTask extends Background_Process
                 }
             }
         } catch ( \Throwable $e ) {
-            error_log( 'MyClub ImageTask failed for item: ' . $item . ' — ' . $e->getMessage() );
+            error_log( 'MyClub Groups ImageTask failed for item: ' . $item . ' — ' . $e->getMessage() );
         }
 
         return false;
