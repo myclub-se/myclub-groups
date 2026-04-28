@@ -14,7 +14,7 @@ $myclub_groups_calendar_show_week_numbers = get_option( 'myclub_groups_group_cal
 $myclub_groups_no_activities_message = get_option( 'myclub_groups_no_activities_message', esc_attr__( 'No activities to display', 'myclub-groups' ) );
 
 ?>
-<div class="myclub-groups-calendar">
+<div class="myclub-groups-calendar" id="calendar">
     <div class="myclub-groups-calendar-container">
         <h3 class="myclub-groups-header"><?php echo esc_attr( $myclub_groups_calendar_header ) ?></h3>
         <?php
