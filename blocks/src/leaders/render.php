@@ -14,6 +14,7 @@ if ( empty ( $post_id ) || $post_id == 0 ) {
 } else {
     $myclub_groups_leader_title = get_option( 'myclub_groups_leaders_title' );
     $myclub_groups_leaders = MemberService::listGroupMembers( $post_id, true );
+    $myclub_groups_leaders_length = count( $myclub_groups_leaders );
     $myclub_groups_image_size = get_option( 'myclub_groups_images_size', 'medium' );
 
     if ( !empty( $myclub_groups_leaders ) ):
@@ -64,7 +65,7 @@ if ( empty ( $post_id ) || $post_id == 0 ) {
                         </div>
                         <?php
 
-                        if ( $key === 3 ) {
+                        if ( $key === 3 && $myclub_groups_leaders_length > 4 ) {
                             echo '<div class="hidden extended-list">';
                             $hidden_added = true;
                         }
