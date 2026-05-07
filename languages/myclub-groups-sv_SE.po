@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/myclub-groups\n"
-"POT-Creation-Date: 2026-04-13T15:02:19+00:00\n"
-"PO-Revision-Date: 2026-04-13 17:04+0200\n"
+"POT-Creation-Date: 2026-05-07T09:16:24+00:00\n"
+"PO-Revision-Date: 2026-05-07 11:24+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Poedit-SearchPath-4: blocks/src\n"
 
 #. Plugin Name of the plugin
-#: myclub-groups.php src/Services/Admin.php:124 src/Services/Admin.php:2234
+#: myclub-groups.php src/Services/Admin.php:124 src/Services/Admin.php:2259
 msgid "MyClub Groups"
 msgstr "MyClub Grupper"
 
@@ -48,122 +48,252 @@ msgstr "MyClub AB"
 msgid "https://www.myclub.se"
 msgstr "https://www.myclub.se"
 
-#: blocks/build/calendar/render.php:14 blocks/build/club-calendar/render.php:14
-#: blocks/src/calendar/render.php:14 blocks/src/club-calendar/render.php:14
-#: src/Activation.php:230 src/Services/Admin.php:371
-#: src/Services/Admin.php:1636 src/Services/Api.php:205
+#: blocks/build/calendar/render.php:17 blocks/build/club-calendar/render.php:14
+#: blocks/src/calendar/render.php:17 blocks/src/club-calendar/render.php:14
+#: src/Activation.php:240 src/Services/Admin.php:371
+#: src/Services/Admin.php:1661 src/Services/Api.php:206
 msgid "No activities to display"
 msgstr "Det finns inga aktiviteter i vald månad"
 
-#: blocks/build/calendar/render.php:26 blocks/build/coming-games/render.php:20
+#: blocks/build/calendar/render.php:29 blocks/build/coming-games/render.php:20
 #: blocks/build/leaders/render.php:13 blocks/build/members/render.php:13
 #: blocks/build/navigation/render.php:19 blocks/build/news/render.php:22
-#: blocks/build/title/render.php:18 blocks/src/calendar/render.php:26
+#: blocks/build/title/render.php:18 blocks/src/calendar/render.php:29
 #: blocks/src/coming-games/render.php:20 blocks/src/leaders/render.php:13
 #: blocks/src/members/render.php:13 blocks/src/navigation/render.php:19
 #: blocks/src/news/render.php:22 blocks/src/title/render.php:18
 msgid "No group page found. Invalid post_id or group_id."
 msgstr "Kunde inte hitta en gruppsida. Ogiltig post_id eller group_id."
 
-#: blocks/build/calendar/render.php:31 blocks/build/club-calendar/render.php:25
-#: blocks/src/calendar/render.php:31 blocks/src/club-calendar/render.php:25
+#: blocks/build/calendar/render.php:34 blocks/build/club-calendar/render.php:34
+#: blocks/src/calendar/render.php:34 blocks/src/club-calendar/render.php:34
 #: src/Activation.php:63 src/Activation.php:68 src/Services/Admin.php:224
-#: src/Services/Admin.php:232 src/Services/Admin.php:1403
-#: src/Services/Admin.php:1422 src/Services/Admin.php:1695
-#: src/Services/Admin.php:1821 templates/admin/admin_settings.php:109
+#: src/Services/Admin.php:232 src/Services/Admin.php:1428
+#: src/Services/Admin.php:1447 src/Services/Admin.php:1720
+#: src/Services/Admin.php:1846 templates/admin/admin_settings.php:109
 #: blocks/build/calendar/index.js:1 blocks/build/club-calendar/index.js:1
-#: blocks/src/calendar/edit.js:15 blocks/src/club-calendar/edit.js:12
+#: blocks/src/calendar/edit.js:15 blocks/src/club-calendar/edit.js:13
 msgid "Calendar"
 msgstr "Kalender"
 
-#: blocks/build/calendar/render.php:32 blocks/build/club-calendar/render.php:26
-#: blocks/src/calendar/render.php:32 blocks/src/club-calendar/render.php:26
+#: blocks/build/calendar/render.php:35 blocks/build/club-calendar/render.php:35
+#: blocks/src/calendar/render.php:35 blocks/src/club-calendar/render.php:35
 msgid "Information"
 msgstr "Information"
 
-#: blocks/build/calendar/render.php:33 blocks/build/club-calendar/render.php:27
-#: blocks/src/calendar/render.php:33 blocks/src/club-calendar/render.php:27
+#: blocks/build/calendar/render.php:36 blocks/build/club-calendar/render.php:36
+#: blocks/src/calendar/render.php:36 blocks/src/club-calendar/render.php:36
 #: templates/admin/admin_myclub_groups_activities.php:14
 #: templates/admin/admin_myclub_groups_members.php:15
 #: blocks/build/calendar/index.js:1 blocks/build/club-calendar/index.js:1
-#: blocks/src/calendar/edit.js:16 blocks/src/club-calendar/edit.js:13
+#: blocks/src/calendar/edit.js:16 blocks/src/club-calendar/edit.js:14
 msgid "Name"
 msgstr "Namn"
 
-#: blocks/build/calendar/render.php:34 blocks/build/club-calendar/render.php:28
-#: blocks/src/calendar/render.php:34 blocks/src/club-calendar/render.php:28
+#: blocks/build/calendar/render.php:37 blocks/build/club-calendar/render.php:37
+#: blocks/src/calendar/render.php:37 blocks/src/club-calendar/render.php:37
 #: blocks/build/calendar/index.js:1 blocks/build/club-calendar/index.js:1
-#: blocks/src/calendar/edit.js:17 blocks/src/club-calendar/edit.js:14
+#: blocks/src/calendar/edit.js:17 blocks/src/club-calendar/edit.js:15
 msgid "When"
 msgstr "När"
 
-#: blocks/build/calendar/render.php:35 blocks/build/club-calendar/render.php:29
-#: blocks/src/calendar/render.php:35 blocks/src/club-calendar/render.php:29
+#: blocks/build/calendar/render.php:38 blocks/build/club-calendar/render.php:38
+#: blocks/src/calendar/render.php:38 blocks/src/club-calendar/render.php:38
 #: templates/admin/admin_myclub_groups_activities.php:18
 #: blocks/build/calendar/index.js:1 blocks/build/club-calendar/index.js:1
-#: blocks/src/calendar/edit.js:18 blocks/src/club-calendar/edit.js:15
+#: blocks/src/calendar/edit.js:18 blocks/src/club-calendar/edit.js:16
 msgid "Location"
 msgstr "Plats"
 
-#: blocks/build/calendar/render.php:36 blocks/build/club-calendar/render.php:30
-#: blocks/src/calendar/render.php:36 blocks/src/club-calendar/render.php:30
+#: blocks/build/calendar/render.php:39 blocks/build/club-calendar/render.php:39
+#: blocks/src/calendar/render.php:39 blocks/src/club-calendar/render.php:39
 #: blocks/build/calendar/index.js:1 blocks/build/club-calendar/index.js:1
-#: blocks/src/calendar/edit.js:20 blocks/src/club-calendar/edit.js:17
+#: blocks/src/calendar/edit.js:20 blocks/src/club-calendar/edit.js:18
 msgid "Gathering location"
 msgstr "Samlingsplats"
 
-#: blocks/build/calendar/render.php:37 blocks/build/club-calendar/render.php:31
-#: blocks/src/calendar/render.php:37 blocks/src/club-calendar/render.php:31
+#: blocks/build/calendar/render.php:40 blocks/build/club-calendar/render.php:40
+#: blocks/src/calendar/render.php:40 blocks/src/club-calendar/render.php:40
 #: blocks/build/calendar/index.js:1 blocks/build/club-calendar/index.js:1
-#: blocks/src/calendar/edit.js:19 blocks/src/club-calendar/edit.js:16
+#: blocks/src/calendar/edit.js:19 blocks/src/club-calendar/edit.js:17
 msgid "Gathering time"
 msgstr "Samling"
 
-#: blocks/build/calendar/render.php:38 blocks/build/club-calendar/render.php:32
-#: blocks/src/calendar/render.php:38 blocks/src/club-calendar/render.php:32
+#: blocks/build/calendar/render.php:41 blocks/build/club-calendar/render.php:41
+#: blocks/src/calendar/render.php:41 blocks/src/club-calendar/render.php:41
 msgid "today"
 msgstr "idag"
 
-#: blocks/build/calendar/render.php:39 blocks/build/club-calendar/render.php:33
-#: blocks/src/calendar/render.php:39 blocks/src/club-calendar/render.php:33
+#: blocks/build/calendar/render.php:42 blocks/build/club-calendar/render.php:42
+#: blocks/src/calendar/render.php:42 blocks/src/club-calendar/render.php:42
 msgid "day"
 msgstr "dag"
 
-#: blocks/build/calendar/render.php:40 blocks/build/club-calendar/render.php:34
-#: blocks/src/calendar/render.php:40 blocks/src/club-calendar/render.php:34
+#: blocks/build/calendar/render.php:43 blocks/build/club-calendar/render.php:43
+#: blocks/src/calendar/render.php:43 blocks/src/club-calendar/render.php:43
 msgid "month"
 msgstr "månad"
 
-#: blocks/build/calendar/render.php:41 blocks/build/club-calendar/render.php:35
-#: blocks/src/calendar/render.php:41 blocks/src/club-calendar/render.php:35
+#: blocks/build/calendar/render.php:44 blocks/build/club-calendar/render.php:44
+#: blocks/src/calendar/render.php:44 blocks/src/club-calendar/render.php:44
 msgid "week"
 msgstr "vecka"
 
-#: blocks/build/calendar/render.php:42 blocks/build/club-calendar/render.php:36
-#: blocks/src/calendar/render.php:42 blocks/src/club-calendar/render.php:36
+#: blocks/build/calendar/render.php:45 blocks/build/club-calendar/render.php:45
+#: blocks/src/calendar/render.php:45 blocks/src/club-calendar/render.php:45
 msgid "list"
 msgstr "lista"
 
-#: blocks/build/calendar/render.php:43 blocks/build/club-calendar/render.php:37
-#: blocks/src/calendar/render.php:43 blocks/src/club-calendar/render.php:37
+#: blocks/build/calendar/render.php:46 blocks/build/club-calendar/render.php:46
+#: blocks/src/calendar/render.php:46 blocks/src/club-calendar/render.php:46
 #: blocks/build/calendar/index.js:1 blocks/build/club-calendar/index.js:1
-#: blocks/src/calendar/edit.js:22 blocks/src/club-calendar/edit.js:19
+#: blocks/src/calendar/edit.js:22 blocks/src/club-calendar/edit.js:20
 msgid "W"
 msgstr "V"
 
-#: blocks/build/calendar/render.php:44 blocks/build/club-calendar/render.php:38
-#: blocks/src/calendar/render.php:44 blocks/src/club-calendar/render.php:38
+#: blocks/build/calendar/render.php:47 blocks/build/club-calendar/render.php:47
+#: blocks/src/calendar/render.php:47 blocks/src/club-calendar/render.php:47
 #: blocks/build/calendar/index.js:1 blocks/build/club-calendar/index.js:1
-#: blocks/src/calendar/edit.js:23 blocks/src/club-calendar/edit.js:20
+#: blocks/src/calendar/edit.js:23 blocks/src/club-calendar/edit.js:21
 msgid "Week"
 msgstr "Vecka"
+
+#: blocks/build/calendar/render.php:77 blocks/build/calendar/render.php:84
+#: blocks/build/club-calendar/render.php:72
+#: blocks/build/club-calendar/render.php:79 blocks/src/calendar/render.php:77
+#: blocks/src/calendar/render.php:84 blocks/src/club-calendar/render.php:72
+#: blocks/src/club-calendar/render.php:79 blocks/build/calendar/index.js:1
+#: blocks/build/club-calendar/index.js:1 blocks/src/calendar/edit.js:233
+#: blocks/src/calendar/edit.js:240 blocks/src/club-calendar/edit.js:180
+#: blocks/src/club-calendar/edit.js:187
+msgid "Subscribe"
+msgstr "Prenumerera"
+
+#: blocks/build/calendar/render.php:88 blocks/build/club-calendar/render.php:83
+#: blocks/src/calendar/render.php:88 blocks/src/club-calendar/render.php:83
+#: blocks/build/calendar/index.js:1 blocks/build/club-calendar/index.js:1
+#: blocks/src/calendar/edit.js:243 blocks/src/club-calendar/edit.js:190
+msgid "iPhone, iPad, Mac"
+msgstr "iPhone, iPad, Mac"
+
+#: blocks/build/calendar/render.php:91 blocks/build/club-calendar/render.php:86
+#: blocks/src/calendar/render.php:91 blocks/src/club-calendar/render.php:86
+#: blocks/build/calendar/index.js:1 blocks/build/club-calendar/index.js:1
+#: blocks/src/calendar/edit.js:246 blocks/src/club-calendar/edit.js:193
+msgid "Use the browser on the respective device"
+msgstr "Använd webbläsaren på respektive enhet"
+
+#: blocks/build/calendar/render.php:92 blocks/build/calendar/render.php:120
+#: blocks/build/club-calendar/render.php:87
+#: blocks/build/club-calendar/render.php:115 blocks/src/calendar/render.php:92
+#: blocks/src/calendar/render.php:120 blocks/src/club-calendar/render.php:87
+#: blocks/src/club-calendar/render.php:115 blocks/build/calendar/index.js:1
+#: blocks/build/club-calendar/index.js:1 blocks/src/calendar/edit.js:247
+#: blocks/src/calendar/edit.js:272 blocks/src/club-calendar/edit.js:194
+#: blocks/src/club-calendar/edit.js:219
+msgid "Click the following link:"
+msgstr "Klicka på följande länk:"
+
+#: blocks/build/calendar/render.php:93 blocks/build/club-calendar/render.php:88
+#: blocks/src/calendar/render.php:93 blocks/src/club-calendar/render.php:88
+#: blocks/build/calendar/index.js:1 blocks/build/club-calendar/index.js:1
+#: blocks/src/calendar/edit.js:248 blocks/src/club-calendar/edit.js:195
+msgid "Click \"Subscribe\""
+msgstr "Klicka på \"Prenumerera\""
+
+#: blocks/build/calendar/render.php:99 blocks/build/club-calendar/render.php:94
+#: blocks/src/calendar/render.php:99 blocks/src/club-calendar/render.php:94
+#: blocks/build/calendar/index.js:1 blocks/build/club-calendar/index.js:1
+#: blocks/src/calendar/edit.js:253 blocks/src/club-calendar/edit.js:200
+msgid "Android"
+msgstr "Android"
+
+#: blocks/build/calendar/render.php:101
+#: blocks/build/club-calendar/render.php:96 blocks/src/calendar/render.php:101
+#: blocks/src/club-calendar/render.php:96 blocks/build/calendar/index.js:1
+#: blocks/build/club-calendar/index.js:1 blocks/src/calendar/edit.js:255
+#: blocks/src/club-calendar/edit.js:202
+msgid ""
+"Every Android device is associated with a Google account. Subscriptions in "
+"Android are done via Google, see below."
+msgstr ""
+"Till varje Android-enhet hör ett Google-konto. Prenumeration i Android sker "
+"via Google, se nedan."
+
+#: blocks/build/calendar/render.php:106
+#: blocks/build/club-calendar/render.php:101 blocks/src/calendar/render.php:106
+#: blocks/src/club-calendar/render.php:101 blocks/build/calendar/index.js:1
+#: blocks/build/club-calendar/index.js:1 blocks/src/calendar/edit.js:259
+#: blocks/src/club-calendar/edit.js:206
+msgid "Google"
+msgstr "Google"
+
+#: blocks/build/calendar/render.php:109
+#: blocks/build/club-calendar/render.php:104 blocks/src/calendar/render.php:109
+#: blocks/src/club-calendar/render.php:104 blocks/build/calendar/index.js:1
+#: blocks/build/club-calendar/index.js:1 blocks/src/calendar/edit.js:262
+#: blocks/src/club-calendar/edit.js:209
+msgid "Go to"
+msgstr "Gå till"
+
+#: blocks/build/calendar/render.php:109
+#: blocks/build/club-calendar/render.php:104 blocks/src/calendar/render.php:109
+#: blocks/src/club-calendar/render.php:104 blocks/build/calendar/index.js:1
+#: blocks/build/club-calendar/index.js:1 blocks/src/calendar/edit.js:262
+#: blocks/src/club-calendar/edit.js:209
+msgid "(requires a Google account)"
+msgstr "(kräver ett Google-konto)"
+
+#: blocks/build/calendar/render.php:110
+#: blocks/build/club-calendar/render.php:105 blocks/src/calendar/render.php:110
+#: blocks/src/club-calendar/render.php:105 blocks/build/calendar/index.js:1
+#: blocks/build/club-calendar/index.js:1 blocks/src/calendar/edit.js:263
+#: blocks/src/club-calendar/edit.js:210
+msgid ""
+"Click the arrow to the right of \"Other calendars\" and then \"Add web "
+"address\""
+msgstr ""
+"Klicka på pilen till höger om \"Andra kalendrar\" och därefter på \"Lägg "
+"till webbadress\"."
+
+#: blocks/build/calendar/render.php:111
+#: blocks/build/club-calendar/render.php:106 blocks/src/calendar/render.php:111
+#: blocks/src/club-calendar/render.php:106 blocks/build/calendar/index.js:1
+#: blocks/build/club-calendar/index.js:1 blocks/src/calendar/edit.js:264
+#: blocks/src/club-calendar/edit.js:211
+msgid "Enter the URL:"
+msgstr "Ange URL:"
+
+#: blocks/build/calendar/render.php:111
+#: blocks/build/club-calendar/render.php:106 blocks/src/calendar/render.php:111
+#: blocks/src/club-calendar/render.php:106 blocks/build/calendar/index.js:1
+#: blocks/build/club-calendar/index.js:1 blocks/src/calendar/edit.js:264
+#: blocks/src/club-calendar/edit.js:211
+msgid "and click \"Add calendar\""
+msgstr "och klicka därefter på \"Lägg till kalender\"."
+
+#: blocks/build/calendar/render.php:117
+#: blocks/build/club-calendar/render.php:112 blocks/src/calendar/render.php:117
+#: blocks/src/club-calendar/render.php:112 blocks/build/calendar/index.js:1
+#: blocks/build/club-calendar/index.js:1 blocks/src/calendar/edit.js:269
+#: blocks/src/club-calendar/edit.js:216
+msgid "Microsoft Outlook"
+msgstr "Microsoft Outlook"
+
+#: blocks/build/calendar/render.php:121
+#: blocks/build/club-calendar/render.php:116 blocks/src/calendar/render.php:121
+#: blocks/src/club-calendar/render.php:116 blocks/build/calendar/index.js:1
+#: blocks/build/club-calendar/index.js:1 blocks/src/calendar/edit.js:273
+#: blocks/src/club-calendar/edit.js:220
+msgid "Open the link with Outlook"
+msgstr "Öppna länken med Outlook"
 
 #: blocks/build/club-news/render.php:5 blocks/build/news/render.php:8
 #: blocks/src/club-news/render.php:5 blocks/src/news/render.php:8
 #: src/Activation.php:88 src/Activation.php:93 src/Services/Admin.php:264
-#: src/Services/Admin.php:271 src/Services/Admin.php:1441
-#: src/Services/Admin.php:1613 src/Services/Admin.php:1751
-#: src/Services/Admin.php:1827 src/Services/NewsService.php:85
+#: src/Services/Admin.php:271 src/Services/Admin.php:1466
+#: src/Services/Admin.php:1638 src/Services/Admin.php:1776
+#: src/Services/Admin.php:1852 src/Services/NewsService.php:85
 #: src/Services/NewsService.php:88 templates/admin/admin_settings.php:133
 msgid "News"
 msgstr "Nyheter"
@@ -186,15 +316,15 @@ msgstr "Visa fler nyheter"
 msgid "No news found"
 msgstr "Finns inga nyheter"
 
-#: blocks/build/coming-games/render.php:59 blocks/build/leaders/render.php:76
-#: blocks/build/members/render.php:74 blocks/src/coming-games/render.php:59
-#: blocks/src/leaders/render.php:76 blocks/src/members/render.php:74
+#: blocks/build/coming-games/render.php:59 blocks/build/leaders/render.php:77
+#: blocks/build/members/render.php:75 blocks/src/coming-games/render.php:59
+#: blocks/src/leaders/render.php:77 blocks/src/members/render.php:75
 msgid "Show more"
 msgstr "Visa mer"
 
-#: blocks/build/coming-games/render.php:60 blocks/build/leaders/render.php:77
-#: blocks/build/members/render.php:75 blocks/src/coming-games/render.php:60
-#: blocks/src/leaders/render.php:77 blocks/src/members/render.php:75
+#: blocks/build/coming-games/render.php:60 blocks/build/leaders/render.php:78
+#: blocks/build/members/render.php:76 blocks/src/coming-games/render.php:60
+#: blocks/src/leaders/render.php:78 blocks/src/members/render.php:76
 msgid "Show less"
 msgstr "Visa mindre"
 
@@ -203,17 +333,17 @@ msgstr "Visa mindre"
 msgid "No upcoming games"
 msgstr "Inga kommande matcher"
 
-#: blocks/build/leaders/render.php:29 blocks/build/members/render.php:29
-#: blocks/src/leaders/render.php:29 blocks/src/members/render.php:29
+#: blocks/build/leaders/render.php:30 blocks/build/members/render.php:30
+#: blocks/src/leaders/render.php:30 blocks/src/members/render.php:30
 #: templates/admin/admin_myclub_groups_members.php:19
 #: blocks/build/leaders/index.js:1 blocks/build/members/index.js:1
 #: blocks/src/leaders/edit.js:27 blocks/src/members/edit.js:27
 msgid "Age"
 msgstr "Ålder"
 
-#: blocks/build/leaders/render.php:30 blocks/build/members/render.php:30
-#: blocks/build/title/render.php:57 blocks/src/leaders/render.php:30
-#: blocks/src/members/render.php:30 blocks/src/title/render.php:57
+#: blocks/build/leaders/render.php:31 blocks/build/members/render.php:31
+#: blocks/build/title/render.php:57 blocks/src/leaders/render.php:31
+#: blocks/src/members/render.php:31 blocks/src/title/render.php:57
 #: templates/admin/admin_myclub_groups_members.php:17
 #: blocks/build/leaders/index.js:1 blocks/build/members/index.js:1
 #: blocks/build/title/index.js:1 blocks/src/leaders/edit.js:28
@@ -221,16 +351,16 @@ msgstr "Ålder"
 msgid "E-mail"
 msgstr "E-post"
 
-#: blocks/build/leaders/render.php:31 blocks/build/members/render.php:31
-#: blocks/src/leaders/render.php:31 blocks/src/members/render.php:31
+#: blocks/build/leaders/render.php:32 blocks/build/members/render.php:32
+#: blocks/src/leaders/render.php:32 blocks/src/members/render.php:32
 #: templates/admin/admin_myclub_groups_members.php:16
 #: blocks/build/leaders/index.js:1 blocks/build/members/index.js:1
 #: blocks/src/leaders/edit.js:26 blocks/src/members/edit.js:26
 msgid "Role"
 msgstr "Roll"
 
-#: blocks/build/leaders/render.php:32 blocks/build/members/render.php:32
-#: blocks/src/leaders/render.php:32 blocks/src/members/render.php:32
+#: blocks/build/leaders/render.php:33 blocks/build/members/render.php:33
+#: blocks/src/leaders/render.php:33 blocks/src/members/render.php:33
 #: templates/admin/admin_myclub_groups_members.php:18
 #: templates/admin/admin_myclub_groups_metabox_tabs.php:70
 #: blocks/build/leaders/index.js:1 blocks/build/members/index.js:1
@@ -249,22 +379,22 @@ msgstr "Kontaktperson"
 msgid "Telephone"
 msgstr "Telefon"
 
-#: src/Activation.php:73 src/Services/Admin.php:240 src/Services/Admin.php:1460
-#: src/Services/Admin.php:1793 src/Services/Admin.php:1822
+#: src/Activation.php:73 src/Services/Admin.php:240 src/Services/Admin.php:1485
+#: src/Services/Admin.php:1818 src/Services/Admin.php:1847
 #: templates/admin/admin_settings.php:118
 msgid "Upcoming games"
 msgstr "Kommande matcher"
 
-#: src/Activation.php:78 src/Services/Admin.php:248 src/Services/Admin.php:1507
-#: src/Services/Admin.php:1681 src/Services/Admin.php:1823
+#: src/Activation.php:78 src/Services/Admin.php:248 src/Services/Admin.php:1532
+#: src/Services/Admin.php:1706 src/Services/Admin.php:1848
 #: templates/admin/admin_myclub_groups_members.php:42
 #: templates/admin/admin_settings.php:121 blocks/build/leaders/index.js:1
 #: blocks/src/leaders/edit.js:16
 msgid "Leaders"
 msgstr "Ledare"
 
-#: src/Activation.php:83 src/Services/Admin.php:256 src/Services/Admin.php:1572
-#: src/Services/Admin.php:1709 src/Services/Admin.php:1824
+#: src/Activation.php:83 src/Services/Admin.php:256 src/Services/Admin.php:1597
+#: src/Services/Admin.php:1734 src/Services/Admin.php:1849
 #: templates/admin/admin_myclub_groups_members.php:25
 #: templates/admin/admin_myclub_groups_metabox_tabs.php:60
 #: templates/admin/admin_settings.php:124 blocks/build/members/index.js:1
@@ -281,11 +411,11 @@ msgstr "MyClub Grupper plugin inställningar"
 msgid "Group news"
 msgstr "Gruppnyheter"
 
-#: src/Services/Admin.php:444
+#: src/Services/Admin.php:451
 msgid "MyClub Groups Main Settings"
 msgstr "MyClub Grupper huvudinställningar"
 
-#: src/Services/Admin.php:446
+#: src/Services/Admin.php:453
 msgid ""
 "Here are the general settings available from the MyClub Groups plugin. The "
 "available Gutenberg blocks and their usage is described under the "
@@ -298,15 +428,15 @@ msgstr ""
 "beskrivs under `Kortkoder` filken. Vänligen kontrollera hur dessa används "
 "där."
 
-#: src/Services/Admin.php:452
+#: src/Services/Admin.php:459
 msgid "Synchronization information"
 msgstr "Synkroniseringsinställningar"
 
-#: src/Services/Admin.php:454 templates/admin/admin_settings.php:79
+#: src/Services/Admin.php:461 templates/admin/admin_settings.php:79
 msgid "Title settings"
 msgstr "Rubrikinställningar"
 
-#: src/Services/Admin.php:456
+#: src/Services/Admin.php:463
 msgid ""
 "Here you can set the titles for the fields that are displayed on the group "
 "pages. The titles are used in the Gutenberg blocks and shortcodes. You "
@@ -316,11 +446,11 @@ msgstr ""
 "Titlarna används i Gutenberg-blocken och kortkoderna. Du kan inte lämna "
 "titelfältet tomt."
 
-#: src/Services/Admin.php:462 templates/admin/admin_settings.php:81
+#: src/Services/Admin.php:469 templates/admin/admin_settings.php:81
 msgid "Display settings"
 msgstr "Visningsinställningar"
 
-#: src/Services/Admin.php:464
+#: src/Services/Admin.php:471
 msgid ""
 "Here you can set the display options for the group pages. You select which "
 "fields should be visible and then in which order. On a Gutenberg theme you "
@@ -330,11 +460,11 @@ msgstr ""
 "fält som ska synas och sedan i vilken ordning. På ett Gutenberg-tema kan du "
 "även välja vilken mall som ska användas för gruppsidorna."
 
-#: src/Services/Admin.php:471
+#: src/Services/Admin.php:478
 msgid "General calendar settings"
 msgstr "Allmänna kalenderinställningar"
 
-#: src/Services/Admin.php:473
+#: src/Services/Admin.php:480
 msgid ""
 "Here you can set the general calendar settings. These settings are used for "
 "the group calendar and the club calendar."
@@ -342,11 +472,11 @@ msgstr ""
 "Här kan du ställa in allmänna kalenderinställningar. Inställningarna används "
 "både för grupp- och föreningskalendern."
 
-#: src/Services/Admin.php:479
+#: src/Services/Admin.php:486
 msgid "Group calendar settings"
 msgstr "Kalenderinställningar för gruppsidor"
 
-#: src/Services/Admin.php:481
+#: src/Services/Admin.php:488
 msgid ""
 "Here you can set the calendar views for the group calendar. You can choose "
 "which views should be available for desktop and mobile devices."
@@ -354,11 +484,11 @@ msgstr ""
 "Här ställer du in kalendervyerna för gruppkalendern. Du kan välja vilka vyer "
 "som ska vara tillgängliga för stationära och mobila enheter."
 
-#: src/Services/Admin.php:487
+#: src/Services/Admin.php:494
 msgid "Club calendar settings"
 msgstr "Kalenderinställning för Föreningskalendern"
 
-#: src/Services/Admin.php:489
+#: src/Services/Admin.php:496
 msgid ""
 "Here you can set the calendar views for the club calendar. You can choose "
 "which views should be available for desktop and mobile devices."
@@ -366,63 +496,63 @@ msgstr ""
 "Här ställer du  in kalendervyerna för klubbens kalender. Du kan välja vilka "
 "vyer som ska vara tillgängliga för datorer och mobila enheter."
 
-#: src/Services/Admin.php:496
+#: src/Services/Admin.php:503
 msgid "MyClub API Key"
 msgstr "MyClub API nyckel"
 
-#: src/Services/Admin.php:500
+#: src/Services/Admin.php:507
 msgid "Slug for group pages"
 msgstr "Slug för gruppsidor"
 
-#: src/Services/Admin.php:504
+#: src/Services/Admin.php:511
 msgid "Slug for group news posts"
 msgstr "Slug för gruppnyheter"
 
-#: src/Services/Admin.php:508 src/Services/Admin.php:1299
+#: src/Services/Admin.php:515 src/Services/Admin.php:1324
 msgid "Add news categories for group news"
 msgstr "Skapa kategorier för gruppnyheter"
 
-#: src/Services/Admin.php:512 src/Services/Admin.php:1387
+#: src/Services/Admin.php:519 src/Services/Admin.php:1412
 msgid "Delete posts for news deleted from MyClub"
 msgstr "Radera nyhetsinlägg som raderats i MyClub"
 
-#: src/Services/Admin.php:517
+#: src/Services/Admin.php:524
 msgid "Title for calendar field"
 msgstr "Rubrik för kalendern"
 
-#: src/Services/Admin.php:521
+#: src/Services/Admin.php:528
 msgid "Title for club calendar field"
 msgstr "Rubrik för föreningskalendern"
 
-#: src/Services/Admin.php:525
+#: src/Services/Admin.php:532
 msgid "Title for upcoming games field"
 msgstr "Rubrik för kommande matcher"
 
-#: src/Services/Admin.php:529
+#: src/Services/Admin.php:536
 msgid "Title for leaders field"
 msgstr "Rubrik för ledare"
 
-#: src/Services/Admin.php:533
+#: src/Services/Admin.php:540
 msgid "Title for members field"
 msgstr "Rurik för medlemmar"
 
-#: src/Services/Admin.php:537
+#: src/Services/Admin.php:544
 msgid "Title for news field"
 msgstr "Rubrik för nyheter"
 
-#: src/Services/Admin.php:541
+#: src/Services/Admin.php:548
 msgid "Title for club news field"
 msgstr "Rubrik för föreningens nyheter"
 
-#: src/Services/Admin.php:547
+#: src/Services/Admin.php:554
 msgid "Template for group pages"
 msgstr "Mall för gruppsidor"
 
-#: src/Services/Admin.php:552
+#: src/Services/Admin.php:559
 msgid "Image size for pictures"
 msgstr "Bildstorlek"
 
-#: src/Services/Admin.php:557
+#: src/Services/Admin.php:564
 msgid ""
 "Select the image size that should be used for the group pictures. The "
 "default size is medium."
@@ -430,56 +560,56 @@ msgstr ""
 "Välj den bildstorlek som ska användas för gruppbilderna. Standardstorleken "
 "är medium."
 
-#: src/Services/Admin.php:559
+#: src/Services/Admin.php:566
 msgid "Show group title"
 msgstr "Visa rubrikfält på gruppsidor"
 
-#: src/Services/Admin.php:566
+#: src/Services/Admin.php:573
 msgid "Show group picture"
 msgstr "Visa grupp bilder"
 
-#: src/Services/Admin.php:570
+#: src/Services/Admin.php:577
 msgid "Show groups menu"
 msgstr "Visa meny på gruppsidor"
 
-#: src/Services/Admin.php:574
+#: src/Services/Admin.php:581
 msgid "Show group page navigation"
 msgstr "Visa navigation på gruppsidor"
 
-#: src/Services/Admin.php:578
+#: src/Services/Admin.php:585
 msgid "Show group calendar"
 msgstr "Visa kalender på gruppsidor"
 
-#: src/Services/Admin.php:582
+#: src/Services/Admin.php:589
 msgid "Show group members"
 msgstr "Visa medlemmar på gruppsidor"
 
-#: src/Services/Admin.php:586
+#: src/Services/Admin.php:593
 msgid "Show group leaders"
 msgstr "Visa ledare på gruppsidor"
 
-#: src/Services/Admin.php:590
+#: src/Services/Admin.php:597
 msgid "Show group news"
 msgstr "Visa nyheter på gruppsidor"
 
-#: src/Services/Admin.php:594
+#: src/Services/Admin.php:601
 msgid "Show group upcoming games"
 msgstr "Visa kommande matcher på gruppsidor"
 
-#: src/Services/Admin.php:598
+#: src/Services/Admin.php:605
 msgid "Shown items order"
 msgstr "Visningsordning på gruppsidor"
 
-#: src/Services/Admin.php:603
+#: src/Services/Admin.php:610
 msgid ""
 "Select the order in which the fields should be shown on the group pages."
 msgstr "Välj i vilken ordning fälten ska visas på gruppsidorna."
 
-#: src/Services/Admin.php:605
+#: src/Services/Admin.php:612
 msgid "Number of words shown on news ingress"
 msgstr "Antal ord som visas av ingressen på nyheter"
 
-#: src/Services/Admin.php:610
+#: src/Services/Admin.php:617
 msgid ""
 "Select the number of words that should be shown in the news blocks. 0 means "
 "all words will be shown."
@@ -487,11 +617,11 @@ msgstr ""
 "Välj antalet ord som ska visas i nyhetsblocken. 0 betyder att samtliga ord "
 "kommer att visas."
 
-#: src/Services/Admin.php:615
+#: src/Services/Admin.php:622
 msgid "Text to display for no visible activities"
 msgstr "Text att visa när det inte finns aktiviteter"
 
-#: src/Services/Admin.php:620
+#: src/Services/Admin.php:627
 msgid ""
 "Enter the text to be displayed in the list view of the calendar when no "
 "activities exist."
@@ -499,11 +629,11 @@ msgstr ""
 "Ange vilken text som ska visas i listvyn på kalendrarna när det inte finns "
 "några aktiviteter att visa."
 
-#: src/Services/Admin.php:627
+#: src/Services/Admin.php:634
 msgid "Group calendar desktop views"
 msgstr "Inställningar för gruppkalendern på desktop"
 
-#: src/Services/Admin.php:632
+#: src/Services/Admin.php:639
 msgid ""
 "Select the calendar views that should be available for the group calendar on "
 "desktop devices. You can change the order of the views by dragging and "
@@ -512,11 +642,11 @@ msgstr ""
 "Välj de kalendervyer som ska vara tillgängliga för gruppkalendern på desktop "
 "enheter. Du kan ändra ordningen på vyerna genom att dra och släppa dem."
 
-#: src/Services/Admin.php:635
+#: src/Services/Admin.php:642
 msgid "Default view for desktop group calendar"
 msgstr "Standardvy för gruppkalendern på desktop"
 
-#: src/Services/Admin.php:640
+#: src/Services/Admin.php:647
 msgid ""
 "Select the default view for the desktop group calendar. The default view "
 "will be displayed when the group calendar is loaded."
@@ -524,11 +654,11 @@ msgstr ""
 "Välj standardvyn för gruppkalendern på desktop. Standardvyn visas när "
 "sektionskalendern laddas."
 
-#: src/Services/Admin.php:643
+#: src/Services/Admin.php:650
 msgid "Group calendar mobile views"
 msgstr "Inställningar för gruppkalendern på mobil"
 
-#: src/Services/Admin.php:648
+#: src/Services/Admin.php:655
 msgid ""
 "Select the calendar views that should be available for the group calendar on "
 "mobile devices. You can change the order of the views by dragging and "
@@ -537,11 +667,11 @@ msgstr ""
 "Välj de kalendervyer som ska vara tillgängliga för gruppkalendern på "
 "mobiler. Du kan ändra ordningen på vyerna genom att dra och släppa dem."
 
-#: src/Services/Admin.php:651
+#: src/Services/Admin.php:658
 msgid "Default view for mobile group calendar"
 msgstr "Standardvy för gruppkalendern på mobil"
 
-#: src/Services/Admin.php:656
+#: src/Services/Admin.php:663
 msgid ""
 "Select the default view for the mobile group calendar. The default view will "
 "be displayed when the group calendar is loaded."
@@ -549,20 +679,32 @@ msgstr ""
 "Välj standardvyn för gruppkalendern på mobil. Standardvyn visas när "
 "sektionskalendern laddas."
 
-#: src/Services/Admin.php:659
+#: src/Services/Admin.php:666
 msgid "Show week numbers in group calendar"
 msgstr "Visa veckonummer på gruppkalendern"
 
-#: src/Services/Admin.php:664
+#: src/Services/Admin.php:671
 msgid "Check this option to display week numbers in the group calendar."
 msgstr ""
 "Markera det här alternativet för att visa veckonummer i gruppkalendern."
 
-#: src/Services/Admin.php:671
+#: src/Services/Admin.php:674 blocks/build/calendar/index.js:1
+#: blocks/build/club-calendar/index.js:1 blocks/src/calendar/edit.js:204
+#: blocks/src/club-calendar/edit.js:152
+msgid "Show subscribe button"
+msgstr "Visa prenumerationsknapp"
+
+#: src/Services/Admin.php:679
+msgid "Check this option to display a subscribe button in the group calendar."
+msgstr ""
+"Markera det här alternativet för att visa prenumerationsknappen i "
+"gruppkalendern."
+
+#: src/Services/Admin.php:686
 msgid "Club calendar desktop views"
 msgstr "Inställningar för föreningskalender på desktop"
 
-#: src/Services/Admin.php:676
+#: src/Services/Admin.php:691
 msgid ""
 "Select the calendar views that should be available for the club calendar on "
 "desktop devices. You can change the order of the views by dragging and "
@@ -572,11 +714,11 @@ msgstr ""
 "desktop enheter. Du kan ändra ordningen på vyerna genom att dra och släppa "
 "dem."
 
-#: src/Services/Admin.php:679
+#: src/Services/Admin.php:694
 msgid "Default view for desktop club calendar"
 msgstr "Standardvy för föreningskalendern på desktop"
 
-#: src/Services/Admin.php:684
+#: src/Services/Admin.php:699
 msgid ""
 "Select the default view for the desktop club calendar. The default view will "
 "be displayed when the club calendar is loaded."
@@ -584,11 +726,11 @@ msgstr ""
 "Välj standardvyn för föreningskalendern på desktop. Standardvyn visas när "
 "sektionskalendern laddas."
 
-#: src/Services/Admin.php:687
+#: src/Services/Admin.php:702
 msgid "Club calendar mobile views"
 msgstr "Inställningar för föreningskalender på mobil"
 
-#: src/Services/Admin.php:692
+#: src/Services/Admin.php:707
 msgid ""
 "Select the calendar views that should be available for the club calendar on "
 "mobile devices. You can change the order of the views by dragging and "
@@ -597,11 +739,11 @@ msgstr ""
 "Välj standardvyn för föreningskalendern på mobil. Standardvyn visas när "
 "föreningskalendern laddas."
 
-#: src/Services/Admin.php:695
+#: src/Services/Admin.php:710
 msgid "Default view for mobile club calendar"
 msgstr "Standardvy för föreningskalendern på mobil"
 
-#: src/Services/Admin.php:700
+#: src/Services/Admin.php:715
 msgid ""
 "Select the default view for the mobile club calendar. The default view will "
 "be displayed when the club calendar is loaded."
@@ -609,48 +751,48 @@ msgstr ""
 "Välj standardvyn för föreningskalendern på mobil. Standardvyn visas när "
 "sektionskalendern laddas."
 
-#: src/Services/Admin.php:703
+#: src/Services/Admin.php:718
 msgid "Show week numbers in club calendar"
 msgstr "Visa veckonummer på föreningskalendern"
 
-#: src/Services/Admin.php:708
+#: src/Services/Admin.php:723
 msgid "Check this option to display week numbers in the club calendar."
 msgstr ""
 "Markera det här alternativet för att visa veckonummer i föreningskalendern."
 
-#: src/Services/Admin.php:725
+#: src/Services/Admin.php:740
 msgid "Settings"
 msgstr "Inställningar"
 
-#: src/Services/Admin.php:743
+#: src/Services/Admin.php:758
 msgid "Every minute"
 msgstr "Varje minut"
 
 #. translators: Display string for the cron interval
-#: src/Services/Admin.php:746
+#: src/Services/Admin.php:761
 #, php-format
 msgid "Every %d minutes"
 msgstr "Var %d minut"
 
-#: src/Services/Admin.php:1057 src/Services/Admin.php:1081
-#: src/Services/Admin.php:1103
+#: src/Services/Admin.php:1072 src/Services/Admin.php:1096
+#: src/Services/Admin.php:1118
 msgid "Permission denied"
 msgstr "Åtkomst nekad"
 
-#: src/Services/Admin.php:1065
+#: src/Services/Admin.php:1080
 msgid "Successfully queued groups reloading"
 msgstr "Gruppuppdatering har schemalagts"
 
-#: src/Services/Admin.php:1089
+#: src/Services/Admin.php:1104
 msgid "Successfully queued news reloading"
 msgstr "Nyhetsuppdatering har schemalagts"
 
-#: src/Services/Admin.php:1111
+#: src/Services/Admin.php:1126
 msgid "Successfully reloaded club calendar"
 msgstr "Laddade om föreningskalendern"
 
 #. translators: 1: number of groups
-#: src/Services/Admin.php:1166
+#: src/Services/Admin.php:1181
 #, php-format
 msgid ""
 "There is currently <strong>%1$s groups</strong> loaded from the MyClub "
@@ -660,7 +802,7 @@ msgstr ""
 "medlemssystem."
 
 #. translators: 1: number of news items
-#: src/Services/Admin.php:1169
+#: src/Services/Admin.php:1184
 #, php-format
 msgid ""
 "There is currently <strong>%1$s group news items</strong> loaded from the "
@@ -669,7 +811,7 @@ msgstr ""
 "Det finns för närvarande <strong>%1$s gruppnyheter</strong> laddade från "
 "MyClub medlemssystem."
 
-#: src/Services/Admin.php:1172 src/Services/Admin.php:2340
+#: src/Services/Admin.php:1187 src/Services/Admin.php:2365
 msgid ""
 "WP Cron is not running. This is required for running the MyClub groups "
 "plugin."
@@ -677,73 +819,73 @@ msgstr ""
 "WP Cron kör inte på denna WordPress. Detta krävs för att MyClub grupper "
 "pluginet ska fungera."
 
-#: src/Services/Admin.php:1538
+#: src/Services/Admin.php:1563
 msgid "Standard images (no MyClub)"
 msgstr "Standardbilder (inga MyClub)"
 
-#: src/Services/Admin.php:1555
+#: src/Services/Admin.php:1580
 msgid "All images"
 msgstr "Alla bilder"
 
-#: src/Services/Admin.php:1723 src/Services/Admin.php:1825
+#: src/Services/Admin.php:1748 src/Services/Admin.php:1850
 #: templates/admin/admin_settings.php:127
 msgid "Menu"
 msgstr "Meny"
 
-#: src/Services/Admin.php:1737 src/Services/Admin.php:1826
+#: src/Services/Admin.php:1762 src/Services/Admin.php:1851
 #: templates/admin/admin_settings.php:130
 msgid "Navigation"
 msgstr "Navigation"
 
-#: src/Services/Admin.php:1858
+#: src/Services/Admin.php:1883
 msgid "Invalid API key entered"
 msgstr "Ogiltig API nyckel"
 
-#: src/Services/Admin.php:1878 src/Services/Admin.php:1898
+#: src/Services/Admin.php:1903 src/Services/Admin.php:1923
 msgid "You have to enter a valid slug"
 msgstr "Du måste ange en giltig slug"
 
-#: src/Services/Admin.php:1979
+#: src/Services/Admin.php:2004
 msgid "You have to enter title for the calendar field"
 msgstr "Du måste ange en rubrik för kalenderdelen på gruppsidor"
 
-#: src/Services/Admin.php:1997
+#: src/Services/Admin.php:2022
 msgid "You have to enter title for the club calendar field"
 msgstr "Du måste ange en rubrik för föreningskalendern"
 
-#: src/Services/Admin.php:2015
+#: src/Services/Admin.php:2040
 msgid "You have to enter title for the upcoming games field"
 msgstr "Du måste ange en rubrik för kommande matcher på gruppsidor"
 
-#: src/Services/Admin.php:2033
+#: src/Services/Admin.php:2058
 msgid "You have to enter title for the members field"
 msgstr "Du måste ange en rubrik för medlemmar på gruppsidor"
 
-#: src/Services/Admin.php:2051
+#: src/Services/Admin.php:2076
 msgid "You have to enter title for the leaders field"
 msgstr "Du måste ange en rubrik för ledare på gruppsidor"
 
-#: src/Services/Admin.php:2074
+#: src/Services/Admin.php:2099
 msgid "You have to enter word length for the news ingress"
 msgstr "Du måste ange antal ord för nyhetssidorna"
 
-#: src/Services/Admin.php:2082
+#: src/Services/Admin.php:2107
 msgid "The news ingress word length must be a valid integer."
 msgstr "Antal ord måste vara ett giltigt heltal."
 
-#: src/Services/Admin.php:2102
+#: src/Services/Admin.php:2127
 msgid "You must enter a title for the news field"
 msgstr "Du måste ange en rubrik för nyheter på gruppsidor"
 
-#: src/Services/Admin.php:2120
+#: src/Services/Admin.php:2145
 msgid "You must enter a title for the club news field"
 msgstr "Du måste ange en rubrik för nyheter för föreningen"
 
-#: src/Services/Admin.php:2179
+#: src/Services/Admin.php:2204
 msgid "The selected template was not found."
 msgstr "Vald mall kunde inte hittas."
 
-#: src/Services/Admin.php:2202
+#: src/Services/Admin.php:2227
 msgid "The selected image size was not found."
 msgstr "Vald bildstorlek kunde inte hittas."
 
@@ -871,7 +1013,7 @@ msgstr "Grupper"
 #: blocks/build/coming-games/index.js:1 blocks/build/leaders/index.js:1
 #: blocks/build/members/index.js:1 blocks/build/navigation/index.js:1
 #: blocks/build/news/index.js:1 blocks/build/title/index.js:1
-#: blocks/src/calendar/edit.js:188 blocks/src/coming-games/edit.js:34
+#: blocks/src/calendar/edit.js:194 blocks/src/coming-games/edit.js:34
 #: blocks/src/leaders/edit.js:122 blocks/src/members/edit.js:119
 #: blocks/src/navigation/edit.js:31 blocks/src/news/edit.js:33
 #: blocks/src/title/edit.js:67
@@ -1051,12 +1193,15 @@ msgid ""
 "are <code>post_id</code> which can be set to the WordPress post id of the "
 "group page that you want to get the calendar from or <code>group_id</code> "
 "which is the MyClub group id for the group page. The default is to use the "
-"current page."
+"current page. You can also use <code>show_subscribe_button</code> and set "
+"that to \"1\" if you want to display the subscribe button on a specific page."
 msgstr ""
-"Kalender blocket visar en grupps kalender. Attribut som kan användas med "
-"blocket är <code>post_id</code> som motsvarar WordPress ID:t på den "
-"gruppsida som du vill visa kalendern för eller <code>group_id</code> som är "
-"MyClub grupp id:t för gruppsidan. Som standard används innevarande sida."
+"Kalenderblocket visar en gruppkalender. De tillgängliga attributen är "
+"<code>post_id</code> som kan ställas in på WordPress-inläggs-ID:t för den "
+"gruppsida som du vill hämta kalendern från, eller <code>group_id</code> som "
+"är MyClub-grupp-ID:t för gruppsidan. Standardinställningen är att använda "
+"den aktuella sidan. Du kan också använda <code>show_subscribe_button</code> "
+"och sätta \"1\" om du vill visa prenumerationsknappen på en specifik sida."
 
 #: templates/admin/admin_settings.php:112
 msgid "Club calendar"
@@ -1064,11 +1209,13 @@ msgstr "Föreningskalender"
 
 #: templates/admin/admin_settings.php:113
 msgid ""
-"The club calendar block will display the club calendar. This block doesn't "
-"require any attributes."
+"The club calendar block will display the club calendar. You can use "
+"<code>show_subscribe_button</code> and set that to \"1\" if you want to "
+"display the subscribe button with the calendar."
 msgstr ""
-"Föreningskalenderblocket visar föreningens kalender. Detta block har inga "
-"attribut."
+"Föreningskalenderblocket visar föreningskalendern. Du kan använda "
+"<code>show_subscribe_button</code> och sätta  \"1\" om du vill visa "
+"prenumerationsknappen med kalendern."
 
 #: templates/admin/admin_settings.php:116
 msgid ""
@@ -1192,20 +1339,26 @@ msgid ""
 "attributes are <code>post_id</code> which can be set to the WordPress post "
 "id of the group page that you want to get the calendar from or "
 "<code>group_id</code> which is the MyClub group id for the group page. The "
-"default is to use the current page."
+"default is to use the current page. You can also use "
+"<code>show_subscribe_button</code> and set that to \"1\" if you want to "
+"display the subscribe button on a specific page."
 msgstr ""
-"Kalender kortkoden visar en grupps kalender. Attribut som kan användas med "
-"kortkoden är <code>post_id</code> som motsvarar WordPress ID:t på den "
-"gruppsida som du vill visa kalendern för eller <code>group_id</code> som är "
-"MyClub grupp id:t för gruppsidan. Som standard används innevarande sida."
+"Kalender kortkoden visar en gruppkalender. De tillgängliga attributen är "
+"<code>post_id</code> som kan ställas in på WordPress-inläggs-ID:t för den "
+"gruppsida som du vill hämta kalendern från, eller <code>group_id</code> som "
+"är MyClub-grupp-ID:t för gruppsidan. Standardinställningen är att använda "
+"den aktuella sidan. Du kan också använda <code>show_subscribe_button</code> "
+"och sätta \"1\" om du vill visa prenumerationsknappen på en specifik sida."
 
 #: templates/admin/admin_settings.php:150
 msgid ""
-"The club calendar shortcode will display the club calendar. This block "
-"doesn't require any attributes."
+"The club calendar shortcode will display the club calendar. You can use "
+"<code>show_subscribe_button</code> and set that to \"1\" if you want to "
+"display the subscribe button with the calendar."
 msgstr ""
-"Föreningskalender kortkoden visar föreningens kalender. Denna kortkod har "
-"inga attribut."
+"Kortkoden för föreningskalendern visar kalendern för föreningen. Du kan "
+"använda <code>show_subscribe_button</code> och sätta \"1\" om du vill visa "
+"prenumerationsknappen med kalendern."
 
 #: templates/admin/admin_settings.php:153
 msgid ""
@@ -1326,24 +1479,25 @@ msgid "Resync club calendar"
 msgstr "Ladda om föreningskalendern"
 
 #: blocks/build/calendar/index.js:1 blocks/build/club-calendar/index.js:1
-#: blocks/src/calendar/edit.js:21 blocks/src/club-calendar/edit.js:18
+#: blocks/src/calendar/edit.js:21 blocks/src/club-calendar/edit.js:19
 msgid "Description"
 msgstr "Beskrivning"
 
 #: blocks/build/calendar/index.js:1 blocks/build/coming-games/index.js:1
 #: blocks/build/leaders/index.js:1 blocks/build/members/index.js:1
 #: blocks/build/navigation/index.js:1 blocks/build/news/index.js:1
-#: blocks/build/title/index.js:1 blocks/src/calendar/edit.js:85
+#: blocks/build/title/index.js:1 blocks/src/calendar/edit.js:88
 #: blocks/src/coming-games/edit.js:19 blocks/src/leaders/edit.js:22
 #: blocks/src/members/edit.js:22 blocks/src/navigation/edit.js:16
 #: blocks/src/news/edit.js:17 blocks/src/title/edit.js:33
 msgid "Select a group"
 msgstr "Välj en grupp"
 
-#: blocks/build/calendar/index.js:1 blocks/build/coming-games/index.js:1
-#: blocks/build/leaders/index.js:1 blocks/build/members/index.js:1
-#: blocks/build/navigation/index.js:1 blocks/build/news/index.js:1
-#: blocks/build/title/index.js:1 blocks/src/calendar/edit.js:185
+#: blocks/build/calendar/index.js:1 blocks/build/club-calendar/index.js:1
+#: blocks/build/coming-games/index.js:1 blocks/build/leaders/index.js:1
+#: blocks/build/members/index.js:1 blocks/build/navigation/index.js:1
+#: blocks/build/news/index.js:1 blocks/build/title/index.js:1
+#: blocks/src/calendar/edit.js:191 blocks/src/club-calendar/edit.js:149
 #: blocks/src/coming-games/edit.js:30 blocks/src/leaders/edit.js:118
 #: blocks/src/members/edit.js:115 blocks/src/navigation/edit.js:27
 #: blocks/src/news/edit.js:29 blocks/src/title/edit.js:63
@@ -1351,7 +1505,7 @@ msgid "Content settings"
 msgstr "Innehållsinställningar"
 
 #: blocks/build/calendar/index.js:1 blocks/build/club-calendar/index.js:1
-#: blocks/src/calendar/edit.js:205 blocks/src/club-calendar/edit.js:151
+#: blocks/src/calendar/edit.js:220 blocks/src/club-calendar/edit.js:168
 msgid "Loading..."
 msgstr "Laddar..."
 
@@ -1504,3 +1658,17 @@ msgstr "MyClub Grupptitel"
 msgctxt "block description"
 msgid "Display title for a selected group"
 msgstr "Visa titelfältet för vald grupp"
+
+#~ msgid ""
+#~ "The club calendar block will display the club calendar. This block "
+#~ "doesn't require any attributes."
+#~ msgstr ""
+#~ "Föreningskalenderblocket visar föreningens kalender. Detta block har inga "
+#~ "attribut."
+
+#~ msgid ""
+#~ "The club calendar shortcode will display the club calendar. This block "
+#~ "doesn't require any attributes."
+#~ msgstr ""
+#~ "Föreningskalender kortkoden visar föreningens kalender. Denna kortkod har "
+#~ "inga attribut."

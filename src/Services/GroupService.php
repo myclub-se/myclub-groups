@@ -417,9 +417,13 @@ class GroupService extends Groups
                 'myclub_groups_phone'        => sanitize_text_field( $group->phone ),
                 'myclub_groups_email'        => sanitize_text_field( $group->email ),
                 'myclub_groups_contact_name' => sanitize_text_field( $group->contact_name ),
-                'myclub_groups_info_text'    => sanitize_text_field( $group->info_text )
+                'myclub_groups_info_text'    => sanitize_text_field( $group->info_text ),
+                'myclub_groups_calendar_url' => sanitize_text_field( $group->calendar_link )
             ]
         ];
+
+        $club_calendar_link = sanitize_text_field( $group->club_calendar_link );
+        Utils::updateOrCreateOption( 'myclub_groups_club_calendar_url', $club_calendar_link, 'no', true );
 
         if ( $post_id ) {
             $args[ 'ID' ] = $post_id;

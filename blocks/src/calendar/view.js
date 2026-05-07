@@ -30,4 +30,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }));
 
     calendar.render();
+
+    const subscribeBtn = document.querySelector('.myclub-groups-subscribe-button');
+    if (subscribeBtn) {
+        subscribeBtn.addEventListener('click', () => {
+            const modalId = subscribeBtn.dataset.subscribeModal;
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('modal-open');
+                const closeModal = () => {
+                    modal.classList.remove('modal-open');
+                    modal.querySelectorAll('.close').forEach(el => el.removeEventListener('click', closeModal));
+                    modal.removeEventListener('click', handleBackdropClick);
+                };
+                const handleBackdropClick = (event) => {
+                    if (event.target === modal) closeModal();
+                };
+                modal.querySelectorAll('.close').forEach(el => el.addEventListener('click', closeModal));
+                modal.addEventListener('click', handleBackdropClick);
+            }
+        });
+    }
 });

@@ -405,6 +405,13 @@ class Admin extends Base
                 ],
                 'default'           => '1'
         ] );
+        register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_group_calendar_show_subscribe_button', [
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeCheckbox'
+                ],
+                'default'           => '1'
+        ] );
         register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_club_calendar_desktop_views', [
                 'sanitize_callback' => [
                         $this,
@@ -662,6 +669,14 @@ class Admin extends Base
         ], 'myclub_groups_settings_tab4', 'myclub_groups_group_calendar_settings', [
                 'label_for' => 'myclub_groups_group_calendar_show_week_numbers',
                 'help_text' => __( 'Check this option to display week numbers in the group calendar.', 'myclub-groups' )
+        ] );
+
+        add_settings_field( 'myclub_groups_group_calendar_show_subscribe_button', __( 'Show subscribe button', 'myclub-groups' ), [
+                $this,
+                'renderGroupCalendarShowSubscribeButton'
+        ], 'myclub_groups_settings_tab4', 'myclub_groups_group_calendar_settings', [
+                'label_for' => 'myclub_groups_group_calendar_show_subscribe_button',
+                'help_text' => __( 'Check this option to display a subscribe button in the group calendar.', 'myclub-groups' )
         ] );
 
         # endregion
@@ -1247,6 +1262,16 @@ class Admin extends Base
     public function renderGroupCalendarWeekNumbers( array $args )
     {
         $this->renderCheckbox( $args, 'myclub_groups_group_calendar_show_week_numbers' );
+    }
+
+    /**
+     * @param array $args Arguments passed for rendering the checkbox.
+     * @return void
+     * @since 1.1.0
+     */
+    public function renderGroupCalendarShowSubscribeButton( array $args )
+    {
+        $this->renderCheckbox( $args, 'myclub_groups_group_calendar_show_subscribe_button' );
     }
 
     /**

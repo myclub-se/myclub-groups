@@ -9,10 +9,14 @@
 		"post_id": {
 			"type": "string",
 			"default": ""
+		},
+		"show_subscribe_button": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"name": "myclub-groups/calendar",
-	"version": "2.6.9",
+	"version": "2.7.0",
 	"title": "MyClub Group Calendar",
 	"category": "myclub",
 	"icon": "calendar-alt",

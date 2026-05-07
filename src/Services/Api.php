@@ -136,8 +136,9 @@ class Api
         $post_id = $post->ID;
 
         return new WP_REST_Response( [
-            'activities'   => Utils::prepareActivitiesJson( ActivityService::listPostActivities( $post_id ) ),
-            'contact_name' => get_post_meta( $post_id, 'myclub_groups_contact_name', true ),
+            'activities'    => Utils::prepareActivitiesJson( ActivityService::listPostActivities( $post_id ) ),
+            'calendar_url'  => get_post_meta( $post_id, 'myclub_groups_calendar_url', true ),
+            'contact_name'  => get_post_meta( $post_id, 'myclub_groups_contact_name', true ),
             'email'        => get_post_meta( $post_id, 'myclub_groups_email', true ),
             'info_text'    => get_post_meta( $post_id, 'myclub_groups_info_text', true ),
             'leaders'      => Utils::prepareMembersJson( MemberService::listGroupMembers( $post_id, true ) ),
@@ -220,7 +221,9 @@ class Api
             'myclub_groups_group_calendar_desktop_views_default' => esc_attr( get_option( 'myclub_groups_group_calendar_desktop_views_default', $default_desktop_calendar_views_default ) ),
             'myclub_groups_group_calendar_mobile_views'          => esc_attr( join( ',', get_option( 'myclub_groups_group_calendar_mobile_views', $default_mobile_calendar_views ) ) ),
             'myclub_groups_group_calendar_mobile_views_default'  => esc_attr( get_option( 'myclub_groups_group_calendar_mobile_views_default', $default_mobile_calendar_views_default ) ),
-            'myclub_groups_group_calendar_show_week_numbers'     => esc_attr( get_option( 'myclub_groups_group_calendar_show_week_numbers', '1' ) ),
+            'myclub_groups_group_calendar_show_week_numbers'        => esc_attr( get_option( 'myclub_groups_group_calendar_show_week_numbers', '1' ) ),
+            'myclub_groups_group_calendar_show_subscribe_button'    => esc_attr( get_option( 'myclub_groups_group_calendar_show_subscribe_button', '1' ) ),
+            'myclub_groups_club_calendar_url'                     => esc_attr( get_option( 'myclub_groups_club_calendar_url', '' ) ),
             'myclub_groups_no_activities_message'                => esc_attr( get_option( 'myclub_groups_no_activities_message', $default_no_activities_message ) ),
         ], 200 );
     }

@@ -287,8 +287,9 @@ class ShortCodes extends Base
     private function getShortcodeAttrs( array $attrs, string $shortCode ): array
     {
         return shortcode_atts( [
-            'group_id' => '',
-            'post_id'  => '',
+            'group_id'              => '',
+            'post_id'               => '',
+            'show_subscribe_button' => '',
         ], $attrs, $shortCode );
     }
 

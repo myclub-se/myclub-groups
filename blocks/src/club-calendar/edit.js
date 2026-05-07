@@ -1,4 +1,6 @@
-import { useBlockProps } from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { Icon, PanelBody, PanelRow, ToggleControl } from '@wordpress/components';
+import { calendar } from '@wordpress/icons';
 import { useEffect, useRef, useState, useCallback } from '@wordpress/element';
 import './editor.scss';
 import {__} from "@wordpress/i18n";
@@ -51,6 +53,8 @@ export default function Edit( { attributes, setAttributes } ) {
     const [calendarMobileViewsDefault, setCalendarMobileViewsDefault] = useState('');
     const [calendarShowWeekNumbers, setCalendarShowWeekNumbers] = useState(true);
     const [noEventsContent, setNoEventsContent] = useState('');
+    const [clubCalendarUrl, setClubCalendarUrl] = useState('');
+    const [subscribeModalOpen, setSubscribeModalOpen] = useState(false);
     const [optionsLoaded, setOptionsLoaded] = useState(false);
     const [events, setEvents] = useState([]);
     const {apiFetch} = wp;
@@ -134,6 +138,7 @@ export default function Edit( { attributes, setAttributes } ) {
             setCalendarMobileViewsDefault(options.myclub_groups_club_calendar_mobile_views_default);
             setCalendarShowWeekNumbers(options.myclub_groups_club_calendar_show_week_numbers === '1');
             setNoEventsContent(options.myclub_groups_no_activities_message);
+            setClubCalendarUrl(options.myclub_groups_club_calendar_url || '');
             setOptionsLoaded(true);
             getClubEvents();
         } );
@@ -141,6 +146,19 @@ export default function Edit( { attributes, setAttributes } ) {
 
     return (
         <>
+            <InspectorControls>
+                <PanelBody title={ __( 'Content settings', 'myclub-groups' ) }>
+                    <PanelRow>
+                        <ToggleControl
+                            label={ __( 'Show subscribe button', 'myclub-groups' ) }
+                            checked={ attributes.show_subscribe_button === '1' }
+                            onChange={ ( value ) => {
+                                setAttributes( { show_subscribe_button: value ? '1' : '0' } );
+                            } }
+                        />
+                    </PanelRow>
+                </PanelBody>
+            </InspectorControls>
             <div {...useBlockProps()}>
                 <div className="myclub-groups-club-calendar" ref={ outerRef }>
                     <div className="myclub-groups-club-calendar-container">
@@ -150,6 +168,66 @@ export default function Edit( { attributes, setAttributes } ) {
                         ) : (
                             <p>{__('Loading...', 'myclub-groups')}</p>
                         )}
+                    { attributes.show_subscribe_button === '1' && clubCalendarUrl && ( () => {
+                        const webcalUrl  = 'webcal://' + clubCalendarUrl;
+                        const httpsUrl   = 'https://' + clubCalendarUrl;
+                        return (
+                            <>
+                                <div className="myclub-groups-subscribe-button-wrapper">
+                                    <button
+                                        className="myclub-groups-subscribe-button"
+                                        onClick={ () => setSubscribeModalOpen( true ) }
+                                    >
+                                        <Icon icon={ calendar } size={ 16 } />
+                                        { __( 'Subscribe', 'myclub-groups' ) }
+                                    </button>
+                                </div>
+                                <div className={ 'club-calendar-modal' + ( subscribeModalOpen ? ' modal-open' : '' ) }>
+                                    <div className="modal-content subscribe-modal-content">
+                                        <span className="close" onClick={ () => setSubscribeModalOpen( false ) }>&times;</span>
+                                        <div className="modal-body subscribe-modal-body">
+                                            <h3 className="subscribe-modal-title">{ __( 'Subscribe', 'myclub-groups' ) }</h3>
+                                            <div className="subscribe-platform">
+                                                <div className="subscribe-platform-header">
+                                                    <strong>{ __( 'iPhone, iPad, Mac', 'myclub-groups' ) }</strong>
+                                                </div>
+                                                <ol>
+                                                    <li>{ __( 'Use the browser on the respective device', 'myclub-groups' ) }</li>
+                                                    <li>{ __( 'Click the following link:', 'myclub-groups' ) } <a href={ webcalUrl }>{ webcalUrl }</a></li>
+                                                    <li>{ __( 'Click "Subscribe"', 'myclub-groups' ) }</li>
+                                                </ol>
+                                            </div>
+                                            <div className="subscribe-platform">
+                                                <div className="subscribe-platform-header">
+                                                    <strong>{ __( 'Android', 'myclub-groups' ) }</strong>
+                                                </div>
+                                                <p>{ __( 'Every Android device is associated with a Google account. Subscriptions in Android are done via Google, see below.', 'myclub-groups' ) }</p>
+                                            </div>
+                                            <div className="subscribe-platform">
+                                                <div className="subscribe-platform-header">
+                                                    <strong>{ __( 'Google', 'myclub-groups' ) }</strong>
+                                                </div>
+                                                <ol>
+                                                    <li>{ __( 'Go to', 'myclub-groups' ) } <a href="https://www.google.com/calendar" target="_blank" rel="noopener">www.google.com/calendar</a> { __( '(requires a Google account)', 'myclub-groups' ) }</li>
+                                                    <li>{ __( 'Click the arrow to the right of "Other calendars" and then "Add web address"', 'myclub-groups' ) }</li>
+                                                    <li>{ __( 'Enter the URL:', 'myclub-groups' ) } <a href={ httpsUrl } target="_blank" rel="noopener">{ httpsUrl }</a> { __( 'and click "Add calendar"', 'myclub-groups' ) }</li>
+                                                </ol>
+                                            </div>
+                                            <div className="subscribe-platform">
+                                                <div className="subscribe-platform-header">
+                                                    <strong>{ __( 'Microsoft Outlook', 'myclub-groups' ) }</strong>
+                                                </div>
+                                                <ol>
+                                                    <li>{ __( 'Click the following link:', 'myclub-groups' ) } <a href={ webcalUrl }>{ webcalUrl }</a></li>
+                                                    <li>{ __( 'Open the link with Outlook', 'myclub-groups' ) }</li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </>
+                        );
+                    } )() }
                     </div>
                     <div className="club-calendar-modal" ref={ modalRef }>
                         <div className="modal-content">
