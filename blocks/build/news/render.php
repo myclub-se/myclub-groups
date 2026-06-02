@@ -6,7 +6,7 @@ use MyClub\MyClubGroups\Utils;
 if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 $myclub_groups_news_title = get_option( 'myclub_groups_news_title' ) ?: __( 'News', 'myclub-groups' );
-$myclub_groups_ingress_word_length = (int) get_option( 'myclub_groups_news_ingress_word_length' ) ?: 0;
+$myclub_groups_ingress_word_length = (int)get_option( 'myclub_groups_news_ingress_word_length' ) ?: 0;
 
 ?>
 <div class="myclub-groups-news" id="news">
@@ -23,8 +23,6 @@ $myclub_groups_ingress_word_length = (int) get_option( 'myclub_groups_news_ingre
         } else {
         $meta = get_post_meta( $post_id, 'myclub_groups_id' );
 
-        ?>
-        <?php
         if ( !empty( $meta ) ) {
         $myclub_group_id = $meta[ 0 ];
         $query_args = array (
@@ -63,48 +61,48 @@ $myclub_groups_ingress_word_length = (int) get_option( 'myclub_groups_news_ingre
         <div class="myclub-groups-news-list">
             <?php
             foreach ( $posts as $post ) {
-                    $myclub_groups_image_html = get_the_post_thumbnail(
+                $myclub_groups_image_html = get_the_post_thumbnail(
                         $post->ID,
                         'medium_large',
-                        array(
-                            'alt' => esc_attr( $post->post_title ),
+                        array (
+                                'alt' => esc_attr( $post->post_title ),
                         )
-                    );
-                    $myclub_groups_image_caption = get_the_post_thumbnail_caption( $post->ID );
-                    ?>
-                    <div class="myclub-news-item">
-                        <a href="<?php echo esc_attr( get_permalink( $post->ID ) ); ?>">
-                            <h4>
-                                <?php echo esc_html( $post->post_title ); ?>
-                            </h4>
+                );
+                $myclub_groups_image_caption = get_the_post_thumbnail_caption( $post->ID );
+                ?>
+                <div class="myclub-news-item">
+                    <a href="<?php echo esc_attr( get_permalink( $post->ID ) ); ?>">
+                        <h4>
+                            <?php echo esc_html( $post->post_title ); ?>
+                        </h4>
 
-                            <?php if ( $myclub_groups_image_html ) { ?>
-                                <div class="myclub-news-image">
-                                    <?php echo wp_kses_post( $myclub_groups_image_html ); ?>
-                                </div>
-                            <?php } ?>
-
-                            <?php if ( $myclub_groups_image_caption ) { ?>
-                                <div class="myclub-news-image-caption"><?php echo esc_html( $myclub_groups_image_caption ); ?></div>
-                            <?php } ?>
-                            <div class="myclub-news-ingress">
-                                <?php
-                                $content = $post->post_excerpt ?: $post->post_content;
-
-                                // Render Gutenberg blocks if any, and shortcodes
-                                $content = do_blocks( $content );
-                                $content = do_shortcode( $content );
-
-                                if ( $myclub_groups_ingress_word_length > 0 ) {
-                                    $content = wp_trim_words( wp_strip_all_tags( $content ), $myclub_groups_ingress_word_length, '...' );
-                                }
-
-                                // Output safely
-                                echo wp_kses_post( $content );
-                                ?>
+                        <?php if ( $myclub_groups_image_html ) { ?>
+                            <div class="myclub-news-image">
+                                <?php echo wp_kses_post( $myclub_groups_image_html ); ?>
                             </div>
-                        </a>
-                    </div>
+                        <?php } ?>
+
+                        <?php if ( $myclub_groups_image_caption ) { ?>
+                            <div class="myclub-news-image-caption"><?php echo esc_html( $myclub_groups_image_caption ); ?></div>
+                        <?php } ?>
+                        <div class="myclub-news-ingress">
+                            <?php
+                            $content = $post->post_excerpt ?: $post->post_content;
+
+                            // Render Gutenberg blocks if any, and shortcodes
+                            $content = do_blocks( $content );
+                            $content = do_shortcode( $content );
+
+                            if ( $myclub_groups_ingress_word_length > 0 ) {
+                                $content = wp_trim_words( wp_strip_all_tags( $content ), $myclub_groups_ingress_word_length, '...' );
+                            }
+
+                            // Output safely
+                            echo wp_kses_post( $content );
+                            ?>
+                        </div>
+                    </a>
+                </div>
                 <?php
             }
             $term_link = get_term_link( $term_id, NewsService::MYCLUB_GROUP_NEWS );

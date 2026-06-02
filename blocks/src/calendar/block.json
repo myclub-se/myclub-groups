@@ -13,10 +13,14 @@
 		"show_subscribe_button": {
 			"type": "string",
 			"default": ""
+		},
+		"height": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"name": "myclub-groups/calendar",
-	"version": "2.7.0",
+	"version": "2.8.0",
 	"title": "MyClub Group Calendar",
 	"category": "myclub",
 	"icon": "calendar-alt",

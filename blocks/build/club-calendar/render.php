@@ -12,6 +12,9 @@ $myclub_groups_calendar_mobile_views = get_option( 'myclub_groups_club_calendar_
 $myclub_groups_calendar_mobile_views_default = get_option( 'myclub_groups_club_calendar_mobile_views_default', Utils::getCalendarMobileViewsDefault() );
 $myclub_groups_calendar_show_week_numbers = get_option( 'myclub_groups_club_calendar_show_week_numbers', '1' );
 $myclub_groups_no_activities_message = get_option( 'myclub_groups_no_activities_message', esc_attr__( 'No activities to display', 'myclub-groups' ) );
+$myclub_groups_club_calendar_height = ( isset( $attributes['height'] ) && $attributes['height'] !== '' )
+    ? $attributes['height']
+    : get_option( 'myclub_groups_club_calendar_height', '' );
 
 $myclub_groups_show_subscribe_button = ( isset( $attributes['show_subscribe_button'] ) && $attributes['show_subscribe_button'] !== '' )
     ? $attributes['show_subscribe_button']
@@ -61,6 +64,7 @@ if ( $myclub_groups_show_subscribe_button === '1' ) {
              data-calendar-week-numbers="<?php echo esc_attr( $myclub_groups_calendar_show_week_numbers ); ?>"
              data-first-day-of-week="<?php echo esc_attr( get_option( 'start_of_week', 1 ) ); ?>"
              data-no-events-content="<?php echo esc_attr( $myclub_groups_no_activities_message ); ?>"
+             <?php if ( !empty( $myclub_groups_club_calendar_height ) ) : ?>data-calendar-height="<?php echo esc_attr( $myclub_groups_club_calendar_height ); ?>"<?php endif; ?>
         ></div>
         <?php
         if ( $myclub_groups_show_subscribe_button === '1' && !empty( $myclub_groups_club_base_url ) ) {

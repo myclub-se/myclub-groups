@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileDefault: calendarEl.dataset.calendarMobileDefault,
         showWeekNumbers: calendarEl.dataset.calendarWeekNumbers === '1',
         plugins: [],
+        height: calendarEl.dataset.calendarHeight || undefined,
         showEvent: (arg) => {
             const item = arg.event;
             const modal = document.getElementById("calendar-modal");

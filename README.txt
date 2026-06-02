@@ -3,8 +3,8 @@ Contributors: myclubse
 Donate link: https://www.myclub.se
 Tags: groups, members, administration
 Requires at least: 6.4
-Tested up to: 6.9
-Stable tag: 2.7.0
+Tested up to: 7.0
+Stable tag: 2.8.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -82,6 +82,10 @@ The plugin will try to clear cache on the following cache plugins for MyClub gro
 For unsupported cache systems, please contact us to request integration.
 
 == Changelog ==
+= 2.8.0 =
+* Checked plugin for WordPress 7.0 compatibility.
+* Add height setting to calendar blocks.
+
 = 2.7.0 =
 * Added subscribe button with platform-specific subscription modal to the group calendar and club calendar blocks and shortcodes.
 

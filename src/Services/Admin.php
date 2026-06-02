@@ -412,6 +412,13 @@ class Admin extends Base
                 ],
                 'default'           => '1'
         ] );
+        register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_group_calendar_height', [
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeGroupCalendarHeight'
+                ],
+                'default'           => ''
+        ] );
         register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_club_calendar_desktop_views', [
                 'sanitize_callback' => [
                         $this,
@@ -446,6 +453,13 @@ class Admin extends Base
                         'sanitizeCheckbox'
                 ],
                 'default'           => '1'
+        ] );
+        register_setting( 'myclub_groups_settings_tab4', 'myclub_groups_club_calendar_height', [
+                'sanitize_callback' => [
+                        $this,
+                        'sanitizeClubCalendarHeight'
+                ],
+                'default'           => ''
         ] );
 
         add_settings_section( 'myclub_groups_main', __( 'MyClub Groups Main Settings', 'myclub-groups' ), function () {
@@ -679,6 +693,14 @@ class Admin extends Base
                 'help_text' => __( 'Check this option to display a subscribe button in the group calendar.', 'myclub-groups' )
         ] );
 
+        add_settings_field( 'myclub_groups_group_calendar_height', __( 'Group calendar height', 'myclub-groups' ), [
+                $this,
+                'renderGroupCalendarHeight'
+        ], 'myclub_groups_settings_tab4', 'myclub_groups_group_calendar_settings', [
+                'label_for' => 'myclub_groups_group_calendar_height',
+                'help_text' => __( 'Set the calendar height. Leave empty to use the default aspect ratio (1.35). Valid values: a positive number (pixels), "auto", or a percentage like "100%".', 'myclub-groups' )
+        ] );
+
         # endregion
 
         # region club calendar display settings
@@ -721,6 +743,14 @@ class Admin extends Base
         ], 'myclub_groups_settings_tab4', 'myclub_groups_club_calendar_settings', [
                 'label_for' => 'myclub_groups_club_calendar_show_week_numbers',
                 'help_text' => __( 'Check this option to display week numbers in the club calendar.', 'myclub-groups' )
+        ] );
+
+        add_settings_field( 'myclub_groups_club_calendar_height', __( 'Club calendar height', 'myclub-groups' ), [
+                $this,
+                'renderClubCalendarHeight'
+        ], 'myclub_groups_settings_tab4', 'myclub_groups_club_calendar_settings', [
+                'label_for' => 'myclub_groups_club_calendar_height',
+                'help_text' => __( 'Set the calendar height. Leave empty to use the default aspect ratio (1.35). Valid values: a positive number (pixels), "auto", or a percentage like "100%".', 'myclub-groups' )
         ] );
 
         # endregion
@@ -1398,6 +1428,26 @@ class Admin extends Base
     public function renderClubCalendarWeekNumbers( array $args )
     {
         $this->renderCheckbox( $args, 'myclub_groups_club_calendar_show_week_numbers' );
+    }
+
+    /**
+     * @param array $args Arguments passed for rendering the input field.
+     * @return void
+     * @since 2.8.0
+     */
+    public function renderGroupCalendarHeight( array $args )
+    {
+        $this->renderCalendarHeightField( $args, 'myclub_groups_group_calendar_height' );
+    }
+
+    /**
+     * @param array $args Arguments passed for rendering the input field.
+     * @return void
+     * @since 2.8.0
+     */
+    public function renderClubCalendarHeight( array $args )
+    {
+        $this->renderCalendarHeightField( $args, 'myclub_groups_club_calendar_height' );
     }
 
     /**
@@ -2162,6 +2212,43 @@ class Admin extends Base
     }
 
     /**
+     * Sanitizes the calendar height input.
+     * Accepts: empty string, "auto", a CSS percentage (e.g. "100%"), or a positive integer (pixels).
+     *
+     * @param string $input
+     * @return string
+     */
+    public function sanitizeGroupCalendarHeight( string $input ): string
+    {
+        return $this->sanitizeCalendarHeightValue( $input, 'myclub_groups_group_calendar_height' );
+    }
+
+    public function sanitizeClubCalendarHeight( string $input ): string
+    {
+        return $this->sanitizeCalendarHeightValue( $input, 'myclub_groups_club_calendar_height' );
+    }
+
+    private function sanitizeCalendarHeightValue( string $input, string $field_name ): string
+    {
+        $input = sanitize_text_field( wp_unslash( $input ) );
+
+        if ( $input === '' || $input === 'auto' ) {
+            return $input;
+        }
+
+        if ( ctype_digit( $input ) && (int) $input > 0 ) {
+            return $input;
+        }
+
+        if ( preg_match( '/^\d+(\.\d+)?%$/', $input ) ) {
+            return $input;
+        }
+
+        add_settings_error( $field_name, 'invalid-value', __( 'Invalid calendar height. Leave empty, or use a positive number (pixels), "auto", or a percentage like "100%".', 'myclub-groups' ) );
+        return '';
+    }
+
+    /**
      * Sanitizes the input sorted fields for displaying the fields on the groups page.
      *
      * @param array $items The items to be sanitized
@@ -2460,6 +2547,25 @@ class Admin extends Base
             echo '<p class="description">' . wp_kses_post( $args[ 'help_text' ] ) . '</p>';
         } elseif ( isset( $args[ 'description' ] ) ) {
             echo '<p class="description">' . wp_kses_post( $args[ 'description' ] ) . '</p>';
+        }
+    }
+
+
+    /**
+     * Renders the calendar height field input for the plugin settings.
+     *
+     * @param array $args Optional arguments for rendering the field, including 'label_for' and 'help_text'.
+     * @param string $option_name The name of the option used to store the calendar height value.
+     *
+     * @return void
+     * @since 2.8.0
+     */
+    private function renderCalendarHeightField( array $args, string $option_name )
+    {
+        $height = get_option( $option_name, '' );
+        echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="' . esc_attr( $option_name ) . '" value="' . esc_attr( $height ) . '" placeholder="' . esc_attr__( 'e.g. auto, 100%, 600', 'myclub-groups' ) . '" />';
+        if ( isset( $args[ 'help_text' ] ) ) {
+            echo '<p class="description">' . wp_kses_post( $args[ 'help_text' ] ) . '</p>';
         }
     }
 

@@ -223,6 +223,8 @@ class Api
             'myclub_groups_group_calendar_mobile_views_default'  => esc_attr( get_option( 'myclub_groups_group_calendar_mobile_views_default', $default_mobile_calendar_views_default ) ),
             'myclub_groups_group_calendar_show_week_numbers'        => esc_attr( get_option( 'myclub_groups_group_calendar_show_week_numbers', '1' ) ),
             'myclub_groups_group_calendar_show_subscribe_button'    => esc_attr( get_option( 'myclub_groups_group_calendar_show_subscribe_button', '1' ) ),
+            'myclub_groups_group_calendar_height'                   => esc_attr( get_option( 'myclub_groups_group_calendar_height', '' ) ),
+            'myclub_groups_club_calendar_height'                    => esc_attr( get_option( 'myclub_groups_club_calendar_height', '' ) ),
             'myclub_groups_club_calendar_url'                     => esc_attr( get_option( 'myclub_groups_club_calendar_url', '' ) ),
             'myclub_groups_no_activities_message'                => esc_attr( get_option( 'myclub_groups_no_activities_message', $default_no_activities_message ) ),
         ], 200 );

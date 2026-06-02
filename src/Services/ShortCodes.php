@@ -286,11 +286,28 @@ class ShortCodes extends Base
      */
     private function getShortcodeAttrs( array $attrs, string $shortCode ): array
     {
-        return shortcode_atts( [
-            'group_id'              => '',
-            'post_id'               => '',
-            'show_subscribe_button' => '',
-        ], $attrs, $shortCode );
+        if ( $shortCode === 'myclub-groups-club-calendar' ) {
+            $defaults = [
+                'show_subscribe_button' => '',
+                'height'                => '',
+            ];
+        } elseif ( $shortCode === 'myclub-groups-calendar' ) {
+            $defaults = [
+                'group_id'              => '',
+                'post_id'               => '',
+                'show_subscribe_button' => '',
+                'height'                => '',
+            ];
+        } elseif ( in_array( $shortCode, [ 'myclub-groups-club-news', 'myclub-groups-menu' ] ) ) {
+            $defaults = [];
+        } else {
+            $defaults = [
+                'group_id' => '',
+                'post_id'  => '',
+            ];
+        }
+
+        return shortcode_atts( $defaults, $attrs, $shortCode );
     }
 
     /**
