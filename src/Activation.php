@@ -196,6 +196,11 @@ class Activation
                 'autoload' => 'no'
             ],
             [
+                'name'     => 'myclub_groups_group_calendar_height',
+                'value'    => '',
+                'autoload' => 'no'
+            ],
+            [
                 'name'     => 'myclub_groups_club_calendar_desktop_views',
                 'value'    => Utils::getCalendarDesktopViews(),
                 'autoload' => 'no'
@@ -218,6 +223,11 @@ class Activation
             [
                 'name'     => 'myclub_groups_club_calendar_show_week_numbers',
                 'value'    => '1',
+                'autoload' => 'no'
+            ],
+            [
+                'name'     => 'myclub_groups_club_calendar_height',
+                'value'    => '',
                 'autoload' => 'no'
             ],
             [
