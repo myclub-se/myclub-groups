@@ -4,7 +4,7 @@ Donate link: https://www.myclub.se
 Tags: groups, members, administration
 Requires at least: 6.4
 Tested up to: 7.0
-Stable tag: 2.8.0
+Stable tag: 2.8.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -82,6 +82,11 @@ The plugin will try to clear cache on the following cache plugins for MyClub gro
 For unsupported cache systems, please contact us to request integration.
 
 == Changelog ==
+= 2.8.1 =
+* Upcoming activities block now shows games played today for the rest of the day.
+* Upcoming activities block uses the site timezone instead of UTC when determining which games are upcoming.
+* Fixed a PHP error that could occur when an activity was removed from a group page.
+
 = 2.8.0 =
 * Checked plugin for WordPress 7.0 compatibility.
 * Add height setting to calendar blocks.
