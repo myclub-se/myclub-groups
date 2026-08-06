@@ -7,7 +7,7 @@ namespace Composer\Autoload;
 class ComposerStaticInitfa41d3678fcf6753366afd5c7163a8c9
 {
     public static $prefixLengthsPsr4 = array (
-        'M' => 
+        'M' =>
         array (
             'MyClub\\MyClubGroups\\' => 20,
             'MyClub\\Common\\' => 14,
@@ -15,11 +15,11 @@ class ComposerStaticInitfa41d3678fcf6753366afd5c7163a8c9
     );
 
     public static $prefixDirsPsr4 = array (
-        'MyClub\\MyClubGroups\\' => 
+        'MyClub\\MyClubGroups\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
-        'MyClub\\Common\\' => 
+        'MyClub\\Common\\' =>
         array (
             0 => __DIR__ . '/..' . '/myclub/common-lib/src',
         ),

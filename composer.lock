@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "myclub/common-lib",
-            "version": "1.0.4",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
-                "url": "git@github.com:myclub-se/myclub-php-lib.git",
-                "reference": "a7bb7478673b25c2888765bd0fd40815c2e08bc1"
+                "url": "https://github.com/myclub-se/myclub-php-lib.git",
+                "reference": "226dbe71ffba25dd627752feadcd543a672641ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclub-se/myclub-php-lib/zipball/a7bb7478673b25c2888765bd0fd40815c2e08bc1",
-                "reference": "a7bb7478673b25c2888765bd0fd40815c2e08bc1",
+                "url": "https://api.github.com/repos/myclub-se/myclub-php-lib/zipball/226dbe71ffba25dd627752feadcd543a672641ae",
+                "reference": "226dbe71ffba25dd627752feadcd543a672641ae",
                 "shasum": ""
             },
             "require": {
@@ -34,7 +34,11 @@
                 "GPLv2 or later"
             ],
             "description": "Shared logic for MyClub WordPress plugins",
-            "time": "2026-07-24T10:16:12+00:00"
+            "support": {
+                "source": "https://github.com/myclub-se/myclub-php-lib/tree/1.0.5",
+                "issues": "https://github.com/myclub-se/myclub-php-lib/issues"
+            },
+            "time": "2026-08-06T08:33:24+00:00"
         }
     ],
     "packages-dev": [],
@@ -47,5 +51,5 @@
         "ext-json": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
