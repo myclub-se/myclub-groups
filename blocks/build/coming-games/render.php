@@ -22,7 +22,7 @@ if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
             $activities = array_values(
                     array_filter(
                             ActivityService::listPostActivities( $post_id ), function ( $activity ) {
-                        return $activity->day > gmdate( 'Y-m-d' ) && $activity->base_type === 'match';
+                        return $activity->day >= wp_date( 'Y-m-d' ) && $activity->base_type === 'match';
                     }
                     )
             );
