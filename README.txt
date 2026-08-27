@@ -4,7 +4,7 @@ Donate link: https://www.myclub.se
 Tags: groups, members, administration
 Requires at least: 6.4
 Tested up to: 7.0
-Stable tag: 2.8.1
+Stable tag: 2.8.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -82,6 +82,13 @@ The plugin will try to clear cache on the following cache plugins for MyClub gro
 For unsupported cache systems, please contact us to request integration.
 
 == Changelog ==
+= 2.8.2 =
+* Fixed a JavaScript error that could stop the calendar and club calendar from being displayed when an activity, member or leader contained a quotation mark.
+* Activity, member and leader information is now stored as plain text and escaped when it is displayed.
+* Fixed backslashes being shown in activity descriptions in the block editor.
+* Group pages are no longer treated as updated on every synchronization, which cleared the page caches unnecessarily.
+* Updated myclub/common-lib to 1.0.6.
+
 = 2.8.1 =
 * Upcoming activities block now shows games played today for the rest of the day.
 * Upcoming activities block uses the site timezone instead of UTC when determining which games are upcoming.

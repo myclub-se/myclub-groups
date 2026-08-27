@@ -34,17 +34,13 @@ if ( empty ( $post_id ) || $post_id == 0 ) {
                 ];
                 ?>
                 <div class="members-list"
-                     data-labels="<?php echo esc_attr( wp_json_encode( $labels, JSON_UNESCAPED_UNICODE ) ); ?>">
+                     data-labels="<?php echo esc_attr( wp_json_encode( $labels, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_TAG ) ); ?>">
                     <?php
                     foreach ( $myclub_groups_members as $key => $member ) {
                         $member->dynamic_fields = json_decode( $member->dynamic_fields );
-                        $member->name = str_replace( 'u0022', '\"', $member->name );
-                        if ( isset ( $member->role ) ) {
-                            $member->role = str_replace( 'u0022', '\"', $member->role );
-                        }
                         ?>
                         <div class="member"
-                             data-member="<?php echo esc_attr( wp_json_encode( $member, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT ) ); ?>">
+                             data-member="<?php echo esc_attr( wp_json_encode( $member, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_TAG ) ); ?>">
                             <?php
                             if ( !empty( $member->image_id ) ) {
                                 ?>

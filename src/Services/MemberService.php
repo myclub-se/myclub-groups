@@ -95,6 +95,14 @@ class MemberService
      */
     static function createOrUpdateMember( int $post_id, stdClass $member ): bool
     {
+        // The MyClub API delivers plain text fields HTML escaped. Decode them on the way in so that the
+        // database holds the actual text - escaping is the responsibility of the code that outputs it.
+        foreach ( [ 'name', 'role', 'member_type' ] as $field ) {
+            if ( isset( $member->{$field} ) ) {
+                $member->{$field} = html_entity_decode( $member->{$field}, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+            }
+        }
+
         $data = [
             'post_id'        => $post_id,
             'member_id'      => $member->member_id,
@@ -122,19 +130,10 @@ class MemberService
             unset( $data );
             return true;
         } else {
-            $compared_values = array_filter( [
-                "name",
-                "email",
-                "phone",
-                "member_type",
-                "role",
-                "age",
-                "dynamic_fields",
-                "is_leader",
-                "image_id",
-                "image_url",
-            ], function ( $key ) use ( $member, $member_row ) {
-                return isset( $member->{$key}, $member_row->{$key} ) && $member->{$key} !== $member_row->{$key};
+            // Compare the values that are about to be written with the ones that are stored. The database
+            // returns all column values as strings, so both sides are cast before they are compared.
+            $compared_values = array_filter( array_keys( $data ), function ( $key ) use ( $data, $member_row ) {
+                return !property_exists( $member_row, $key ) || (string) $data[ $key ] !== (string) $member_row->{$key};
             } );
             self::$wpdb->update( self::$table_name, $data, [
                 'member_id' => $member->member_id,

@@ -50,14 +50,11 @@ $myclub_groups_calendar_height = ( isset( $attributes['height'] ) && $attributes
                     'weekTextLong'   => __( 'Week', 'myclub-groups' ),
             ];
 
-            foreach ( $activities as $activity ) {
-                $activity->title = str_replace( '&quot;', 'u0022', $activity->title );
-            }
             ?>
 
             <div id="calendar-div"
-                 data-events="<?php echo esc_attr( wp_json_encode( $activities, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT ) ); ?>"
-                 data-labels="<?php echo esc_attr( wp_json_encode( $labels, JSON_UNESCAPED_UNICODE ) ); ?>"
+                 data-events="<?php echo esc_attr( wp_json_encode( $activities, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_TAG ) ); ?>"
+                 data-labels="<?php echo esc_attr( wp_json_encode( $labels, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_TAG ) ); ?>"
                  data-locale="<?php echo esc_attr( get_locale() ); ?>"
                  data-calendar-desktop="<?php echo esc_attr( join( ',', $myclub_groups_calendar_desktop_views ) ); ?>"
                  data-calendar-desktop-default="<?php echo esc_attr( $myclub_groups_calendar_desktop_views_default ); ?>"

@@ -1,3 +1,5 @@
+import {escapeHtml} from './escape';
+
 export function changeHostName ( oldUrl ) {
     // Create a new URL object with the old URL
     let url = new URL(oldUrl);
@@ -50,34 +52,37 @@ export function showMemberModal( ref, member, labels ) {
     if (ref.current) {
         const imageElement = ref.current.getElementsByClassName('image')[0];
         const informationElement = ref.current.getElementsByClassName('information')[0];
-        let output = '<div class="name">' + member.name + '</div>';
+        let output = '<div class="name">' + escapeHtml(member.name) + '</div>';
 
         if (member.image_id) {
-            imageElement.innerHTML = '<img src="' + changeHostName(member.image_url) + '" alt="' + member.name + '" />';
+            const picture = document.createElement('img');
+            picture.src = changeHostName(member.image_url);
+            picture.alt = member.name;
+            imageElement.replaceChildren(picture);
         }
 
         if ( member.role || member.phone || member.email || member.age || (member.dynamic_fields && member.dynamic_fields.length ) ) {
             output += '<table>';
 
             if ( member.role ) {
-                output += `<tr><th>${labels.role}</th><td>${member.role}</td></tr>`;
+                output += `<tr><th>${labels.role}</th><td>${escapeHtml(member.role)}</td></tr>`;
             }
 
             if ( member.age ) {
-                output += `<tr><th>${labels.age}</th><td>${member.age}</td></tr>`;
+                output += `<tr><th>${labels.age}</th><td>${escapeHtml(member.age)}</td></tr>`;
             }
 
             if ( member.email ) {
-                output += `<tr><th>${labels.email}</th><td><a href="mailto:${member.email}">${member.email}</a></td></tr>`;
+                output += `<tr><th>${labels.email}</th><td><a href="mailto:${escapeHtml(member.email)}">${escapeHtml(member.email)}</a></td></tr>`;
             }
 
             if ( member.phone ) {
-                output += `<tr><th>${labels.phone}</th><td><a href="tel:${member.phone}">${member.phone}</a></td></tr>`;
+                output += `<tr><th>${labels.phone}</th><td><a href="tel:${escapeHtml(member.phone)}">${escapeHtml(member.phone)}</a></td></tr>`;
             }
 
             if ( member.dynamic_fields && member.dynamic_fields.length ) {
                 member.dynamic_fields.forEach( ( field ) => {
-                    output += `<tr><th>${field.name}</th><td>${field.value.replaceAll('u0022', '\"')}</td></tr>`;
+                    output += `<tr><th>${escapeHtml(field.name)}</th><td>${escapeHtml(field.value)}</td></tr>`;
                 });
             }
 
