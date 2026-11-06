@@ -28,6 +28,7 @@ class Services
         i18n::class,
         Menu::class,
         MyClubCron::class,
+        NewsAuthor::class,
         ShortCodes::class,
         Taxonomy::class,
     ];

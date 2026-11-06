@@ -47,20 +47,26 @@ $myclub_groups_ingress_word_length = (int) get_option( 'myclub_groups_news_ingre
                     );
                     $myclub_groups_image_caption = get_the_post_thumbnail_caption( $post->ID );
                     ?>
-                    <div class="myclub-news-item">
+                    <div class="myclub-club-news-item">
                         <a href="<?php echo esc_attr( get_permalink( $post->ID ) ); ?>">
                             <h4>
                                 <?php echo esc_html( $post->post_title ); ?>
                             </h4>
+                            <?php $myclub_groups_news_author = \MyClub\MyClubGroups\Services\NewsAuthor::getAuthor( $post );
+                            if ( $myclub_groups_news_author ) { ?>
+                                <div class="myclub-news-author"><?php
+                                    /* translators: %s: the name of the author of the news item */
+                                    echo esc_html( sprintf( __( 'By %s', 'myclub-groups' ), $myclub_groups_news_author ) ); ?></div>
+                            <?php } ?>
 
                             <?php if ( $myclub_groups_image_html ) { ?>
-                                <div class="myclub-news-image">
+                                <div class="myclub-club-news-image">
                                     <?php echo wp_kses_post( $myclub_groups_image_html ); ?>
                                 </div>
                             <?php } ?>
 
                             <?php if ( $myclub_groups_image_caption ) { ?>
-                                <div class="myclub-news-image-caption"><?php echo esc_html( $myclub_groups_image_caption ); ?></div>
+                                <div class="myclub-club-news-image-caption"><?php echo esc_html( $myclub_groups_image_caption ); ?></div>
                             <?php } ?>
                             <div class="myclub-news-ingress">
                                 <?php
@@ -102,7 +108,7 @@ $myclub_groups_ingress_word_length = (int) get_option( 'myclub_groups_news_ingre
             }
             echo '</div>';
             } else {
-                echo '<div class="no-news">' . esc_attr__( 'No news found', 'myclub-groups' ) . '</div>';
+                echo '<div class="no-news-found">' . esc_attr__( 'No news found', 'myclub-groups' ) . '</div>';
             }
             ?>
         </div>

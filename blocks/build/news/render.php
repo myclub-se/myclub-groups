@@ -75,6 +75,12 @@ $myclub_groups_ingress_word_length = (int)get_option( 'myclub_groups_news_ingres
                         <h4>
                             <?php echo esc_html( $post->post_title ); ?>
                         </h4>
+                        <?php $myclub_groups_news_author = \MyClub\MyClubGroups\Services\NewsAuthor::getAuthor( $post );
+                        if ( $myclub_groups_news_author ) { ?>
+                            <div class="myclub-news-author"><?php
+                                /* translators: %s: the name of the author of the news item */
+                                echo esc_html( sprintf( __( 'By %s', 'myclub-groups' ), $myclub_groups_news_author ) ); ?></div>
+                        <?php } ?>
 
                         <?php if ( $myclub_groups_image_html ) { ?>
                             <div class="myclub-news-image">

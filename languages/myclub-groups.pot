@@ -1598,3 +1598,9 @@ msgstr ""
 msgctxt "block description"
 msgid "Display title for a selected group"
 msgstr ""
+
+#. translators: %s: the name of the author of the news item
+#: blocks/build/club-news/render.php:59 blocks/build/news/render.php:82 blocks/src/club-news/render.php:59 blocks/src/news/render.php:82
+#, php-format
+msgid "By %s"
+msgstr ""

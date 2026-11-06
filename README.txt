@@ -4,7 +4,7 @@ Donate link: https://www.myclub.se
 Tags: groups, members, administration
 Requires at least: 6.4
 Tested up to: 7.0
-Stable tag: 2.8.2
+Stable tag: 2.9.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -29,6 +29,14 @@ The components fetch objects from MyClub and store them in WordPress. These obje
 See the blocks below for more information.
 
 Within MyClub, you configure which groups and in what order they should be displayed for the plugin. The plugin can then create a menu so visitors can navigate between the association's groups.
+
+=== News ===
+News from MyClub is imported as ordinary WordPress posts, so it can be shown by your theme and by other plugins just like posts you write yourself.
+
+* Every news item gets the category "News" ("Nyheter" on Swedish sites). Club news also gets the category "Club news" ("Föreningsnyheter"). If "Add news categories for group news" is enabled in the settings, news for a group also gets a category with the name of the group.
+* The image of the news item is added as the featured image of the post. The image text from MyClub is stored as the caption of the image in the media library and is shown below the image in the news blocks.
+* The author from MyClub is stored with the post. It is shown in the news blocks and is used as the author name by your theme, since the imported posts are not written by a WordPress user.
+* New news items are first created as drafts. They are published when their categories and featured image have been added, so that plugins that act when a post is published see the complete post. A news item with a publish date in the future is scheduled instead.
 
 === Appearance ===
 All components are minimally designed to make them easier to customize and fit your website’s design. All headers, tables, images, and similar items have their own CSS classes, allowing you to style them according to your preferences.
@@ -63,6 +71,9 @@ Once the plugin is installed with the API key, you can begin using it. The plugi
 
 == Frequently Asked Questions ==
 
+=== Can news be shared to social media automatically? ===
+Yes. Plugins such as Blog2Social, which share a post when it is published, can be used with the imported news. A new news item is published only after its categories and featured image have been added, so you can let the sharing plugin decide what to share based on the category, e.g. "Club news" or the category of a group.
+
 === Caching ===
 The plugin will try to clear cache on the following cache plugins for MyClub groups:
 * Breeze
@@ -82,6 +93,15 @@ The plugin will try to clear cache on the following cache plugins for MyClub gro
 For unsupported cache systems, please contact us to request integration.
 
 == Changelog ==
+= 2.9.0 =
+* News items now show the author from MyClub. The author is shown in the news blocks and replaces the author name in the theme for news imported from MyClub.
+* New news items are created as drafts and published when their categories and featured image have been added, so that plugins that act when a post is published (e.g. Blog2Social) see the complete post. Club news get the "Club news" category before they are published.
+* Fixed the first news item for a new team getting the "Uncategorized" category instead of the team category.
+* Fixed news with a future publish date being created again on every synchronization.
+* Fixed news images without an image text not being imported. The image text is stored as the caption of the image in the media library.
+* Fixed the club news block not using its default styling for the news items, images, image captions and the "No news found" message.
+* Updated myclub/common-lib to 1.0.7.
+
 = 2.8.2 =
 * Fixed a JavaScript error that could stop the calendar and club calendar from being displayed when an activity, member or leader contained a quotation mark.
 * Activity, member and leader information is now stored as plain text and escaped when it is displayed.

@@ -23,6 +23,17 @@ class NewsService extends Groups
 {
     const MYCLUB_GROUP_NEWS = 'myclub-group-news';
 
+    /**
+     * Post meta set on a news post that has been created as a draft and is waiting to be published. Holds the
+     * time when the post was created.
+     */
+    const PUBLISH_PENDING_META = 'myclub_news_publish_pending';
+
+    /**
+     * The number of seconds a news post may wait for its featured image before it is published anyway.
+     */
+    const PUBLISH_PENDING_TIMEOUT = 30 * MINUTE_IN_SECONDS;
+
     private DateTimeZone $timezone;
     private DateTimeZone $utc_timezone;
 
@@ -85,10 +96,12 @@ class NewsService extends Groups
         $category = get_term_by( 'name', __( 'News', 'myclub-groups' ), 'category' );
 
         if ( $category === false ) {
-            $category_id = wp_insert_term( __( 'News', 'myclub-groups' ), 'category' );
-            if ( $category_id == 0 || is_wp_error( $category_id ) ) {
+            $term = wp_insert_term( __( 'News', 'myclub-groups' ), 'category' );
+            if ( is_wp_error( $term ) ) {
                 error_log( 'Unable to add default category' );
                 $category_id = null;
+            } else {
+                $category_id = (int)$term[ 'term_id' ];
             }
         } else {
             $category_id = $category->term_id;
@@ -121,10 +134,12 @@ class NewsService extends Groups
             $category = get_term_by( 'name', $myclub_group[ 'name' ], 'category' );
 
             if ( $category === false ) {
-                $category_id = wp_insert_term( $myclub_group[ 'name' ], 'category' );
-                if ( $category_id == 0 || is_wp_error( $category_id ) ) {
+                $term = wp_insert_term( $myclub_group[ 'name' ], 'category' );
+                if ( is_wp_error( $term ) ) {
                     error_log( 'Unable to add team category' );
                     $category_id = null;
+                } else {
+                    $category_id = (int)$term[ 'term_id' ];
                 }
             } else {
                 $category_id = $category->term_id;
@@ -155,6 +170,7 @@ class NewsService extends Groups
         // Delete group-specific news (posts that have myclub_groups_id)
         $group_news_args = array (
             'post_type'      => 'post',
+            'post_status'    => 'any',
             'meta_query'     => array (
                 array (
                     'key'     => 'myclub_news_id',
@@ -183,6 +199,7 @@ class NewsService extends Groups
         if ( !$sections_plugin_installed ) {
             $club_news_args = array (
                 'post_type'      => 'post',
+                'post_status'    => 'any',
                 'meta_query'     => array (
                     array (
                         'key'     => 'myclub_news_id',
@@ -338,6 +355,7 @@ class NewsService extends Groups
                 if ( !empty( $remote_news_ids ) ) {
                     $args = array (
                         'post_type'      => 'post',
+                        'post_status'    => 'any',
                         'meta_query'     => array (
                             array (
                                 'key'     => 'myclub_news_id',
@@ -379,22 +397,17 @@ class NewsService extends Groups
      */
     public function updateClubNewsCategory(): void
     {
-        $category = get_term_by( 'name', __( 'Club news', 'myclub-groups' ), 'category' );
+        $category_id = $this->getClubNewsCategoryId();
 
-        if ( $category === false ) {
-            $category_id = wp_insert_term( __( 'Club news', 'myclub-groups' ), 'category' );
-            if ( $category_id == 0 || is_wp_error( $category_id ) ) {
-                error_log( 'Unable to add club category' );
-                return;
-            }
-        } else {
-            $category_id = $category->term_id;
+        if ( $category_id === null ) {
+            return;
         }
 
         $remote_news_ids = $this->getNewsIds( null );
 
         $remove_args = array (
             'post_type'      => 'post',
+            'post_status'    => 'any',
             'meta_query'     => array (
                 array (
                     'key'     => 'myclub_news_id',
@@ -416,6 +429,7 @@ class NewsService extends Groups
 
         $add_args = array (
             'post_type'      => 'post',
+            'post_status'    => 'any',
             'meta_query'     => array (
                 array (
                     'key'     => 'myclub_news_id',
@@ -461,6 +475,7 @@ class NewsService extends Groups
         $query_args = array (
             'posts_per_page' => 1,
             'post_type'      => 'post',
+            'post_status'    => 'any',
             'meta_query'     => [
                 [
                     'key'     => 'myclub_news_id',
@@ -473,21 +488,23 @@ class NewsService extends Groups
         $query_results = new WP_Query( $query_args );
         $group_id = $myclub_group !== null ? $myclub_group[ 'id' ] : null;
 
-        $post_id = $query_results->have_posts() ? wp_update_post( $this->createNewsArgs( $news_item, $query_results->posts[ 0 ]->ID, $group_id ) ) : wp_insert_post( $this->createNewsArgs( $news_item, null, $group_id ) );
+        $existing_post_id = $query_results->have_posts() ? $query_results->posts[ 0 ]->ID : null;
+        $publish_pending = $existing_post_id === null || get_post_meta( $existing_post_id, NewsService::PUBLISH_PENDING_META, true ) !== '';
 
-        if ( isset( $news_item->news_image ) ) {
-            $image_task = ImageTask::init();
+        // New news posts are created as drafts and published when the categories and the featured image have been
+        // added, so that plugins that act when a post is published (e.g. Blog2Social) see the complete post.
+        $news_args = $this->createNewsArgs( $news_item, $existing_post_id, $group_id, $publish_pending ? 'draft' : 'publish' );
 
-            $image_task->push_to_queue(
-                wp_json_encode( array (
-                    'post_id' => $post_id,
-                    'type'    => 'news',
-                    'image'   => $news_item->news_image,
-                    'news_id' => $news_item->id,
-                    'caption' => $news_item->news_image_text,
-                ), JSON_UNESCAPED_UNICODE )
-            );
-            $image_task->save()->dispatch();
+        if ( $existing_post_id === null ) {
+            $news_args[ 'meta_input' ][ NewsService::PUBLISH_PENDING_META ] = time();
+            $post_id = wp_insert_post( $news_args, true );
+        } else {
+            $post_id = wp_update_post( $news_args, true );
+        }
+
+        if ( is_wp_error( $post_id ) || !$post_id ) {
+            error_log( 'Unable to save news item ' . $news_item->id );
+            return;
         }
 
         $this->addDefaultCategory( $post_id );
@@ -544,9 +561,111 @@ class NewsService extends Groups
                     wp_set_post_terms( $post_id, $term_ids, NewsService::MYCLUB_GROUP_NEWS );
                 }
             }
+        } else {
+            $this->addClubNewsCategory( $post_id );
+        }
+
+        // The image task is queued after all categories have been added, since it publishes the post when it is done
+        if ( !empty( $news_item->news_image->raw->url ) ) {
+            $image_task = ImageTask::init();
+
+            $image_task->push_to_queue(
+                wp_json_encode( array (
+                    'post_id' => $post_id,
+                    'type'    => 'news',
+                    'image'   => $news_item->news_image,
+                    'news_id' => $news_item->id,
+                    'caption' => $news_item->news_image_text ?? '',
+                ), JSON_UNESCAPED_UNICODE )
+            );
+            $image_task->save()->dispatch();
+        }
+
+        if ( $publish_pending ) {
+            $pending_since = (int)get_post_meta( $post_id, NewsService::PUBLISH_PENDING_META, true );
+
+            // Without an image there is nothing to wait for. A post that has waited too long for its image is
+            // published anyway, so that a failing image task can't keep it from being published.
+            if ( empty( $news_item->news_image->raw->url ) || time() - $pending_since > NewsService::PUBLISH_PENDING_TIMEOUT ) {
+                NewsService::publishPendingNews( $post_id );
+            }
         }
 
         unset( $query_args, $query_results );
+    }
+
+    /**
+     * Publishes a news post that has been created as a draft and is waiting to be published.
+     *
+     * Nothing is done if the post isn't waiting to be published, so a post that has been unpublished in WordPress
+     * isn't published again. If the publish date is in the future, the post is scheduled instead.
+     *
+     * @param int $post_id The ID of the news post.
+     *
+     * @return void
+     * @since 2.9.0
+     */
+    public static function publishPendingNews( int $post_id ): void
+    {
+        if ( get_post_meta( $post_id, NewsService::PUBLISH_PENDING_META, true ) === '' ) {
+            return;
+        }
+
+        delete_post_meta( $post_id, NewsService::PUBLISH_PENDING_META );
+
+        if ( get_post_status( $post_id ) !== 'draft' ) {
+            return;
+        }
+
+        $result = wp_update_post( [
+            'ID'          => $post_id,
+            'post_status' => 'publish',
+        ], true );
+
+        if ( is_wp_error( $result ) ) {
+            error_log( 'Unable to publish news post ' . $post_id . ': ' . $result->get_error_message() );
+        }
+    }
+
+    /**
+     * Adds the 'Club news' category to a news post.
+     *
+     * @param int $post_id The ID of the news post.
+     *
+     * @return void
+     * @since 2.9.0
+     */
+    private function addClubNewsCategory( int $post_id ): void
+    {
+        $category_id = $this->getClubNewsCategoryId();
+
+        if ( $category_id !== null ) {
+            wp_set_object_terms( $post_id, $category_id, 'category', true );
+        }
+    }
+
+    /**
+     * Returns the ID of the 'Club news' category and creates the category if it doesn't exist.
+     *
+     * @return int|null The category ID or null if the category couldn't be created.
+     * @since 2.9.0
+     */
+    private function getClubNewsCategoryId(): ?int
+    {
+        $category = get_term_by( 'name', __( 'Club news', 'myclub-groups' ), 'category' );
+
+        if ( $category !== false ) {
+            return (int)$category->term_id;
+        }
+
+        $term = wp_insert_term( __( 'Club news', 'myclub-groups' ), 'category' );
+
+        if ( is_wp_error( $term ) ) {
+            error_log( 'Unable to add club category' );
+            return null;
+        }
+
+        return (int)$term[ 'term_id' ];
     }
 
     /**
@@ -557,11 +676,12 @@ class NewsService extends Groups
      *
      * @param object $news_item The news item object containing the necessary data.
      * @param int|null $post_id The ID of the post to update, or null to create a new post.
+     * @param string $post_status The status of the post. Defaults to 'publish'.
      *
      * @return array The arguments array for creating or updating a news post.
      * @since 1.0.0
      */
-    private function createNewsArgs( object $news_item, int $post_id = null, string $group_id = null ): array
+    private function createNewsArgs( object $news_item, int $post_id = null, string $group_id = null, string $post_status = 'publish' ): array
     {
         // Get time for post and make sure that the time is correct with utc time as well
         try {
@@ -586,12 +706,13 @@ class NewsService extends Groups
             'post_date_gmt' => $gmtTime,
             'post_title'    => $news_item->title,
             'post_name'     => sanitize_title( $news_item->title ),
-            'post_status'   => 'publish',
+            'post_status'   => $post_status,
             'post_type'     => 'post',
             'post_excerpt'  => wp_kses_post( $news_item->ingress ),
             'post_content'  => wp_kses_post( $news_item->text ),
             'meta_input'    => [
-                'myclub_news_id' => $news_item->id,
+                'myclub_news_id'     => $news_item->id,
+                'myclub_news_author' => sanitize_text_field( $news_item->author ?? '' ),
             ]
         ];
 

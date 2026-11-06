@@ -1672,3 +1672,9 @@ msgstr "Visa titelfältet för vald grupp"
 #~ msgstr ""
 #~ "Föreningskalender kortkoden visar föreningens kalender. Denna kortkod har "
 #~ "inga attribut."
+
+#. translators: %s: the name of the author of the news item
+#: blocks/build/club-news/render.php:59 blocks/build/news/render.php:82 blocks/src/club-news/render.php:59 blocks/src/news/render.php:82
+#, php-format
+msgid "By %s"
+msgstr "Av %s"

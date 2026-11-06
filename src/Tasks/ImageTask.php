@@ -6,6 +6,7 @@ if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 use MyClub\Common\BackgroundProcessing\Background_Process;
 use MyClub\MyClubGroups\Services\ImageService;
+use MyClub\MyClubGroups\Services\NewsService;
 use MyClub\MyClubGroups\Services\MemberService;
 
 /**
@@ -154,8 +155,14 @@ class ImageTask extends Background_Process
      */
     private function addNewsImage( object $item )
     {
-        if ( property_exists( $item, 'news_id' ) ) {
-            ImageService::addFeaturedImage( $item->post_id, $item->image, 'news_' . $item->news_id . '_', $item->caption, 'news' );
+        try {
+            if ( property_exists( $item, 'news_id' ) ) {
+                ImageService::addFeaturedImage( $item->post_id, $item->image, 'news_' . $item->news_id . '_', (string) ( $item->caption ?? '' ), 'news' );
+            }
+        } finally {
+            // New news posts wait for their featured image before they are published. Publish them even if the
+            // image couldn't be added.
+            NewsService::publishPendingNews( (int)$item->post_id );
         }
     }
 }
