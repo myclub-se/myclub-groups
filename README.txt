@@ -4,7 +4,7 @@ Donate link: https://www.myclub.se
 Tags: groups, members, administration
 Requires at least: 6.4
 Tested up to: 7.0
-Stable tag: 2.9.0
+Stable tag: 2.9.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -93,6 +93,9 @@ The plugin will try to clear cache on the following cache plugins for MyClub gro
 For unsupported cache systems, please contact us to request integration.
 
 == Changelog ==
+= 2.9.1 =
+* Fixed a critical error on all pages, including the admin, after updating to 2.9.0. The new news author service couldn't be found when the plugin was loaded.
+
 = 2.9.0 =
 * News items now show the author from MyClub. The author is shown in the news blocks and replaces the author name in the theme for news imported from MyClub.
 * New news items are created as drafts and published when their categories and featured image have been added, so that plugins that act when a post is published (e.g. Blog2Social) see the complete post. Club news get the "Club news" category before they are published.

@@ -10,6 +10,7 @@ use MyClub\MyClubGroups\Services\Blocks;
 use MyClub\MyClubGroups\Services\i18n;
 use MyClub\MyClubGroups\Services\Menu;
 use MyClub\MyClubGroups\Services\MyClubCron;
+use MyClub\MyClubGroups\Services\NewsAuthor;
 use MyClub\MyClubGroups\Services\ShortCodes;
 use MyClub\MyClubGroups\Services\Taxonomy;
 
